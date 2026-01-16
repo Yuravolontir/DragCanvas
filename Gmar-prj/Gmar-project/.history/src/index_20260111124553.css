@@ -1,0 +1,32 @@
+.builder {
+  display: grid;
+  grid-template-columns: 220px 1fr 260px;
+  height: calc(100vh - 60px);
+}
+
+.palette {
+  border-right: 1px solid #ccc;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.palette-item {
+  padding: 10px;
+  border: 1px solid #aaa;
+  background: #f8f8f8;
+  cursor: grab;
+  user-select: none;
+}
+
+.canvas {
+  position: relative;
+  border: 2px dashed #bbb;
+  overflow: hidden;
+}
+
+.sidebar {
+  border-left: 1px solid #ccc;
+  padding: 12px;
+}
