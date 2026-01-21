@@ -16,5 +16,3 @@ export { Toolbox } from './Toolbox';
 export { Sidebar } from './Sidebar';
 export { Toolbar } from './Toolbar';
 export { Resizer } from './Resizer';
-export { Link } from './Link';
-export { LinkSettings } from './LinkSettings';

@@ -101,9 +101,9 @@ export const Toolbox = () => {
             </Item>
           </Tooltip>
         </div>
-        <div
+                <div
           ref={(ref) => {
-            create(ref, <Link />);
+            create(ref, <Video />);
           }}
         >
           <Tooltip title="Link" placement="right">

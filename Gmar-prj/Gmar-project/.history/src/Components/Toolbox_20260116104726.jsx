@@ -5,7 +5,6 @@ import { Container } from './User/Container';
 import { Button } from './User/Button';
 import { Text } from './User/Text';
 import { Card } from './User/Card';
-import { Link } from './User/Link';
 
 export const Toolbox = () => {
   const { connectors } = useEditor();
@@ -40,11 +39,6 @@ export const Toolbox = () => {
         <Grid container direction="column" item>
           <MaterialButton ref={(ref) => connectors.create(ref, <Card />)} variant="contained">
             Card
-          </MaterialButton>
-        </Grid>
-                <Grid container direction="column" item>
-          <MaterialButton ref={(ref) => connectors.create(ref, <Link  />)} variant="contained">
-            Link
           </MaterialButton>
         </Grid>
       </Grid>

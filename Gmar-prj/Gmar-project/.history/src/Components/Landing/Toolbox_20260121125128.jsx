@@ -8,7 +8,7 @@ import { Button } from './Button';
 import { Container } from './Container';
 import { Text } from './Text';
 import { Video } from './Video';
-import {Link} from './Link';
+import {Link} from '..User/Link';
 
 const ToolboxDiv = styled.div`
   transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);

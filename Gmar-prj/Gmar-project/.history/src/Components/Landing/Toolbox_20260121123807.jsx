@@ -3,7 +3,7 @@ import { Tooltip } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
 
-import { ButtonToolbox, ContainerToolbox, TextToolbox, VideoToolbox , LinkToolbox} from '../Icons';
+import { ButtonToolbox, ContainerToolbox, TextToolbox, VideoToolbox , } from '../Icons';
 import { Button } from './Button';
 import { Container } from './Container';
 import { Text } from './Text';
@@ -98,17 +98,6 @@ export const Toolbox = () => {
           <Tooltip title="Video" placement="right">
             <Item $move>
               <VideoToolbox viewBox="-3 -3 28 28" />
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Link />);
-          }}
-        >
-          <Tooltip title="Link" placement="right">
-            <Item $move>
-              <LinkToolbox viewBox="-3 -3 28 28" />
             </Item>
           </Tooltip>
         </div>
