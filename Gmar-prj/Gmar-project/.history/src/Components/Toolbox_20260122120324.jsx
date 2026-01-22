@@ -48,11 +48,6 @@ export const Toolbox = () => {
             Link
           </MaterialButton>
         </Grid>
-                        <Grid container direction="column" item>
-          <MaterialButton ref={(ref) => connectors.create(ref, <Image  />)} variant="contained">
-            Image
-          </MaterialButton>
-        </Grid>
       </Grid>
     </Box>
   );

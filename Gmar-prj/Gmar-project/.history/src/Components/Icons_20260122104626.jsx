@@ -155,22 +155,10 @@ export const Layers = (props) => (
    0 1-7 0V8h2v5.5a1.5 1.5 0 0 0 3 0z" />
     </svg>
   );
-  export const ImageToolbox = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 24 24" width="24" height="24"
-  {...props}>
-      <defs>
-        <style>
-          {`
-            .a {
-              fill: #707070;
-            }
-          `}
-        </style>
-      </defs>
-      <path className="a" d="M21
-  19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2
-  2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5
-  12l4.5 6H5l3.5-4.5z"/>
+    export const ImageToolbox = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" {...props}>
+      <path fill="none" d="M0 0h24v24H0z" />
+      <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5
+  13.5l2.5 3.01L14.5 12l-3.5 2.5L9 10.5 7.5 12l3.5-2.5L8.5 13.5zM5 5h14v14H5V5z" />
     </svg>
   );

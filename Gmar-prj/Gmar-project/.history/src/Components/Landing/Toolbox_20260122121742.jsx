@@ -112,13 +112,7 @@ export const Toolbox = () => {
               <LinkToolbox viewBox="-3 -3 28 28" />
             </Item>
           </Tooltip>
-        </div>
-         <div
-          ref={(ref) => {
-            create(ref, <Image />);
-          }}
-        >
-                    <Tooltip title="Image" placement="right">
+            <Tooltip title="Image" placement="right">
             <Item $move>
               <ImageToolbox viewBox="-3 -3 28 28" />
             </Item>
