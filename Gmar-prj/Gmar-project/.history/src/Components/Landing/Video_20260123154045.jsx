@@ -1,4 +1,4 @@
- import { useNode, useEditor } from '@craftjs/core';
+  import { useNode, useEditor } from '@craftjs/core';
   import React from 'react';
   import YouTube from 'react-youtube';
   import styled from 'styled-components';
@@ -7,6 +7,7 @@
   const VideoWrapper = styled.div`
     width: 100%;
     height: 100%;
+    position: relative;
     > div {
       height: 100%;
     }
@@ -15,23 +16,32 @@
     }
   `;
 
+  const VideoContent = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  `;
+
   export const Video = (props) => {
     const { enabled } = useEditor((state) => ({
       enabled: state.options.enabled,
     }));
     const {
       connectors: { connect },
-    } = useNode((node) => ({
-      selected: node.events.selected,
-    }));
+    } = useNode();
 
-    const { videoId, videoUrl, text} = props;
+    const { videoId, videoUrl, children } = props;
 
     return (
       <VideoWrapper
-        ref={(dom) => {
-          connect(dom);
-        }}
+        ref={connect}
         $enabled={enabled}
       >
         {videoId ? (
@@ -43,22 +53,20 @@
             }}
           />
         ) : videoUrl ? (
-          <div style={{position: 'relative', width: '100%', paddingTop: '56.25%', overflow:
-  'hidden'}}>
           <video
-            autoPlay
-            loop
-            muted
             src={videoUrl}
             controls
-            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-  objectFit: 'cover' }}
+            loop
+            autoPlay
+            muted
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',color: 'white', textAlign: 'center' ,fontSize: '2rem', fontWeight: 'bold' ,zIndex: 2,background: 'rgba(0, 0, 0, 0.1)', padding: '1rem', borderRadius: '8px' }}>
-            <h1 style={{ color: 'white', fontSize: '2rem', fontWeight: 'bold' }}>{text}</h1>
-          </div>
-          </div>
         ) : null}
+        {children && (
+          <VideoContent>
+            {children}
+          </VideoContent>
+        )}
       </VideoWrapper>
     );
   };
@@ -69,7 +77,9 @@
       sourceType: 'youtube',
       videoId: 'IwzUs1IMdyQ',
       videoUrl: '',
-      text: '',
+    },
+    rules: {
+      canDrag: () => true,
     },
     related: {
       toolbar: VideoSettings,

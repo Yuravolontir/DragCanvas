@@ -54,7 +54,7 @@
             style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
   objectFit: 'cover' }}
           />
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',color: 'white', textAlign: 'center' ,fontSize: '2rem', fontWeight: 'bold' ,zIndex: 2,background: 'rgba(0, 0, 0, 0.1)', padding: '1rem', borderRadius: '8px' }}>
+          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',color: 'white', textAlign: 'center' ,fontSize: '2rem', fontWeight: 'bold' ,zIndex: 2,background: 'rgba(0, 0, 0, 0)', padding: '1rem'}}>
             <h1 style={{ color: 'white', fontSize: '2rem', fontWeight: 'bold' }}>{text}</h1>
           </div>
           </div>

@@ -25,7 +25,7 @@
       selected: node.events.selected,
     }));
 
-    const { videoId, videoUrl, text} = props;
+    const { videoId, videoUrl } = props;
 
     return (
       <VideoWrapper
@@ -43,21 +43,14 @@
             }}
           />
         ) : videoUrl ? (
-          <div style={{position: 'relative', width: '100%', paddingTop: '56.25%', overflow:
-  'hidden'}}>
           <video
             autoPlay
             loop
             muted
             src={videoUrl}
             controls
-            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-  objectFit: 'cover' }}
+            style={{ width: '100%', height: '100%' }}
           />
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',color: 'white', textAlign: 'center' ,fontSize: '2rem', fontWeight: 'bold' ,zIndex: 2,background: 'rgba(0, 0, 0, 0.1)', padding: '1rem', borderRadius: '8px' }}>
-            <h1 style={{ color: 'white', fontSize: '2rem', fontWeight: 'bold' }}>{text}</h1>
-          </div>
-          </div>
         ) : null}
       </VideoWrapper>
     );
@@ -69,7 +62,6 @@
       sourceType: 'youtube',
       videoId: 'IwzUs1IMdyQ',
       videoUrl: '',
-      text: '',
     },
     related: {
       toolbar: VideoSettings,

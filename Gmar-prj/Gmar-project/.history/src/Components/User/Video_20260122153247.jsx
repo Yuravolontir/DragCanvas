@@ -1,16 +1,33 @@
 import React from 'react';
-import { Image as BootstrapImage } from 'react-bootstrap/Image';
+import { Box } from '@mui/material';
 import { useNode } from '@craftjs/core';
-import { ImageSettings } from './ImageSettings';
+import { VideoSettings } from './VideoSettings';
 
-
-export const Image = ({ src, rounded, width, height }) => {
+export const Video = ({ src, rounded, width, height }) => {
         const { connectors: { connect, drag } } = useNode();
         
         return (
-          <BootstrapImage  ref={(ref) => connect(drag(ref))} src={src} rounded={rounded} width={width} height={height} />
+ <Box
+      sx={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        zIndex: -1,
+        '& video': {
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+        }
+      }}
+    >   
+           
+          </Box>
         );
       };  
+
+
       Image.craft = {
     displayName: 'Image',
     props: {

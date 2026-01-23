@@ -1,8 +1,7 @@
 import React from 'react';
-import { Image as BootstrapImage } from 'react-bootstrap/Image';
+import { Box } from '@mui/material';
 import { useNode } from '@craftjs/core';
-import { ImageSettings } from './ImageSettings';
-
+import { VideoSettings } from './VideoSettings';
 
 export const Image = ({ src, rounded, width, height }) => {
         const { connectors: { connect, drag } } = useNode();
@@ -11,6 +10,8 @@ export const Image = ({ src, rounded, width, height }) => {
           <BootstrapImage  ref={(ref) => connect(drag(ref))} src={src} rounded={rounded} width={width} height={height} />
         );
       };  
+
+      
       Image.craft = {
     displayName: 'Image',
     props: {

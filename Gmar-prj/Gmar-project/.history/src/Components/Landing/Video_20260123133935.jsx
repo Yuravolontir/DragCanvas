@@ -4,14 +4,24 @@
   import styled from 'styled-components';
   import { VideoSettings } from './VideoSettings';
 
-  const VideoWrapper = styled.div`
+  const YoutubeDiv = styled.div`
     width: 100%;
     height: 100%;
     > div {
       height: 100%;
     }
-    iframe, video {
+    iframe {
       pointer-events: ${(props) => (props.$enabled ? 'none' : 'auto')};
+    }
+  `;
+
+  const VideoDiv = styled.div`
+    width: 100%;
+    height: 100%;
+    video {
+      pointer-events: ${(props) => (props.$enabled ? 'none' : 'auto')};
+      width: 100%;
+      height: 100%;
     }
   `;
 
@@ -25,16 +35,16 @@
       selected: node.events.selected,
     }));
 
-    const { videoId, videoUrl, text} = props;
+    const { sourceType, videoId, videoUrl } = props;
 
-    return (
-      <VideoWrapper
-        ref={(dom) => {
-          connect(dom);
-        }}
-        $enabled={enabled}
-      >
-        {videoId ? (
+    if (sourceType === 'youtube' && videoId) {
+      return (
+        <YoutubeDiv
+          ref={(dom) => {
+            connect(dom);
+          }}
+          $enabled={enabled}
+        >
           <YouTube
             videoId={videoId}
             opts={{
@@ -42,25 +52,29 @@
               height: '100%',
             }}
           />
-        ) : videoUrl ? (
-          <div style={{position: 'relative', width: '100%', paddingTop: '56.25%', overflow:
-  'hidden'}}>
+        </YoutubeDiv>
+      );
+    }
+
+    if (sourceType === 'url' && videoUrl) {
+      return (
+        <VideoDiv
+          ref={(dom) => {
+            connect(dom);
+          }}
+          $enabled={enabled}
+        >
           <video
-            autoPlay
-            loop
-            muted
             src={videoUrl}
             controls
-            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-  objectFit: 'cover' }}
+            loop
+            muted
           />
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',color: 'white', textAlign: 'center' ,fontSize: '2rem', fontWeight: 'bold' ,zIndex: 2,background: 'rgba(0, 0, 0, 0.1)', padding: '1rem', borderRadius: '8px' }}>
-            <h1 style={{ color: 'white', fontSize: '2rem', fontWeight: 'bold' }}>{text}</h1>
-          </div>
-          </div>
-        ) : null}
-      </VideoWrapper>
-    );
+        </VideoDiv>
+      );
+    }
+
+    return null;
   };
 
   Video.craft = {
@@ -69,7 +83,6 @@
       sourceType: 'youtube',
       videoId: 'IwzUs1IMdyQ',
       videoUrl: '',
-      text: '',
     },
     related: {
       toolbar: VideoSettings,

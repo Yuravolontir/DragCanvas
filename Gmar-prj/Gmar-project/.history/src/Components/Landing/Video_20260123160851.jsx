@@ -1,4 +1,4 @@
- import { useNode, useEditor } from '@craftjs/core';
+  import { useNode, useEditor } from '@craftjs/core';
   import React from 'react';
   import YouTube from 'react-youtube';
   import styled from 'styled-components';
@@ -7,12 +7,28 @@
   const VideoWrapper = styled.div`
     width: 100%;
     height: 100%;
+    min-height: 200px;
+    position: relative;
     > div {
       height: 100%;
     }
     iframe, video {
       pointer-events: ${(props) => (props.$enabled ? 'none' : 'auto')};
     }
+  `;
+
+  const OverlayText = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    border-radius: 8px;
+    pointer-events: ${(props) => (props.$enabled ? 'none' : 'auto')};
   `;
 
   export const Video = (props) => {
@@ -25,7 +41,7 @@
       selected: node.events.selected,
     }));
 
-    const { videoId, videoUrl, text} = props;
+    const { videoId, videoUrl, text } = props;
 
     return (
       <VideoWrapper
@@ -43,21 +59,27 @@
             }}
           />
         ) : videoUrl ? (
-          <div style={{position: 'relative', width: '100%', paddingTop: '56.25%', overflow:
-  'hidden'}}>
-          <video
-            autoPlay
-            loop
-            muted
-            src={videoUrl}
-            controls
-            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-  objectFit: 'cover' }}
-          />
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',color: 'white', textAlign: 'center' ,fontSize: '2rem', fontWeight: 'bold' ,zIndex: 2,background: 'rgba(0, 0, 0, 0.1)', padding: '1rem', borderRadius: '8px' }}>
-            <h1 style={{ color: 'white', fontSize: '2rem', fontWeight: 'bold' }}>{text}</h1>
-          </div>
-          </div>
+          <>
+            <video
+              autoPlay
+              loop
+              muted
+              src={videoUrl}
+              controls
+              style={{
+                width: '100%',
+                height: '100%',
+                display: 'block',
+                objectFit: 'cover'
+              }}
+            />
+            {text && (
+              <OverlayText $enabled={enabled}>
+                <h1 style={{ margin: 0, fontSize: '2rem', fontWeight: 'bold'
+  }}>{text}</h1>
+              </OverlayText>
+            )}
+          </>
         ) : null}
       </VideoWrapper>
     );

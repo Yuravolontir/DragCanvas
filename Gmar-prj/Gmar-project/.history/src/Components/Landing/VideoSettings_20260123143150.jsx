@@ -4,11 +4,10 @@ import React from 'react';
   import { GridLegacy, TextField } from '@mui/material';
 
   export const VideoSettings = () => {
-    const { actions, videoId, videoUrl, text } = useNode((node) => ({
+    const { actions, videoId, videoUrl } = useNode((node) => ({
       actions: node.actions,
       videoId: node.data.props.videoId,
       videoUrl: node.data.props.videoUrl,
-      text: node.data.props.text,
     }));
 
     const handleYoutubeChange = (e) => {
@@ -30,13 +29,6 @@ import React from 'react';
         }
       });
     };
-    const handleTextChange = (e) => {
-      const value = e.target.value;
-      actions.setProp((props) => {
-        props.text = value;
-      });
-    };
-
 
     return (
       <>
@@ -62,15 +54,6 @@ import React from 'react';
                 fullWidth
                 value={videoUrl || ''}
                 onChange={handleUrlChange}
-                size="small"
-              />
-            </div>
-                        <div className="mb-2">
-              <h4 className="text-sm text-light-gray-2">Set text Above</h4>
-              <TextField
-                fullWidth
-                value={text || ''}
-                onChange={handleTextChange}
                 size="small"
               />
             </div>
