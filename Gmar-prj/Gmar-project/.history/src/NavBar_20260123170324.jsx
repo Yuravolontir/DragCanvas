@@ -11,7 +11,6 @@ import { useContext, useState } from "react"
 function ContainerInsideExample() {
 
   const navigate = useNavigate();
-  
   const {useritems} = useContext(UserContext);
   const {addUserItem} = useContext(UserContext);
 

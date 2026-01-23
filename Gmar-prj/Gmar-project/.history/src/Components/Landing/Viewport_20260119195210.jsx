@@ -6,15 +6,15 @@ import { Header } from './Header';
 import { Sidebar } from './Sidebar';
 import { Toolbox } from './Toolbox';
 
-  const ViewportDiv = styled.div`
-    .viewport {
-      position: fixed;
-      top: 56px;
-      left: 0;
-      right: 0;
-      bottom: 0;
-    }
-  `;
+const ViewportDiv = styled.div`
+  .viewport {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+`;
 
 export const Viewport = ({ children }) => {
   const {

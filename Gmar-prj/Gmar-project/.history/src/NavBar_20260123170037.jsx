@@ -11,7 +11,6 @@ import { useContext, useState } from "react"
 function ContainerInsideExample() {
 
   const navigate = useNavigate();
-  
   const {useritems} = useContext(UserContext);
   const {addUserItem} = useContext(UserContext);
 
@@ -25,9 +24,8 @@ function ContainerInsideExample() {
 }
 
   return (
-
-    <Navbar bg="dark" data-bs-theme="dark" fixed="top">
-        <Container >
+    <Navbar bg="dark" data-bs-theme="dark" >
+        <Container style={{position:'fixed'}}>
           <Navbar.Brand  onClick={() => navigate("/")}>Home</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link  onClick={redirect()}>Create new project</Nav.Link>
@@ -36,7 +34,6 @@ function ContainerInsideExample() {
           </Nav>
         </Container>
       </Navbar>
-     
   );
 }
 
