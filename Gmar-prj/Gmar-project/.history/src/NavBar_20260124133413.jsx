@@ -14,7 +14,7 @@
 
 
   const redirect = () => {
-    if (!currentUser) {
+    if (currentUser) {
       return () => navigate("/login");
   }
   else {
@@ -35,7 +35,7 @@
        <Nav className="ms-auto">
               {currentUser ? (
                 <>
-                  <Navbar.Text className="me-3" style={{color: 'green'}}>
+                  <Navbar.Text className="me-3">
                     Welcome, {currentUser.UserName}!
                   </Navbar.Text>
                   <Nav.Link onClick={logout}>Logout</Nav.Link>

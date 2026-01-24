@@ -1,10 +1,9 @@
- import React, { createContext, useState, useEffect, useContext } from "react";
- 
+  import React, { createContext, useState, useEffect } from "react";
+
   export const UserContext = createContext();
-  export const useUserContext = () => useContext(UserContext);
 
   export default function UserContextProvider(props) {
-
+    
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);

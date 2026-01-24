@@ -11,10 +11,13 @@
     const navigate = useNavigate();
     const { currentUser, logout } = useUserContext();
 
-
+  const {useritems} = useContext(UserContext);
+  const {addUserItem} = useContext(UserContext);
+  const { currentUser } = useUserContext();
+  const storedUser = localStorage.getItem('currentUser');
 
   const redirect = () => {
-    if (!currentUser) {
+    if (currentUser) {
       return () => navigate("/login");
   }
   else {
@@ -32,18 +35,7 @@
             <Nav.Link onClick={() => navigate("/my-projects")}>My projects</Nav.Link>
             <Nav.Link  onClick={() => navigate("/inspire-me")}>Inspire me!</Nav.Link>
           </Nav>
-       <Nav className="ms-auto">
-              {currentUser ? (
-                <>
-                  <Navbar.Text className="me-3" style={{color: 'green'}}>
-                    Welcome, {currentUser.UserName}!
-                  </Navbar.Text>
-                  <Nav.Link onClick={logout}>Logout</Nav.Link>
-                </>
-              ) : (
-                <Nav.Link onClick={() => navigate("/register")}>Register</Nav.Link>
-              )}
-            </Nav>
+          {storedUser ? `Welcome ${JSON.parse(storedUser).username}` : 'Welcome Guest'}
         </Container>
       </Navbar>
      
