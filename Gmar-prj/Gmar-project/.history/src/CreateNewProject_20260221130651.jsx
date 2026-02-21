@@ -15,8 +15,16 @@ const theme = createTheme({
 
 function CreateNewProject() {
 
+    const location = useLocation();
+    const { actions } = useEditor();
+    const hasLoaded = useRef(false);
 
-
+  if (location.state?.projectData && !hasLoaded.current)
+    {
+      hasLoaded.current = true;
+      actions.deserialize(location.state.projectData);
+    }
+    
   return (
     <>
     <NavBar />
@@ -40,9 +48,8 @@ function CreateNewProject() {
           enabled={false}
           onRender={Landing.RenderNode}
         >
-           <LoadProjectOnMount />                       
-           
-           <Landing.Viewport>
+           <LoadProjectOnMount />
+          <Landing.Viewport>
             <Frame>
               <Element
                 canvas

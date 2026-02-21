@@ -16,15 +16,15 @@ export default function MyProject() {
   const { projects, deleteproject } = useUserContext();
   const validProjects = projects.filter(p => p !== null);
 
-const deletethisproject = (id) => {
-  deleteproject(id);
+const deletethisproject(){
+  
 }
 
   return (
     <div>
         <NavBar />
             <Container className="mt-4"style ={{ paddingTop: '100px' }}>
-          <h1 style={{marginBottom: '20px'}}>My Projects</h1>
+          <h1>My Projects</h1>
 
           {validProjects.length === 0 ? (
             <p>No projects yet. Create one!</p>
@@ -52,7 +52,7 @@ const deletethisproject = (id) => {
                       <Button
                         variant="danger"
                         className="ms-2"
-                        onClick={() => deletethisproject(project.id)}
+                        onClick={deletethisproject(project.id)}
                       >
                         Delete
                       </Button>

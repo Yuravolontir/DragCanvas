@@ -2,9 +2,9 @@ import React from 'react';
 import { Editor, Frame, Element } from '@craftjs/core';
 import { createTheme, ThemeProvider } from '@mui/material';
 import NavBar from './NavBar';
+import { useUserContext } from './UserContextProvider';
+import { useEditor } from '@craftjs/core';
 
-import LoadProjectOnMount from './LoadProjectOnMount';
-  
 import * as Landing from './Components/Landing';
 
 const theme = createTheme({
@@ -15,6 +15,18 @@ const theme = createTheme({
 
 function CreateNewProject() {
 
+  const { addproject } = useUserContext();
+  const { query } = useEditor();
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const jsonContent = query.serialize();
+      console.log('Auto-saving...');
+      addproject(jsonContent);
+    }, 30_000);
+
+    return () => clearInterval(intervalId);
+  }, [query, addproject]);
 
 
   return (
@@ -40,9 +52,7 @@ function CreateNewProject() {
           enabled={false}
           onRender={Landing.RenderNode}
         >
-           <LoadProjectOnMount />                       
-           
-           <Landing.Viewport>
+          <Landing.Viewport>
             <Frame>
               <Element
                 canvas

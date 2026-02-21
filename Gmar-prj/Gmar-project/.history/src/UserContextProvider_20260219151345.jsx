@@ -10,19 +10,15 @@
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const [projects, setProjects] = useState([]);
+    const [projects, setProjects] = useState([null]);
 
-    const addproject = (name,project) => {
+    const addproject = (project) => {
       let newProject = {
         id: uuidv4(),
-        created: new Date(),
-        name: name,
-        project: project}
+        project}
         setProjects([...projects, newProject]);
       }
-    const deleteproject = (id) => {
-      setProjects(projects.filter(p => p.id !== id));
-    }
+
     // Check if user is logged in on mount
     useEffect(() => {
       const storedUser = localStorage.getItem('currentUser');
@@ -91,7 +87,7 @@
     };
 
     return (
-      <UserContext.Provider value={{ currentUser, login, register, logout, loading, error , projects , addproject, deleteproject
+      <UserContext.Provider value={{ currentUser, login, register, logout, loading, error , projects , addproject
   }}>
         {props.children}
       </UserContext.Provider>

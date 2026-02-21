@@ -7,24 +7,19 @@ import Card from 'react-bootstrap/Card';
   import Container from 'react-bootstrap/Container';
   import Row from 'react-bootstrap/Row';
   import Col from 'react-bootstrap/Col';
-  import { useNavigate } from 'react-router-dom';
+    import { useNavigate } from 'react-router-dom';
 
 
 
 export default function MyProject() {
   const navigate = useNavigate();
-  const { projects, deleteproject } = useUserContext();
+  const { projects } = useUserContext();
   const validProjects = projects.filter(p => p !== null);
-
-const deletethisproject = (id) => {
-  deleteproject(id);
-}
-
   return (
     <div>
         <NavBar />
-            <Container className="mt-4"style ={{ paddingTop: '100px' }}>
-          <h1 style={{marginBottom: '20px'}}>My Projects</h1>
+            <Container className="mt-4">
+          <h1>My Projects</h1>
 
           {validProjects.length === 0 ? (
             <p>No projects yet. Create one!</p>
@@ -34,9 +29,14 @@ const deletethisproject = (id) => {
                 <Col key={project.id} xs={12} md={6} lg={4} className="mb-4">
                   <Card>
                     <Card.Body>
-                       <Card.Title>Project:  {project.name ? project.name : 'Unnamed Project'}</Card.Title>
+                       <Card.Title>Project {project.id ? project.id.slice(0, 8) : 'Unknown'}...</Card.Title>
                         <Card.Text>
                           Created: {project.created ? new Date(project.created).toLocaleString() : 'Unknown'}
+                        </Card.Text>
+                        <Card.Text>
+                          <small className="text-muted">
+                            {project.project ? JSON.stringify(project.project).slice(0, 100) : 'No data'}...
+                          </small>
                         </Card.Text>
                         <Button
                         variant="primary"
@@ -52,7 +52,7 @@ const deletethisproject = (id) => {
                       <Button
                         variant="danger"
                         className="ms-2"
-                        onClick={() => deletethisproject(project.id)}
+                        onClick={() => {/* Add delete function */}}
                       >
                         Delete
                       </Button>

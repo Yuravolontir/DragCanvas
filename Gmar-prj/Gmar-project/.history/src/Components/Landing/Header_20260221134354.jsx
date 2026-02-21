@@ -3,7 +3,7 @@ import { Tooltip } from '@mui/material';
 import cx from 'classnames';
 import React from 'react';
 import styled from 'styled-components';
-import { useState } from 'react';
+
 import { useUserContext } from '../../UserContextProvider';
 
 import { Checkmark, Customize, Redo, Undo } from '../Icons';
@@ -54,9 +54,6 @@ const Item = styled.a`
 
 
 export const Header = () => {
-
-  const [projectName, setProjectName] = useState('');
-
   const { enabled, canUndo, canRedo, actions , query } = useEditor((state, query) => ({
     enabled: state.options.enabled,
     canUndo: query.history.canUndo(),
@@ -66,15 +63,9 @@ export const Header = () => {
  const { addproject } = useUserContext();
  
   const saveproject = () => {
-if (!projectName) {
-
-  return;
-}
-else {
       const jsonContent = query.serialize();
       console.log('Saving...');
-      addproject(projectName,jsonContent);
-}
+      addproject(jsonContent);
 }
 
 
@@ -125,17 +116,7 @@ else {
           <Btn   className="ml-2 bg-blue-500" onClick={saveproject}>
             <Checkmark viewBox="-3 -3 20 20" />
             Save
-            <input
-    type="text"
-    placeholder="Project Name"
-    value={projectName}
-    onChange={(e) => setProjectName(e.target.value)}
-    className="ml-2 p-1 rounded"
-    style={{ width: '150px' }}
-  />
-  {!projectName && (
-    <small className="ml-2 text-danger">* Required</small>
-  )}
+           <input id="name" type="text" placeholder="Project Name" className="ml-2 p-1 rounded" />
           </Btn>
 
         </div>

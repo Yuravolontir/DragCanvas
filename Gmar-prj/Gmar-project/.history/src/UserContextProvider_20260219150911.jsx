@@ -1,6 +1,7 @@
  import React, { createContext, useState, useEffect, useContext } from "react";
+ import { useEditor } from '@craftjs/core';  //save project
  import { v4 as uuidv4 } from 'uuid';
-
+ 
   export const UserContext = createContext();
   export const useUserContext = () => useContext(UserContext);
 
@@ -10,19 +11,11 @@
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const [projects, setProjects] = useState([]);
+    const [projects, setProjects] = useState([null]);
 
-    const addproject = (name,project) => {
-      let newProject = {
-        id: uuidv4(),
-        created: new Date(),
-        name: name,
-        project: project}
-        setProjects([...projects, newProject]);
-      }
-    const deleteproject = (id) => {
-      setProjects(projects.filter(p => p.id !== id));
-    }
+    const addproject = (project) => {
+
+
     // Check if user is logged in on mount
     useEffect(() => {
       const storedUser = localStorage.getItem('currentUser');
@@ -91,7 +84,7 @@
     };
 
     return (
-      <UserContext.Provider value={{ currentUser, login, register, logout, loading, error , projects , addproject, deleteproject
+      <UserContext.Provider value={{ currentUser, login, register, logout, loading, error
   }}>
         {props.children}
       </UserContext.Provider>

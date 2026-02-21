@@ -1,0 +1,32 @@
+@startuml
+left to right direction
+skinparam linetype ortho
+
+actor User as UserLeft
+actor Admin
+actor Timer
+actor User as UserRight
+
+rectangle "dragcanvas.com" {
+
+  rectangle "User" {
+    UserLeft - (Edit Template)
+    UserLeft - (Drag & Drop Elements)
+    UserLeft - (Use AI Tools)
+    UserLeft - (Publish Website)
+  }
+
+  rectangle "Admin" {
+    Admin - (Create Template)
+    Admin - (Add Widgets)
+  }
+
+  rectangle "Timer" {
+    Timer - (Send Scheduled Emails)
+    Timer - (Send Birthday Emails)
+  }
+
+  (Send Scheduled Emails) - UserRight
+  (Send Birthday Emails) - UserRight
+}
+@enduml

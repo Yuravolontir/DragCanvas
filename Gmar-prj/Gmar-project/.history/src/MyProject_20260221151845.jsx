@@ -13,18 +13,13 @@ import Card from 'react-bootstrap/Card';
 
 export default function MyProject() {
   const navigate = useNavigate();
-  const { projects, deleteproject } = useUserContext();
+  const { projects } = useUserContext();
   const validProjects = projects.filter(p => p !== null);
-
-const deletethisproject = (id) => {
-  deleteproject(id);
-}
-
   return (
     <div>
         <NavBar />
-            <Container className="mt-4"style ={{ paddingTop: '100px' }}>
-          <h1 style={{marginBottom: '20px'}}>My Projects</h1>
+            <Container className="mt-4"style ={{ paddingBottom: '100px' }}>
+          <h1>My Projects</h1>
 
           {validProjects.length === 0 ? (
             <p>No projects yet. Create one!</p>
@@ -52,7 +47,7 @@ const deletethisproject = (id) => {
                       <Button
                         variant="danger"
                         className="ms-2"
-                        onClick={() => deletethisproject(project.id)}
+                        onClick={() => {/* Add delete function */}}
                       >
                         Delete
                       </Button>

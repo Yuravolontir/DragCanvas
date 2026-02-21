@@ -2,9 +2,9 @@ import React from 'react';
 import { Editor, Frame, Element } from '@craftjs/core';
 import { createTheme, ThemeProvider } from '@mui/material';
 import NavBar from './NavBar';
+import { useUserContext } from './UserContextProvider';
+import { useContext } from "react"
 
-import LoadProjectOnMount from './LoadProjectOnMount';
-  
 import * as Landing from './Components/Landing';
 
 const theme = createTheme({
@@ -15,8 +15,16 @@ const theme = createTheme({
 
 function CreateNewProject() {
 
+    const { addproject } = useUserContext();
 
+      const intervalId = setInterval(() => {
+        savePageProgress();
+  }, 30_000);
 
+      savePageProgress();
+      {
+        
+      }
   return (
     <>
     <NavBar />
@@ -40,9 +48,7 @@ function CreateNewProject() {
           enabled={false}
           onRender={Landing.RenderNode}
         >
-           <LoadProjectOnMount />                       
-           
-           <Landing.Viewport>
+          <Landing.Viewport>
             <Frame>
               <Element
                 canvas

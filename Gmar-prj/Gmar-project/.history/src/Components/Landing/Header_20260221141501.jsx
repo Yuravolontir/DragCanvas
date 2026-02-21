@@ -66,15 +66,11 @@ export const Header = () => {
  const { addproject } = useUserContext();
  
   const saveproject = () => {
-if (!projectName) {
 
-  return;
-}
-else {
       const jsonContent = query.serialize();
       console.log('Saving...');
       addproject(projectName,jsonContent);
-}
+    
 }
 
 

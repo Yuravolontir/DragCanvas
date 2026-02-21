@@ -16,13 +16,11 @@
       let newProject = {
         id: uuidv4(),
         created: new Date(),
-        name: name,
-        project: project}
+        name,
+        project}
         setProjects([...projects, newProject]);
       }
-    const deleteproject = (id) => {
-      setProjects(projects.filter(p => p.id !== id));
-    }
+
     // Check if user is logged in on mount
     useEffect(() => {
       const storedUser = localStorage.getItem('currentUser');
@@ -91,7 +89,7 @@
     };
 
     return (
-      <UserContext.Provider value={{ currentUser, login, register, logout, loading, error , projects , addproject, deleteproject
+      <UserContext.Provider value={{ currentUser, login, register, logout, loading, error , projects , addproject
   }}>
         {props.children}
       </UserContext.Provider>

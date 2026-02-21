@@ -22,6 +22,7 @@
       }
     const deleteproject = (id) => {
       setProjects(projects.filter(p => p.id !== id));
+
     }
     // Check if user is logged in on mount
     useEffect(() => {

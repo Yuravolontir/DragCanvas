@@ -66,15 +66,15 @@ export const Header = () => {
  const { addproject } = useUserContext();
  
   const saveproject = () => {
-if (!projectName) {
-
-  return;
-}
-else {
+    if (!projectName) {
+      projectName.placeholder = 'Not Saved! Enter a project name!';
+      return;
+    }
+    else{
       const jsonContent = query.serialize();
       console.log('Saving...');
       addproject(projectName,jsonContent);
-}
+    }
 }
 
 
@@ -125,17 +125,15 @@ else {
           <Btn   className="ml-2 bg-blue-500" onClick={saveproject}>
             <Checkmark viewBox="-3 -3 20 20" />
             Save
-            <input
-    type="text"
-    placeholder="Project Name"
-    value={projectName}
-    onChange={(e) => setProjectName(e.target.value)}
-    className="ml-2 p-1 rounded"
-    style={{ width: '150px' }}
-  />
-  {!projectName && (
-    <small className="ml-2 text-danger">* Required</small>
-  )}
+           <input
+              type="text"
+              placeholder="Project Name"
+              value={projectName}
+              onChange={(e) =>
+  setProjectName(e.target.value)}
+              className="ml-2 p-1 rounded"
+              style={{ width: '150px' }}
+            />
           </Btn>
 
         </div>

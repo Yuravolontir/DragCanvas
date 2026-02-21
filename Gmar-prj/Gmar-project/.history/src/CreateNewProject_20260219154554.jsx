@@ -3,8 +3,7 @@ import { Editor, Frame, Element } from '@craftjs/core';
 import { createTheme, ThemeProvider } from '@mui/material';
 import NavBar from './NavBar';
 
-import LoadProjectOnMount from './LoadProjectOnMount';
-  
+
 import * as Landing from './Components/Landing';
 
 const theme = createTheme({
@@ -40,9 +39,7 @@ function CreateNewProject() {
           enabled={false}
           onRender={Landing.RenderNode}
         >
-           <LoadProjectOnMount />                       
-           
-           <Landing.Viewport>
+          <Landing.Viewport>
             <Frame>
               <Element
                 canvas

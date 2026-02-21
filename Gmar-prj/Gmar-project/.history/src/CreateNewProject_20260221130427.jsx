@@ -15,7 +15,9 @@ const theme = createTheme({
 
 function CreateNewProject() {
 
-
+    const location = useLocation();
+    const { actions } = useEditor();
+    const hasLoaded = useRef(false);
 
   return (
     <>
@@ -40,9 +42,8 @@ function CreateNewProject() {
           enabled={false}
           onRender={Landing.RenderNode}
         >
-           <LoadProjectOnMount />                       
-           
-           <Landing.Viewport>
+           <LoadProjectOnMount />
+          <Landing.Viewport>
             <Frame>
               <Element
                 canvas

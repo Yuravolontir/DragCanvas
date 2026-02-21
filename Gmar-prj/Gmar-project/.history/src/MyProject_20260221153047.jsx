@@ -24,7 +24,7 @@ const deletethisproject = (id) => {
     <div>
         <NavBar />
             <Container className="mt-4"style ={{ paddingTop: '100px' }}>
-          <h1 style={{marginBottom: '20px'}}>My Projects</h1>
+          <h1>My Projects</h1>
 
           {validProjects.length === 0 ? (
             <p>No projects yet. Create one!</p>

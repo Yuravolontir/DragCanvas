@@ -1,0 +1,44 @@
+@startuml
+left to right direction
+
+actor User
+actor Admin
+actor Timer
+
+rectangle "dragcanvas.com" {
+
+  ' ===== User =====
+  User -- (Register / Login)
+  User -- (Select Template)
+  User -- (Edit Template)
+  User --(Drag & Drop Elements)
+  User -- (Edit Text / Images / Colors)
+  User -- (Use AI Tools)
+  User -- (Save Website as Draft)
+  User -- (Publish Website)
+  User -- (Restore Previous Version)
+  User -- (Add Custom Code)
+  User -- (Manage Domain / Subdomain)
+  User --(Receive Notification Emails)
+
+  (Use AI Tools) -- (Generate Text) : <<include>>
+  (Use AI Tools) -- (Generate Images) : <<include>>
+  (Use AI Tools) -- (Improve Layout) : <<include>>
+
+  ' ===== Admin =====
+  Admin -- (Admin Login)
+  Admin --(Create Template)
+  Admin -- (Edit Template)
+  Admin -- (Delete Template)
+  Admin -- (Manage Template Categories)
+  Admin -- (Add Drag & Drop Elements)
+  Admin -- (Configure Widget Properties)
+  Admin -- (View System Statistics)
+
+  ' ===== Timer =====
+  Timer --(Send Scheduled Emails) --User
+  Timer -- (Send Birthday Emails) --User
+  Timer -- (Send System Updates) --User
+}
+
+@enduml
