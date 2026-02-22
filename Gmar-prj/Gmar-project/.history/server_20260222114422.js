@@ -176,66 +176,66 @@ app.post('/api/ai-generate', async (req, res) => {
       return res.status(500).json({ error: 'Missing PPLX_API_KEY in .env' });
     }
 
-    const systemPrompt = `Output ONLY valid JSON: {"sections":[{type,props,children}]}
+   const systemPrompt = `Output ONLY valid JSON. No markdown.
 
-# ELEMENT PROPS (ALL must be included)
-Container: width,height,padding=[t,r,b,l],margin=[t,r,b,l],background={r,g,b,a},color={r,g,b,a},radius,shadow,flexDirection,alignItems,justifyContent
-Text: text,fontSize,fontWeight,textAlign,color={r,g,b,a},margin=[t,r,b,l],shadow
-Button: text,buttonStyle,background={r,g,b,a},color={r,g,b,a},margin=[t,r,b,l]
-Video: videoId="",videoUrl,text (ALL 3 required)
-Image: src,radius,width,height
-Link: href,text,fontSize
+  Complete example of a hero section with background video and text overlay:
+  {"sections":[
+    {"type":"container","props":{"width":"100%","position":"relative","minHeight":
+  "600","overflow":"hidden","background":"#000"},"children":[
+      {"type":"video","props":{"videoId":"IwzUs1IMdyQ","width":"100%","height":"10
+  0%","position":"absolute","top":"0","left":"0","zIndex":"0"}},
+      {"type":"container","props":{"position":"absolute","top":"0","left":"0","rig
+  ht":"0","bottom":"0","zIndex":"1","display":"flex","flexDirection":"column","jus
+  tifyContent":"center","alignItems":"center","padding":["60","40","60","40"],"gap
+  ":"20","background":"rgba(0,0,0,0.4)"},"children":[
+        {"type":"text","props":{"text":"Welcome to Our Platform","fontSize":"64","
+  fontWeight":"bold","color":"white","textAlign":"center"}},
+        {"type":"text","props":{"text":"The best solution for your
+  needs","fontSize":"24","color":"rgba(255,255,255,0.9)","textAlign":"center"}},
+        {"type":"button","props":{"text":"Get Started","background":"#007bff","col
+  or":"white","padding":["16","32"],"borderRadius":"8"}}
+      ]}
+    ]},
+    {"type":"container","props":{"width":"100%","padding":["80","40","80","40"],"b
+  ackground":"#f8f9fa"},"children":[
+      {"type":"text","props":{"text":"Our Features","fontSize":"48","fontWeight":"
+  bold","textAlign":"center","marginBottom":"50","color":"#212529"}}
+    ]}
+  ]}
 
-# VIDEO URLs (choose based on topic)
-Tech: https://www.pexels.com/download/video/3129671/
-Abstract: https://www.pexels.com/download/video/35969886/
-Stars: https://www.pexels.com/download/video/3121459/
-Nature: https://www.pexels.com/download/video/853800/
-Ocean: https://www.pexels.com/download/video/2099384/
-City: https://www.pexels.com/download/video/3252783/
+  Key patterns to follow:
+  1. Video background: position absolute top 0 left 0 zIndex 0 width 100% height
+  100%
+  2. Text overlay: position absolute top 0 left 0 right 0 bottom 0 zIndex 1
+  3. Overlay container: display flex flexDirection column justifyContent center
+  alignItems center
+  4. Add background rgba(0,0,0,0.4) to text overlay container for readability
+  5. Text color should be white for visibility on video
 
-# IMAGE URLs (choose based on topic)
-Office: https://images.unsplash.com/photo-1497366216548-37526070297c?w=800
-Tech: https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800
-Meeting: https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800
-Team: https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800
-Coding: https://images.unsplash.com/photo-1551434678-e076c223a692?w=800
-Nature: https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800
-Food: https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800
-Fitness: https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800
+  Images:
+  https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=1080&fit=c
+  rop
+  https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=cro
+  p
+  https://placehold.co/1920x600/6c5ce7/ffffff?text=Hero
 
-# EXAMPLES (VARY styling, content based on topic)
-Hero:
-{"type":"container","props":{"width":"100%","height":"500px","padding":[80,60,80,60],"background":{"r":20,"g":30,"b":50,"a":1},"alignItems":"center","justifyContent":"center"},"children":[
-  {"type":"video","props":{"videoId":"","videoUrl":"https://www.pexels.com/download/video/3129671/","text":"Transform Your Business"}}
-]}
+  Video IDs by topic:
+  - Tech: 9bZkp7q19f0
+  - Nature: JGwWNGJdvx8
+  - Food: 4Sq7SEaQ5xM
+  - Business: ER7mPmKgnWI
+  - Default: IwzUs1IMdyQ
 
-Feature:
-{"type":"container","props":{"width":"100%","padding":[40,60,40,60],"background":{"r":250,"g":250,"b":250,"a":1},"alignItems":"center"},"children":[
-  {"type":"text","props":{"text":"Powerful Features","fontSize":42,"fontWeight":"700","textAlign":"center","color":{"r":30,"g":40,"b":60,"a":1},"margin":[0,0,30,0],"shadow":0}},
-  {"type":"image","props":{"src":"https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800","radius":16,"width":"100%","height":"300px"}}
-]}
-
-# RULES
-1. VARY content based on topic - don't use same text
-2. VARY colors - use different backgrounds per section
-3. VARY font sizes - headings 36-56, body 16-20
-4. VARY padding/margin - create spacing
-5. ALWAYS include radius (8-24) for modern look
-6. ALWAYS include shadow (10-40) for depth
-7. Match videos/images to topic
-8. Generate 4-6 sections with different content
-
-Topic: ${prompt}`;
-
+  Generate 5 sections following the hero video pattern above. Match video to
+  topic. End with }}]`;
     const requestData = {
       model: 'sonar-pro',
       messages: [
         { role: 'system', content: systemPrompt },
-        { role: 'user', content: `Create unique website for "${prompt}". VARY all content - use topic-specific headlines, descriptions. Choose DIFFERENT videos/images that match topic. Use DIFFERENT colors per section. Make it visually impressive with proper spacing and styling.` }
+        { role: 'user', content: `Create a website layout for: ${prompt}` }
       ],
       max_tokens: 10000,
-      temperature: 0.7
+      temperature: 0.6
     };
 
     const r = await fetch('https://api.perplexity.ai/chat/completions', {
@@ -260,10 +260,6 @@ Topic: ${prompt}`;
     }
 
     const raw = data?.choices?.[0]?.message?.content;
-    console.log('AI Response length:', raw?.length);
-    console.log('AI Response (first 500 chars):', raw?.substring(0, 500));
-    console.log('AI Response (last 200 chars):', raw?.slice(-200));
-
     if (!raw) {
       return res.status(500).json({ error: 'No choices[0].message.content', body: data });
     }
@@ -273,21 +269,8 @@ Topic: ${prompt}`;
     try {
       parsed = safeParseAIJson(raw);
     } catch (e1) {
-      console.log('Parse error:', e1.message);
-      console.log('Attempting repair...');
-      try {
-        const fixedRaw = await repairJsonWithAI(raw, process.env.PPLX_API_KEY);
-        parsed = safeParseAIJson(fixedRaw);
-      } catch (e2) {
-        console.log('Repair failed:', e2.message);
-        return res.status(500).json({
-          error: 'Failed to parse AI response',
-          parseError: e1.message,
-          repairError: e2.message,
-          rawLength: raw?.length,
-          rawPreview: raw?.substring(0, 1000)
-        });
-      }
+      const fixedRaw = await repairJsonWithAI(raw, process.env.PPLX_API_KEY);
+      parsed = safeParseAIJson(fixedRaw);
     }
 
     // Normalize format to {sections:[{type,props,children}]}

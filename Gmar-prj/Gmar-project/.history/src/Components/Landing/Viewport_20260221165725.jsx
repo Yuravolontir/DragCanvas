@@ -6,7 +6,7 @@ import { Header } from './Header';
 import { Sidebar } from './Sidebar';
 import { Toolbox } from './Toolbox';
 
-import  AIAssistant  from
+import { AIAssistant } from
   '../../AIAssistant';
 
   const ViewportDiv = styled.div`
@@ -56,15 +56,12 @@ export const Viewport = ({ children }) => {
               }}
             >
               <div className="relative flex-col flex items-center pt-8">
-                 <AIAssistant/>
                 {children}
-                
               </div>
             </div>
           </div>
-         
           <Sidebar />
-           
+           <AIAssistant/>
         </div>
       </div>
     </ViewportDiv>

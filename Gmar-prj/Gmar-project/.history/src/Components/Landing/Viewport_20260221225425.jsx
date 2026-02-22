@@ -56,13 +56,11 @@ export const Viewport = ({ children }) => {
               }}
             >
               <div className="relative flex-col flex items-center pt-8">
-                 <AIAssistant/>
                 {children}
-                
               </div>
             </div>
           </div>
-         
+          <AIAssistant/>
           <Sidebar />
            
         </div>

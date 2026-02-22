@@ -176,66 +176,95 @@ app.post('/api/ai-generate', async (req, res) => {
       return res.status(500).json({ error: 'Missing PPLX_API_KEY in .env' });
     }
 
-    const systemPrompt = `Output ONLY valid JSON: {"sections":[{type,props,children}]}
+ const systemPrompt = `Output ONLY valid JSON. No markdown. No code blocks.
 
-# ELEMENT PROPS (ALL must be included)
-Container: width,height,padding=[t,r,b,l],margin=[t,r,b,l],background={r,g,b,a},color={r,g,b,a},radius,shadow,flexDirection,alignItems,justifyContent
-Text: text,fontSize,fontWeight,textAlign,color={r,g,b,a},margin=[t,r,b,l],shadow
-Button: text,buttonStyle,background={r,g,b,a},color={r,g,b,a},margin=[t,r,b,l]
-Video: videoId="",videoUrl,text (ALL 3 required)
-Image: src,radius,width,height
-Link: href,text,fontSize
+  STRUCTURE:
+  {"sections":[{"type":"container","props":{...},"children":[{"type":"container","
+  props":{...},"children":[{},{}]}]}]}
 
-# VIDEO URLs (choose based on topic)
-Tech: https://www.pexels.com/download/video/3129671/
-Abstract: https://www.pexels.com/download/video/35969886/
-Stars: https://www.pexels.com/download/video/3121459/
-Nature: https://www.pexels.com/download/video/853800/
-Ocean: https://www.pexels.com/download/video/2099384/
-City: https://www.pexels.com/download/video/3252783/
+  RULES:
+  - EVERY { must have matching }
+  - NO trailing commas inside {} or []
+  - All strings on ONE line (no \\n inside strings)
+  - Output complete JSON, never truncate
 
-# IMAGE URLs (choose based on topic)
-Office: https://images.unsplash.com/photo-1497366216548-37526070297c?w=800
-Tech: https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800
-Meeting: https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800
-Team: https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800
-Coding: https://images.unsplash.com/photo-1551434678-e076c223a692?w=800
-Nature: https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800
-Food: https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800
-Fitness: https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800
+  ELEMENT TYPES: container text button image video link
 
-# EXAMPLES (VARY styling, content based on topic)
-Hero:
-{"type":"container","props":{"width":"100%","height":"500px","padding":[80,60,80,60],"background":{"r":20,"g":30,"b":50,"a":1},"alignItems":"center","justifyContent":"center"},"children":[
-  {"type":"video","props":{"videoId":"","videoUrl":"https://www.pexels.com/download/video/3129671/","text":"Transform Your Business"}}
-]}
+  CONTAINER PROPS: width flexDirection padding background position minHeight
+  overflow top left right bottom zIndex display justifyContent alignItems gap
+  margin
+  TEXT PROPS: text fontSize fontWeight textAlign color lineHeight maxWidth
+  BUTTON PROPS: text background color padding borderRadius width
+  IMAGE PROPS: src width height borderRadius
+  VIDEO PROPS: videoId width height position top left zIndex
+  LINK PROPS: text href color fontSize
 
-Feature:
-{"type":"container","props":{"width":"100%","padding":[40,60,40,60],"background":{"r":250,"g":250,"b":250,"a":1},"alignItems":"center"},"children":[
-  {"type":"text","props":{"text":"Powerful Features","fontSize":42,"fontWeight":"700","textAlign":"center","color":{"r":30,"g":40,"b":60,"a":1},"margin":[0,0,30,0],"shadow":0}},
-  {"type":"image","props":{"src":"https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800","radius":16,"width":"100%","height":"300px"}}
-]}
+  GUARANTEED WORKING IMAGES:
+  https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=1080&fit=c
+  rop
+  https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=cro
+  p
+  https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=cro
+  p
+  https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=cro
+  p
+  https://placehold.co/1920x600/1a1a2a/ffffff?text=Hero+Banner
+  https://placehold.co/800x600/007bff/ffffff?text=Feature
 
-# RULES
-1. VARY content based on topic - don't use same text
-2. VARY colors - use different backgrounds per section
-3. VARY font sizes - headings 36-56, body 16-20
-4. VARY padding/margin - create spacing
-5. ALWAYS include radius (8-24) for modern look
-6. ALWAYS include shadow (10-40) for depth
-7. Match videos/images to topic
-8. Generate 4-6 sections with different content
+  VIDEO IDS: IwzUs1IMdyQ dQw4w9WgXcQ 9bZkp7q19f0 JGwWNGJdvx8
 
-Topic: ${prompt}`;
+  COLOR PALETTE: #007bff #28a745 #ffc107 #dc3545 #6c757d #343a40 #f8f9fa #ffffff
+  #212529
+
+  PROFESSIONAL HERO EXAMPLE:
+  {"type":"container","props":{"width":"100%","position":"relative","minHeight":"6
+  50","overflow":"hidden","background":"linear-gradient(135deg,#667eea 0%,#764ba2
+  100%)"},"children":[{"type":"container","props":{"width":"100%","padding":["100"
+  ,"40","100","40"],"textAlign":"center"},"children":[{"type":"text","props":{"tex
+  t":"Build Something Amazing","fontSize":"72","fontWeight":"bold","color":"white"
+  ,"lineHeight":"1.2"}},{"type":"text","props":{"text":"Transform your ideas into
+  reality with our powerful platform","fontSize":"24","color":"rgba(255,255,255,0.
+  9)","marginTop":"24"}},{"type":"button","props":{"text":"Get Started
+  Free","background":"#ffffff","color":"#667eea","padding":["20","40"],"borderRadi
+  us":"50","fontWeight":"bold","marginTop":"40"}}]}]}
+
+  FEATURES GRID EXAMPLE:
+  {"type":"container","props":{"width":"100%","padding":["80","40","80","40"],"bac
+  kground":"#f8f9fa"},"children":[{"type":"container","props":{"width":"100%","tex
+  tAlign":"center","marginBottom":"50"},"children":[{"type":"text","props":{"text"
+  :"Why Choose Us","fontSize":"48","fontWeight":"bold","color":"#212529"}}]},{"typ
+  e":"container","props":{"width":"100%","display":"flex","flexDirection":"row","g
+  ap":"30","justifyContent":"center"},"children":[{"type":"container","props":{"wi
+  dth":"30%","textAlign":"center","padding":["30","20"],"background":"white","bord
+  erRadius":"12","boxShadow":"0 4px 20px
+  rgba(0,0,0,0.1)"},"children":[{"type":"text","props":{"text":"Lightning
+  Fast","fontSize":"24","fontWeight":"bold","marginBottom":"10"}},{"type":"text","
+  props":{"text":"Built for speed and efficiency","fontSize":"16","color":"#6c757d
+  "}}]},{"type":"container","props":{"width":"30%","textAlign":"center","padding":
+  ["30","20"],"background":"white","borderRadius":"12","boxShadow":"0 4px 20px
+  rgba(0,0,0,0.1)"},"children":[{"type":"text","props":{"text":"Secure","fontSize"
+  :"24","fontWeight":"bold","marginBottom":"10"}},{"type":"text","props":{"text":"
+  Enterprise-grade security","fontSize":"16","color":"#6c757d"}}]},{"type":"contai
+  ner","props":{"width":"30%","textAlign":"center","padding":["30","20"],"backgrou
+  nd":"white","borderRadius":"12","boxShadow":"0 4px 20px
+  rgba(0,0,0,0.1)"},"children":[{"type":"text","props":{"text":"24/7
+  Support","fontSize":"24","fontWeight":"bold","marginBottom":"10"}},{"type":"text
+  ","props":{"text":"Always here to
+  help","fontSize":"16","color":"#6c757d"}}]}]}]}}
+
+  Generate 6-8 SECTIONS in this order: 1)Gradient hero with heading 2)Features
+  grid 3)About with image side 4)Video section 5)Services cards 6)Testimonials
+  7)Stats counter 8)Call to action with dark background. Use varied layouts and
+  professional styling.`;
 
     const requestData = {
       model: 'sonar-pro',
       messages: [
         { role: 'system', content: systemPrompt },
-        { role: 'user', content: `Create unique website for "${prompt}". VARY all content - use topic-specific headlines, descriptions. Choose DIFFERENT videos/images that match topic. Use DIFFERENT colors per section. Make it visually impressive with proper spacing and styling.` }
+        { role: 'user', content: `Create a website layout for: ${prompt}` }
       ],
       max_tokens: 10000,
-      temperature: 0.7
+      temperature: 0.6
     };
 
     const r = await fetch('https://api.perplexity.ai/chat/completions', {
@@ -260,10 +289,6 @@ Topic: ${prompt}`;
     }
 
     const raw = data?.choices?.[0]?.message?.content;
-    console.log('AI Response length:', raw?.length);
-    console.log('AI Response (first 500 chars):', raw?.substring(0, 500));
-    console.log('AI Response (last 200 chars):', raw?.slice(-200));
-
     if (!raw) {
       return res.status(500).json({ error: 'No choices[0].message.content', body: data });
     }
@@ -273,21 +298,8 @@ Topic: ${prompt}`;
     try {
       parsed = safeParseAIJson(raw);
     } catch (e1) {
-      console.log('Parse error:', e1.message);
-      console.log('Attempting repair...');
-      try {
-        const fixedRaw = await repairJsonWithAI(raw, process.env.PPLX_API_KEY);
-        parsed = safeParseAIJson(fixedRaw);
-      } catch (e2) {
-        console.log('Repair failed:', e2.message);
-        return res.status(500).json({
-          error: 'Failed to parse AI response',
-          parseError: e1.message,
-          repairError: e2.message,
-          rawLength: raw?.length,
-          rawPreview: raw?.substring(0, 1000)
-        });
-      }
+      const fixedRaw = await repairJsonWithAI(raw, process.env.PPLX_API_KEY);
+      parsed = safeParseAIJson(fixedRaw);
     }
 
     // Normalize format to {sections:[{type,props,children}]}

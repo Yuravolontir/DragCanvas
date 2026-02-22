@@ -176,67 +176,72 @@ app.post('/api/ai-generate', async (req, res) => {
       return res.status(500).json({ error: 'Missing PPLX_API_KEY in .env' });
     }
 
-    const systemPrompt = `Output ONLY valid JSON: {"sections":[{type,props,children}]}
+        const systemPrompt = `You are a professional web designer. Output ONLY
+  valid JSON. No markdown. No code blocks. Start with {"sections":[ and end with
+  }]}. FOR VIDEO BACKGROUNDS: ALWAYS use videoUrl prop with direct MP4 URLs. NEVER
+   use videoId. Available videoUrl options: https://assets.mixkit.co/videos/previe
+  w/mixkit-stars-in-space-background-1612-large.mp4 https://assets.mixkit.co/video
+  s/preview/mixkit-flying-through-clouds-2072-large.mp4 https://assets.mixkit.co/v
+  ideos/preview/mixkit-working-on-a-laptop-in-an-office-2918-large.mp4 https://ass
+  ets.mixkit.co/videos/preview/mixkit-cooking-meat-in-a-frying-pan-large.mp4
+  https://assets.mixkit.co/videos/preview/mixkit-woman-stretching-before-workout-2
+  05-large.mp4 Images: https://images.unsplash.com/photo-1497366216548-37526070297
+  c?w=1920&h=1080&fit=crop https://images.unsplash.com/photo-1506905925346-21bda4d
+  32df4?w=800&h=600&fit=crop
 
-# ELEMENT PROPS (ALL must be included)
-Container: width,height,padding=[t,r,b,l],margin=[t,r,b,l],background={r,g,b,a},color={r,g,b,a},radius,shadow,flexDirection,alignItems,justifyContent
-Text: text,fontSize,fontWeight,textAlign,color={r,g,b,a},margin=[t,r,b,l],shadow
-Button: text,buttonStyle,background={r,g,b,a},color={r,g,b,a},margin=[t,r,b,l]
-Video: videoId="",videoUrl,text (ALL 3 required)
-Image: src,radius,width,height
-Link: href,text,fontSize
+  ELEMENT PROPS (all available):
+  Container: width flexDirection alignItems justifyContent padding margin
+  background color shadow radius
+  Text: fontSize textAlign fontWeight color shadow text margin
+  Button: background color text
+  Video: videoUrl text
 
-# VIDEO URLs (choose based on topic)
-Tech: https://www.pexels.com/download/video/3129671/
-Abstract: https://www.pexels.com/download/video/35969886/
-Stars: https://www.pexels.com/download/video/3121459/
-Nature: https://www.pexels.com/download/video/853800/
-Ocean: https://www.pexels.com/download/video/2099384/
-City: https://www.pexels.com/download/video/3252783/
+  FORMATTING RULES:
+  - Colors: {"r":0,"g":0,"b":0,"a":1} format for solid colors OR use string for
+  gradients like "linear-gradient(135deg,#667eea 0%,#764ba2 100%)"
+  - Padding/margin: [top,right,bottom,left] as array
+  - Text color: {"r":255,"g":255,"b":255,"a":1} format
+  - Video: MUST use videoUrl prop with direct MP4 URL,
+  position:absolute,top:0,left:0,zIndex:0
+  - Gradients work for backgrounds
 
-# IMAGE URLs (choose based on topic)
-Office: https://images.unsplash.com/photo-1497366216548-37526070297c?w=800
-Tech: https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800
-Meeting: https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800
-Team: https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800
-Coding: https://images.unsplash.com/photo-1551434678-e076c223a692?w=800
-Nature: https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800
-Food: https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800
-Fitness: https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800
+  COMPLETE VIDEO HERO EXAMPLE:
+  {"sections":[{"type":"container","props":{"width":"100%","position":"relative","
+  minHeight":"700","overflow":"hidden"},"children":[{"type":"video","props":{"vide
+  oUrl":"https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-background-
+  1612-large.mp4","width":"100%","height":"100%","position":"absolute","top":"0","
+  left":"0","zIndex":"0"}},{"type":"container","props":{"position":"absolute","top
+  ":"0","left":"0","right":"0","bottom":"0","zIndex":"1","display":"flex","flexDir
+  ection":"column","justifyContent":"center","alignItems":"center","padding":[80,4
+  0,80,40],"background":"rgba(0,0,0,0.5)"},"children":[{"type":"text","props":{"te
+  xt":"Your Headline","fontSize":56,"color":{"r":255,"g":255,"b":255,"a":1},"textA
+  lign":"center"}},{"type":"button","props":{"text":"Call to
+  Action","background":"#667eea","color":"white","padding":[16,32],"borderRadius":
+  8}}]}]},{"type":"container","props":{"width":"100%","padding":[80,40,80,40],"bac
+  kground":"linear-gradient(135deg,#f8f9fa 0%,#ffffff
+  100%)"},"children":[{"type":"text","props":{"text":"Our Features","fontSize":48,
+  "color":{"r":33,"g":37,"b":41,"a":1},"textAlign":"center"}}]}]}
 
-# EXAMPLES (VARY styling, content based on topic)
-Hero:
-{"type":"container","props":{"width":"100%","height":"500px","padding":[80,60,80,60],"background":{"r":20,"g":30,"b":50,"a":1},"alignItems":"center","justifyContent":"center"},"children":[
-  {"type":"video","props":{"videoId":"","videoUrl":"https://www.pexels.com/download/video/3129671/","text":"Transform Your Business"}}
-]}
+  CRITICAL INSTRUCTIONS:
+  1. Section 1 MUST use videoUrl from the list above
+  2. Match video to topic (cooking→cooking video, fitness→exercise video)
+  3. ALWAYS use videoUrl NEVER videoId for backgrounds
+  4. Use color objects like {"r":255,"g":255,"b":255,"a":1} for text colors
+  5. Use padding arrays like [80,40,80,40] for spacing
 
-Feature:
-{"type":"container","props":{"width":"100%","padding":[40,60,40,60],"background":{"r":250,"g":250,"b":250,"a":1},"alignItems":"center"},"children":[
-  {"type":"text","props":{"text":"Powerful Features","fontSize":42,"fontWeight":"700","textAlign":"center","color":{"r":30,"g":40,"b":60,"a":1},"margin":[0,0,30,0],"shadow":0}},
-  {"type":"image","props":{"src":"https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800","radius":16,"width":"100%","height":"300px"}}
-]}
-
-# RULES
-1. VARY content based on topic - don't use same text
-2. VARY colors - use different backgrounds per section
-3. VARY font sizes - headings 36-56, body 16-20
-4. VARY padding/margin - create spacing
-5. ALWAYS include radius (8-24) for modern look
-6. ALWAYS include shadow (10-40) for depth
-7. Match videos/images to topic
-8. Generate 4-6 sections with different content
-
-Topic: ${prompt}`;
-
-    const requestData = {
-      model: 'sonar-pro',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: `Create unique website for "${prompt}". VARY all content - use topic-specific headlines, descriptions. Choose DIFFERENT videos/images that match topic. Use DIFFERENT colors per section. Make it visually impressive with proper spacing and styling.` }
-      ],
-      max_tokens: 10000,
-      temperature: 0.7
-    };
+  Create 6 sections total. Make it impressive. End with }]}`;
+      const requestData = {
+        model: 'sonar-pro',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: `Create a professional website for: ${prompt}.
+  Use direct video URLs (videoUrl prop) for backgrounds. Create 6 impressive
+  sections with video hero, features, about, testimonials, and CTA. Match videos
+  to the topic.` }
+        ],
+        max_tokens: 10000,
+        temperature: 0.7
+      };
 
     const r = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
@@ -260,10 +265,6 @@ Topic: ${prompt}`;
     }
 
     const raw = data?.choices?.[0]?.message?.content;
-    console.log('AI Response length:', raw?.length);
-    console.log('AI Response (first 500 chars):', raw?.substring(0, 500));
-    console.log('AI Response (last 200 chars):', raw?.slice(-200));
-
     if (!raw) {
       return res.status(500).json({ error: 'No choices[0].message.content', body: data });
     }
@@ -273,21 +274,8 @@ Topic: ${prompt}`;
     try {
       parsed = safeParseAIJson(raw);
     } catch (e1) {
-      console.log('Parse error:', e1.message);
-      console.log('Attempting repair...');
-      try {
-        const fixedRaw = await repairJsonWithAI(raw, process.env.PPLX_API_KEY);
-        parsed = safeParseAIJson(fixedRaw);
-      } catch (e2) {
-        console.log('Repair failed:', e2.message);
-        return res.status(500).json({
-          error: 'Failed to parse AI response',
-          parseError: e1.message,
-          repairError: e2.message,
-          rawLength: raw?.length,
-          rawPreview: raw?.substring(0, 1000)
-        });
-      }
+      const fixedRaw = await repairJsonWithAI(raw, process.env.PPLX_API_KEY);
+      parsed = safeParseAIJson(fixedRaw);
     }
 
     // Normalize format to {sections:[{type,props,children}]}

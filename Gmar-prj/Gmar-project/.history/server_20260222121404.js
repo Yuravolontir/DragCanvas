@@ -176,67 +176,79 @@ app.post('/api/ai-generate', async (req, res) => {
       return res.status(500).json({ error: 'Missing PPLX_API_KEY in .env' });
     }
 
-    const systemPrompt = `Output ONLY valid JSON: {"sections":[{type,props,children}]}
+      const systemPrompt = `You are a professional web designer. Output ONLY valid
+   JSON. No markdown.
 
-# ELEMENT PROPS (ALL must be included)
-Container: width,height,padding=[t,r,b,l],margin=[t,r,b,l],background={r,g,b,a},color={r,g,b,a},radius,shadow,flexDirection,alignItems,justifyContent
-Text: text,fontSize,fontWeight,textAlign,color={r,g,b,a},margin=[t,r,b,l],shadow
-Button: text,buttonStyle,background={r,g,b,a},color={r,g,b,a},margin=[t,r,b,l]
-Video: videoId="",videoUrl,text (ALL 3 required)
-Image: src,radius,width,height
-Link: href,text,fontSize
+  COMPONENT PROP FORMATS (COPY THESE EXACTLY):
+  Container: flexDirection alignItems justifyContent fillSpace padding margin
+  background color shadow radius width height
+  Text: fontSize textAlign fontWeight color shadow text margin
+  Button: size variant color text
+  Video: videoUrl text
 
-# VIDEO URLs (choose based on topic)
-Tech: https://www.pexels.com/download/video/3129671/
-Abstract: https://www.pexels.com/download/video/35969886/
-Stars: https://www.pexels.com/download/video/3121459/
-Nature: https://www.pexels.com/download/video/853800/
-Ocean: https://www.pexels.com/download/video/2099384/
-City: https://www.pexels.com/download/video/3252783/
+  IMPORTANT FORMAT RULES:
+  - Colors: use objects NOT strings - background:{"r":0,"g":0,"b":0,"a":1}
+  - Padding/margin: use arrays NOT strings - padding:[20,20,20,20]
+  margin:[0,0,0,0]
+  - Text color: use object - color:{"r":255,"g":255,"b":255,"a":1}
+  - Background: use object for solid or use string for gradients:
+  background:"linear-gradient(135deg,#667eea 0%,#764ba2 100%)"
 
-# IMAGE URLs (choose based on topic)
-Office: https://images.unsplash.com/photo-1497366216548-37526070297c?w=800
-Tech: https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800
-Meeting: https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800
-Team: https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800
-Coding: https://images.unsplash.com/photo-1551434678-e076c223a692?w=800
-Nature: https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800
-Food: https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800
-Fitness: https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800
+  VIDEO BACKGROUND (CRITICAL - use videoUrl NOT videoId):
+  {"type":"container","props":{"width":"100%","position":"relative","minHeight":"6
+  00","overflow":"hidden","background":{"r":0,"g":0,"b":0,"a":1}},"children":[{"ty
+  pe":"video","props":{"videoUrl":"https://assets.mixkit.co/videos/preview/mixkit-
+  stars-in-space-background-1612-large.mp4","width":"100%","height":"100%","positi
+  on":"absolute","top":"0","left":"0","zIndex":0}},{"type":"container","props":{"p
+  osition":"absolute","top":"0","left":"0","right":"0","bottom":"0","zIndex":"1","
+  display":"flex","flexDirection":"column","justifyContent":"center","alignItems":
+  "center","padding":[80,40,80,40],"background":"rgba(0,0,0,0.3)"},"children":[{"t
+  ype":"text","props":{"text":"Your Headline","fontSize":56,"color":{"r":255,"g":2
+  55,"b":255,"a":1},"textAlign":"center"}},{"type":"button","props":{"text":"Get
+  Started","variant":"contained","color":"primary"}}]}]}]
 
-# EXAMPLES (VARY styling, content based on topic)
-Hero:
-{"type":"container","props":{"width":"100%","height":"500px","padding":[80,60,80,60],"background":{"r":20,"g":30,"b":50,"a":1},"alignItems":"center","justifyContent":"center"},"children":[
-  {"type":"video","props":{"videoId":"","videoUrl":"https://www.pexels.com/download/video/3129671/","text":"Transform Your Business"}}
-]}
+  KEY PATTERNS YOU MUST FOLLOW:
+  1. For video backgrounds: ALWAYS use videoUrl with direct MP4 URLs, NEVER
+  videoId
+  2. Video must have: position:"absolute",top:"0",left:"0",zIndex:0
+  3. Overlay container:
+  position:"absolute",top:"0",left:"0",right:"0",bottom:"0",zIndex":1
+  4. Overlay background: "rgba(0,0,0,0.3)" or "rgba(0,0,0,0.5)"
+  5. Text on dark: color:{"r":255,"g":255,"b":255,"a":1}
+  6. Gradients work: background:"linear-gradient(135deg,#667eea 0%,#764ba2 100%)"
 
-Feature:
-{"type":"container","props":{"width":"100%","padding":[40,60,40,60],"background":{"r":250,"g":250,"b":250,"a":1},"alignItems":"center"},"children":[
-  {"type":"text","props":{"text":"Powerful Features","fontSize":42,"fontWeight":"700","textAlign":"center","color":{"r":30,"g":40,"b":60,"a":1},"margin":[0,0,30,0],"shadow":0}},
-  {"type":"image","props":{"src":"https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800","radius":16,"width":"100%","height":"300px"}}
-]}
+  VIDEO URLs (copy exactly - these work):
+  https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-background-1612-la
+  rge.mp4
+  https://assets.mixkit.co/videos/preview/mixkit-flying-through-clouds-2072-large.
+  mp4
+  https://assets.mixkit.co/videos/preview/mixkit-working-on-a-laptop-in-an-office-
+  2918-large.mp4
+  https://assets.mixkit.co/videos/preview/mixkit-cooking-meat-in-a-flying-pan-larg
+  e.mp4
+  https://assets.mixkit.co/videos/preview/mixkit-woman-stretching-before-workout-2
+  05-large.mp4
 
-# RULES
-1. VARY content based on topic - don't use same text
-2. VARY colors - use different backgrounds per section
-3. VARY font sizes - headings 36-56, body 16-20
-4. VARY padding/margin - create spacing
-5. ALWAYS include radius (8-24) for modern look
-6. ALWAYS include shadow (10-40) for depth
-7. Match videos/images to topic
-8. Generate 4-6 sections with different content
+  IMAGES:
+  https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=1080&fit=c
+  rop
+  https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=cro
+  p
 
-Topic: ${prompt}`;
-
-    const requestData = {
-      model: 'sonar-pro',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: `Create unique website for "${prompt}". VARY all content - use topic-specific headlines, descriptions. Choose DIFFERENT videos/images that match topic. Use DIFFERENT colors per section. Make it visually impressive with proper spacing and styling.` }
-      ],
-      max_tokens: 10000,
-      temperature: 0.7
-    };
+  Generate 6 sections. Section 1 MUST be video hero with overlay. Match video to
+  topic. End with }]}]}`;
+      const requestData = {
+        model: 'sonar-pro',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: `Create a professional website for: ${prompt}.
+  Use direct video URLs (videoUrl prop) for backgrounds. Create 6 impressive
+  sections with video hero, features, about, testimonials, and CTA. Match videos
+  to the topic.` }
+        ],
+        max_tokens: 10000,
+        temperature: 0.7
+      };
 
     const r = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
@@ -260,10 +272,6 @@ Topic: ${prompt}`;
     }
 
     const raw = data?.choices?.[0]?.message?.content;
-    console.log('AI Response length:', raw?.length);
-    console.log('AI Response (first 500 chars):', raw?.substring(0, 500));
-    console.log('AI Response (last 200 chars):', raw?.slice(-200));
-
     if (!raw) {
       return res.status(500).json({ error: 'No choices[0].message.content', body: data });
     }
@@ -273,21 +281,8 @@ Topic: ${prompt}`;
     try {
       parsed = safeParseAIJson(raw);
     } catch (e1) {
-      console.log('Parse error:', e1.message);
-      console.log('Attempting repair...');
-      try {
-        const fixedRaw = await repairJsonWithAI(raw, process.env.PPLX_API_KEY);
-        parsed = safeParseAIJson(fixedRaw);
-      } catch (e2) {
-        console.log('Repair failed:', e2.message);
-        return res.status(500).json({
-          error: 'Failed to parse AI response',
-          parseError: e1.message,
-          repairError: e2.message,
-          rawLength: raw?.length,
-          rawPreview: raw?.substring(0, 1000)
-        });
-      }
+      const fixedRaw = await repairJsonWithAI(raw, process.env.PPLX_API_KEY);
+      parsed = safeParseAIJson(fixedRaw);
     }
 
     // Normalize format to {sections:[{type,props,children}]}
