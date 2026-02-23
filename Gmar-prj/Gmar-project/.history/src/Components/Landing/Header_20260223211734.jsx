@@ -179,122 +179,132 @@ function escapeHtml(str) {
    
 
 
-async function deployToNetlify(htmlString, token) {
+async function deployToNetlify(html, token) {
   try {
-    // 0️⃣ PREPARE CONTENT ACCURATELY
-    // Convert string to UTF-8 Blob immediately. This ensures consistency.
-    const encoder = new TextEncoder();
-    const data = encoder.encode(htmlString);
-    const blob = new Blob([data], { type: 'text/html' }); // We will upload this Blob
-    
-    // Calculate SHA1 of the exact data we will upload
-    const hashBuffer = await crypto.subtle.digest('SHA-1', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const sha1 = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    
-    console.log('Prepared index.html SHA1:', sha1);
-
-    // 1️⃣ Validate token (Optional but good)
+    // 1) Validate token
     const userResponse = await fetch('https://api.netlify.com/api/v1/user', {
       headers: { Authorization: `Bearer ${token}` }
     });
     if (!userResponse.ok) throw new Error('Invalid Netlify token.');
-    
-    // 2️⃣ Get or Create Site
-    // For testing, we create a new site. For prod, use a stored siteId.
+    const user = await userResponse.json();
+    console.log('Deploying as:', user.email);
+
+    // 2) Create site (или замени на существующий siteId, если хочешь деплоить в один и тот же)
     const siteResponse = await fetch('https://api.netlify.com/api/v1/sites', {
       method: 'POST',
-      headers: { 
-        Authorization: `Bearer ${token}`, 
-        'Content-Type': 'application/json' 
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({}) // Creates a random site name
+      body: JSON.stringify({})
     });
-    if (!siteResponse.ok) throw new Error('Failed to create site');
+    if (!siteResponse.ok) {
+      const err = await siteResponse.text();
+      throw new Error('Failed to create site: ' + err);
+    }
     const site = await siteResponse.json();
     console.log('Site created:', site.id);
 
-    // 3️⃣ Create Deploy with known SHA1
-    const deployResponse = await fetch(`https://api.netlify.com/api/v1/sites/${site.id}/deploys`, {
-      method: 'POST',
-      headers: { 
-        Authorization: `Bearer ${token}`, 
-        'Content-Type': 'application/json' 
-      },
-      body: JSON.stringify({
-        files: {
-          '/index.html': sha1  // Note the leading slash usually helps, though 'index.html' works too
-        }
-      })
-    });
+    // 3) SHA1 for index.html
+    const sha1 = await sha1Hex(html);
+    console.log('SHA1:', sha1);
 
-    if (!deployResponse.ok) throw new Error('Failed to create deploy');
+    // 4) Create deploy
+    const deployRequest = { files: { 'index.html': sha1 } };
+
+    const deployResponse = await fetch(
+      `https://api.netlify.com/api/v1/sites/${site.id}/deploys`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(deployRequest)
+      }
+    );
+
+    if (!deployResponse.ok) {
+      const err = await deployResponse.text();
+      throw new Error('Deploy create failed: ' + err);
+    }
+
     const deploy = await deployResponse.json();
+    console.log('Deploy created:', deploy.id, 'state:', deploy.state);
 
-    // 4️⃣ Check required files
-    // If SHA1 matches what Netlify already has (rare for new sites), required might be empty.
-    const requiredFiles = deploy.required || [];
-    
-    if (requiredFiles.length > 0) {
-      console.log('Uploading required files:', requiredFiles);
-      
-      // We expect only one file (the sha1 we sent). 
-      // If it asks for a different SHA, something is very wrong.
-      const requiredHash = requiredFiles[0]; // This is the SHA1 Netlify is asking for
-      
-      if (requiredHash !== sha1) {
-        console.warn(`Mismatch! Netlify wants ${requiredHash} but we prepared ${sha1}`);
-        // In rare cases (e.g. empty file), logic might differ, but for HTML it should match.
+    // 5) Upload required files properly
+    const requiredFiles = Array.isArray(deploy.required) ? deploy.required : [];
+    if (requiredFiles.length === 0) {
+      console.log('No required files to upload (already have blobs?)');
+    }
+
+    for (const filePath of requiredFiles) {
+      if (filePath !== 'index.html') {
+        // если вдруг появятся другие файлы, ты можешь добавить обработку
+        throw new Error(`Backend asked for unexpected file: ${filePath}`);
       }
 
-      // 5️⃣ Upload the Blob
-      const uploadUrl = `https://api.netlify.com/api/v1/deploys/${deploy.id}/files/index.html`; // Endpoint is /files/{path}
+      const uploadUrl = `https://api.netlify.com/api/v1/deploys/${deploy.id}/files/${encodeURIComponent(filePath)}`;
 
       const uploadResponse = await fetch(uploadUrl, {
         method: 'PUT',
-        headers: { 
-          Authorization: `Bearer ${token}`, 
-          'Content-Type': 'text/html' 
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'text/html; charset=utf-8'
         },
-        body: blob // Upload the exact binary data we hashed
+        body: html
       });
 
       if (!uploadResponse.ok) {
-        const errText = await uploadResponse.text();
-        throw new Error('Upload failed: ' + errText);
+        const err = await uploadResponse.text();
+        throw new Error(`Failed to upload ${filePath}: ` + err);
       }
-      console.log('Upload successful');
-    } else {
-      console.log('Netlify already had this file content (deduplication). No upload needed.');
+
+      console.log('Uploaded:', filePath);
     }
 
-    // 6️⃣ Poll for readiness
+    // 6) Poll until ready
     let state = deploy.state;
-    let attempts = 0;
-    while (state !== 'ready' && attempts < 20) {
-      if (state === 'error') throw new Error('Deploy state is "error"');
-      
-      await new Promise(r => setTimeout(r, 1000));
-      
-      const checkResp = await fetch(`https://api.netlify.com/api/v1/sites/${site.id}/deploys/${deploy.id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const checkData = await checkResp.json();
-      state = checkData.state;
+    while (state !== 'ready') {
+      await new Promise(r => setTimeout(r, 2000));
+
+      const check = await fetch(
+        `https://api.netlify.com/api/v1/sites/${site.id}/deploys/${deploy.id}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (!check.ok) {
+        const err = await check.text();
+        throw new Error('Failed to check deploy: ' + err);
+      }
+
+      const updated = await check.json();
+      state = updated.state;
       console.log('Deploy state:', state);
-      attempts++;
+
+      if (state === 'error') throw new Error('Deploy failed during processing.');
     }
 
+    // 7) Final URL
+    // На практике проще всего брать site.ssl_url (сайт уже будет указывать на последний deploy)
     const liveUrl = site.ssl_url || site.url;
-    alert(`✅ Deployed! ${liveUrl}`);
-    window.open(liveUrl, '_blank');
+    if (!liveUrl) throw new Error('No live URL returned.');
 
-  } catch (err) {
-    console.error(err);
-    alert('❌ ' + err.message);
+    console.log('✅ Deployed successfully:', liveUrl);
+    alert(`✅ Deployed successfully!\n\nURL: ${liveUrl}`);
+  } catch (error) {
+    console.error(error);
+    alert('❌ ' + error.message);
   }
 }
 
+async function sha1Hex(text) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(text);
+  const hashBuffer = await crypto.subtle.digest('SHA-1', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
 
   return (
