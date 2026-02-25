@@ -340,13 +340,6 @@ async function deployToNetlify(htmlString, token) {
             )}
             {enabled ? 'Finish Editing' : 'Edit'}
           </Btn>
-
-            <Btn className="ml-2 bg-purple-500"
-  onClick={downloadHTML}>
-              <Checkmark viewBox="-3 -3 20 20" />
-              Get HTML
-            </Btn>
-
           <Btn   className="ml-2 bg-blue-500" onClick={saveproject}   style={{ cursor: projectName ? 'pointer' : 'not-allowed', opacity: projectName ? 1 : 0.5 }} >
             Save
             <input
@@ -361,6 +354,11 @@ async function deployToNetlify(htmlString, token) {
     <small className="ml-2 text-danger">* Required</small>                                               
   )}
           </Btn>
+            <Btn className="ml-2 bg-purple-500"
+  onClick={downloadHTML}>
+              <Checkmark viewBox="-3 -3 20 20" />
+              Get HTML
+            </Btn>
 
 
 <Btn   className="ml-2 bg-blue-500" onClick={deploy} style={{ cursor: accessToken ? 'pointer' : 'not-allowed', opacity: accessToken ? 1 : 0.5 }}>
