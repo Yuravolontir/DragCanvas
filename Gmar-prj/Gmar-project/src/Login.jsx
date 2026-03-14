@@ -8,13 +8,13 @@
   export default function Login() {
     const navigate = useNavigate();
     const { login, loading, error } = useUserContext();
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loginError, setLoginError] = useState('');
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const result = await login(username, password);
+      const result = await login(email, password);
       if (result.success) {
         navigate('/create-new-project');
       } else {
@@ -40,10 +40,10 @@
         <h1>Please login</h1>
         <form onSubmit={handleSubmit}>
           <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
           <input

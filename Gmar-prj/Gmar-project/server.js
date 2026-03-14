@@ -11,8 +11,8 @@ app.use(express.json());
 const config = {
   server: 'YURA\\SQLEXPRESS',
   database: 'DragCanvas',
-  user: 'webapp',
-  password: 'WebApp123!',
+  user: 'DragCanvasWebApp',
+  password: 'WebApp@2026!',
   options: { encrypt: false, trustServerCertificate: true }
 };
 
@@ -42,7 +42,7 @@ start();
     try {
       const result = await pool.request()
         .input('id', sql.Int, req.params.id)
-        .query('SELECT User_ID, UserName, UserEmail, UserPassword FROM TBUsers WHEREUser_ID = @id');
+        .query('SELECT User_ID, UserName, UserEmail, UserPassword FROM TBUsers WHERE User_ID = @id');
       if (result.recordset.length === 0) {
         return res.status(404).json({ error: 'User not found' });
       }
@@ -55,64 +55,129 @@ start();
   // POST create user
   app.post('/api/users', async (req, res) => {
     try {
-      const { username, email, password_hash } = req.body;
+      const { username, email, password } = req.body;
       const result = await pool.request()
         .input('username', sql.NVarChar(50), username)
-        .input('email', sql.NVarChar(255), email)
-        .input('password_hash', sql.NVarChar(255), password_hash)
-        .query('INSERT INTO TBUsers (UserName, UserEmail, UserPassword) OUTPUT INSERTED.* VALUES(@username, @email, @password_hash)');
+        .input('email', sql.NVarChar(100), email)
+        .input('password', sql.NVarChar(255), password)
+        .query('INSERT INTO TBUsers (UserName, UserEmail, UserPassword, IsActive, CreatedDate) OUTPUT INSERTED.* VALUES(@username, @email, @password, 1, GETDATE())');
       res.json(result.recordset[0]);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
   });
 
-  // POST login
+  // POST login - using Stored Procedure
   app.post('/api/login', async (req, res) => {
     try {
-      const { username, password } = req.body;
+      const { email, password } = req.body;
+
+      if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password are required' });
+      }
+
+      // Use stored procedure for login
       const result = await pool.request()
-        .input('username', sql.NVarChar(50), username)
-        .query('SELECT User_ID, UserName, UserEmail, UserPassword FROM TBUsers WHERE UserName = @username');
+        .input('Email', sql.NVarChar(100), email)
+        .input('Password', sql.NVarChar(255), password)
+        .input('IPAddress', sql.NVarChar(50), req.ip || 'unknown')
+        .output('UserID', sql.Int)
+        .output('UserName', sql.NVarChar(50))
+        .output('IsAdmin', sql.Bit)
+        .output('ResultCode', sql.Int)
+        .execute('dbo.SP_UserLogin');
 
-      if (result.recordset.length === 0) {
-        return res.status(401).json({ error: 'Invalid credentials' });
+      // Get the output parameters
+      const outputs = result.output;
+      const resultCode = outputs.ResultCode;
+      const userID = outputs.UserID;
+      const userName = outputs.UserName;
+      const isAdmin = outputs.IsAdmin;
+
+      if (resultCode !== 1 || !userID) {
+        return res.status(401).json({ error: 'Invalid email or password' });
       }
 
-      const user = result.recordset[0];
+      // Fetch full user data without password
+      const userResult = await pool.request()
+        .input('UserID', sql.Int, userID)
+        .query('SELECT User_ID, UserName, UserEmail, IsActive, IsAdmin FROM TBUsers WHERE User_ID = @UserID');
 
-      // Simple password comparison
-      if (user.UserPassword !== password) {
-        return res.status(401).json({ error: 'Invalid credentials' });
+      if (userResult.recordset.length === 0) {
+        return res.status(401).json({ error: 'User not found' });
       }
 
-      // Return user without password
-      const { UserPassword, ...userWithoutPassword } = user;
-      res.json({ user: userWithoutPassword });
+      res.json({
+        user: userResult.recordset[0],
+        message: 'Login successful'
+      });
     } catch (err) {
+      console.error('Login error:', err);
       res.status(500).json({ error: err.message });
     }
   });
 
-  // POST register
+  // POST register - using Stored Procedure
   app.post('/api/register', async (req, res) => {
     try {
       const { username, email, password } = req.body;
-      const result = await pool.request()
-        .input('username', sql.NVarChar(50), username)
-        .input('email', sql.NVarChar(255), email)
-        .input('password_hash', sql.NVarChar(255), password)
-        .query('INSERT INTO TBUsers (UserName, UserEmail, UserPassword) OUTPUT INSERTED.* VALUES(@username, @email, @password_hash)');
 
-      const { UserPassword, ...userWithoutPassword } = result.recordset[0];
-      res.json({ user: userWithoutPassword });
+      // Create request
+      const request = pool.request()
+        .input('UserName', sql.NVarChar(50), username)
+        .input('Email', sql.NVarChar(100), email)
+        .input('Password', sql.NVarChar(255), password);
+
+      // Add OUTPUT parameters
+      const userID = { value: null, type: sql.Int };
+      const resultCode = { value: null, type: sql.Int };
+
+      request.output('UserID', sql.Int);
+      request.output('ResultCode', sql.Int);
+
+      // Execute stored procedure
+      await request.execute('dbo.SP_RegisterUser');
+
+      // Get output values
+      const result = await pool.request()
+        .input('UserName', sql.NVarChar(50), username)
+        .query('SELECT User_ID, UserName, UserEmail FROM TBUsers WHERE UserName = @UserName');
+
+      if (result.recordset.length === 0) {
+        return res.status(400).json({ error: 'Registration failed' });
+      }
+
+      res.json({ user: result.recordset[0], message: 'Registration successful' });
     } catch (err) {
-      if (err.message.includes('UNIQUE')) {
+      if (err.message.includes('duplicate') || err.message.includes('UNIQUE')) {
         return res.status(400).json({ error: 'Username or email already exists' });
       }
       res.status(500).json({ error: err.message });
     }
   });
+
+  // POST logout - using Stored Procedure
+  app.post('/api/logout', async (req, res) => {
+    try {
+      const { userId, sessionDurationMinutes } = req.body;
+
+      if (!userId) {
+        return res.status(400).json({ error: 'User ID is required' });
+      }
+
+      // Use stored procedure for logout
+      await pool.request()
+        .input('UserID', sql.Int, userId)
+        .input('SessionDurationMinutes', sql.Int, sessionDurationMinutes || null)
+        .execute('dbo.SP_UserLogout');
+
+      res.json({ message: 'Logout successful' });
+    } catch (err) {
+      console.error('Logout error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
 // ---------- Robust JSON extraction/parsing ----------
 function extractBalancedJsonObject(text) {
   const s = String(text);

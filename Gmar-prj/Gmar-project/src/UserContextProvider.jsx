@@ -31,14 +31,14 @@
       }
     }, []);
 
-    const login = async (username, password) => {
+    const login = async (email, password) => {
       setLoading(true);
       setError(null);
       try {
         const response = await fetch('http://localhost:3001/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
+          body: JSON.stringify({ email, password })
         });
 
         const data = await response.json();

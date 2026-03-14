@@ -3,7 +3,7 @@ import { Tooltip } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
 
-import { ButtonToolbox, ContainerToolbox, TextToolbox, VideoToolbox , LinkToolbox,ImageToolbox,  CarouselIcon} from '../Icons';
+import { ButtonToolbox, ContainerToolbox, TextToolbox, VideoToolbox , LinkToolbox,ImageToolbox} from '../Icons';
 import { Button } from './Button';
 import { Container } from './Container';
 import { Text } from './Text';
@@ -126,18 +126,19 @@ export const Toolbox = () => {
           </Tooltip>
           
         </div>
- <div
-            ref={(ref) => {
-              create(ref, <Carousel />);
-            }}
-          >
-            <Tooltip title="Carousel" placement="right">
-              <Item $move>
-                <CarouselIcon viewBox="-3 -3 28 28" />
-              </Item>
-            </Tooltip>
-          </div>
+                 <div
+          ref={(ref) => {
+            create(ref, <Carousel />);
+          }}
+        >
+                    <Tooltip title="Carousel" placement="right">
+            <Item $move>
+              <ImageToolbox viewBox="-3 -3 28 28" />
+            </Item>
+          </Tooltip>
+          
         </div>
-      </ToolboxDiv>
+      </div>
+    </ToolboxDiv>
   );
 };

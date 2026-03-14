@@ -7,7 +7,6 @@ import { Text } from './User/Text';
 import { Card } from './User/Card';
 import { Link } from './User/Link';
 import { Image } from './User/Image';
-import { Carousel } from './User/Carusel';
 
 export const Toolbox = () => {
   const { connectors } = useEditor();
@@ -52,11 +51,6 @@ export const Toolbox = () => {
                         <Grid container direction="column" item>
           <MaterialButton ref={(ref) => connectors.create(ref, <Image  />)} variant="contained">
             Image
-          </MaterialButton>
-        </Grid>
-                                <Grid container direction="column" item>
-          <MaterialButton ref={(ref) => connectors.create(ref, <Carousel  />)} variant="contained">
-           Carousel
           </MaterialButton>
         </Grid>
       </Grid>

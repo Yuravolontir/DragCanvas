@@ -133,20 +133,18 @@ export const VideoToolbox = (props) => (
     <path d="M3 3.993C3 3.445 3.445 3 3.993 3h16.014c.548 0 .993.445.993.993v16.014a.994.994 0 0 1-.993.993H3.993A.994.994 0 0 1 3 20.007V3.993zM5 5v14h14V5H5zm5.622 3.415l4.879 3.252a.4.4 0 0 1 0 .666l-4.88 3.252a.4.4 0 0 1-.621-.332V8.747a.4.4 0 0 1 .622-.332z" />
   </svg>
 );
-  export const CarouselIcon = (props) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width="24"
-      height="24"
-      {...props}
-    >
-      <path fill="none" d="M0 0h24v24H0z" />
-      <path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0
-  1-2-2V6a2 2 0 0 1 2-2zm0 2v12h16V6H4zm2 2h3v8H6V8zm5
-  0h3v8h-3V8zm5 0h2v8h-2V8z" />
-    </svg>
-  );
+export const CarouselIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    width="24"
+    height="24"
+    {...props}
+  >
+    <path fill="none" d="M0 0h24v24H0z" />
+    <path d="M3 5a2 2 0 0 1 2-2h4v2H5v14h4v2H5a2 2 0 0 1-2-2V5zm16-2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4v-2h4V5h-4V3h4zM8 7h8v10H8V7zm2 2v6h4V9h-4z" />
+  </svg>
+);
 
 export const Layers = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" {...props}>
