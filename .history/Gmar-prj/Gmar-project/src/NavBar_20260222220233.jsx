@@ -9,7 +9,8 @@
   export default function NavBar() {
 
     const navigate = useNavigate();
-    const { currentUser, logout, isAdmin } = useUserContext();
+    const { currentUser, logout } = useUserContext();
+
 
 
   const redirect = () => {
@@ -20,11 +21,6 @@
       return () => navigate("/create-new-project");
   }
 }
-
-  const adminPanel = () => {
-    navigate("/admin-panel");
-  }
-
 
   return (
 
@@ -42,10 +38,6 @@
                   <Navbar.Text className="me-3" style={{color: 'green'}}>
                     Welcome, {currentUser.UserName}!
                   </Navbar.Text>
-
-                {isAdmin ? ( <Nav.Link onClick={adminPanel}>AdminPanel</Nav.Link>) : (<></>)}
-
-
                   <Nav.Link onClick={logout}>Logout</Nav.Link>
                 </>
               ) : (

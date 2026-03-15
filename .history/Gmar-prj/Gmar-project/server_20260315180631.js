@@ -181,43 +181,40 @@ start();
   });
 
 
-app.delete('/api/delete-user', async (req, res) => {
+app.post('/api/delete-user', async (req, res) => {
     try {
       const { targetID, adminID, confirmDelete } = req.body;
 
-      if (!targetID || !adminID) {
-        return res.status(400).json({ error: 'targetID and adminID are required' });
-      }
-
-      if (confirmDelete !== true && confirmDelete !== 1) {
-        return res.status(400).json({ error: 'confirmDelete must be true' });
-      }
       // Create request
       const request = pool.request()
-        .input('TargetUserID', sql.Int, targetID)
-        .input('AdminID', sql.Int, adminID)
-        .input('ConfirmDelete', sql.Bit, confirmDelete);
+        .input('TargetUserID', sql.NVarChar(50), targetID)
+        .input('AdminID', sql.NVarChar(100), adminID)
+        .input('ConfirmDelete', sql.Int, 1);
 
-            // Add OUTPUT parameters
+      // Add OUTPUT parameters
+      const ResultCode = { value: null, type: sql.Int };
+      const resultCode = { value: null, type: sql.Int };
+
+      request.output('UserID', sql.Int);
       request.output('ResultCode', sql.Int);
-      request.output('ResultMessage', sql.NVarChar(500));
 
-      const result = await
-  request.execute('dbo.SP_DeleteUserPermanently');
+      // Execute stored procedure
+      await request.execute('dbo.SP_RegisterUser');
 
       // Get output values
-      const outputs = result.output;
-      const resultCode = outputs.ResultCode;
-      const resultMessage = outputs.ResultMessage;
+      const result = await pool.request()
+        .input('UserName', sql.NVarChar(50), username)
+        .query('SELECT User_ID, UserName, UserEmail FROM TBUsers WHERE UserName = @UserName');
 
-      if (resultCode === 1) {
-        return res.json({ message: resultMessage });
-      } else {
-        return res.status(400).json({ error: resultMessage });
+      if (result.recordset.length === 0) {
+        return res.status(400).json({ error: 'Registration failed' });
       }
 
+      res.json({ user: result.recordset[0], message: 'Registration successful' });
     } catch (err) {
-      console.error('Delete user error:', err);
+      if (err.message.includes('duplicate') || err.message.includes('UNIQUE')) {
+        return res.status(400).json({ error: 'Username or email already exists' });
+      }
       res.status(500).json({ error: err.message });
     }
   });

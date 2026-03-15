@@ -30,9 +30,6 @@
        const storedIsAdmin = localStorage.getItem('isAdmin');
       if (storedUser) {
         setCurrentUser(JSON.parse(storedUser));
-      if (storedIsAdmin) 
-        setIsAdmin(JSON.parse(storedIsAdmin));
-    
       }
     }, []);
 
@@ -93,10 +90,8 @@
     };
 
     const logout = () => {
-    setCurrentUser(null);
-    setIsAdmin(null);
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('isAdmin');
+      setCurrentUser(null);
+      localStorage.removeItem('currentUser');
     };
 
     return (

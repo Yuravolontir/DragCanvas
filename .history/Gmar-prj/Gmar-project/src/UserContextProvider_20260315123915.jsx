@@ -27,12 +27,8 @@
     // Check if user is logged in on mount
     useEffect(() => {
       const storedUser = localStorage.getItem('currentUser');
-       const storedIsAdmin = localStorage.getItem('isAdmin');
       if (storedUser) {
         setCurrentUser(JSON.parse(storedUser));
-      if (storedIsAdmin) 
-        setIsAdmin(JSON.parse(storedIsAdmin));
-    
       }
     }, []);
 
@@ -55,7 +51,7 @@
         setCurrentUser(data.user);
         setIsAdmin(data.admin);
         localStorage.setItem('currentUser', JSON.stringify(data.user));
-        localStorage.setItem('isAdmin', JSON.stringify(data.admin));
+
         return { success: true };
       } catch (err) {
         setError(err.message);
@@ -93,10 +89,8 @@
     };
 
     const logout = () => {
-    setCurrentUser(null);
-    setIsAdmin(null);
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('isAdmin');
+      setCurrentUser(null);
+      localStorage.removeItem('currentUser');
     };
 
     return (

@@ -9,7 +9,6 @@ import CreateNewProject from './CreateNewProject';
 import MyProject from './MyProject';
 import InspireMe from './InspireMe';
 import UserContextProvider from './UserContextProvider';
-import AdminPanel from './AdminPanel';
 
 function App() {
   
@@ -37,10 +36,6 @@ const router = createBrowserRouter([
     {
       path: "/inspire-me",
       element: <InspireMe />
-    },
-        {
-      path: "/admin-panel",
-      element: <AdminPanel />
     }
   ]);
 

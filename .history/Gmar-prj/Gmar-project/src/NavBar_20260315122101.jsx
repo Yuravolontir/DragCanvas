@@ -12,6 +12,7 @@
     const { currentUser, logout, isAdmin } = useUserContext();
 
 
+
   const redirect = () => {
     if (!currentUser) {
       return () => navigate("/login");
@@ -22,7 +23,7 @@
 }
 
   const adminPanel = () => {
-    navigate("/admin-panel");
+      return () => navigate("/admin-panel");
   }
 
 

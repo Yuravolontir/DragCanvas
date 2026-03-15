@@ -11,6 +11,7 @@
     const navigate = useNavigate();
     const { currentUser, logout, isAdmin } = useUserContext();
 
+ console.log('NavBar Debug:', { currentUser, isAdmin });
 
   const redirect = () => {
     if (!currentUser) {

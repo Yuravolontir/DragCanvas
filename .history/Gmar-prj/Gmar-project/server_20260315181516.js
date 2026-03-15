@@ -181,11 +181,11 @@ start();
   });
 
 
-app.delete('/api/delete-user', async (req, res) => {
+app.post('/api/delete-user', async (req, res) => {
     try {
       const { targetID, adminID, confirmDelete } = req.body;
 
-      if (!targetID || !adminID) {
+            if (!targetID || !adminID) {
         return res.status(400).json({ error: 'targetID and adminID are required' });
       }
 
@@ -194,9 +194,9 @@ app.delete('/api/delete-user', async (req, res) => {
       }
       // Create request
       const request = pool.request()
-        .input('TargetUserID', sql.Int, targetID)
+        .input('TargetUserID', sql.NVarChar(50), targetID)
         .input('AdminID', sql.Int, adminID)
-        .input('ConfirmDelete', sql.Bit, confirmDelete);
+         .input('ConfirmDelete', sql.Bit, confirmDelete);
 
             // Add OUTPUT parameters
       request.output('ResultCode', sql.Int);

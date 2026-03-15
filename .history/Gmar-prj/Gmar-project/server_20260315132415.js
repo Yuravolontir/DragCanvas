@@ -31,7 +31,7 @@ start();
 
  app.get('/api/users', async (req, res) => {
     try {
-        const result = await pool.request().query('SELECT User_ID,UserName, UserEmail, IsActive, IsAdmin FROM TBUsers ');
+      const result = await pool.request().query('SELECT User_ID, UserName, UserEmail,UserPassword FROM TBUsers ');
       res.json(result.recordset);
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -179,50 +179,6 @@ start();
       res.status(500).json({ error: err.message });
     }
   });
-
-
-app.delete('/api/delete-user', async (req, res) => {
-    try {
-      const { targetID, adminID, confirmDelete } = req.body;
-
-      if (!targetID || !adminID) {
-        return res.status(400).json({ error: 'targetID and adminID are required' });
-      }
-
-      if (confirmDelete !== true && confirmDelete !== 1) {
-        return res.status(400).json({ error: 'confirmDelete must be true' });
-      }
-      // Create request
-      const request = pool.request()
-        .input('TargetUserID', sql.Int, targetID)
-        .input('AdminID', sql.Int, adminID)
-        .input('ConfirmDelete', sql.Bit, confirmDelete);
-
-            // Add OUTPUT parameters
-      request.output('ResultCode', sql.Int);
-      request.output('ResultMessage', sql.NVarChar(500));
-
-      const result = await
-  request.execute('dbo.SP_DeleteUserPermanently');
-
-      // Get output values
-      const outputs = result.output;
-      const resultCode = outputs.ResultCode;
-      const resultMessage = outputs.ResultMessage;
-
-      if (resultCode === 1) {
-        return res.json({ message: resultMessage });
-      } else {
-        return res.status(400).json({ error: resultMessage });
-      }
-
-    } catch (err) {
-      console.error('Delete user error:', err);
-      res.status(500).json({ error: err.message });
-    }
-  });
-
-
 
 // ---------- Robust JSON extraction/parsing ----------
 function extractBalancedJsonObject(text) {
