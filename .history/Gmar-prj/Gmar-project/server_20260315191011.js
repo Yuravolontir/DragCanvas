@@ -224,7 +224,7 @@ app.delete('/api/delete-user', async (req, res) => {
 
 
 
-  app.post('/api/update-status', async (req, res) => {
+  app.delete('/api/update-status', async (req, res) => {
     try {
       const { targetID, adminID, newStatus } = req.body;
 
@@ -236,14 +236,14 @@ app.delete('/api/delete-user', async (req, res) => {
       const request = pool.request()
         .input('TargetUserID', sql.Int, targetID)
         .input('AdminID', sql.Int, adminID)
-        .input('NewStatus', sql.Bit, newStatus);
+        .input('NewStatus ', sql.Bit, newStatus);
 
             // Add OUTPUT parameters
       request.output('ResultCode', sql.Int);
       request.output('ResultMessage', sql.NVarChar(500));
 
       const result = await
-  request.execute('dbo.SP_UpdateUserStatus');
+  request.execute('dbo.SP_DeleteUserPermanently');
 
       // Get output values
       const outputs = result.output;
@@ -257,7 +257,7 @@ app.delete('/api/delete-user', async (req, res) => {
       }
 
     } catch (err) {
-      console.error('Update user status error:', err);
+      console.error('Delete user error:', err);
       res.status(500).json({ error: err.message });
     }
   });

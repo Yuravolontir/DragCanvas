@@ -14,39 +14,24 @@ export default function AdminPanel() {
     const [searchEmail, setSearchEmail] = useState('');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [userToDelete, setUserToDelete] = useState(null);
-    const [filterStatus, setFilterStatus] = useState('all');
-    const [filterRole, setFilterRole] = useState('all');
+    const [userToUpdateStatus, setuserToUpdateStatus] = useState(null);
 
 
    useEffect(() => {
       fetchUsers();
     }, []);
 
- useEffect(() => {
-    let filtered = users;
+        useEffect(() => {
+      if (searchEmail.trim() === '') {
+        setFilteredUsers(users);
+      } else {
+        const filtered = users.filter(user =>
 
-    if (searchEmail.trim() !== '') {
-      filtered = filtered.filter(user =>
   user.UserEmail.toLowerCase().includes(searchEmail.toLowerCase())
-      );
-    }
-
-    // Filter by status
-    if (filterStatus === 'active') {
-      filtered = filtered.filter(user => user.IsActive);
-    } else if (filterStatus === 'inactive') {
-      filtered = filtered.filter(user => !user.IsActive);
-    }
-
-    // Filter by role
-    if (filterRole === 'admin') {
-      filtered = filtered.filter(user => user.IsAdmin);
-    } else if (filterRole === 'user') {
-      filtered = filtered.filter(user => !user.IsAdmin);
-    }
-
-    setFilteredUsers(filtered);
-  }, [searchEmail, users, filterStatus, filterRole]);
+        );
+        setFilteredUsers(filtered);
+      }
+    }, [searchEmail, users]);
 
     const handleDeleteClick = (user) => {
       setUserToDelete(user);
@@ -78,37 +63,31 @@ export default function AdminPanel() {
     }
   };
 
-    const handleUpdateStatusClick = async (user, newStatus) => {
-      const currentUser =
-  JSON.parse(localStorage.getItem('currentUser'));
+    const handleUpdateStatusClick  = async (user,condition) => {
+    setuserToUpdateStatus(user);
+    const currentUser =
+    JSON.parse(localStorage.getItem('currentUser'));
 
-      if (!currentUser) {
-        alert('You must be logged in');
-        return;
+    try {
+      const response = await
+      fetch('http://localhost:3001/api/update-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          targetID: userToUpdateStatus.User_ID,
+          adminID: currentUser.User_ID,
+          newStatus: condition
+        })
+      });
+
+      if (response.ok) {
+        fetchUsers();
       }
-
-      try {
-        const response = await
-  fetch('http://localhost:3001/api/update-status', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            targetID: user.User_ID,
-            adminID: currentUser.User_ID,
-            newStatus: newStatus
-          })
-        });
-
-        if (response.ok) {
-          fetchUsers();
-        } else {
-          const data = await response.json();
-          alert('Error: ' + (data.error || 'Update failed'));
-        }
-      } catch (err) {
-        alert('Error: ' + err.message);
-      }
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
     };
+
 
     const fetchUsers = async () => {
       setLoading(true);
@@ -161,36 +140,15 @@ export default function AdminPanel() {
   Users</Badge>
           </div>
 
- <InputGroup className="mb-3 me-3">
-    <InputGroup.Text>🔍</InputGroup.Text>
-    <Form.Control
-      placeholder="Search email..."
-      value={searchEmail}
-      onChange={(e) => setSearchEmail(e.target.value)}
-    />
-      {/* Status Filters */}
-  <Form.Select
-    style={{ width: '150px' }}
-    value={filterStatus}
-    onChange={(e) => setFilterStatus(e.target.value)}
-  >
-    <option value="all">All Status</option>
-    <option value="active">Active</option>
-    <option value="inactive">Inactive</option>
-  </Form.Select>
-
-  <Form.Select
-    style={{ width: '150px' }}
-    value={filterRole}
-    onChange={(e) => setFilterRole(e.target.value)}
-  >
-    <option value="all">All Roles</option>
-    <option value="admin">Admin</option>
-    <option value="user">User</option>
-  </Form.Select>
-  </InputGroup>
-
-
+          <InputGroup className="mb-3" style={{ maxWidth: '400px'
+  }}>
+            <InputGroup.Text>🔍</InputGroup.Text>
+            <Form.Control
+              placeholder="Search email..."
+              value={searchEmail}
+              onChange={(e) => setSearchEmail(e.target.value)}
+            />
+          </InputGroup>
 
           <Table striped bordered hover>
             <thead className="table-dark">

@@ -224,7 +224,7 @@ app.delete('/api/delete-user', async (req, res) => {
 
 
 
-  app.post('/api/update-status', async (req, res) => {
+  app.update('/api/update-status', async (req, res) => {
     try {
       const { targetID, adminID, newStatus } = req.body;
 
@@ -236,7 +236,7 @@ app.delete('/api/delete-user', async (req, res) => {
       const request = pool.request()
         .input('TargetUserID', sql.Int, targetID)
         .input('AdminID', sql.Int, adminID)
-        .input('NewStatus', sql.Bit, newStatus);
+        .input('NewStatus ', sql.Bit, newStatus);
 
             // Add OUTPUT parameters
       request.output('ResultCode', sql.Int);

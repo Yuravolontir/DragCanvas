@@ -161,7 +161,7 @@ export default function AdminPanel() {
   Users</Badge>
           </div>
 
- <InputGroup className="mb-3 me-3">
+ <InputGroup className="mb-3 me-3" style={{ maxWidth: '600px' }}>
     <InputGroup.Text>🔍</InputGroup.Text>
     <Form.Control
       placeholder="Search email..."

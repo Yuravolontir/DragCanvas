@@ -161,14 +161,16 @@ export default function AdminPanel() {
   Users</Badge>
           </div>
 
- <InputGroup className="mb-3 me-3">
+ <InputGroup className="mb-3 me-3" style={{ maxWidth: '400px' }}>
     <InputGroup.Text>🔍</InputGroup.Text>
     <Form.Control
       placeholder="Search email..."
       value={searchEmail}
       onChange={(e) => setSearchEmail(e.target.value)}
     />
-      {/* Status Filters */}
+  </InputGroup>
+
+  {/* Status Filters */}
   <Form.Select
     style={{ width: '150px' }}
     value={filterStatus}
@@ -188,8 +190,6 @@ export default function AdminPanel() {
     <option value="admin">Admin</option>
     <option value="user">User</option>
   </Form.Select>
-  </InputGroup>
-
 
 
           <Table striped bordered hover>

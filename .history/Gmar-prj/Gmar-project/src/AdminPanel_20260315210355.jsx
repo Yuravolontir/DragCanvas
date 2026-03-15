@@ -22,31 +22,17 @@ export default function AdminPanel() {
       fetchUsers();
     }, []);
 
- useEffect(() => {
-    let filtered = users;
+        useEffect(() => {
+      if (searchEmail.trim() === '') {
+        setFilteredUsers(users);
+      } else {
+        const filtered = users.filter(user =>
 
-    if (searchEmail.trim() !== '') {
-      filtered = filtered.filter(user =>
   user.UserEmail.toLowerCase().includes(searchEmail.toLowerCase())
-      );
-    }
-
-    // Filter by status
-    if (filterStatus === 'active') {
-      filtered = filtered.filter(user => user.IsActive);
-    } else if (filterStatus === 'inactive') {
-      filtered = filtered.filter(user => !user.IsActive);
-    }
-
-    // Filter by role
-    if (filterRole === 'admin') {
-      filtered = filtered.filter(user => user.IsAdmin);
-    } else if (filterRole === 'user') {
-      filtered = filtered.filter(user => !user.IsAdmin);
-    }
-
-    setFilteredUsers(filtered);
-  }, [searchEmail, users, filterStatus, filterRole]);
+        );
+        setFilteredUsers(filtered);
+      }
+    }, [searchEmail, users]);
 
     const handleDeleteClick = (user) => {
       setUserToDelete(user);
@@ -161,35 +147,57 @@ export default function AdminPanel() {
   Users</Badge>
           </div>
 
- <InputGroup className="mb-3 me-3">
+ <InputGroup className="mb-3 me-3" style={{ maxWidth: '400px' }}>
     <InputGroup.Text>🔍</InputGroup.Text>
     <Form.Control
       placeholder="Search email..."
       value={searchEmail}
       onChange={(e) => setSearchEmail(e.target.value)}
     />
-      {/* Status Filters */}
-  <Form.Select
-    style={{ width: '150px' }}
-    value={filterStatus}
-    onChange={(e) => setFilterStatus(e.target.value)}
-  >
-    <option value="all">All Status</option>
-    <option value="active">Active</option>
-    <option value="inactive">Inactive</option>
-  </Form.Select>
-
-  <Form.Select
-    style={{ width: '150px' }}
-    value={filterRole}
-    onChange={(e) => setFilterRole(e.target.value)}
-  >
-    <option value="all">All Roles</option>
-    <option value="admin">Admin</option>
-    <option value="user">User</option>
-  </Form.Select>
   </InputGroup>
 
+  {/* Status Filters */}
+  <Form.Check
+    inline
+    type="checkbox"
+    id="filter-active"
+    label="Active"
+    checked={filterStatus.active}
+    onChange={(e) => setFilterStatus({ ...filterStatus, active:
+  e.target.checked })}
+    className="me-3"
+  />
+  <Form.Check
+    inline
+    type="checkbox"
+    id="filter-inactive"
+    label="Inactive"
+    checked={filterStatus.inactive}
+    onChange={(e) => setFilterStatus({ ...filterStatus, inactive:
+  e.target.checked })}
+    className="me-4"
+  />
+
+  {/* Role Filters */}
+  <Form.Check
+    inline
+    type="checkbox"
+    id="filter-admin"
+    label="Admin"
+    checked={filterRole.admin}
+    onChange={(e) => setFilterRole({ ...filterRole, admin:
+  e.target.checked })}
+    className="me-3"
+  />
+  <Form.Check
+    inline
+    type="checkbox"
+    id="filter-user"
+    label="User"
+    checked={filterRole.user}
+    onChange={(e) => setFilterRole({ ...filterRole, user:
+  e.target.checked })}
+  />
 
 
           <Table striped bordered hover>
