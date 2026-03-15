@@ -14,8 +14,8 @@ export default function AdminPanel() {
     const [searchEmail, setSearchEmail] = useState('');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [userToDelete, setUserToDelete] = useState(null);
-  const [filterStatus, setFilterStatus] = useState('all');
-  const [filterRole, setFilterRole] = useState('all');
+    const [filterStatus, setFilterStatus] = useState('all');
+    const [filterRole, setFilterRole] = useState('all');
   const [showResetModal, setShowResetModal] = useState(false);
   const [userToReset, setUserToReset] = useState(null);
   const [tempPassword, setTempPassword] = useState('');
@@ -24,25 +24,23 @@ export default function AdminPanel() {
       fetchUsers();
     }, []);
 
-  useEffect(() => {
+ useEffect(() => {
     let filtered = users;
 
-    // Filter by email
     if (searchEmail.trim() !== '') {
       filtered = filtered.filter(user =>
-
   user.UserEmail.toLowerCase().includes(searchEmail.toLowerCase())
       );
     }
 
-    // Filter by status (string based)
+    // Filter by status
     if (filterStatus === 'active') {
       filtered = filtered.filter(user => user.IsActive);
     } else if (filterStatus === 'inactive') {
       filtered = filtered.filter(user => !user.IsActive);
     }
 
-    // Filter by role (string based)
+    // Filter by role
     if (filterRole === 'admin') {
       filtered = filtered.filter(user => user.IsAdmin);
     } else if (filterRole === 'user') {
@@ -113,47 +111,6 @@ export default function AdminPanel() {
         alert('Error: ' + err.message);
       }
     };
-
-  const handleResetPasswordClick = (user) => {
-    setUserToReset(user);
-    setTempPassword('Temp123!'); // Default temp password
-    setShowResetModal(true);
-  };
-
-  const confirmResetPassword = async () => {
-    const currentUser =
-  JSON.parse(localStorage.getItem('currentUser'));
-
-    if (!currentUser) {
-      alert('You must be logged in');
-      return;
-    }
-
-    try {
-      const response = await
-  fetch('http://localhost:3001/api/reset-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          targetID: userToReset.User_ID,
-          adminID: currentUser.User_ID,
-          newPassword: tempPassword
-        })
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        alert(data.message);
-        setShowResetModal(false);
-      } else {
-        alert('Error: ' + (data.error || 'Reset failed'));
-      }
-    } catch (err) {
-      alert('Error: ' + err.message);
-    }
-  };
-
 
     const fetchUsers = async () => {
       setLoading(true);
@@ -280,7 +237,6 @@ export default function AdminPanel() {
                         Activate 
                       </Button>
                     )}
-                      <p></p>
                 {!user.IsAdmin && (
                     <Button variant="warning" size="sm" onClick={() =>
                   handleResetPasswordClick(user)}>

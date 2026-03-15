@@ -14,8 +14,8 @@ export default function AdminPanel() {
     const [searchEmail, setSearchEmail] = useState('');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [userToDelete, setUserToDelete] = useState(null);
-  const [filterStatus, setFilterStatus] = useState('all');
-  const [filterRole, setFilterRole] = useState('all');
+    const [filterStatus, setFilterStatus] = useState('all');
+    const [filterRole, setFilterRole] = useState('all');
   const [showResetModal, setShowResetModal] = useState(false);
   const [userToReset, setUserToReset] = useState(null);
   const [tempPassword, setTempPassword] = useState('');
@@ -24,25 +24,23 @@ export default function AdminPanel() {
       fetchUsers();
     }, []);
 
-  useEffect(() => {
+ useEffect(() => {
     let filtered = users;
 
-    // Filter by email
     if (searchEmail.trim() !== '') {
       filtered = filtered.filter(user =>
-
   user.UserEmail.toLowerCase().includes(searchEmail.toLowerCase())
       );
     }
 
-    // Filter by status (string based)
+    // Filter by status
     if (filterStatus === 'active') {
       filtered = filtered.filter(user => user.IsActive);
     } else if (filterStatus === 'inactive') {
       filtered = filtered.filter(user => !user.IsActive);
     }
 
-    // Filter by role (string based)
+    // Filter by role
     if (filterRole === 'admin') {
       filtered = filtered.filter(user => user.IsAdmin);
     } else if (filterRole === 'user') {

@@ -274,14 +274,14 @@ app.delete('/api/delete-user', async (req, res) => {
       const request = pool.request()
         .input('TargetUserID', sql.Int, targetID)
         .input('AdminID', sql.Int, adminID)
-        .input('NewPassword', sql.NVarChar(255), newPassword);
+        .input('NewPassword', sql.NVarChar(255), newStatus);
 
             // Add OUTPUT parameters
       request.output('ResultCode', sql.Int);
       request.output('ResultMessage', sql.NVarChar(500));
 
       const result = await
-  request.execute('dbo.SP_ResetUserPassword');
+  request.execute('dbo.SP_UpdateUserStatus');
 
       // Get output values
       const outputs = result.output;
@@ -295,7 +295,7 @@ app.delete('/api/delete-user', async (req, res) => {
       }
 
     } catch (err) {
-      console.error('Reset user password error:', err);
+      console.error('Update user status error:', err);
       res.status(500).json({ error: err.message });
     }
   });

@@ -24,7 +24,7 @@ export default function AdminPanel() {
       fetchUsers();
     }, []);
 
-  useEffect(() => {
+useEffect(() => {
     let filtered = users;
 
     // Filter by email
@@ -35,18 +35,22 @@ export default function AdminPanel() {
       );
     }
 
-    // Filter by status (string based)
-    if (filterStatus === 'active') {
-      filtered = filtered.filter(user => user.IsActive);
-    } else if (filterStatus === 'inactive') {
-      filtered = filtered.filter(user => !user.IsActive);
+    // Filter by status
+    if (!filterStatus.active || !filterStatus.inactive) {
+      filtered = filtered.filter(user => {
+        if (filterStatus.active && user.IsActive) return true;
+        if (filterStatus.inactive && !user.IsActive) return true;
+        return false;
+      });
     }
 
-    // Filter by role (string based)
-    if (filterRole === 'admin') {
-      filtered = filtered.filter(user => user.IsAdmin);
-    } else if (filterRole === 'user') {
-      filtered = filtered.filter(user => !user.IsAdmin);
+    // Filter by role
+    if (!filterRole.admin || !filterRole.user) {
+      filtered = filtered.filter(user => {
+        if (filterRole.admin && user.IsAdmin) return true;
+        if (filterRole.user && !user.IsAdmin) return true;
+        return false;
+      });
     }
 
     setFilteredUsers(filtered);
