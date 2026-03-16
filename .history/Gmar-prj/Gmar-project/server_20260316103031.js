@@ -102,7 +102,7 @@ start();
       // Fetch full user data without password
       const userResult = await pool.request()
         .input('UserID', sql.Int, userID)
-          .query('SELECT User_ID, UserName, UserEmail, IsActive, IsAdmin, IsSuperAdmin FROM TBUsers WHERE User_ID = @UserID');
+        .query('SELECT User_ID, UserName, UserEmail, IsActive, IsAdmin FROM TBUsers WHERE User_ID = @UserID');
 
       if (userResult.recordset.length === 0) {
         return res.status(401).json({ error: 'User not found' });
@@ -300,41 +300,6 @@ app.delete('/api/delete-user', async (req, res) => {
     }
   });
 
-  app.post('/api/update-role', async (req, res) => {
-    try {
-      const { targetID, adminID, makeAdmin } = req.body;
-
-      if (!targetID || !adminID || makeAdmin === undefined) {
-        return res.status(400).json({ error: 'targetID, adminID, and makeAdmin are required' });
-      }
-
-      const request = pool.request()
-        .input('TargetUserID', sql.Int, targetID)
-        .input('AdminID', sql.Int, adminID)
-        .input('MakeAdmin', sql.Bit, makeAdmin);
-
-      request.output('ResultCode', sql.Int);
-      request.output('ResultMessage', sql.NVarChar(500));
-
-      const result = await
-  request.execute('dbo.SP_UpdateUserRole');
-
-      const outputs = result.output;
-      const resultCode = outputs.ResultCode;
-      const resultMessage = outputs.ResultMessage;
-
-      if (resultCode === 1) {
-        return res.json({ message: resultMessage });
-      } else {
-        return res.status(400).json({ error: resultMessage });
-      }
-
-    } catch (err) {
-      console.error('Update role error:', err);
-      res.status(500).json({ error: err.message });
-    }
-  });
-  
 // ---------- Robust JSON extraction/parsing ----------
 function extractBalancedJsonObject(text) {
   const s = String(text);

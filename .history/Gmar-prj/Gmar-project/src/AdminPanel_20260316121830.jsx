@@ -58,9 +58,9 @@ export default function AdminPanel() {
     if (filterRole === 'admin') {
       filtered = filtered.filter(user => user.IsAdmin);
     } else if (filterRole === 'user') {
-      filtered = filtered.filter(user => !user.IsAdmin&&!user.IsSuperAdmin);
-    } else if (filterRole === 'super-admin') {
-      filtered = filtered.filter(user => user.IsSuperAdmin);
+      filtered = filtered.filter(user => !user.IsAdmin);
+    }else if (filterRole === 'super-admin') {
+      filtered = filtered.filter(user => !user.isSuperAdmin);
     }
 
 

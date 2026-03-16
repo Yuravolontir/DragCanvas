@@ -58,9 +58,9 @@ export default function AdminPanel() {
     if (filterRole === 'admin') {
       filtered = filtered.filter(user => user.IsAdmin);
     } else if (filterRole === 'user') {
-      filtered = filtered.filter(user => !user.IsAdmin&&!user.IsSuperAdmin);
-    } else if (filterRole === 'super-admin') {
-      filtered = filtered.filter(user => user.IsSuperAdmin);
+      filtered = filtered.filter(user => !user.IsAdmin);
+    }else if (filterRole === 'super-admin') {
+      filtered = filtered.filter(user => !user.IsAdmin);
     }
 
 
@@ -266,7 +266,7 @@ export default function AdminPanel() {
           >
             <option value="all">All Roles</option>
             <option value="admin">Admin</option>
-            <option value="super-admin">Super Admin</option>
+             <option value="super-admin">Super Admin</option>
             <option value="user">User</option>
           </Form.Select>
         </div>

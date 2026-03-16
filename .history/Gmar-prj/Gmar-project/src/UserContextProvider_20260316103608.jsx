@@ -57,12 +57,8 @@
 
         setCurrentUser(data.user);
         setIsAdmin(data.admin);
-        setIsSuperAdmin(data.user.IsSuperAdmin); // Add this
         localStorage.setItem('currentUser', JSON.stringify(data.user));
         localStorage.setItem('isAdmin', JSON.stringify(data.admin));
-        localStorage.setItem('isSuperAdmin',
-        JSON.stringify(data.user.IsSuperAdmin)); 
-
         return { success: true };
       } catch (err) {
         setError(err.message);
@@ -99,19 +95,16 @@
       }
     };
 
-  const logout = () => {
+    const logout = () => {
     setCurrentUser(null);
     setIsAdmin(null);
-    setIsSuperAdmin(null); // Add this
     localStorage.removeItem('currentUser');
     localStorage.removeItem('isAdmin');
-    localStorage.removeItem('isSuperAdmin'); // Add this
-  };
+    };
 
     return (
-  <UserContext.Provider value={{ currentUser, login, register,
-  logout, loading, error, projects, addproject, deleteproject,
-  isAdmin, isSuperAdmin }}>
+      <UserContext.Provider value={{ currentUser, login, register, logout, loading, error , projects , addproject, deleteproject, isAdmin
+  }}>
         {props.children}
       </UserContext.Provider>
     );

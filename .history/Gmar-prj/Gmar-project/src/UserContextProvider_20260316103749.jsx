@@ -109,9 +109,8 @@
   };
 
     return (
-  <UserContext.Provider value={{ currentUser, login, register,
-  logout, loading, error, projects, addproject, deleteproject,
-  isAdmin, isSuperAdmin }}>
+      <UserContext.Provider value={{ currentUser, login, register, logout, loading, error , projects , addproject, deleteproject, isAdmin
+  }}>
         {props.children}
       </UserContext.Provider>
     );

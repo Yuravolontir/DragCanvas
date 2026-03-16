@@ -25,19 +25,16 @@
       setProjects(projects.filter(p => p.id !== id));
     }
     // Check if user is logged in on mount
-  useEffect(() => {
-    const storedUser = localStorage.getItem('currentUser');
-    const storedIsAdmin = localStorage.getItem('isAdmin');
-    const storedIsSuperAdmin =
-  localStorage.getItem('isSuperAdmin');
-    if (storedUser) {
-      setCurrentUser(JSON.parse(storedUser));
-      if (storedIsAdmin)
+    useEffect(() => {
+      const storedUser = localStorage.getItem('currentUser');
+       const storedIsAdmin = localStorage.getItem('isAdmin');
+      if (storedUser) {
+        setCurrentUser(JSON.parse(storedUser));
+      if (storedIsAdmin) 
         setIsAdmin(JSON.parse(storedIsAdmin));
-      if (storedIsSuperAdmin)
-        setIsSuperAdmin(JSON.parse(storedIsSuperAdmin));
-    }
-  }, []);
+    
+      }
+    }, []);
 
     const login = async (email, password) => {
       setLoading(true);
@@ -57,12 +54,8 @@
 
         setCurrentUser(data.user);
         setIsAdmin(data.admin);
-        setIsSuperAdmin(data.user.IsSuperAdmin); // Add this
         localStorage.setItem('currentUser', JSON.stringify(data.user));
         localStorage.setItem('isAdmin', JSON.stringify(data.admin));
-        localStorage.setItem('isSuperAdmin',
-        JSON.stringify(data.user.IsSuperAdmin)); 
-
         return { success: true };
       } catch (err) {
         setError(err.message);
@@ -99,19 +92,16 @@
       }
     };
 
-  const logout = () => {
+    const logout = () => {
     setCurrentUser(null);
     setIsAdmin(null);
-    setIsSuperAdmin(null); // Add this
     localStorage.removeItem('currentUser');
     localStorage.removeItem('isAdmin');
-    localStorage.removeItem('isSuperAdmin'); // Add this
-  };
+    };
 
     return (
-  <UserContext.Provider value={{ currentUser, login, register,
-  logout, loading, error, projects, addproject, deleteproject,
-  isAdmin, isSuperAdmin }}>
+      <UserContext.Provider value={{ currentUser, login, register, logout, loading, error , projects , addproject, deleteproject, isAdmin
+  }}>
         {props.children}
       </UserContext.Provider>
     );
