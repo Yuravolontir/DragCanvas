@@ -32,7 +32,7 @@
         <Container >
           <Navbar.Brand  onClick={() => navigate("/")}>Home</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link  onClick={redirect}>Create new project</Nav.Link>
+            <Nav.Link  onClick={redirect()}>Create new project</Nav.Link>
             <Nav.Link onClick={() => navigate("/my-projects")}>My projects</Nav.Link>
             <Nav.Link  onClick={() => navigate("/inspire-me")}>Inspire me!</Nav.Link>
           </Nav>

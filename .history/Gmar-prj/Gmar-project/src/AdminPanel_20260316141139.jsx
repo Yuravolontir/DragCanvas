@@ -39,19 +39,7 @@ export default function AdminPanel() {
       setCurrentUser(JSON.parse(storedUser));
     }
   }, []);
-    // Access control - check if user is admin or superadmin
-    useEffect(() => {
-      const storedUser = localStorage.getItem('currentUser');
-      if (storedUser) {
-        const user = JSON.parse(storedUser);
-        if (!user.IsAdmin && !user.IsSuperAdmin) {
-          window.location.href = '/';
-        }
-      } else {
-        window.location.href = '/';
-      }
-    }, []);
-    
+
   useEffect(() => {
     let filtered = users;
 
@@ -195,15 +183,9 @@ export default function AdminPanel() {
     setShowRoleModal(true);
   };
 
-const confirmRoleChange = async () => {
-      if (!currentUser) {
-        showAlertModal('You must be logged in', 'error');
-        return;
-      }
-
-      try {
-        const response = await
-  fetch('http://localhost:3001/api/update-role', {
+  const confirmRoleChange = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/update-role', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

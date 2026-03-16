@@ -39,19 +39,7 @@ export default function AdminPanel() {
       setCurrentUser(JSON.parse(storedUser));
     }
   }, []);
-    // Access control - check if user is admin or superadmin
-    useEffect(() => {
-      const storedUser = localStorage.getItem('currentUser');
-      if (storedUser) {
-        const user = JSON.parse(storedUser);
-        if (!user.IsAdmin && !user.IsSuperAdmin) {
-          window.location.href = '/';
-        }
-      } else {
-        window.location.href = '/';
-      }
-    }, []);
-    
+
   useEffect(() => {
     let filtered = users;
 

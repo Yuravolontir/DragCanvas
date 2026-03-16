@@ -39,19 +39,7 @@ export default function AdminPanel() {
       setCurrentUser(JSON.parse(storedUser));
     }
   }, []);
-    // Access control - check if user is admin or superadmin
-    useEffect(() => {
-      const storedUser = localStorage.getItem('currentUser');
-      if (storedUser) {
-        const user = JSON.parse(storedUser);
-        if (!user.IsAdmin && !user.IsSuperAdmin) {
-          window.location.href = '/';
-        }
-      } else {
-        window.location.href = '/';
-      }
-    }, []);
-    
+
   useEffect(() => {
     let filtered = users;
 
@@ -68,16 +56,16 @@ export default function AdminPanel() {
     }
 
     if (filterRole === 'admin') {
-      filtered = filtered.filter(user =>  user.IsAdmin && !user.IsSuperAdmin);
+      filtered = filtered.filter(user => user.IsAdmin);
     } else if (filterRole === 'user') {
       filtered = filtered.filter(user => !user.IsAdmin && !user.IsSuperAdmin);
-    } else if (filterRole === 'super-admin' && currentUser?.IsSuperAdmin) {
+    } else if (filterRole === 'super-admin' && currentUser.IsSuperAdmin) {
       filtered = filtered.filter(user => user.IsSuperAdmin);
     }
 
 
     setFilteredUsers(filtered);
-  }, [searchEmail, users, filterStatus, filterRole, currentUser]);
+  }, [searchEmail, users, filterStatus, filterRole]);
 
   const showAlertModal = (message, type = 'success') => {
     setAlertMessage(message);
@@ -91,11 +79,6 @@ export default function AdminPanel() {
   };
 
   const confirmDelete = async () => {
-    if (!currentUser) {
-      showAlertModal('You must be logged in', 'error');
-      return;
-    }
-
     try {
       const response = await fetch('http://localhost:3001/api/delete-user', {
         method: 'DELETE',
@@ -121,15 +104,9 @@ export default function AdminPanel() {
     }
   };
 
-    const handleUpdateStatusClick = async (user, newStatus) => {
-      if (!currentUser) {
-        showAlertModal('You must be logged in', 'error');
-        return;
-      }
-
-      try {
-        const response = await
-  fetch('http://localhost:3001/api/update-status', {
+  const handleUpdateStatusClick = async (user, newStatus) => {
+    try {
+      const response = await fetch('http://localhost:3001/api/update-status', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -158,15 +135,9 @@ export default function AdminPanel() {
     setShowResetModal(true);
   };
 
- const confirmResetPassword = async () => {
-      if (!currentUser) {
-        showAlertModal('You must be logged in', 'error');
-        return;
-      }
-
-      try {
-        const response = await
-  fetch('http://localhost:3001/api/reset-password', {
+  const confirmResetPassword = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -195,15 +166,9 @@ export default function AdminPanel() {
     setShowRoleModal(true);
   };
 
-const confirmRoleChange = async () => {
-      if (!currentUser) {
-        showAlertModal('You must be logged in', 'error');
-        return;
-      }
-
-      try {
-        const response = await
-  fetch('http://localhost:3001/api/update-role', {
+  const confirmRoleChange = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/update-role', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
