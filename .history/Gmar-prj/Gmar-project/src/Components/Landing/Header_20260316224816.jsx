@@ -1,6 +1,6 @@
   import { useEditor } from '@craftjs/core';
   import { Tooltip } from '@mui/material';
-  import { Modal, Form, Alert, Button } from 'react-bootstrap';
+  import { Modal, Form } from 'react-bootstrap';
   import cx from 'classnames';
   import React, { useEffect, useState } from 'react';
   import styled from 'styled-components';
@@ -84,18 +84,25 @@ export const Header = () => {
  const openSaveModal = () => {
     setShowSaveModal(true);
   }
-
+  
   const showAlertModal = (message, type = 'success') => {
     setAlertMessage(message);
     setAlertType(type);
     setShowAlert(true);
   };
 
- const saveproject = async () => {
+const saveproject = async () => {
     try {
+      // Serialize the project data
       const jsonData = query.serialize();
+
+      // Convert to string for storage
       const jsonString = JSON.stringify(jsonData);
+
+      // Calculate actual size in KB
       const projectSizeKB = (jsonString.length / 1024).toFixed(2);
+
+      // Count components more accurately - count all nodes except ROOT
       const nodes = Object.keys(jsonData).filter(key => key !==
   'ROOT');
       const componentCount = nodes.length;
@@ -105,7 +112,7 @@ export const Header = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          projectId: null,
+          projectId: null,  // null = new project
           userId: currentUser.User_ID,
           projectName: projectName,
           projectDescription: projectDescription || null,
@@ -118,17 +125,13 @@ export const Header = () => {
       const data = await response.json();
 
       if (response.ok) {
-        showAlertModal(`Project saved successfully! ID:
-  ${data.projectId}`, 'success');
+        console.log('Project saved:', data.projectId);
         setShowSaveModal(false);
-        setProjectName('');
-        setProjectDescription('');
       } else {
-        showAlertModal(data.error || 'Failed to save project',
-  'error');
+        console.error('Save failed:', data.error);
       }
     } catch (err) {
-      showAlertModal(err.message, 'error');
+      console.error('Error:', err);
     }
   };
 
@@ -456,26 +459,6 @@ async function deployToNetlify(htmlString, token) {
             disabled={!projectName}>Save</button>
               </Modal.Footer>
             </Modal>
-                  
-              {/* Alert Modal */}
-              <Modal show={showAlert} onHide={() => setShowAlert(false)}
-        centered>
-                <Modal.Header closeButton className={alertType ===
-        'success' ? 'text-success' : 'text-danger'}>
-                  <Modal.Title>{alertType === 'success' ? 'Success' :
-        'Error'}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <Alert variant={alertType === 'success' ? 'success' :
-        'danger'}>
-                    {alertMessage}
-                  </Alert>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="primary" onClick={() =>
-        setShowAlert(false)}>OK</Button>
-                </Modal.Footer>
-              </Modal>
     </HeaderDiv>
   );
 };

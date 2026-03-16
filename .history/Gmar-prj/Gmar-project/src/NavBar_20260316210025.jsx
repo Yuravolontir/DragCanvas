@@ -14,11 +14,12 @@
 
   const redirect = () => {
     if (!currentUser) {
-      navigate("/login");  // ✅ Navigate directly
-    } else {
-      navigate("/create-new-project");  // ✅ Navigate directly
-    }
+      return () => navigate("/login");
   }
+  else {
+      return () => navigate("/create-new-project");
+  }
+}
 
   const adminPanel = () => {
     navigate("/admin-panel");

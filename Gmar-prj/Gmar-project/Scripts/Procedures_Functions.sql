@@ -1135,4 +1135,190 @@ GO
 PRINT 'Procedure SP_BatchUpdateInactiveProjects created (CURSOR Loop example)'
 GO
 
+-- ============================================
+-- ADD ProjectData COLUMN TO TBProjects
+-- ============================================
+IF NOT EXISTS (
+    SELECT * FROM sys.columns
+    WHERE object_id = OBJECT_ID('dbo.TBProjects')
+    AND name = 'ProjectData'
+)
+BEGIN
+    ALTER TABLE dbo.TBProjects
+    ADD ProjectData NVARCHAR(MAX) NULL
+
+    PRINT 'Column ProjectData added to TBProjects'
+END
+ELSE
+BEGIN
+    PRINT 'Column ProjectData already exists in TBProjects'
+END
+GO
+
+-- ============================================
+-- Procedure: Save Project (Unified Create/Update)
+-- ============================================
+IF OBJECT_ID('dbo.SP_SaveProject', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.SP_SaveProject
+GO
+
+CREATE PROCEDURE dbo.SP_SaveProject
+    @ProjectID INT = NULL,
+    @UserID INT,
+    @ProjectName NVARCHAR(100),
+    @ProjectDescription NVARCHAR(500) = NULL,
+    @ComponentCount INT = 0,
+    @ProjectSizeKB DECIMAL(10,2) = 0,
+    @ProjectData NVARCHAR(MAX) = NULL,
+    @ResultProjectID INT OUTPUT,
+    @ResultCode INT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON
+
+    DECLARE @MaxProjects INT
+    DECLARE @CurrentProjectCount INT
+
+    -- CASE 1: CREATE NEW PROJECT (@ProjectID IS NULL)
+    IF @ProjectID IS NULL OR @ProjectID = 0
+    BEGIN
+        -- Check max projects limit
+        SELECT @MaxProjects = CAST(SettingValue AS INT)
+        FROM dbo.TBSettings
+        WHERE SettingKey = 'MaxProjectsPerUser'
+
+        SELECT @CurrentProjectCount = COUNT(*)
+        FROM dbo.TBProjects
+        WHERE User_ID = @UserID AND IsDeleted = 0
+
+        IF @CurrentProjectCount >= @MaxProjects
+        BEGIN
+            SET @ResultProjectID = 0
+            SET @ResultCode = 2
+            PRINT 'Maximum projects limit reached'
+            RETURN
+        END
+
+        BEGIN TRANSACTION
+        BEGIN TRY
+            INSERT INTO dbo.TBProjects (
+                User_ID, ProjectName, ProjectDescription,
+                ComponentCount, ProjectSizeKB, ProjectData,
+                CreatedDate, ModifiedDate
+            )
+            VALUES (
+                @UserID, @ProjectName, @ProjectDescription,
+                @ComponentCount, @ProjectSizeKB, @ProjectData,
+                GETDATE(), GETDATE()
+            )
+
+            SET @ResultProjectID = SCOPE_IDENTITY()
+
+            INSERT INTO dbo.TBAuditLog (User_ID, TableName, RecordID, ActionType, ActionCategory, ActionDescription, ActionDate)
+            VALUES (@UserID, 'TBProjects', @ResultProjectID, 'INSERT', 'PROJECT', 'Project created: ' + @ProjectName, GETDATE())
+
+            INSERT INTO dbo.TBUserActivity (User_ID, ActivityType, ProjectID, ActivityDescription, ActivityDate)
+            VALUES (@UserID, 'CREATE_PROJECT', @ResultProjectID, 'Created project: ' + @ProjectName, GETDATE())
+
+            COMMIT TRANSACTION
+            SET @ResultCode = 1
+            PRINT 'Project created successfully'
+
+        END TRY
+        BEGIN CATCH
+            ROLLBACK TRANSACTION
+            SET @ResultProjectID = 0
+            SET @ResultCode = 0
+            PRINT 'Error: ' + ERROR_MESSAGE()
+        END CATCH
+    END
+
+    -- CASE 2: UPDATE EXISTING PROJECT (@ProjectID EXISTS)
+    ELSE
+    BEGIN
+        IF NOT EXISTS (
+            SELECT 1 FROM dbo.TBProjects
+            WHERE Project_ID = @ProjectID
+            AND User_ID = @UserID
+            AND IsDeleted = 0
+        )
+        BEGIN
+            SET @ResultProjectID = 0
+            SET @ResultCode = 0
+            PRINT 'Project not found or access denied'
+            RETURN
+        END
+
+        BEGIN TRANSACTION
+        BEGIN TRY
+            UPDATE dbo.TBProjects
+            SET ProjectName = ISNULL(@ProjectName, ProjectName),
+                ProjectDescription = ISNULL(@ProjectDescription, ProjectDescription),
+                ComponentCount = ISNULL(@ComponentCount, ComponentCount),
+                ProjectSizeKB = ISNULL(@ProjectSizeKB, ProjectSizeKB),
+                ProjectData = ISNULL(@ProjectData, ProjectData),
+                ModifiedDate = GETDATE()
+            WHERE Project_ID = @ProjectID
+
+            SET @ResultProjectID = @ProjectID
+
+            INSERT INTO dbo.TBUserActivity (User_ID, ActivityType, ProjectID, ActivityDescription, ActivityDate)
+            VALUES (@UserID, 'EDIT_PROJECT', @ProjectID, 'Updated project: ' + @ProjectName, GETDATE())
+
+            COMMIT TRANSACTION
+            SET @ResultCode = 1
+            PRINT 'Project updated successfully'
+
+        END TRY
+        BEGIN CATCH
+            ROLLBACK TRANSACTION
+            SET @ResultProjectID = 0
+            SET @ResultCode = -1
+            PRINT 'Error: ' + ERROR_MESSAGE()
+        END CATCH
+    END
+END
+GO
+
+PRINT 'Procedure SP_SaveProject created'
+GO
+
+-- ============================================
+-- Procedure: Get Project Detail (Load full project)
+-- ============================================
+IF OBJECT_ID('dbo.SP_GetProjectDetail', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.SP_GetProjectDetail
+GO
+
+CREATE PROCEDURE dbo.SP_GetProjectDetail
+    @ProjectID INT,
+    @UserID INT
+AS
+BEGIN
+    SET NOCOUNT ON
+
+    SELECT
+        Project_ID,
+        User_ID,
+        ProjectName,
+        ProjectDescription,
+        ComponentCount,
+        ProjectSizeKB,
+        ProjectData,
+        IsPublished,
+        PublishedURL,
+        CreatedDate,
+        ModifiedDate,
+        ExportCount,
+        LastExportDate
+    FROM dbo.TBProjects
+    WHERE Project_ID = @ProjectID
+    AND User_ID = @UserID
+    AND IsDeleted = 0
+END
+GO
+
+PRINT 'Procedure SP_GetProjectDetail created'
+GO
+
 

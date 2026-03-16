@@ -38,6 +38,7 @@ CREATE TABLE dbo.TBUsers (
     -- Status Fields
     IsActive BIT DEFAULT 1,                -- 1=Active, 0=Inactive
     IsAdmin BIT DEFAULT 0,                 -- 1=Admin, 0=Regular User
+    IsSuperAdmin BIT DEFAULT 0,            -- 1=SuperAdmin, 0=Not SuperAdmin
 
     -- Timestamps
     CreatedDate DATETIME DEFAULT GETDATE(),

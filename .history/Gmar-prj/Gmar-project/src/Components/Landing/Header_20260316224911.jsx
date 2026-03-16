@@ -1,6 +1,6 @@
   import { useEditor } from '@craftjs/core';
   import { Tooltip } from '@mui/material';
-  import { Modal, Form, Alert, Button } from 'react-bootstrap';
+  import { Modal, Form } from 'react-bootstrap';
   import cx from 'classnames';
   import React, { useEffect, useState } from 'react';
   import styled from 'styled-components';
@@ -456,26 +456,6 @@ async function deployToNetlify(htmlString, token) {
             disabled={!projectName}>Save</button>
               </Modal.Footer>
             </Modal>
-                  
-              {/* Alert Modal */}
-              <Modal show={showAlert} onHide={() => setShowAlert(false)}
-        centered>
-                <Modal.Header closeButton className={alertType ===
-        'success' ? 'text-success' : 'text-danger'}>
-                  <Modal.Title>{alertType === 'success' ? 'Success' :
-        'Error'}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <Alert variant={alertType === 'success' ? 'success' :
-        'danger'}>
-                    {alertMessage}
-                  </Alert>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="primary" onClick={() =>
-        setShowAlert(false)}>OK</Button>
-                </Modal.Footer>
-              </Modal>
     </HeaderDiv>
   );
 };

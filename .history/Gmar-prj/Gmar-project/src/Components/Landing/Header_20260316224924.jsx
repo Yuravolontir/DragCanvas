@@ -1,6 +1,6 @@
   import { useEditor } from '@craftjs/core';
   import { Tooltip } from '@mui/material';
-  import { Modal, Form, Alert, Button } from 'react-bootstrap';
+  import { Modal, Form } from 'react-bootstrap';
   import cx from 'classnames';
   import React, { useEffect, useState } from 'react';
   import styled from 'styled-components';

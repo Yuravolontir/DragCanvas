@@ -11,6 +11,7 @@ import { useEffect } from 'react';
         const projectId = location.state?.projectId;
 
         if (!projectId) {
+          console.log('No projectId in state, loading blank editor');
           return;
         }
 
@@ -22,11 +23,12 @@ import { useEffect } from 'react';
         }
 
         const currentUser = JSON.parse(storedUser);
-
+        console.log('Loading project:', projectId, 'for user:',
+  currentUser.User_ID);
 
         const url = `http://localhost:3001/api/projects/${projectId
   }?userId=${currentUser.User_ID}`;
-
+        console.log('Fetching from:', url);
 
         try {
           const response = await fetch(url);
@@ -38,13 +40,16 @@ import { useEffect } from 'react';
           }
 
           const project = await response.json();
-
+          console.log('✅ Project data received:',
+  project.ProjectName);
 
           const projectData = JSON.parse(project.ProjectData);
           actions.deserialize(projectData);
 
+          console.log('✅ Project loaded into editor');
 
         } catch (err) {
+          console.error('❌ Load error:', err);
           alert('Error loading project: ' + err.message);
         }
       };

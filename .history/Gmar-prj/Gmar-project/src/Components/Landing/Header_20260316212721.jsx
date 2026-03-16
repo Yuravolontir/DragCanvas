@@ -1,9 +1,10 @@
   import { useEditor } from '@craftjs/core';
   import { Tooltip } from '@mui/material';
-  import { Modal, Form, Alert, Button } from 'react-bootstrap';
+  import { Modal, Form } from 'react-bootstrap';
   import cx from 'classnames';
-  import React, { useEffect, useState } from 'react';
+  import React from 'react';
   import styled from 'styled-components';
+  import { useState } from 'react';
   import { useUserContext } from '../../UserContextProvider';
   import { Checkmark, Customize, Redo, Undo } from '../Icons';
 
@@ -58,11 +59,6 @@ export const Header = () => {
   const [projectDescription, setProjectDescription] = useState('');
   const [accessToken, setAccessToken] = useState('');
   const [showSaveModal, setShowSaveModal] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
-
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [alertType, setAlertType] = useState('success');
 
   const { enabled, canUndo, canRedo, actions , query } = useEditor((state, query) => ({
     enabled: state.options.enabled,
@@ -72,60 +68,31 @@ export const Header = () => {
 
  const { addproject } = useUserContext();
  
-
-   useEffect(() => {
-     const storedUser = localStorage.getItem('currentUser');
-     if (storedUser) {
-       setCurrentUser(JSON.parse(storedUser));
-     }
-   }, []);
-
-   
  const openSaveModal = () => {
     setShowSaveModal(true);
   }
 
-  const showAlertModal = (message, type = 'success') => {
-    setAlertMessage(message);
-    setAlertType(type);
-    setShowAlert(true);
-  };
+  const consaveproject = async () => {
 
- const saveproject = async () => {
     try {
-      const jsonData = query.serialize();
-      const jsonString = JSON.stringify(jsonData);
-      const projectSizeKB = (jsonString.length / 1024).toFixed(2);
-      const nodes = Object.keys(jsonData).filter(key => key !==
-  'ROOT');
-      const componentCount = nodes.length;
-
-      const response = await
-  fetch('http://localhost:3001/api/projects/save', {
-        method: 'POST',
+      const response = await fetch('http://localhost:3001/api/delete-user', {
+        method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          projectId: null,
-          userId: currentUser.User_ID,
-          projectName: projectName,
-          projectDescription: projectDescription || null,
-          componentCount: componentCount,
-          projectSizeKB: projectSizeKB,
-          projectData: jsonString
+          targetID: userToDelete.User_ID,
+          adminID: currentUser.User_ID,
+          confirmDelete: true
         })
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        showAlertModal(`Project saved successfully! ID:
-  ${data.projectId}`, 'success');
-        setShowSaveModal(false);
-        setProjectName('');
-        setProjectDescription('');
+        setShowDeleteModal(false);
+        showAlertModal('User deleted successfully');
+        fetchUsers();
       } else {
-        showAlertModal(data.error || 'Failed to save project',
-  'error');
+        showAlertModal(data.error || 'Delete failed', 'error');
       }
     } catch (err) {
       showAlertModal(err.message, 'error');
@@ -456,26 +423,6 @@ async function deployToNetlify(htmlString, token) {
             disabled={!projectName}>Save</button>
               </Modal.Footer>
             </Modal>
-                  
-              {/* Alert Modal */}
-              <Modal show={showAlert} onHide={() => setShowAlert(false)}
-        centered>
-                <Modal.Header closeButton className={alertType ===
-        'success' ? 'text-success' : 'text-danger'}>
-                  <Modal.Title>{alertType === 'success' ? 'Success' :
-        'Error'}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <Alert variant={alertType === 'success' ? 'success' :
-        'danger'}>
-                    {alertMessage}
-                  </Alert>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="primary" onClick={() =>
-        setShowAlert(false)}>OK</Button>
-                </Modal.Footer>
-              </Modal>
     </HeaderDiv>
   );
 };

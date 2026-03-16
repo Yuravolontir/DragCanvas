@@ -407,74 +407,7 @@ app.delete('/api/delete-user', async (req, res) => {
     }
   });
 
-   app.get('/api/projects/:projectId', async (req, res) => {
-    try {
-      const { projectId } = req.params;
-      const { userId } = req.query;  // pass userId in query string for security
-
-      if (!userId) {
-        return res.status(400).json({ error: 'userId required' });
-      }
-
-      console.log('Loading project:', projectId, 'for user:',
-  userId);
-
-      const request = pool.request()
-        .input('ProjectID', sql.Int, projectId)
-        .input('UserID', sql.Int, userId);
-
-      const result = await
-  request.execute('dbo.SP_GetProjectDetail');
-
-      if (result.recordset.length === 0) {
-        return res.status(404).json({ error: 'Project not found'
-  });
-      }
-
-      const project = result.recordset[0];
-      console.log('✅ Project loaded:', project.ProjectName);
-      res.json(project);
-
-    } catch (err) {
-      console.error('❌ Load project error:', err);
-      res.status(500).json({ error: err.message });
-    }
-  });
-
   
-  // Delete a project
-  app.delete('/api/projects/:projectId', async (req, res) => {
-    try {
-      const { projectId } = req.params;
-      const { userId } = req.body;
-
-      if (!userId) {
-        return res.status(400).json({ error: 'userId required' });
-      }
-
-      const result = await pool.request()
-        .input('ProjectID', sql.Int, projectId)
-        .input('UserID', sql.Int, userId)
-        .query(`
-          UPDATE TBProjects
-          SET IsDeleted = 1
-          WHERE Project_ID = @ProjectID AND User_ID = @UserID
-        `);
-
-      if (result.rowsAffected[0] === 0) {
-        return res.status(404).json({ error: 'Project not found'
-  });
-      }
-
-      console.log('✅ Project deleted:', projectId);
-      res.json({ message: 'Project deleted successfully' });
-
-    } catch (err) {
-      console.error('❌ Delete error:', err);
-      res.status(500).json({ error: err.message });
-    }
-  });
-
 // ---------- Robust JSON extraction/parsing ----------
 function extractBalancedJsonObject(text) {
   const s = String(text);

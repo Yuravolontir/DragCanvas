@@ -336,145 +336,49 @@ app.delete('/api/delete-user', async (req, res) => {
   });
 
 
-      app.post('/api/projects/save', async (req, res) => {
-      try {
-        const {
-          projectId,
-          userId,
-          projectName,
-          projectDescription,
-          componentCount,
-          projectSizeKB,
-          projectData
-        } = req.body;
-
-     
-
-        const request = pool.request()
-          .input('ProjectID', sql.Int, projectId || null)
-          .input('UserID', sql.Int, userId)
-          .input('ProjectName', sql.NVarChar(100), projectName)
-          .input('ProjectDescription', sql.NVarChar(500),projectDescription || null)
-          .input('ComponentCount', sql.Int, componentCount || 0)
-          .input('ProjectSizeKB', sql.Decimal(10,2), projectSizeKB || 0)
-          .input('ProjectData', sql.NVarChar(sql.MAX), projectData || null)
-          .output('ResultProjectID', sql.Int)
-          .output('ResultCode', sql.Int);
-
-        const result = await request.execute('dbo.SP_SaveProject');
-
-
-        const resultCode = result.output?.ResultCode;
-        const resultProjectId = result.output?.ResultProjectID;
-
-        if (resultCode === 1) {
-          console.log('✅ Project saved successfully, ID:', resultProjectId);
-          res.json({ projectId: resultProjectId, message: 'Project saved successfully' });
-        } else if (resultCode === 2) {
-          console.log('❌ Maximum projects limit reached');
-          res.status(400).json({ error: 'Maximum projects limit reached' });
-        } else {
-          console.log('❌ Failed to save project, ResultCode:', resultCode);
-          res.status(400).json({ error: 'Failed to save project'
-  });
-        }
-      } catch (err) {
-        console.error('❌ Save project error:', err);
-        res.status(500).json({ error: err.message });
-      }
-    });
-  
-
-      app.get('/api/projects/user/:userId', async (req, res) => {
+   app.post('/api/projects/save', async (req, res) => {
     try {
-      const { userId } = req.params;
-
-      const result = await pool.request()
-        .input('UserID', sql.Int, userId)
-        .query(`
-          SELECT Project_ID, ProjectName, ProjectDescription,
-                 ComponentCount, ProjectSizeKB, IsPublished,
-                 CreatedDate, ModifiedDate
-          FROM TBProjects
-          WHERE User_ID = @UserID AND IsDeleted = 0
-          ORDER BY ModifiedDate DESC
-        `);
-
-      res.json(result.recordset);
-    } catch (err) {
-      console.error('Get projects error:', err);
-      res.status(500).json({ error: err.message });
-    }
-  });
-
-   app.get('/api/projects/:projectId', async (req, res) => {
-    try {
-      const { projectId } = req.params;
-      const { userId } = req.query;  // pass userId in query string for security
-
-      if (!userId) {
-        return res.status(400).json({ error: 'userId required' });
-      }
-
-      console.log('Loading project:', projectId, 'for user:',
-  userId);
+      const {
+        projectId,
+        userId,
+        projectName,
+        projectDescription,
+        componentCount,
+        projectSizeKB,
+        projectData
+      } = req.body;
 
       const request = pool.request()
-        .input('ProjectID', sql.Int, projectId)
-        .input('UserID', sql.Int, userId);
-
-      const result = await
-  request.execute('dbo.SP_GetProjectDetail');
-
-      if (result.recordset.length === 0) {
-        return res.status(404).json({ error: 'Project not found'
-  });
-      }
-
-      const project = result.recordset[0];
-      console.log('✅ Project loaded:', project.ProjectName);
-      res.json(project);
-
-    } catch (err) {
-      console.error('❌ Load project error:', err);
-      res.status(500).json({ error: err.message });
-    }
-  });
-
-  
-  // Delete a project
-  app.delete('/api/projects/:projectId', async (req, res) => {
-    try {
-      const { projectId } = req.params;
-      const { userId } = req.body;
-
-      if (!userId) {
-        return res.status(400).json({ error: 'userId required' });
-      }
-
-      const result = await pool.request()
-        .input('ProjectID', sql.Int, projectId)
+        .input('ProjectID', sql.Int, projectId || null)
         .input('UserID', sql.Int, userId)
-        .query(`
-          UPDATE TBProjects
-          SET IsDeleted = 1
-          WHERE Project_ID = @ProjectID AND User_ID = @UserID
-        `);
+        .input('ProjectName', sql.NVarChar(100), projectName)
+        .input('ProjectDescription', sql.NVarChar(500),projectDescription || null)
+        .input('ComponentCount', sql.Int, componentCount || 0)
+        .input('ProjectSizeKB', sql.Decimal(10,2), projectSizeKB ||
+   0)
+        .input('ProjectData', sql.NVarChar(sql.MAX), projectData ||
+  null)
+        .output('ResultProjectID', sql.Int)
+        .output('ResultCode', sql.Int);
 
-      if (result.rowsAffected[0] === 0) {
-        return res.status(404).json({ error: 'Project not found'
-  });
+      await request.execute('dbo.SP_SaveProject');
+
+      const outputs = request.output;
+      const resultCode = outputs.ResultCode;
+      const resultProjectId = outputs.ResultProjectID;
+
+      if (resultCode === 1) {
+        res.json({ projectId: resultProjectId, message: 'Project saved successfully' });
+      } else if (resultCode === 2) {
+        res.status(400).json({ error: 'Maximum projects limit reached' });
+      } else {
+        res.status(400).json({ error: 'Failed to save project' });
       }
-
-      console.log('✅ Project deleted:', projectId);
-      res.json({ message: 'Project deleted successfully' });
-
     } catch (err) {
-      console.error('❌ Delete error:', err);
       res.status(500).json({ error: err.message });
     }
   });
-
+  
 // ---------- Robust JSON extraction/parsing ----------
 function extractBalancedJsonObject(text) {
   const s = String(text);

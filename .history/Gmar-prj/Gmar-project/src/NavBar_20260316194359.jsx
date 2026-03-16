@@ -1,0 +1,564 @@
+  /* ============================================
+     ADMIN PANEL COMPONENT
+     Purpose: Admin/Superadmin user management interface
+     Features: View users, filter, activate/deactivate, reset
+  password, delete, manage roles
+     Access: Admins and Superadmins only
+     ============================================ */
+
+  import React, { useEffect, useState } from 'react';
+  import NavBar from './NavBar';
+  import Table from 'react-bootstrap/Table';
+  import Container from 'react-bootstrap/Container';
+  import { Badge, Form, InputGroup, Button, Modal, Alert } from
+  'react-bootstrap';
+
+  export default function AdminPanel() {
+
+    // ==========================================================================
+    // STATE DECLARATIONS
+    // =========================================================================
+
+    // Data state
+    const [users, setUsers] = useState([]);                    //All users from API
+    const [filteredUsers, setFilteredUsers] = useState([]);      //Filtered users for display
+    const [loading, setLoading] = useState(true);               //Loading state
+    const [error, setError] = useState(null);                    //Error state
+    const [currentUser, setCurrentUser] = useState(null);       //Current logged-in admin
+
+    // Filter state
+    const [searchEmail, setSearchEmail] = useState('');         //Search by email
+    const [filterStatus, setFilterStatus] = useState('all');    //Filter: all/active/inactive
+    const [filterRole, setFilterRole] = useState('all');        //Filter: all/admin/super-admin/user
+
+    // Delete modal state
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [userToDelete, setUserToDelete] = useState(null);
+
+    // Reset password modal state
+    const [showResetModal, setShowResetModal] = useState(false);
+    const [userToReset, setUserToReset] = useState(null);
+    const [tempPassword, setTempPassword] = useState('');
+
+    // Role change modal state
+    const [showRoleModal, setShowRoleModal] = useState(false);
+    const [userToChangeRole, setUserToChangeRole] = useState(null);
+    const [makeAdmin, setMakeAdmin] = useState(true);
+
+    // Alert modal state
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [alertType, setAlertType] = useState('success'); // success or error
+
+
+    // ==========================================================================
+    // USE EFFECTS
+    // ==========================================================================
+
+    // Fetch users on component mount
+    useEffect(() => {
+      fetchUsers();
+    }, []);
+
+    // Load current user from localStorage
+    useEffect(() => {
+      const storedUser = localStorage.getItem('currentUser');
+      if (storedUser) {
+        setCurrentUser(JSON.parse(storedUser));
+      }
+    }, []);
+
+    // Access control - only admins and superadmins can access this panel
+    useEffect(() => {
+      const storedUser = localStorage.getItem('currentUser');
+      if (storedUser) {
+        const user = JSON.parse(storedUser);
+        if (!user.IsAdmin && !user.IsSuperAdmin) {
+          window.location.href = '/';
+        }
+      } else {
+        window.location.href = '/';
+      }
+    }, []);
+
+    // Filter users based on search, status, and role
+    useEffect(() => {
+      let filtered = users;
+
+      // Filter by email
+      if (searchEmail.trim() !== '') {
+        filtered = filtered.filter(user =>
+
+  user.UserEmail.toLowerCase().includes(searchEmail.toLowerCase())
+        );
+      }
+
+      // Filter by status
+      if (filterStatus === 'active') {
+        filtered = filtered.filter(user => user.IsActive);
+      } else if (filterStatus === 'inactive') {
+        filtered = filtered.filter(user => !user.IsActive);
+      }
+
+      // Filter by role
+      if (filterRole === 'admin') {
+        filtered = filtered.filter(user => user.IsAdmin && !user.IsSuperAdmin);
+      } else if (filterRole === 'user') {
+        filtered = filtered.filter(user => !user.IsAdmin && !user.IsSuperAdmin);
+      } else if (filterRole === 'super-admin' && currentUser?.IsSuperAdmin) {
+        filtered = filtered.filter(user => user.IsSuperAdmin);
+      }
+
+      setFilteredUsers(filtered);
+    }, [searchEmail, users, filterStatus, filterRole, currentUser]);
+
+
+    // ==========================================================================
+    // UTILITY FUNCTIONS
+    // =========================================================================
+
+    // Show alert modal with message
+    const showAlertModal = (message, type = 'success') => {
+      setAlertMessage(message);
+      setAlertType(type);
+      setShowAlert(true);
+    };
+
+
+    // ==========================================================================
+    // EVENT HANDLERS - USER ACTIONS
+    // ==========================================================================
+
+    // Handle delete button click - opens confirmation modal
+    const handleDeleteClick = (user) => {
+      setUserToDelete(user);
+      setShowDeleteModal(true);
+    };
+
+    // Confirm and execute user deletion
+    const confirmDelete = async () => {
+      if (!currentUser) {
+        showAlertModal('You must be logged in', 'error');
+        return;
+      }
+
+      try {
+        const response = await
+  fetch('http://localhost:3001/api/delete-user', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            targetID: userToDelete.User_ID,
+            adminID: currentUser.User_ID,
+            confirmDelete: true
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setShowDeleteModal(false);
+          showAlertModal('User deleted successfully');
+          fetchUsers();
+        } else {
+          showAlertModal(data.error || 'Delete failed', 'error');
+        }
+      } catch (err) {
+        showAlertModal(err.message, 'error');
+      }
+    };
+
+    // Handle activate/deactivate button click
+    const handleUpdateStatusClick = async (user, newStatus) => {
+      if (!currentUser) {
+        showAlertModal('You must be logged in', 'error');
+        return;
+      }
+
+      try {
+        const response = await
+  fetch('http://localhost:3001/api/update-status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            targetID: user.User_ID,
+            adminID: currentUser.User_ID,
+            newStatus: newStatus
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          showAlertModal(`User ${newStatus ? 'activated' : 'deactivated'} successfully`);
+          fetchUsers();
+        } else {
+          showAlertModal(data.error || 'Update failed', 'error');
+        }
+      } catch (err) {
+        showAlertModal(err.message, 'error');
+      }
+    };
+
+    // Handle reset password button click - opens reset modal
+    const handleResetPasswordClick = (user) => {
+      setUserToReset(user);
+      setTempPassword('Temp123!');
+      setShowResetModal(true);
+    };
+
+    // Confirm and execute password reset
+    const confirmResetPassword = async () => {
+      if (!currentUser) {
+        showAlertModal('You must be logged in', 'error');
+        return;
+      }
+
+      try {
+        const response = await
+  fetch('http://localhost:3001/api/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            targetID: userToReset.User_ID,
+            adminID: currentUser.User_ID,
+            newPassword: tempPassword
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setShowResetModal(false);
+          showAlertModal(data.message);
+        } else {
+          showAlertModal(data.error || 'Reset failed', 'error');
+        }
+      } catch (err) {
+        showAlertModal(err.message, 'error');
+      }
+    };
+
+    // Handle make/remove admin button click - opens role modal
+    const handleRoleChangeClick = (user, makeAdmin) => {
+      setUserToChangeRole(user);
+      setMakeAdmin(makeAdmin);
+      setShowRoleModal(true);
+    };
+
+    // Confirm and execute role change
+    const confirmRoleChange = async () => {
+      if (!currentUser) {
+        showAlertModal('You must be logged in', 'error');
+        return;
+      }
+
+      try {
+        const response = await
+  fetch('http://localhost:3001/api/update-role', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            targetID: userToChangeRole.User_ID,
+            adminID: currentUser.User_ID,
+            makeAdmin: makeAdmin
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setShowRoleModal(false);
+          showAlertModal(data.message);
+          fetchUsers();
+        } else {
+          showAlertModal(data.error || 'Role change failed', 'error');
+        }
+      } catch (err) {
+        showAlertModal(err.message, 'error');
+      }
+    };
+
+
+    // ==========================================================================
+    // API CALLS
+    // ==========================================================================
+
+    // Fetch all users from API
+    const fetchUsers = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await
+  fetch('http://localhost:3001/api/users');
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to fetch users');
+        }
+
+        setUsers(data);
+        setFilteredUsers(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+
+    // ==========================================================================
+    // RENDERING - LOADING AND ERROR STATES
+    // ==========================================================================
+
+    if (loading) return (
+      <div>
+        <NavBar />
+        <div className="text-center mt-5">
+          <h3>Loading users...</h3>
+        </div>
+      </div>
+    );
+
+    if (error) return (
+      <div>
+        <NavBar />
+        <Container className="mt-5">
+          <div className="alert alert-danger">Error: {error}</div>
+        </Container>
+      </div>
+    );
+
+
+    // ==========================================================================
+    // RENDERING - MAIN UI
+    // ==========================================================================
+
+    return (
+      <div>
+        <NavBar />
+        <Container className="mt-5">
+
+          {/* Header with title and user count */}
+          <div className="d-flex justify-content-between
+  align-items-center mb-4">
+            <h2>👥 All Users</h2>
+            <Badge bg="primary">{filteredUsers.length} Users</Badge>
+          </div>
+
+          {/* Filters: Search, Status, Role */}
+          <div className="d-flex gap-3 mb-3">
+            <InputGroup style={{ maxWidth: '400px' }}>
+              <InputGroup.Text>🔍</InputGroup.Text>
+              <Form.Control
+                placeholder="Search email..."
+                value={searchEmail}
+                onChange={(e) => setSearchEmail(e.target.value)}
+              />
+            </InputGroup>
+
+            <Form.Select
+              style={{ width: '150px' }}
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+            >
+              <option value="all">All Status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </Form.Select>
+
+            <Form.Select
+              style={{ width: '150px' }}
+              value={filterRole}
+              onChange={(e) => setFilterRole(e.target.value)}
+            >
+              <option value="all">All Roles</option>
+              <option value="admin">Admin</option>
+              <option value="super-admin">Super Admin</option>
+              <option value="user">User</option>
+            </Form.Select>
+          </div>
+
+          {/* Users table */}
+          <Table striped bordered hover>
+            <thead className="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUsers.map((user) => (
+                <tr key={user.User_ID}>
+                  <td>#{user.User_ID}</td>
+                  <td>{user.UserName}</td>
+                  <td>{user.UserEmail}</td>
+                  <td>
+                    {user.IsSuperAdmin && <Badge bg="danger"className="me-2">SuperAdmin</Badge>}
+                    {user.IsAdmin && !user.IsSuperAdmin && <Badge bg="danger" className="me-2">Admin</Badge>}
+                    {user.IsActive ? <Badge bg="success">Active</Badge> : <Badge bg="secondary">Inactive</Badge>}
+                  </td>
+                  <td>
+                    <div className="d-flex flex-column gap-2">
+
+                      {/* Activate/Deactivate button */}
+                      {!user.IsSuperAdmin && user.User_ID !== currentUser?.User_ID && (
+                        user.IsActive ? (
+                          <Button variant="warning" size="sm" onClick={() => handleUpdateStatusClick(user, false)}>
+                            Deactivate
+                          </Button>
+                        ) : (
+                          <Button variant="success" size="sm" onClick={() => handleUpdateStatusClick(user, true)}>
+                            Activate
+                          </Button>
+                        )
+                      )}
+
+                      {/* Reset Password button */}
+                      {!user.IsSuperAdmin && user.User_ID !== currentUser?.User_ID && (
+                        <Button variant="outline-warning" size="sm" onClick={() => handleResetPasswordClick(user)}>
+                          Reset Password
+                        </Button>
+                      )}
+
+                      {/* Delete button - regular users only */}
+                      {!user.IsAdmin && !user.IsSuperAdmin &&
+  user.User_ID !== currentUser?.User_ID && (
+                        <Button variant="outline-danger" size="sm"
+  onClick={() => handleDeleteClick(user)}>
+                          Delete
+                        </Button>
+                      )}
+
+                      {/* Make/Remove Admin button - Superadmin
+  only */}
+                      {currentUser?.IsSuperAdmin &&
+  !user.IsSuperAdmin && user.User_ID !== currentUser?.User_ID && (
+                        user.IsAdmin ? (
+                          <Button variant="outline-secondary"
+  size="sm" onClick={() => handleRoleChangeClick(user, false)}>
+                            Remove Admin
+                          </Button>
+                        ) : (
+                          <Button variant="outline-info" size="sm"
+  onClick={() => handleRoleChangeClick(user, true)}>
+                            Make Admin
+                          </Button>
+                        )
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+
+          {/* No users found message */}
+          {filteredUsers.length === 0 && <p className="text-center
+  mt-4">No users found.</p>}
+        </Container>
+
+
+        {/* =======================================================
+  ================
+            MODALS
+           ========================================================
+  =============== */}
+
+        {/* Delete Confirmation Modal */}
+        <Modal show={showDeleteModal} onHide={() =>
+  setShowDeleteModal(false)} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Delete User</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Delete <strong>{userToDelete?.UserName}</strong>
+  ({userToDelete?.UserEmail})?</p>
+            <p className="text-danger">This action cannot be
+  undone.</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() =>
+  setShowDeleteModal(false)}>Cancel</Button>
+            <Button variant="danger"
+  onClick={confirmDelete}>Delete</Button>
+          </Modal.Footer>
+        </Modal>
+
+        {/* Reset Password Modal */}
+        <Modal show={showResetModal} onHide={() =>
+  setShowResetModal(false)} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Reset Password</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Reset password for
+  <strong>{userToReset?.UserName}</strong>
+  ({userToReset?.UserEmail})?</p>
+            <Form.Group className="mb-3">
+              <Form.Label>Temporary Password:</Form.Label>
+              <Form.Control
+                type="text"
+                value={tempPassword}
+                onChange={(e) => setTempPassword(e.target.value)}
+              />
+            </Form.Group>
+            <p className="text-warning">User should change this
+  password after logging in.</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() =>
+  setShowResetModal(false)}>Cancel</Button>
+            <Button variant="warning"
+  onClick={confirmResetPassword}>Reset Password</Button>
+          </Modal.Footer>
+        </Modal>
+
+        {/* Role Change Modal */}
+        <Modal show={showRoleModal} onHide={() =>
+  setShowRoleModal(false)} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>{makeAdmin ? 'Make Admin' : 'Remove Admin'}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>
+              {makeAdmin ? 'Grant admin role to' : 'Remove admin role from'} <strong>{userToChangeRole?.UserName}</strong>
+  ({userToChangeRole?.UserEmail})?
+            </p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() =>
+  setShowRoleModal(false)}>Cancel</Button>
+            <Button variant={makeAdmin ? 'info' : 'secondary'}
+  onClick={confirmRoleChange}>
+              {makeAdmin ? 'Make Admin' : 'Remove Admin'}
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        {/* Alert Modal (Success/Error messages) */}
+        <Modal show={showAlert} onHide={() => setShowAlert(false)}
+  centered>
+          <Modal.Header closeButton className={alertType ===
+  'success' ? 'text-success' : 'text-danger'}>
+            <Modal.Title>{alertType === 'success' ? 'Success' :
+  'Error'}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Alert variant={alertType === 'success' ? 'success' :
+  'danger'}>
+              {alertMessage}
+            </Alert>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={() =>
+  setShowAlert(false)}>OK</Button>
+          </Modal.Footer>
+        </Modal>
+
+      </div>
+    );
+  }

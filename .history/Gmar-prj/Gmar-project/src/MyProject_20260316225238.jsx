@@ -20,9 +20,6 @@
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
     const [alertType, setAlertType] = useState('success');
-    const [showDeleteModal, setShowDeleteModal] =useState(false);
-    const [projectToDelete, setProjectToDelete] = useState(null);
-
 
     useEffect(() => {
       fetchProjects();
@@ -69,40 +66,34 @@
     };
 
    
-   
-      const handleDeleteClick = (projectId) => {
-        setProjectToDelete(projectId);
-        setShowDeleteModal(true);
-      };
+    const deleteProject = async (projectId) => {
+      if (!confirm('Are you sure you want to delete this project?')) {
+        return;
+      }
 
-      const confirmDelete = async () => {
-        setShowDeleteModal(false);
+      try {
+        const response = await
+  fetch(`http://localhost:3001/api/projects/${projectId}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: currentUser.User_ID
+          })
+        });
 
-        try {
-          const response = await fetch(
-    `http://localhost:3001/api/projects/${projectToDelete}`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              userId: currentUser.User_ID
-            })
-          });
-
-          if (response.ok) {
-            fetchProjects();
-            showAlertModal('Project deleted successfully',
-    'success');
-          } else {
-            throw new Error('Failed to delete project');
-          }
-        } catch (err) {
-          console.error('Delete error:', err);
-          showAlertModal('Error deleting project: ' + err.message,
-    'error');
+        if (response.ok) {
+          fetchProjects();
+          showAlertModal('Project deleted successfully',
+  'success');
+        } else {
+          throw new Error('Failed to delete project');
         }
-      };
-
-
+      } catch (err) {
+        console.error('Delete error:', err);
+        showAlertModal('Error deleting project: ' + err.message,
+  'error');
+      }
+    };
     return (
       <div>
         <NavBar />
@@ -148,14 +139,14 @@
                       >
                         Load Project
                       </Button>
-                        <Button
-                          variant="danger"
-                          className="ms-2"
-                          onClick={() =>
-  handleDeleteClick(project.Project_ID)}
-                        >
-                          Delete
-                        </Button>
+                      <Button
+                        variant="danger"
+                        className="ms-2"
+                        onClick={() =>
+  deleteProject(project.Project_ID)}
+                      >
+                        Delete
+                      </Button>
                     </Card.Body>
                   </Card>
                 </Col>
@@ -163,43 +154,7 @@
             </Row>
           )}
         </Container>
-         {/* Alert Modal */}
-        <Modal show={showAlert} onHide={() => setShowAlert(false)}
-  centered>
-          <Modal.Header closeButton className={alertType ===
-  'success' ? 'text-success' : 'text-danger'}>
-            <Modal.Title>{alertType === 'success' ? 'Success' :
-  'Error'}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Alert variant={alertType === 'success' ? 'success' :
-  'danger'}>
-              {alertMessage}
-            </Alert>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="primary" onClick={() =>
-  setShowAlert(false)}>OK</Button>
-          </Modal.Footer>
-        </Modal>
         
-          {/* Delete Confirmation Modal */}
-          <Modal show={showDeleteModal} onHide={() =>
-  setShowDeleteModal(false)} centered>
-            <Modal.Header closeButton>
-              <Modal.Title>Confirm Delete</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              Are you sure you want to delete this project? This
-  action cannot be undone.
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={() =>
-  setShowDeleteModal(false)}>Cancel</Button>
-              <Button variant="danger"
-  onClick={confirmDelete}>Delete</Button>
-            </Modal.Footer>
-          </Modal>
       </div>
     );
   }

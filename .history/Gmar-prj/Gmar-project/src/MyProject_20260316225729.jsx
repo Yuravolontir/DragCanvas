@@ -148,14 +148,14 @@
                       >
                         Load Project
                       </Button>
-                        <Button
-                          variant="danger"
-                          className="ms-2"
-                          onClick={() =>
-  handleDeleteClick(project.Project_ID)}
-                        >
-                          Delete
-                        </Button>
+                      <Button
+                        variant="danger"
+                        className="ms-2"
+                        onClick={() =>
+  deleteProject(project.Project_ID)}
+                      >
+                        Delete
+                      </Button>
                     </Card.Body>
                   </Card>
                 </Col>
@@ -182,24 +182,6 @@
   setShowAlert(false)}>OK</Button>
           </Modal.Footer>
         </Modal>
-        
-          {/* Delete Confirmation Modal */}
-          <Modal show={showDeleteModal} onHide={() =>
-  setShowDeleteModal(false)} centered>
-            <Modal.Header closeButton>
-              <Modal.Title>Confirm Delete</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              Are you sure you want to delete this project? This
-  action cannot be undone.
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={() =>
-  setShowDeleteModal(false)}>Cancel</Button>
-              <Button variant="danger"
-  onClick={confirmDelete}>Delete</Button>
-            </Modal.Footer>
-          </Modal>
       </div>
     );
   }

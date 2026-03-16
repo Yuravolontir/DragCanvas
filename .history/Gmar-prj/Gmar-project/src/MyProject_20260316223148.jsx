@@ -1,0 +1,143 @@
+
+  import React, { useEffect, useState } from 'react'
+  import NavBar from './NavBar';
+  import { useUserContext } from './UserContextProvider';
+  import Card from 'react-bootstrap/Card';
+  import Button from 'react-bootstrap/Button';
+  import Container from 'react-bootstrap/Container';
+  import Row from 'react-bootstrap/Row';
+  import Col from 'react-bootstrap/Col';
+  import { useNavigate } from 'react-router-dom';
+
+  export default function MyProject() {
+    const navigate = useNavigate();
+    const { currentUser, deleteproject } = useUserContext();
+    const [projects, setProjects] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+      fetchProjects();
+    }, []);
+
+    const fetchProjects = async () => {
+      try {
+        if (!currentUser?.User_ID) {
+          console.error('No user logged in');
+          return;
+        }
+
+        const response = await fetch( `http://localhost:3001/api/projects/user/${currentUser.User_ID}`
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch projects');
+        }
+
+        const data = await response.json();
+        console.log('Projects loaded:', data);
+        setProjects(data);
+      } catch (err) {
+        console.error('Error fetching projects:', err);
+        alert('Failed to load projects: ' + err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const loadProject = (projectId) => {
+      navigate('/create-new-project', {
+        state: { projectId: projectId }
+      });
+    };
+
+    const deleteProject = async (projectId) => {
+      if (!confirm('Are you sure you want to delete this project?')) {
+        return;
+      }
+
+      try {
+        const response = await
+  fetch(`http://localhost:3001/api/projects/${projectId}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: currentUser.User_ID
+          })
+        });
+
+        if (response.ok) {
+          // Refresh the list
+          fetchProjects();
+          alert('Project deleted successfully');
+        } else {
+          throw new Error('Failed to delete project');
+        }
+      } catch (err) {
+        console.error('Delete error:', err);
+        alert('Error deleting project: ' + err.message);
+      }
+    };
+
+    return (
+      <div>
+        <NavBar />
+        <Container className="mt-4" style={{ paddingTop: '100px'
+  }}>
+          <h1 style={{ marginBottom: '20px' }}>My Projects</h1>
+
+          {loading ? (
+            <p>Loading projects...</p>
+          ) : projects.length === 0 ? (
+            <p>No projects yet. <a
+  href="/create-new-project">Create one!</a></p>
+          ) : (
+            <Row>
+              {projects.map((project) => (
+                <Col key={project.Project_ID} xs={12} md={6} lg={4}
+   className="mb-4">
+                  <Card>
+                    <Card.Body>
+                      <Card.Title>
+                        {project.ProjectName || 'Unnamed Project'}
+                      </Card.Title>
+                      <Card.Text>
+                        {project.ProjectDescription && (
+                          <small
+  className="text-muted">{project.ProjectDescription}</small>
+                        )}
+                        <br />
+                        <small>
+                          Components: {project.ComponentCount} |
+                          Size: {project.ProjectSizeKB} KB
+                        </small>
+                        <br />
+                        <small className="text-muted">
+                          Created: {new
+  Date(project.CreatedDate).toLocaleDateString()}
+                        </small>
+                      </Card.Text>
+                      <Button
+                        variant="primary"
+                        onClick={() =>
+  loadProject(project.Project_ID)}
+                      >
+                        Load Project
+                      </Button>
+                      <Button
+                        variant="danger"
+                        className="ms-2"
+                        onClick={() =>
+  deleteProject(project.Project_ID)}
+                      >
+                        Delete
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          )}
+        </Container>
+      </div>
+    );
+  }
