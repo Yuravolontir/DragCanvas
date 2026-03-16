@@ -481,8 +481,6 @@ app.delete('/api/delete-user', async (req, res) => {
     try {
       const { id } = req.params;
 
-      console.log('Fetching stats for user:', id);
-
       const result = await pool.request()
         .input('UserID', sql.Int, id)
         .query(`
@@ -503,14 +501,12 @@ app.delete('/api/delete-user', async (req, res) => {
    @UserID), 0) AS TotalAuditEntries
         `);
 
-      console.log('Stats result:', result.recordset[0]);
       res.json(result.recordset[0]);
     } catch (err) {
       console.error('Get user stats error:', err);
       res.status(500).json({ error: err.message });
     }
   });
-
 
 // ---------- Robust JSON extraction/parsing ----------
 function extractBalancedJsonObject(text) {

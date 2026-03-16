@@ -30,13 +30,13 @@ async function start() {
 start();
 
  app.get('/api/users', async (req, res) => {
-      try {
-        const result = await pool.request().query('SELECT User_ID,UserName, UserEmail, IsActive, IsAdmin, IsSuperAdmin, CreatedDate, LastLoginDate FROM TBUsers ');
-        res.json(result.recordset);
-      } catch (err) {
-        res.status(500).json({ error: err.message });
-      }
-    });
+    try {
+      const result = await pool.request().query('SELECT User_ID,UserName, UserEmail, IsActive, IsAdmin, IsSuperAdmin FROM TBUsers ');
+      res.json(result.recordset);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
 
   // GET user by id
   app.get('/api/users/:id', async (req, res) => {
@@ -476,42 +476,37 @@ app.delete('/api/delete-user', async (req, res) => {
   });
 
 
-  // Get user statistics
+    // Get user statistics
   app.get('/api/users/:id/stats', async (req, res) => {
     try {
       const { id } = req.params;
-
-      console.log('Fetching stats for user:', id);
 
       const result = await pool.request()
         .input('UserID', sql.Int, id)
         .query(`
           SELECT
-            ISNULL((SELECT COUNT(*) FROM TBProjects WHERE User_ID =
-   @UserID AND IsDeleted = 0), 0) AS TotalProjects,
-            ISNULL((SELECT COUNT(*) FROM TBProjects WHERE User_ID =
-   @UserID AND IsDeleted = 0 AND IsPublished = 1), 0) AS
+            (SELECT COUNT(*) FROM TBProjects WHERE User_ID =
+  @UserID AND IsDeleted = 0) AS TotalProjects,
+            (SELECT COUNT(*) FROM TBProjects WHERE User_ID =
+  @UserID AND IsDeleted = 0 AND IsPublished = 1) AS
   PublishedProjects,
-            ISNULL((SELECT SUM(ComponentCount) FROM TBProjects
-  WHERE User_ID = @UserID AND IsDeleted = 0), 0) AS
-  TotalComponents,
-            ISNULL((SELECT SUM(ExportCount) FROM TBProjects WHERE
-  User_ID = @UserID), 0) AS TotalExports,
-            ISNULL((SELECT COUNT(*) FROM TBUserActivity WHERE
-  User_ID = @UserID), 0) AS TotalActivities,
-            ISNULL((SELECT COUNT(*) FROM TBAuditLog WHERE User_ID =
-   @UserID), 0) AS TotalAuditEntries
+            (SELECT SUM(ComponentCount) FROM TBProjects WHERE
+  User_ID = @UserID AND IsDeleted = 0) AS TotalComponents,
+            (SELECT SUM(ExportCount) FROM TBProjects WHERE User_ID
+  = @UserID) AS TotalExports,
+            (SELECT COUNT(*) FROM TBUserActivity WHERE User_ID =
+  @UserID) AS TotalActivities,
+            (SELECT COUNT(*) FROM TBAuditLog WHERE User_ID =
+  @UserID) AS TotalAuditEntries
         `);
 
-      console.log('Stats result:', result.recordset[0]);
       res.json(result.recordset[0]);
     } catch (err) {
       console.error('Get user stats error:', err);
       res.status(500).json({ error: err.message });
     }
   });
-
-
+  
 // ---------- Robust JSON extraction/parsing ----------
 function extractBalancedJsonObject(text) {
   const s = String(text);

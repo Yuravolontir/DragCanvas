@@ -13,7 +13,7 @@
 
   export default function MyProject() {
     const navigate = useNavigate();
-    const { currentUser } = useUserContext();
+    const { currentUser, deleteproject } = useUserContext();
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -27,12 +27,6 @@
     useEffect(() => {
       fetchProjects();
     }, []);
-
-      useEffect(() => {
-    if (currentUser?.User_ID) {
-      fetchProjects();
-    }
-  }, [currentUser]);
 
      const fetchProjects = async () => {
       try {
@@ -196,12 +190,10 @@
             <Modal.Header closeButton>
               <Modal.Title>Confirm Delete</Modal.Title>
             </Modal.Header>
-  <Modal.Body>
-                Are you sure you want to delete
-  <strong>{projects.find(p => p.Project_ID ===
-  projectToDelete)?.ProjectName || 'this project'}</strong>? This
+            <Modal.Body>
+              Are you sure you want to delete this project? This
   action cannot be undone.
-              </Modal.Body>
+            </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={() =>
   setShowDeleteModal(false)}>Cancel</Button>

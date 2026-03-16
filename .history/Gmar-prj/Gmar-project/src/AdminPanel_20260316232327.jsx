@@ -351,15 +351,10 @@ const confirmRoleChange = async () => {
                 </td>
                 <td>
                    <div className="d-flex flex-column gap-2">
-                     
-                  {/* View Profile */}
-                  {!(currentUser?.IsAdmin &&
-                  !currentUser?.IsSuperAdmin && user.IsSuperAdmin) && (
-                                        <Button variant="info" size="sm"
-                  onClick={() => handleViewProfile(user)}>
-                                          👤 View Profile
-                                        </Button>
-                                      )}
+                      {/* View Profile */}
+                      <Button variant="info" size="sm" onClick={()=> handleViewProfile(user)}>
+                        👤 View Profile
+                      </Button>
                     {/* Status Toggle */}
                     {!user.IsSuperAdmin && user.User_ID !== currentUser?.User_ID && (
                       user.IsActive ? (
@@ -479,159 +474,6 @@ const confirmRoleChange = async () => {
           <Button variant="primary" onClick={() => setShowAlert(false)}>OK</Button>
         </Modal.Footer>
       </Modal>
-
-       {/* View Profile Modal */}
-        <Modal show={showProfileModal} onHide={() =>
-  setShowProfileModal(false)} centered size="lg">
-          <Modal.Header closeButton className="bg-primary
-  text-white">
-            <Modal.Title>👤 User Profile</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {userProfile && (
-              <div>
-                {/* User Info */}
-                <div className="mb-4">
-                  <h5 className="mb-3">📋 Account Information</h5>
-                  <Table bordered size="sm">
-                    <tbody>
-                      <tr>
-                        <td><strong>User ID:</strong></td>
-                        <td>#{userProfile.User_ID}</td>
-                      </tr>
-                      <tr>
-                        <td><strong>Username:</strong></td>
-                        <td>{userProfile.UserName}</td>
-                      </tr>
-                      <tr>
-                        <td><strong>Email:</strong></td>
-                        <td>{userProfile.UserEmail}</td>
-                      </tr>
-                      <tr>
-                        <td><strong>Status:</strong></td>
-                        <td>
-                          {userProfile.IsActive ?
-                            <Badge bg="success">Active</Badge> :
-                            <Badge bg="secondary">Inactive</Badge>
-                          }
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><strong>Role:</strong></td>
-                        <td>
-                          {userProfile.IsSuperAdmin && <Badge
-  bg="danger">Super Admin</Badge>}
-                          {userProfile.IsAdmin &&
-  !userProfile.IsSuperAdmin && <Badge bg="danger">Admin</Badge>}
-                          {!userProfile.IsAdmin &&
-  !userProfile.IsSuperAdmin && <Badge bg="primary">User</Badge>}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><strong>Member Since:</strong></td>
-                        <td>{new
-  Date(userProfile.CreatedDate).toLocaleDateString()}</td>
-                      </tr>
-                      <tr>
-                        <td><strong>Last Login:</strong></td>
-                        <td>
-                          {userProfile.LastLoginDate ?
-                            new
-  Date(userProfile.LastLoginDate).toLocaleString() :
-                            <span
-  className="text-muted">Never</span>
-                          }
-                        </td>
-                      </tr>
-                    </tbody>
-                  </Table>
-                </div>
-
-                {/* Statistics */}
-                {userStats && (
-                  <div className="mb-4">
-                    <h5 className="mb-3">📊 Statistics</h5>
-                    <div className="row g-3">
-                      <div className="col-md-4">
-                        <div className="card text-center">
-                          <div className="card-body">
-                            <h3
-  className="text-primary">{userStats?.TotalProjects || 0}</h3>
-                            <p className="card-text mb-0">Total
-  Projects</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div className="card text-center">
-                          <div className="card-body">
-                            <h3
-  className="text-success">{userStats?.PublishedProjects || 0}</h3>
-                            <p className="card-text
-  mb-0">Published</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div className="card text-center">
-                          <div className="card-body">
-                            <h3
-  className="text-info">{userStats?.TotalComponents || 0}</h3>
-                            <p className="card-text
-  mb-0">Components Created</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div className="card text-center">
-                          <div className="card-body">
-                            <h3
-  className="text-warning">{userStats?.TotalExports || 0}</h3>
-                            <p className="card-text
-  mb-0">Exports</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div className="card text-center">
-                          <div className="card-body">
-                            <h3
-  className="text-secondary">{userStats?.TotalActivities || 0}</h3>
-                            <p className="card-text
-  mb-0">Activities</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div className="card text-center">
-                          <div className="card-body">
-                            <h3
-  className="text-danger">{userStats?.TotalAuditEntries || 0}</h3>
-                            <p className="card-text mb-0">Audit
-  Entries</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Recent Activity placeholder */}
-                <div>
-                  <h5 className="mb-3">🕒 Recent Activity</h5>
-                  <p className="text-muted">Activity history can be
-   fetched from audit log if needed.</p>
-                </div>
-              </div>
-            )}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() =>
-  setShowProfileModal(false)}>Close</Button>
-          </Modal.Footer>
-        </Modal>
-
-       
     </div>
   );
 }

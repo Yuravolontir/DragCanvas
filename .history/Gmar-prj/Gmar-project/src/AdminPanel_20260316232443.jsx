@@ -351,15 +351,10 @@ const confirmRoleChange = async () => {
                 </td>
                 <td>
                    <div className="d-flex flex-column gap-2">
-                     
-                  {/* View Profile */}
-                  {!(currentUser?.IsAdmin &&
-                  !currentUser?.IsSuperAdmin && user.IsSuperAdmin) && (
-                                        <Button variant="info" size="sm"
-                  onClick={() => handleViewProfile(user)}>
-                                          👤 View Profile
-                                        </Button>
-                                      )}
+                      {/* View Profile */}
+                      <Button variant="info" size="sm" onClick={()=> handleViewProfile(user)}>
+                        👤 View Profile
+                      </Button>
                     {/* Status Toggle */}
                     {!user.IsSuperAdmin && user.User_ID !== currentUser?.User_ID && (
                       user.IsActive ? (
@@ -479,7 +474,7 @@ const confirmRoleChange = async () => {
           <Button variant="primary" onClick={() => setShowAlert(false)}>OK</Button>
         </Modal.Footer>
       </Modal>
-
+      
        {/* View Profile Modal */}
         <Modal show={showProfileModal} onHide={() =>
   setShowProfileModal(false)} centered size="lg">
@@ -556,7 +551,7 @@ const confirmRoleChange = async () => {
                         <div className="card text-center">
                           <div className="card-body">
                             <h3
-  className="text-primary">{userStats?.TotalProjects || 0}</h3>
+  className="text-primary">{userStats.totalProjects || 0}</h3>
                             <p className="card-text mb-0">Total
   Projects</p>
                           </div>
@@ -566,7 +561,7 @@ const confirmRoleChange = async () => {
                         <div className="card text-center">
                           <div className="card-body">
                             <h3
-  className="text-success">{userStats?.PublishedProjects || 0}</h3>
+  className="text-success">{userStats.publishedProjects || 0}</h3>
                             <p className="card-text
   mb-0">Published</p>
                           </div>
@@ -576,7 +571,7 @@ const confirmRoleChange = async () => {
                         <div className="card text-center">
                           <div className="card-body">
                             <h3
-  className="text-info">{userStats?.TotalComponents || 0}</h3>
+  className="text-info">{userStats.totalComponents || 0}</h3>
                             <p className="card-text
   mb-0">Components Created</p>
                           </div>
@@ -586,7 +581,7 @@ const confirmRoleChange = async () => {
                         <div className="card text-center">
                           <div className="card-body">
                             <h3
-  className="text-warning">{userStats?.TotalExports || 0}</h3>
+  className="text-warning">{userStats.totalExports || 0}</h3>
                             <p className="card-text
   mb-0">Exports</p>
                           </div>
@@ -596,7 +591,7 @@ const confirmRoleChange = async () => {
                         <div className="card text-center">
                           <div className="card-body">
                             <h3
-  className="text-secondary">{userStats?.TotalActivities || 0}</h3>
+  className="text-secondary">{userStats.totalActivities || 0}</h3>
                             <p className="card-text
   mb-0">Activities</p>
                           </div>
@@ -606,7 +601,7 @@ const confirmRoleChange = async () => {
                         <div className="card text-center">
                           <div className="card-body">
                             <h3
-  className="text-danger">{userStats?.TotalAuditEntries || 0}</h3>
+  className="text-danger">{userStats.totalAuditEntries || 0}</h3>
                             <p className="card-text mb-0">Audit
   Entries</p>
                           </div>
