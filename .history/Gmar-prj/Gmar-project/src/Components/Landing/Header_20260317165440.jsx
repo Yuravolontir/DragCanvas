@@ -68,7 +68,7 @@ export const Header = () => {
 
   const [saveAsTemplate, setSaveAsTemplate] = useState(false);
   const [templateName, setTemplateName] = useState('');
-  const [templateCategory, setTemplateCategory] = useState('Landing Page');
+  const [templateCategory, setTemplateCategory] = useState('LandingPage');
 
   const { enabled, canUndo, canRedo, actions , query } = useEditor((state, query) => ({
     enabled: state.options.enabled,
@@ -106,7 +106,6 @@ export const Header = () => {
   'ROOT');
       const componentCount = nodes.length;
 
-      // Save as project
       const response = await
   fetch('http://localhost:3001/api/projects/save', {
         method: 'POST',
@@ -125,18 +124,11 @@ export const Header = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // If save as template is checked
-        if (saveAsTemplate && templateName) {
-          await saveAsTemplateFunc(jsonString, componentCount);
-        }
-
         showAlertModal(`Project saved successfully! ID:
   ${data.projectId}`, 'success');
         setShowSaveModal(false);
         setProjectName('');
         setProjectDescription('');
-        setSaveAsTemplate(false);
-        setTemplateName('');
       } else {
         showAlertModal(data.error || 'Failed to save project',
   'error');
@@ -145,64 +137,6 @@ export const Header = () => {
       showAlertModal(err.message, 'error');
     }
   };
-
-      // Generate thumbnail and save template
-    const saveAsTemplateFunc = async (projectData, componentCount) =>
-     {
-      try {
-        // Capture preview from canvas
-        const canvasElement = document.querySelector('.craftjs-renderer > .relative > .m-auto');
-        if (!canvasElement) {
-          showAlertModal('Could not generate template preview',
-    'error');
-          return;
-        }
-
-        // Wait a bit for any pending renders
-        await new Promise(resolve => setTimeout(resolve, 100));
-
-        const canvas = await html2canvas(canvasElement, {
-          backgroundColor: '#ffffff',
-          scale: 1, // Changed from 0.3 - higher quality
-          useCORS: true,
-          allowTaint: true,
-          logging: false,
-          windowWidth: canvasElement.scrollWidth,
-          windowHeight: canvasElement.scrollHeight,
-          scrollX: 0,
-          scrollY: 0
-        });
-
-        // Convert to base64
-        const thumbnailData = canvas.toDataURL('image/jpeg', 0.8);
-
-        console.log('Thumbnail generated, size:', thumbnailData.length);
-
-        // Save template
-        const response = await
-    fetch('http://localhost:3001/api/templates/save', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            templateName: templateName,
-            category: templateCategory,
-            projectData: projectData,
-            componentCount: componentCount,
-            createdBy: currentUser.User_ID,
-            thumbnailData: thumbnailData
-          })
-        });
-
-        if (response.ok) {
-          showAlertModal('Template saved successfully!', 'success');
-        }
-      } catch (err) {
-        console.error('Save template error:', err);
-        showAlertModal('Failed to save template: ' + err.message,
-    'error');
-      }
-    };
-
 
 
 const downloadHTML = () => {
@@ -568,8 +502,8 @@ async function deployToNetlify(htmlString, token) {
                   )}
                 </Modal.Body>
               <Modal.Footer>
-              <Button variant="secondary" onClick={() =>
-              setShowSaveModal(false)}>Cancel</Button>
+                <button variant="secondary" onClick={() =>
+            setShowSaveModal(false)}>Cancel</button>
                 <button variant="primary" onClick={saveproject}
             disabled={!projectName}>Save</button>
               </Modal.Footer>

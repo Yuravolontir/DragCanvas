@@ -5,8 +5,7 @@ import sql from 'mssql';
 
 const app = express();
 app.use(cors());
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(express.json());
 
 // ---------- SQL ----------
 const config = {
@@ -514,35 +513,38 @@ app.delete('/api/delete-user', async (req, res) => {
 
 
     // Save as Template
-    app.post('/api/templates/save', async (req, res) => {
+  app.post('/api/templates/save', async (req, res) => {
     try {
       const { templateName, category, projectData, componentCount,
-  createdBy, thumbnailData } = req.body;
+  createdBy } = req.body;
+
+      console.log('Saving template:', templateName, 'by user:',
+  createdBy);
 
       const result = await pool.request()
         .input('TemplateName', sql.NVarChar(100), templateName)
         .input('Category', sql.NVarChar(50), category)
-        .input('ThumbnailURL', sql.NVarChar(sql.MAX), thumbnailData ||
-  null)  // Change to MAX
         .input('TemplateData', sql.NVarChar(sql.MAX), projectData)
         .input('ComponentCount', sql.Int, componentCount)
         .input('CreatedBy', sql.Int, createdBy)
         .query(`
-          INSERT INTO TBTemplates (TemplateName, Category, ThumbnailURL,
+          INSERT INTO TBTemplates (TemplateName, Category,
   TemplateData, ComponentCount, CreatedBy)
-          VALUES (@TemplateName, @Category, @ThumbnailURL, @TemplateData,
-   @ComponentCount, @CreatedBy)
+          VALUES (@TemplateName, @Category, @TemplateData,
+  @ComponentCount, @CreatedBy)
           SELECT SCOPE_IDENTITY() AS TemplateID
         `);
 
       const templateId = result.recordset[0].TemplateID;
-      res.json({ templateId, message: 'Template saved successfully' });
+      console.log('✅ Template saved, ID:', templateId);
+
+      res.json({ templateId, message: 'Template saved successfully'
+   });
     } catch (err) {
-      console.error('Save template error:', err);
+      console.error('❌ Save template error:', err);
       res.status(500).json({ error: err.message });
     }
   });
-
 
   // Get all templates (for Inspire Me page)
   app.get('/api/templates', async (req, res) => {

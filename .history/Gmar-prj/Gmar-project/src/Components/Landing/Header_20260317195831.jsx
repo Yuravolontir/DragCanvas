@@ -163,12 +163,13 @@ export const Header = () => {
 
         const canvas = await html2canvas(canvasElement, {
           backgroundColor: '#ffffff',
-          scale: 1, // Changed from 0.3 - higher quality
+          scale: 0.3, // Lower scale for smaller file size but keep quality
           useCORS: true,
           allowTaint: true,
           logging: false,
           windowWidth: canvasElement.scrollWidth,
           windowHeight: canvasElement.scrollHeight,
+          // Capture full scrollable content
           scrollX: 0,
           scrollY: 0
         });

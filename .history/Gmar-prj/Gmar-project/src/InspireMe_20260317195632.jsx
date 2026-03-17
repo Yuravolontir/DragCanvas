@@ -116,10 +116,9 @@
             <div className="text-center mt-5">
               <h5>No templates found.</h5>
             </div>
-                 ) : (
+          ) : (
             <div className="d-flex flex-column align-items-center"
-  style={{ maxWidth: '1100px', margin: '0 auto' }}>
-
+  style={{ maxWidth: '1200px', margin: '0 auto' }}>
               {/* Navigation Buttons */}
               <Button
                 variant="dark"
@@ -127,15 +126,14 @@
                 onClick={goToPrevious}
                 style={{
                   position: 'fixed',
-                  left: '30px',
+                  left: '20px',
                   top: '50%',
                   transform: 'translateY(-50%)',
                   zIndex: 1000,
                   borderRadius: '50%',
                   width: '60px',
                   height: '60px',
-                  padding: 0,
-                  fontSize: '24px'
+                  padding: 0
                 }}
               >
                 ←
@@ -147,57 +145,26 @@
                 onClick={goToNext}
                 style={{
                   position: 'fixed',
-                  right: '30px',
+                  right: '20px',
                   top: '50%',
                   transform: 'translateY(-50%)',
                   zIndex: 1000,
                   borderRadius: '50%',
                   width: '60px',
                   height: '60px',
-                  padding: 0,
-                  fontSize: '24px'
+                  padding: 0
                 }}
               >
                 →
               </Button>
 
-              {/* Info Bar - Moved to TOP */}
-              <div className="bg-white rounded shadow-sm p-4 mb-3"
-  style={{ width: '100%' }}>
-                <div className="d-flex justify-content-between
-  align-items-center">
-                  <div>
-                    <h2
-  className="mb-2">{currentTemplate?.TemplateName}</h2>
-                    <div className="d-flex align-items-center gap-3">
-                      <span className="badge bg-primary
-  fs-6">{currentTemplate?.Category}</span>
-                      <span className="text-muted">
-                        {currentTemplate?.ComponentCount} components • by
-   {currentTemplate?.CreatedByName}
-                      </span>
-                    </div>
-                  </div>
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    onClick={() => currentTemplate &&
-  useTemplate(currentTemplate.Template_ID)}
-                    style={{ borderRadius: '8px', padding: '12px 30px',
-  fontSize: '16px' }}
-                  >
-                    🚀 Use This Template
-                  </Button>
-                </div>
-              </div>
-
-              {/* Template Preview */}
+              {/* Template Preview - Full Scrollable */}
               <div className="bg-white rounded shadow-lg mx-auto"
   style={{
-                width: '100%',
+                maxWidth: '1400px',  // Changed from 1000px
                 maxHeight: '70vh',
                 overflow: 'auto',
-                border: '1px solid #dee2e6'
+                position: 'relative'
               }}>
                 {currentTemplate?.ThumbnailURL ? (
                   <img
@@ -212,7 +179,7 @@
                 ) : (
                   <div className="text-center text-muted d-flex
   flex-column align-items-center justify-content-center" style={{
-  minHeight: '500px' }}>
+  minHeight: '400px' }}>
                     <h1 style={{ fontSize: '80px' }}>📄</h1>
                     <p style={{ fontSize: '20px' }}>Preview Coming
   Soon</p>
@@ -220,14 +187,43 @@
                 )}
               </div>
 
+              {/* Info Bar */}
+              {/* Info Bar */}
+              <div className="bg-white rounded shadow-lg p-4 mt-3"
+  style={{ maxWidth: '1400px', margin: '0 auto' }}>
+                <div className="d-flex justify-content-between
+  align-items-center">
+                  <div>
+                    <h3
+  className="mb-1">{currentTemplate?.TemplateName}</h3>
+                    <span className="badge bg-primary fs-6
+  me-2">{currentTemplate?.Category}</span>
+                    <small className="text-muted">
+                      {currentTemplate?.ComponentCount} components • by
+  {currentTemplate?.CreatedByName}
+                    </small>
+                  </div>
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    onClick={() => currentTemplate &&
+  useTemplate(currentTemplate.Template_ID)}
+                    style={{ borderRadius: '10px' }}
+                  >
+                    🚀 Use This Template
+                  </Button>
+                </div>
+              </div>
+
               {/* Dots Indicator */}
-              <div className="d-flex gap-2 mt-4">
+              <div className="d-flex gap-2 mt-4 mx-auto" style={{
+  maxWidth: '1400px' }}>
                 {filteredTemplates.map((_, idx) => (
                   <div
                     key={idx}
                     onClick={() => setCurrentIndex(idx)}
                     style={{
-                      width: idx === currentIndex ? '35px' : '12px',
+                      width: idx === currentIndex ? '30px' : '12px',
                       height: '12px',
                       borderRadius: '6px',
                       backgroundColor: idx === currentIndex ? '#0d6efd' :
@@ -240,7 +236,7 @@
               </div>
 
               {/* Template Counter */}
-              <p className="text-muted mt-2">
+              <p className="text-muted mt-3 text-center">
                 {currentIndex + 1} of {filteredTemplates.length}
   templates
               </p>

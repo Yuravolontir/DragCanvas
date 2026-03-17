@@ -146,41 +146,30 @@ export const Header = () => {
     }
   };
 
-      // Generate thumbnail and save template
-    const saveAsTemplateFunc = async (projectData, componentCount) =>
-     {
-      try {
-        // Capture preview from canvas
-        const canvasElement = document.querySelector('.craftjs-renderer > .relative > .m-auto');
-        if (!canvasElement) {
-          showAlertModal('Could not generate template preview',
-    'error');
-          return;
-        }
+  // Generate thumbnail and save template
+  const saveAsTemplateFunc = async (projectData, componentCount) =>
+   {
+    try {
+      // Capture preview from canvas
+      const canvasElement =
+  document.querySelector('.craftjs-renderer > .relative > .m-auto');
+      if (!canvasElement) {
+        showAlertModal('Could not generate template preview',
+  'error');
+        return;
+      }
 
-        // Wait a bit for any pending renders
-        await new Promise(resolve => setTimeout(resolve, 100));
+      const canvas = await html2canvas(canvasElement, {
+        backgroundColor: '#ffffff',
+        scale: 0.5 // Lower scale for smaller file size
+      });
 
-        const canvas = await html2canvas(canvasElement, {
-          backgroundColor: '#ffffff',
-          scale: 1, // Changed from 0.3 - higher quality
-          useCORS: true,
-          allowTaint: true,
-          logging: false,
-          windowWidth: canvasElement.scrollWidth,
-          windowHeight: canvasElement.scrollHeight,
-          scrollX: 0,
-          scrollY: 0
-        });
+      // Convert to base64
+      const thumbnailData = canvas.toDataURL('image/jpeg', 0.7);
 
-        // Convert to base64
-        const thumbnailData = canvas.toDataURL('image/jpeg', 0.8);
-
-        console.log('Thumbnail generated, size:', thumbnailData.length);
-
-        // Save template
+      // Save template
         const response = await
-    fetch('http://localhost:3001/api/templates/save', {
+  fetch('http://localhost:3001/api/templates/save', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -189,20 +178,19 @@ export const Header = () => {
             projectData: projectData,
             componentCount: componentCount,
             createdBy: currentUser.User_ID,
-            thumbnailData: thumbnailData
+            thumbnailData: thumbnailData  // Add this line
           })
         });
 
-        if (response.ok) {
-          showAlertModal('Template saved successfully!', 'success');
-        }
-      } catch (err) {
-        console.error('Save template error:', err);
-        showAlertModal('Failed to save template: ' + err.message,
-    'error');
+      if (response.ok) {
+        showAlertModal('Template saved successfully!', 'success');
       }
-    };
-
+    } catch (err) {
+      console.error('Save template error:', err);
+      showAlertModal('Failed to save template: ' + err.message,
+  'error');
+    }
+  };
 
 
 const downloadHTML = () => {

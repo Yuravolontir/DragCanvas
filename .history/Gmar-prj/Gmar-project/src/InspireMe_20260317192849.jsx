@@ -1,5 +1,7 @@
- import React, { useEffect, useState } from 'react';
+
+  import React, { useEffect, useState } from 'react';
   import NavBar from './NavBar';
+  import Card from 'react-bootstrap/Card';
   import Button from 'react-bootstrap/Button';
   import Container from 'react-bootstrap/Container';
   import Form from 'react-bootstrap/Form';
@@ -24,6 +26,7 @@
     }, []);
 
     useEffect(() => {
+      // Reset to first template when filter changes
       setCurrentIndex(0);
     }, [filterCategory]);
 
@@ -75,6 +78,7 @@
       setCurrentIndex((prev) => (prev + 1) % filteredTemplates.length);
     };
 
+    // Keyboard navigation
     useEffect(() => {
       const handleKeyDown = (e) => {
         if (e.key === 'ArrowLeft') goToPrevious();
@@ -116,108 +120,112 @@
             <div className="text-center mt-5">
               <h5>No templates found.</h5>
             </div>
-                 ) : (
+          ) : (
             <div className="d-flex flex-column align-items-center"
-  style={{ maxWidth: '1100px', margin: '0 auto' }}>
+  style={{ maxWidth: '1200px', margin: '0 auto' }}>
 
-              {/* Navigation Buttons */}
-              <Button
-                variant="dark"
-                size="lg"
-                onClick={goToPrevious}
-                style={{
-                  position: 'fixed',
-                  left: '30px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  zIndex: 1000,
-                  borderRadius: '50%',
-                  width: '60px',
-                  height: '60px',
-                  padding: 0,
-                  fontSize: '24px'
-                }}
-              >
-                ←
-              </Button>
+              {/* Carousel */}
+              <div className="position-relative w-100" style={{ height:
+  '500px' }}>
 
-              <Button
-                variant="dark"
-                size="lg"
-                onClick={goToNext}
-                style={{
-                  position: 'fixed',
-                  right: '30px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  zIndex: 1000,
-                  borderRadius: '50%',
-                  width: '60px',
-                  height: '60px',
-                  padding: 0,
-                  fontSize: '24px'
-                }}
-              >
-                →
-              </Button>
+                {/* Navigation Buttons */}
+                <Button
+                  variant="dark"
+                  size="lg"
+                  onClick={goToPrevious}
+                  style={{
+                    position: 'absolute',
+                    left: '20px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    zIndex: 10,
+                    borderRadius: '50%',
+                    width: '60px',
+                    height: '60px',
+                    padding: 0
+                  }}
+                >
+                  ←
+                </Button>
 
-              {/* Info Bar - Moved to TOP */}
-              <div className="bg-white rounded shadow-sm p-4 mb-3"
-  style={{ width: '100%' }}>
-                <div className="d-flex justify-content-between
-  align-items-center">
-                  <div>
-                    <h2
-  className="mb-2">{currentTemplate?.TemplateName}</h2>
-                    <div className="d-flex align-items-center gap-3">
-                      <span className="badge bg-primary
-  fs-6">{currentTemplate?.Category}</span>
-                      <span className="text-muted">
-                        {currentTemplate?.ComponentCount} components • by
-   {currentTemplate?.CreatedByName}
-                      </span>
-                    </div>
-                  </div>
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    onClick={() => currentTemplate &&
-  useTemplate(currentTemplate.Template_ID)}
-                    style={{ borderRadius: '8px', padding: '12px 30px',
-  fontSize: '16px' }}
-                  >
-                    🚀 Use This Template
-                  </Button>
-                </div>
-              </div>
+                <Button
+                  variant="dark"
+                  size="lg"
+                  onClick={goToNext}
+                  style={{
+                    position: 'absolute',
+                    right: '20px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    zIndex: 10,
+                    borderRadius: '50%',
+                    width: '60px',
+                    height: '60px',
+                    padding: 0
+                  }}
+                >
+                  →
+                </Button>
 
-              {/* Template Preview */}
-              <div className="bg-white rounded shadow-lg mx-auto"
-  style={{
-                width: '100%',
-                maxHeight: '70vh',
-                overflow: 'auto',
-                border: '1px solid #dee2e6'
-              }}>
-                {currentTemplate?.ThumbnailURL ? (
-                  <img
-                    src={currentTemplate.ThumbnailURL}
-                    alt={currentTemplate.TemplateName}
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      display: 'block'
-                    }}
-                  />
-                ) : (
-                  <div className="text-center text-muted d-flex
-  flex-column align-items-center justify-content-center" style={{
-  minHeight: '500px' }}>
-                    <h1 style={{ fontSize: '80px' }}>📄</h1>
-                    <p style={{ fontSize: '20px' }}>Preview Coming
+                {/* Template Card */}
+                <Card className="h-100 shadow-lg" style={{ border:
+  'none', borderRadius: '20px' }}>
+                  {/* Preview Image */}
+                  <div style={{
+                    height: '350px',
+                    backgroundColor: '#e9ecef',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderTopLeftRadius: '20px',
+                    borderTopRightRadius: '20px',
+                    overflow: 'hidden'
+                  }}>
+                    {currentTemplate?.ThumbnailURL ? (
+                      <Card.Img
+                        src={currentTemplate.ThumbnailURL}
+                        style={{ width: '100%', height: '100%',
+  objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <div className="text-center text-muted">
+                        <h1 style={{ fontSize: '80px' }}>📄</h1>
+                        <p style={{ fontSize: '20px' }}>Preview Coming
   Soon</p>
+                      </div>
+                    )}
                   </div>
-                )}
+
+                  {/* Card Body */}
+                  <Card.Body style={{ padding: '30px' }}>
+                    <div className="d-flex justify-content-between
+  align-items-start mb-3">
+                      <div>
+                        <h3
+  className="mb-1">{currentTemplate?.TemplateName}</h3>
+                        <span className="badge bg-primary
+  fs-6">{currentTemplate?.Category}</span>
+                      </div>
+                      <div className="text-end text-muted">
+                        <small>{currentTemplate?.ComponentCount}
+  components</small><br />
+                        <small>by
+  {currentTemplate?.CreatedByName}</small>
+                      </div>
+                    </div>
+
+                    <Button
+                      variant="primary"
+                      size="lg"
+                      className="w-100 py-3 fs-5"
+                      onClick={() => currentTemplate &&
+  useTemplate(currentTemplate.Template_ID)}
+                      style={{ borderRadius: '10px' }}
+                    >
+                      🚀 Use This Template
+                    </Button>
+                  </Card.Body>
+                </Card>
               </div>
 
               {/* Dots Indicator */}
@@ -227,7 +235,7 @@
                     key={idx}
                     onClick={() => setCurrentIndex(idx)}
                     style={{
-                      width: idx === currentIndex ? '35px' : '12px',
+                      width: idx === currentIndex ? '30px' : '12px',
                       height: '12px',
                       borderRadius: '6px',
                       backgroundColor: idx === currentIndex ? '#0d6efd' :
@@ -240,7 +248,7 @@
               </div>
 
               {/* Template Counter */}
-              <p className="text-muted mt-2">
+              <p className="text-muted mt-3">
                 {currentIndex + 1} of {filteredTemplates.length}
   templates
               </p>

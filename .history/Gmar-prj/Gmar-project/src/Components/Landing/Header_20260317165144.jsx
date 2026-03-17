@@ -7,7 +7,7 @@
   import { useUserContext } from '../../UserContextProvider';
   import { Checkmark, Customize, Redo, Undo } from '../Icons';
   import html2canvas from 'html2canvas';
-
+  
 const HeaderDiv = styled.div`
   width: 100%;
   height: 45px;
@@ -65,11 +65,6 @@ export const Header = () => {
   const [alertMessage, setAlertMessage] = useState('');
   const [alertType, setAlertType] = useState('success');
 
-
-  const [saveAsTemplate, setSaveAsTemplate] = useState(false);
-  const [templateName, setTemplateName] = useState('');
-  const [templateCategory, setTemplateCategory] = useState('Landing Page');
-
   const { enabled, canUndo, canRedo, actions , query } = useEditor((state, query) => ({
     enabled: state.options.enabled,
     canUndo: query.history.canUndo(),
@@ -106,7 +101,6 @@ export const Header = () => {
   'ROOT');
       const componentCount = nodes.length;
 
-      // Save as project
       const response = await
   fetch('http://localhost:3001/api/projects/save', {
         method: 'POST',
@@ -125,18 +119,11 @@ export const Header = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // If save as template is checked
-        if (saveAsTemplate && templateName) {
-          await saveAsTemplateFunc(jsonString, componentCount);
-        }
-
         showAlertModal(`Project saved successfully! ID:
   ${data.projectId}`, 'success');
         setShowSaveModal(false);
         setProjectName('');
         setProjectDescription('');
-        setSaveAsTemplate(false);
-        setTemplateName('');
       } else {
         showAlertModal(data.error || 'Failed to save project',
   'error');
@@ -145,64 +132,6 @@ export const Header = () => {
       showAlertModal(err.message, 'error');
     }
   };
-
-      // Generate thumbnail and save template
-    const saveAsTemplateFunc = async (projectData, componentCount) =>
-     {
-      try {
-        // Capture preview from canvas
-        const canvasElement = document.querySelector('.craftjs-renderer > .relative > .m-auto');
-        if (!canvasElement) {
-          showAlertModal('Could not generate template preview',
-    'error');
-          return;
-        }
-
-        // Wait a bit for any pending renders
-        await new Promise(resolve => setTimeout(resolve, 100));
-
-        const canvas = await html2canvas(canvasElement, {
-          backgroundColor: '#ffffff',
-          scale: 1, // Changed from 0.3 - higher quality
-          useCORS: true,
-          allowTaint: true,
-          logging: false,
-          windowWidth: canvasElement.scrollWidth,
-          windowHeight: canvasElement.scrollHeight,
-          scrollX: 0,
-          scrollY: 0
-        });
-
-        // Convert to base64
-        const thumbnailData = canvas.toDataURL('image/jpeg', 0.8);
-
-        console.log('Thumbnail generated, size:', thumbnailData.length);
-
-        // Save template
-        const response = await
-    fetch('http://localhost:3001/api/templates/save', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            templateName: templateName,
-            category: templateCategory,
-            projectData: projectData,
-            componentCount: componentCount,
-            createdBy: currentUser.User_ID,
-            thumbnailData: thumbnailData
-          })
-        });
-
-        if (response.ok) {
-          showAlertModal('Template saved successfully!', 'success');
-        }
-      } catch (err) {
-        console.error('Save template error:', err);
-        showAlertModal('Failed to save template: ' + err.message,
-    'error');
-      }
-    };
-
 
 
 const downloadHTML = () => {
@@ -504,72 +433,26 @@ async function deployToNetlify(htmlString, token) {
               <Modal.Header closeButton>
                 <Modal.Title>Save Project</Modal.Title>
               </Modal.Header>
-               <Modal.Body>
-                  <Form.Group>
-                    <Form.Label>Project Name</Form.Label>
+              <Modal.Body>
+                <Form.Group>
+                  <Form.Label>Project Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter project name"
+                    value={projectName}
+                    onChange={(e) => setProjectName(e.target.value)}
+                  />
                     <Form.Control
-                      type="text"
-                      placeholder="Enter project name"
-                      value={projectName}
-                      onChange={(e) =>
-  setProjectName(e.target.value)}
-                    />
-                  </Form.Group>
-                  <Form.Group className="mt-3">
-                    <Form.Label>Project Description</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter project description"
-                      value={projectDescription}
-                      onChange={(e) =>
-  setProjectDescription(e.target.value)}
-                    />
-                  </Form.Group>
-
-                  {/* Show template options only for admins */}
-                  {(currentUser?.IsAdmin ||
-  currentUser?.IsSuperAdmin) && (
-                    <Form.Group className="mt-3">
-                      <Form.Check
-                        type="checkbox"
-                        label="Save as Template (available to all
-  users)"
-                        checked={saveAsTemplate}
-                        onChange={(e) =>
-  setSaveAsTemplate(e.target.checked)}
-                      />
-                      {saveAsTemplate && (
-                        <>
-                          <Form.Control
-                            className="mt-2"
-                            type="text"
-                            placeholder="Template Name"
-                            value={templateName}
-                            onChange={(e) =>
-  setTemplateName(e.target.value)}
-                          />
-                          <Form.Select
-                            className="mt-2"
-                            value={templateCategory}
-                            onChange={(e) =>
-  setTemplateCategory(e.target.value)}
-                          >
-                            <option value="Landing Page">Landing
-  Page</option>
-                            <option
-  value="Portfolio">Portfolio</option>
-                            <option value="Blog">Blog</option>
-                            <option
-  value="E-commerce">E-commerce</option>
-                          </Form.Select>
-                        </>
-                      )}
-                    </Form.Group>
-                  )}
-                </Modal.Body>
+                    type="text"
+                    placeholder="Enter project description"
+                    value={projectDescription}
+                    onChange={(e) => setProjectDescription(e.target.value)}
+                  />
+                </Form.Group>
+              </Modal.Body>
               <Modal.Footer>
-              <Button variant="secondary" onClick={() =>
-              setShowSaveModal(false)}>Cancel</Button>
+                <button variant="secondary" onClick={() =>
+            setShowSaveModal(false)}>Cancel</button>
                 <button variant="primary" onClick={saveproject}
             disabled={!projectName}>Save</button>
               </Modal.Footer>

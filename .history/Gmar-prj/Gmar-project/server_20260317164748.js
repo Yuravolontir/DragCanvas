@@ -5,8 +5,7 @@ import sql from 'mssql';
 
 const app = express();
 app.use(cors());
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(express.json());
 
 // ---------- SQL ----------
 const config = {
@@ -513,84 +512,7 @@ app.delete('/api/delete-user', async (req, res) => {
   });
 
 
-    // Save as Template
-    app.post('/api/templates/save', async (req, res) => {
-    try {
-      const { templateName, category, projectData, componentCount,
-  createdBy, thumbnailData } = req.body;
-
-      const result = await pool.request()
-        .input('TemplateName', sql.NVarChar(100), templateName)
-        .input('Category', sql.NVarChar(50), category)
-        .input('ThumbnailURL', sql.NVarChar(sql.MAX), thumbnailData ||
-  null)  // Change to MAX
-        .input('TemplateData', sql.NVarChar(sql.MAX), projectData)
-        .input('ComponentCount', sql.Int, componentCount)
-        .input('CreatedBy', sql.Int, createdBy)
-        .query(`
-          INSERT INTO TBTemplates (TemplateName, Category, ThumbnailURL,
-  TemplateData, ComponentCount, CreatedBy)
-          VALUES (@TemplateName, @Category, @ThumbnailURL, @TemplateData,
-   @ComponentCount, @CreatedBy)
-          SELECT SCOPE_IDENTITY() AS TemplateID
-        `);
-
-      const templateId = result.recordset[0].TemplateID;
-      res.json({ templateId, message: 'Template saved successfully' });
-    } catch (err) {
-      console.error('Save template error:', err);
-      res.status(500).json({ error: err.message });
-    }
-  });
-
-
-  // Get all templates (for Inspire Me page)
-  app.get('/api/templates', async (req, res) => {
-    try {
-      const result = await pool.request()
-        .query(`
-          SELECT t.Template_ID, t.TemplateName, t.Category,
-  t.ThumbnailURL,
-                 t.ComponentCount, t.CreatedDate, u.UserName AS
-  CreatedByName
-          FROM TBTemplates t
-          INNER JOIN TBUsers u ON t.CreatedBy = u.User_ID
-          WHERE t.IsActive = 1
-          ORDER BY t.CreatedDate DESC
-        `);
-
-      res.json(result.recordset);
-    } catch (err) {
-      console.error('Get templates error:', err);
-      res.status(500).json({ error: err.message });
-    }
-  });
-
-  // Get single template data
-  app.get('/api/templates/:id', async (req, res) => {
-    try {
-      const { id } = req.params;
-
-      const result = await pool.request()
-        .input('TemplateID', sql.Int, id)
-        .query(`
-          SELECT Template_ID, TemplateName, Category, TemplateData,
-   ThumbnailURL, ComponentCount
-          FROM TBTemplates
-          WHERE Template_ID = @TemplateID AND IsActive = 1
-        `);
-
-      if (result.recordset.length === 0) {
-        return res.status(404).json({ error: 'Template not found'
-  });
-      }
-
-      res.json(result.recordset[0]);
-    } catch (err) {
-      console.error('Get template error:', err);
-      res.status(500).json({ error: err.message });
-    }
-  });
+  
 
 // ---------- Robust JSON extraction/parsing ----------
 function extractBalancedJsonObject(text) {
