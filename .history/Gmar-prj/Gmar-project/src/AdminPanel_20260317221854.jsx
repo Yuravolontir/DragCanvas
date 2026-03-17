@@ -50,14 +50,6 @@ export default function AdminPanel() {
         setCurrentUser(JSON.parse(storedUser));
       }
     }, []);
-
-    // Fetch templates when currentUser is loaded
-    useEffect(() => {
-      if (currentUser?.User_ID) {
-        fetchTemplates();
-      }
-    }, [currentUser?.User_ID]);
-
     // Access control - check if user is admin or superadmin
     useEffect(() => {
       const storedUser = localStorage.getItem('currentUser');
@@ -284,31 +276,19 @@ const confirmRoleChange = async () => {
     };
 
     
-    
-       const fetchTemplates = async () => {
-          // Only fetch if we have a user
-          if (!currentUser?.User_ID) {
-            return;
-          }
-
-          setLoadingTemplates(true);
-          try {
-            const response = await fetch(`http://localhost:3001/api/templates/all?userId=${currentUser.User_ID}`);
-
-            if (!response.ok) {
-              throw new Error('Failed to fetch templates');
-            }
-
-            const data = await response.json();
-            setTemplates(Array.isArray(data) ? data : []);
-          } catch (err) {
-            console.error('Failed to fetch templates:', err);
-            setTemplates([]);
-          } finally {
-            setLoadingTemplates(false);
-          }
-        };
-
+    const fetchTemplates = async () => {
+      setLoadingTemplates(true);
+      try {
+        const response = await
+  fetch('http://localhost:3001/api/templates');
+        const data = await response.json();
+        setTemplates(data);
+      } catch (err) {
+        console.error('Failed to fetch templates:', err);
+      } finally {
+        setLoadingTemplates(false);
+      }
+    };
  const toggleTemplateVisibility = async (templateId, currentStatus) =>
    {
       try {
@@ -353,215 +333,126 @@ const confirmRoleChange = async () => {
     </div>
   );
 
-   return (
-      <div>
-        <NavBar />
-        <Container className="mt-5">
-          <div className="d-flex justify-content-between
-  align-items-center mb-4">
-            <h2>Admin Panel</h2>
-            <div>
-              <Button
-                variant={activeTab === 'users' ? 'primary' :
-  'outline-primary'}
-                onClick={() => setActiveTab('users')}
-                className="me-2"
-              >
-                👥 Users
-              </Button>
-              <Button
-                variant={activeTab === 'templates' ? 'primary' :
-  'outline-primary'}
-                onClick={() => setActiveTab('templates')}
-              >
-                📄 Templates
-              </Button>
-            </div>
-          </div>
+  return (
+    <div>
+      <NavBar />
+      <Container className="mt-5">
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h2>👥 All Users</h2>
+          <Badge bg="primary">{filteredUsers.length} Users</Badge>
+        </div>
 
-          {/* USERS TAB */}
-          {activeTab === 'users' && (
-            <>
-              <div className="d-flex gap-3 mb-3">
-                <InputGroup style={{ maxWidth: '400px' }}>
-                  <InputGroup.Text>🔍</InputGroup.Text>
-                  <Form.Control
-                    placeholder="Search email..."
-                    value={searchEmail}
-                    onChange={(e) => setSearchEmail(e.target.value)}
-                  />
-                </InputGroup>
+        <div className="d-flex gap-3 mb-3">
+          <InputGroup style={{ maxWidth: '400px' }}>
+            <InputGroup.Text>🔍</InputGroup.Text>
+            <Form.Control
+              placeholder="Search email..."
+              value={searchEmail}
+              onChange={(e) => setSearchEmail(e.target.value)}
+            />
+          </InputGroup>
 
-                <Form.Select
-                  style={{ width: '150px' }}
-                  value={filterStatus}
-                  onChange={(e) => setFilterStatus(e.target.value)}
-                >
-                  <option value="all">All Status</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </Form.Select>
+          <Form.Select
+            style={{ width: '150px' }}
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
+            <option value="all">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </Form.Select>
 
-                <Form.Select
-                  style={{ width: '150px' }}
-                  value={filterRole}
-                  onChange={(e) => setFilterRole(e.target.value)}
-                >
-                  <option value="all">All Roles</option>
-                  <option value="admin">Admin</option>
-                  <option value="super-admin">Super Admin</option>
-                  <option value="user">User</option>
-                </Form.Select>
-              </div>
+          <Form.Select
+            style={{ width: '150px' }}
+            value={filterRole}
+            onChange={(e) => setFilterRole(e.target.value)}
+          >
+            <option value="all">All Roles</option>
+            <option value="admin">Admin</option>
+            <option value="super-admin">Super Admin</option>
+            <option value="user">User</option>
+          </Form.Select>
+        </div>
 
-              <Table striped bordered hover>
-                <thead className="table-dark">
-                  <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredUsers.map((user) => (
-                    <tr key={user.User_ID}>
-                      <td>#{user.User_ID}</td>
-                      <td>{user.UserName}</td>
-                      <td>{user.UserEmail}</td>
-                      <td>
-                        {user.IsSuperAdmin && <Badge bg="danger"
-  className="me-2">SuperAdmin</Badge>}
-                        {user.IsAdmin && !user.IsSuperAdmin && <Badge
-  bg="danger" className="me-2">Admin</Badge>}
-                        {user.IsActive ? <Badge
-  bg="success">Active</Badge> : <Badge bg="secondary">Inactive</Badge>}
-                      </td>
-                      <td>
-                        <div className="d-flex flex-column gap-2">
-                          {!user.IsSuperAdmin && user.User_ID !==
-  currentUser?.User_ID && (
-                            user.IsActive ? (
-                              <Button variant="warning" size="sm"
-  onClick={() => handleUpdateStatusClick(user, false)}>
-                                Deactivate
-                              </Button>
-                            ) : (
-                              <Button variant="success" size="sm"
-  onClick={() => handleUpdateStatusClick(user, true)}>
-                                Activate
-                              </Button>
-                            )
-                          )}
-                          {!user.IsSuperAdmin && user.User_ID !==
-  currentUser?.User_ID && (
-                            <Button variant="outline-warning" size="sm"
-  onClick={() => handleResetPasswordClick(user)}>
-                              Reset Password
-                            </Button>
-                          )}
-                          {!user.IsAdmin && !user.IsSuperAdmin &&
-  user.User_ID !== currentUser?.User_ID && (
-                            <Button variant="outline-danger" size="sm"
-  onClick={() => handleDeleteClick(user)}>
-                              Delete
-                            </Button>
-                          )}
-                          {currentUser?.IsSuperAdmin &&
-  !user.IsSuperAdmin && user.User_ID !== currentUser?.User_ID && (
-                            user.IsAdmin ? (
-                              <Button variant="outline-secondary"
-  size="sm" onClick={() => handleRoleChangeClick(user, false)}>
-                                Remove Admin
-                              </Button>
-                            ) : (
-                              <Button variant="outline-info" size="sm"
-  onClick={() => handleRoleChangeClick(user, true)}>
-                                Make Admin
-                              </Button>
-                            )
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
+        <Table striped bordered hover>
+          <thead className="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredUsers.map((user) => (
+              <tr key={user.User_ID}>
+                <td>#{user.User_ID}</td>
+                <td>{user.UserName}</td>
+                <td>{user.UserEmail}</td>
+                <td>
+                  {user.IsSuperAdmin && <Badge bg="danger" className="me-2">SuperAdmin</Badge>}
+                  {user.IsAdmin && !user.IsSuperAdmin && <Badge bg="danger" className="me-2">Admin</Badge>}
+                  {user.IsActive ? <Badge bg="success">Active</Badge> : <Badge bg="secondary">Inactive</Badge>}
+                </td>
+                <td>
+                   <div className="d-flex flex-column gap-2">
+                     
+                  {/* View Profile */}
+                  {!(currentUser?.IsAdmin &&
+                  !currentUser?.IsSuperAdmin && user.IsSuperAdmin) && (
+                                        <Button variant="info" size="sm"
+                  onClick={() => handleViewProfile(user)}>
+                                          👤 View Profile
+                                        </Button>
+                                      )}
+                    {/* Status Toggle */}
+                    {!user.IsSuperAdmin && user.User_ID !== currentUser?.User_ID && (
+                      user.IsActive ? (
+                        <Button variant="warning" size="sm" onClick={() => handleUpdateStatusClick(user, false)}>
+                          Deactivate
+                        </Button>
+                      ) : (
+                        <Button variant="success" size="sm" onClick={() => handleUpdateStatusClick(user, true)}>
+                          Activate
+                        </Button>
+                      )
+                    )}
 
-              {filteredUsers.length === 0 && <p className="text-center
-  mt-4">No users found.</p>}
-            </>
-          )}
+                    {/* Reset Password */}
+                    {!user.IsSuperAdmin && user.User_ID !== currentUser?.User_ID && (
+                      <Button variant="outline-warning" size="sm" onClick={() => handleResetPasswordClick(user)}>
+                        Reset Password
+                      </Button>
+                    )}
 
-          {/* TEMPLATES TAB */}
-          {activeTab === 'templates' && (
-            <>
-              {loadingTemplates ? (
-                <p className="text-center mt-4">Loading templates...</p>
-              ) : templates.length === 0 ? (
-                <p className="text-center mt-4">No templates found.</p>
-              ) : (
-                <Table striped bordered hover>
-                  <thead className="table-dark">
-                    <tr>
-                      <th>ID</th>
-                      <th>Thumbnail</th>
-                      <th>Name</th>
-                      <th>Category</th>
-                      <th>Components</th>
-                      <th>Created By</th>
-                      <th>Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {templates.map((template) => (
-                      <tr key={template.Template_ID}>
-                        <td>#{template.Template_ID}</td>
-                        <td>
-                          {template.ThumbnailURL ? (
-                            <img
-                              src={template.ThumbnailURL}
-                              alt={template.TemplateName}
-                              style={{ width: '60px', height: '40px',
-  objectFit: 'cover', borderRadius: '4px' }}
-                            />
-                          ) : (
-                            <span className="text-muted">No img</span>
-                          )}
-                        </td>
-                        <td>{template.TemplateName}</td>
-                        <td><Badge
-  bg="info">{template.Category}</Badge></td>
-                        <td>{template.ComponentCount}</td>
-                        <td>{template.CreatedByName}</td>
-                        <td>
-                          {template.IsActive ?
-                            <Badge bg="success">Visible</Badge> :
-                            <Badge bg="secondary">Hidden</Badge>
-                          }
-                        </td>
-                        <td>
-                          <Button
-                            variant={template.IsActive ? 'warning' :
-  'success'}
-                            size="sm"
-                            onClick={() =>
-  toggleTemplateVisibility(template.Template_ID, template.IsActive)}
-                          >
-                            {template.IsActive ? 'Hide' : 'Show'}
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              )}
-            </>
-          )}
+                    {/* Delete - only for regular users */}
+                    {!user.IsAdmin && !user.IsSuperAdmin && user.User_ID !== currentUser?.User_ID && (
+                      <Button variant="outline-danger" size="sm" onClick={() => handleDeleteClick(user)}>
+                        Delete
+                      </Button>
+                    )}
 
-       
+                    {/* Make/Remove Admin - Superadmin only */}
+                    {currentUser?.IsSuperAdmin && !user.IsSuperAdmin && user.User_ID !== currentUser?.User_ID && (
+                      user.IsAdmin ? (
+                        <Button variant="outline-secondary" size="sm" onClick={() => handleRoleChangeClick(user, false)}>
+                          Remove Admin
+                        </Button>
+                      ) : (
+                        <Button variant="outline-info" size="sm" onClick={() => handleRoleChangeClick(user, true)}>
+                          Make Admin
+                        </Button>
+                      )
+                    )}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+
+        {filteredUsers.length === 0 && <p className="text-center mt-4">No users found.</p>}
       </Container>
 
       {/* Delete Confirmation Modal */}

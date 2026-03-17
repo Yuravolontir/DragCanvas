@@ -61,24 +61,11 @@
       setAlertType(type);
       setShowAlert(true);
     };
-const useTemplate = (templateId) => {
-      // Check if user is logged in
-      const storedUser = localStorage.getItem('currentUser');
-      if (!storedUser) {
-        showAlertModal('Please register or login to use templates',
-  'error');
-        // Redirect to register after a short delay
-        setTimeout(() => {
-          navigate('/register');
-        }, 1500);
-        return;
-      }
-
+  const useTemplate = (templateId) => {
       navigate('/create-new-project', {
         state: { templateId: templateId }
       });
     };
-
 
     const handleDeleteClick = (template) => {
       setTemplateToDelete(template);

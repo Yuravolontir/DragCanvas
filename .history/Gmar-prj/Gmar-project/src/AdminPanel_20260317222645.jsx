@@ -50,14 +50,6 @@ export default function AdminPanel() {
         setCurrentUser(JSON.parse(storedUser));
       }
     }, []);
-
-    // Fetch templates when currentUser is loaded
-    useEffect(() => {
-      if (currentUser?.User_ID) {
-        fetchTemplates();
-      }
-    }, [currentUser?.User_ID]);
-
     // Access control - check if user is admin or superadmin
     useEffect(() => {
       const storedUser = localStorage.getItem('currentUser');
@@ -284,31 +276,27 @@ const confirmRoleChange = async () => {
     };
 
     
-    
-       const fetchTemplates = async () => {
-          // Only fetch if we have a user
-          if (!currentUser?.User_ID) {
-            return;
+     const fetchTemplates = async () => {
+        setLoadingTemplates(true);
+        try {
+          const response = await
+  fetch('http://localhost:3001/api/templates');
+
+          if (!response.ok) {
+            throw new Error('Failed to fetch templates');
           }
 
-          setLoadingTemplates(true);
-          try {
-            const response = await fetch(`http://localhost:3001/api/templates/all?userId=${currentUser.User_ID}`);
+          const data = await response.json();
+          setTemplates(Array.isArray(data) ? data : []);
+        } catch (err) {
+          console.error('Failed to fetch templates:', err);
+          setTemplates([]);
+        } finally {
+          setLoadingTemplates(false);
+        }
+      };
 
-            if (!response.ok) {
-              throw new Error('Failed to fetch templates');
-            }
-
-            const data = await response.json();
-            setTemplates(Array.isArray(data) ? data : []);
-          } catch (err) {
-            console.error('Failed to fetch templates:', err);
-            setTemplates([]);
-          } finally {
-            setLoadingTemplates(false);
-          }
-        };
-
+      
  const toggleTemplateVisibility = async (templateId, currentStatus) =>
    {
       try {

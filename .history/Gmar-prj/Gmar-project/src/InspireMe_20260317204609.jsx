@@ -61,60 +61,40 @@
       setAlertType(type);
       setShowAlert(true);
     };
-const useTemplate = (templateId) => {
-      // Check if user is logged in
-      const storedUser = localStorage.getItem('currentUser');
-      if (!storedUser) {
-        showAlertModal('Please register or login to use templates',
-  'error');
-        // Redirect to register after a short delay
-        setTimeout(() => {
-          navigate('/register');
-        }, 1500);
-        return;
-      }
-
+  const useTemplate = (templateId) => {
       navigate('/create-new-project', {
         state: { templateId: templateId }
       });
     };
-
 
     const handleDeleteClick = (template) => {
       setTemplateToDelete(template);
       setShowDeleteModal(true);
     };
 
-       const confirmDelete = async () => {
+    const confirmDelete = async () => {
       if (!currentUser) {
         showAlertModal('You must be logged in', 'error');
         return;
       }
 
       try {
-        const response = await fetch(
-          `http://localhost:3001/api/templates/${templateToDelete.Template_ID}?userId=${currentUser.User_ID}`,
-          {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' }
-          }
-        );
-
-        // Get raw text first for debugging
-        const rawText = await response.text();
-        console.log('Delete response:', rawText);
+        const response = await fetch(`http://localhost:3001/api/templates
+  /${templateToDelete.Template_ID}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: currentUser.User_ID
+          })
+        });
 
         if (response.ok) {
-          let data;
-          try {
-            data = JSON.parse(rawText);
-            showAlertModal(data.message || 'Template deleted successfully', 'success');
-            fetchTemplates();
-          } catch (e) {
-            showAlertModal('Server returned invalid response', 'error');
-          }
+          showAlertModal('Template deleted successfully', 'success');
+          fetchTemplates(); // Refresh list
         } else {
-          showAlertModal('Failed to delete template', 'error');
+          const data = await response.json();
+          showAlertModal(data.error || 'Failed to delete template',
+  'error');
         }
       } catch (err) {
         showAlertModal('Error deleting template: ' + err.message,

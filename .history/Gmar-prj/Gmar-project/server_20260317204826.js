@@ -527,12 +527,11 @@ app.delete('/api/delete-user', async (req, res) => {
         .input('TemplateData', sql.NVarChar(sql.MAX), projectData)
         .input('ComponentCount', sql.Int, componentCount)
         .input('CreatedBy', sql.Int, createdBy)
-        .input('IsActive', sql.Bit, 1)
         .query(`
           INSERT INTO TBTemplates (TemplateName, Category, ThumbnailURL,
-  TemplateData, ComponentCount, CreatedBy, IsActive)
+  TemplateData, ComponentCount, CreatedBy)
           VALUES (@TemplateName, @Category, @ThumbnailURL, @TemplateData,
-   @ComponentCount, @CreatedBy, @IsActive)
+   @ComponentCount, @CreatedBy)
           SELECT SCOPE_IDENTITY() AS TemplateID
         `);
 
@@ -563,45 +562,6 @@ app.delete('/api/delete-user', async (req, res) => {
       res.json(result.recordset);
     } catch (err) {
       console.error('Get templates error:', err);
-      res.status(500).json({ error: err.message });
-    }
-  });
-
-  // Get all templates (including hidden) - for admin panel
-  app.get('/api/templates/all', async (req, res) => {
-    try {
-      const { userId } = req.query;
-
-      if (!userId) {
-        return res.status(400).json({ error: 'userId required' });
-      }
-
-      // Check if user is admin or superadmin
-      const userResult = await pool.request()
-        .input('UserID', sql.Int, userId)
-        .query('SELECT IsAdmin, IsSuperAdmin FROM TBUsers WHERE User_ID = @UserID');
-
-      if (userResult.recordset.length === 0) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-
-      const user = userResult.recordset[0];
-      if (!user.IsAdmin && !user.IsSuperAdmin) {
-        return res.status(403).json({ error: 'Only admins can view all templates' });
-      }
-
-      const result = await pool.request()
-        .query(`
-          SELECT t.Template_ID, t.TemplateName, t.Category, t.ThumbnailURL,
-                 t.ComponentCount, t.CreatedDate, t.IsActive, u.UserName AS CreatedByName
-          FROM TBTemplates t
-          INNER JOIN TBUsers u ON t.CreatedBy = u.User_ID
-          ORDER BY t.CreatedDate DESC
-        `);
-
-      res.json(result.recordset);
-    } catch (err) {
-      console.error('Get all templates error:', err);
       res.status(500).json({ error: err.message });
     }
   });
@@ -674,86 +634,7 @@ app.delete('/api/delete-user', async (req, res) => {
     });
 
 
-app.delete('/api/templates/:id', async (req, res) => {
-      try {
-        const { id } = req.params;
-        const { userId } = req.query; // Use query instead of body
 
-        console.log('Update status template request:', id, 'by user:', userId);
-
-        if (!userId) {
-          return res.status(400).json({ error: 'userId required' });
-        }
-
-        // Check if user is admin or superadmin
-        const userResult = await pool.request()
-          .input('UserID', sql.Int, userId)
-          .query('SELECT IsAdmin, IsSuperAdmin FROM TBUsers WHERE User_ID = @UserID');
-
-        if (userResult.recordset.length === 0) {
-          return res.status(404).json({ error: 'User not found' });
-        }
-
-        const user = userResult.recordset[0];
-        if (!user.IsAdmin && !user.IsSuperAdmin) {
-          return res.status(403).json({ error: 'Only admins can update templates' });
-        }
-
-        await pool.request()
-          .input('TemplateID', sql.Int, id)
-          .query('UPDATE TBTemplates SET IsActive = 0 WHERE Template_ID = @TemplateID');
-
-        console.log('✅ Template deleted:', id);
-        res.json({ message: 'Template deleted successfully' });
-
-      } catch (err) {
-        console.error('❌ Delete template error:', err);
-        res.status(500).json({ error: err.message });
-      }
-    });
-
-
-     // Update template visibility
-  app.patch('/api/templates/:id/visibility', async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { isActive, userId } = req.body;
-
-      if (!userId) {
-        return res.status(400).json({ error: 'userId required' });
-      }
-
-      // Check if user is admin or superadmin
-      const userResult = await pool.request()
-        .input('UserID', sql.Int, userId)
-        .query('SELECT IsAdmin, IsSuperAdmin FROM TBUsers WHERE User_ID = @UserID');
-
-      if (userResult.recordset.length === 0) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-
-      const user = userResult.recordset[0];
-      if (!user.IsAdmin && !user.IsSuperAdmin) {
-        return res.status(403).json({ error: 'Only admins can update templates' });
-      }
-
-      await pool.request()
-        .input('TemplateID', sql.Int, id)
-        .input('IsActive', sql.Bit, isActive)
-        .query('UPDATE TBTemplates SET IsActive = @IsActive WHERE Template_ID = @TemplateID');
-
-      console.log('✅ Template visibility updated:', id, 'isActive:',
-  isActive);
-      res.json({ message: 'Template visibility updated' });
-
-    } catch (err) {
-      console.error('❌ Update template visibility error:', err);
-      res.status(500).json({ error: err.message });
-    }
-  });
-
-
-  
 
 // ---------- Robust JSON extraction/parsing ----------
 function extractBalancedJsonObject(text) {

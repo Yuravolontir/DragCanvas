@@ -50,14 +50,6 @@ export default function AdminPanel() {
         setCurrentUser(JSON.parse(storedUser));
       }
     }, []);
-
-    // Fetch templates when currentUser is loaded
-    useEffect(() => {
-      if (currentUser?.User_ID) {
-        fetchTemplates();
-      }
-    }, [currentUser?.User_ID]);
-
     // Access control - check if user is admin or superadmin
     useEffect(() => {
       const storedUser = localStorage.getItem('currentUser');
@@ -286,14 +278,10 @@ const confirmRoleChange = async () => {
     
     
        const fetchTemplates = async () => {
-          // Only fetch if we have a user
-          if (!currentUser?.User_ID) {
-            return;
-          }
-
           setLoadingTemplates(true);
           try {
-            const response = await fetch(`http://localhost:3001/api/templates/all?userId=${currentUser.User_ID}`);
+            // Use admin endpoint to get ALL templates (including hidden)
+            const response = await fetch(`http://localhost:3001/api/templates/all?userId=${currentUser?.User_ID}`);
 
             if (!response.ok) {
               throw new Error('Failed to fetch templates');
@@ -308,6 +296,7 @@ const confirmRoleChange = async () => {
             setLoadingTemplates(false);
           }
         };
+
 
  const toggleTemplateVisibility = async (templateId, currentStatus) =>
    {

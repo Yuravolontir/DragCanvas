@@ -50,14 +50,6 @@ export default function AdminPanel() {
         setCurrentUser(JSON.parse(storedUser));
       }
     }, []);
-
-    // Fetch templates when currentUser is loaded
-    useEffect(() => {
-      if (currentUser?.User_ID) {
-        fetchTemplates();
-      }
-    }, [currentUser?.User_ID]);
-
     // Access control - check if user is admin or superadmin
     useEffect(() => {
       const storedUser = localStorage.getItem('currentUser');

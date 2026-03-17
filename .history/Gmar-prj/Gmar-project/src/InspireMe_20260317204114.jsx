@@ -26,7 +26,7 @@
 
     useEffect(() => {
       fetchTemplates();
-
+      
       // Get current user
       const storedUser = localStorage.getItem('currentUser');
       if (storedUser) {
@@ -61,68 +61,11 @@
       setAlertType(type);
       setShowAlert(true);
     };
-const useTemplate = (templateId) => {
-      // Check if user is logged in
-      const storedUser = localStorage.getItem('currentUser');
-      if (!storedUser) {
-        showAlertModal('Please register or login to use templates',
-  'error');
-        // Redirect to register after a short delay
-        setTimeout(() => {
-          navigate('/register');
-        }, 1500);
-        return;
-      }
 
+    const useTemplate = (templateId) => {
       navigate('/create-new-project', {
         state: { templateId: templateId }
       });
-    };
-
-
-    const handleDeleteClick = (template) => {
-      setTemplateToDelete(template);
-      setShowDeleteModal(true);
-    };
-
-       const confirmDelete = async () => {
-      if (!currentUser) {
-        showAlertModal('You must be logged in', 'error');
-        return;
-      }
-
-      try {
-        const response = await fetch(
-          `http://localhost:3001/api/templates/${templateToDelete.Template_ID}?userId=${currentUser.User_ID}`,
-          {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' }
-          }
-        );
-
-        // Get raw text first for debugging
-        const rawText = await response.text();
-        console.log('Delete response:', rawText);
-
-        if (response.ok) {
-          let data;
-          try {
-            data = JSON.parse(rawText);
-            showAlertModal(data.message || 'Template deleted successfully', 'success');
-            fetchTemplates();
-          } catch (e) {
-            showAlertModal('Server returned invalid response', 'error');
-          }
-        } else {
-          showAlertModal('Failed to delete template', 'error');
-        }
-      } catch (err) {
-        showAlertModal('Error deleting template: ' + err.message,
-  'error');
-      }
-
-      setShowDeleteModal(false);
-      setTemplateToDelete(null);
     };
 
     const filteredTemplates = filterCategory === 'all'
@@ -152,9 +95,6 @@ const useTemplate = (templateId) => {
       return () => window.removeEventListener('keydown', handleKeyDown);
     }, [filteredTemplates.length]);
 
-
-
-    
     return (
       <div>
         <NavBar />
@@ -232,7 +172,7 @@ const useTemplate = (templateId) => {
                 →
               </Button>
 
-                          {/* Info Bar - Moved to TOP */}
+              {/* Info Bar - Moved to TOP */}
               <div className="bg-white rounded shadow-sm p-4 mb-3"
   style={{ width: '100%' }}>
                 <div className="d-flex justify-content-between
@@ -249,31 +189,16 @@ const useTemplate = (templateId) => {
                       </span>
                     </div>
                   </div>
-                  <div className="d-flex gap-2">
-                    {/* Delete button - only for admins */}
-                    {(currentUser?.IsAdmin || currentUser?.IsSuperAdmin)
-  && (
-                      <Button
-                        variant="danger"
-                        size="lg"
-                        onClick={() =>
-  handleDeleteClick(currentTemplate)}
-                        style={{ borderRadius: '8px', padding: '12px 20px', fontSize: '16px' }}
-                      >
-                        🗑️ Delete
-                      </Button>
-                    )}
-                    <Button
-                      variant="primary"
-                      size="lg"
-                      onClick={() => currentTemplate &&
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    onClick={() => currentTemplate &&
   useTemplate(currentTemplate.Template_ID)}
-                      style={{ borderRadius: '8px', padding: '12px 30px',
-   fontSize: '16px' }}
-                    >
-                      🚀 Use This Template
-                    </Button>
-                  </div>
+                    style={{ borderRadius: '8px', padding: '12px 30px',
+  fontSize: '16px' }}
+                  >
+                    🚀 Use This Template
+                  </Button>
                 </div>
               </div>
 
@@ -353,27 +278,6 @@ const useTemplate = (templateId) => {
   setShowAlert(false)}>OK</Button>
           </Modal.Footer>
         </Modal>
-        
-        {/* Delete Confirmation Modal */}
-        <Modal show={showDeleteModal} onHide={() =>
-  setShowDeleteModal(false)} centered>
-          <Modal.Header closeButton>
-            <Modal.Title>Delete Template</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Are you sure you want to delete
-  <strong>{templateToDelete?.TemplateName}</strong>? This action cannot
-  be undone.
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() =>
-  setShowDeleteModal(false)}>Cancel</Button>
-            <Button variant="danger"
-  onClick={confirmDelete}>Delete</Button>
-          </Modal.Footer>
-        </Modal>
-
-        {/* Alert Modal */}
       </div>
     );
   }
