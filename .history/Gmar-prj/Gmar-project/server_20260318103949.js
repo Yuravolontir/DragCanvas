@@ -400,8 +400,6 @@ app.delete('/api/delete-user', async (req, res) => {
          ComponentCount, ProjectSizeKB, ThumbnailURL, IsPublished,
          CreatedDate, ModifiedDate
   FROM TBProjects
-        WHERE User_ID = @UserID AND IsDeleted = 0
-        ORDER BY ModifiedDate DESC
         `);
 
       res.json(result.recordset);

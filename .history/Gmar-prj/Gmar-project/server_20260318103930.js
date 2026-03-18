@@ -396,12 +396,12 @@ app.delete('/api/delete-user', async (req, res) => {
       const result = await pool.request()
         .input('UserID', sql.Int, userId)
         .query(`
-            SELECT Project_ID, ProjectName, ProjectDescription,
-         ComponentCount, ProjectSizeKB, ThumbnailURL, IsPublished,
-         CreatedDate, ModifiedDate
-  FROM TBProjects
-        WHERE User_ID = @UserID AND IsDeleted = 0
-        ORDER BY ModifiedDate DESC
+          SELECT Project_ID, ProjectName, ProjectDescription,
+                 ComponentCount, ProjectSizeKB, IsPublished,
+                 CreatedDate, ModifiedDate
+          FROM TBProjects
+          WHERE User_ID = @UserID AND IsDeleted = 0
+          ORDER BY ModifiedDate DESC
         `);
 
       res.json(result.recordset);

@@ -360,8 +360,6 @@ app.delete('/api/delete-user', async (req, res) => {
           .input('ComponentCount', sql.Int, componentCount || 0)
           .input('ProjectSizeKB', sql.Decimal(10,2), projectSizeKB || 0)
           .input('ProjectData', sql.NVarChar(sql.MAX), projectData || null)
-          .input('ThumbnailURL', sql.NVarChar(sql.MAX), thumbnailUrl ||
-  null)
           .output('ResultProjectID', sql.Int)
           .output('ResultCode', sql.Int);
 
@@ -396,12 +394,12 @@ app.delete('/api/delete-user', async (req, res) => {
       const result = await pool.request()
         .input('UserID', sql.Int, userId)
         .query(`
-            SELECT Project_ID, ProjectName, ProjectDescription,
-         ComponentCount, ProjectSizeKB, ThumbnailURL, IsPublished,
-         CreatedDate, ModifiedDate
-  FROM TBProjects
-        WHERE User_ID = @UserID AND IsDeleted = 0
-        ORDER BY ModifiedDate DESC
+          SELECT Project_ID, ProjectName, ProjectDescription,
+                 ComponentCount, ProjectSizeKB, IsPublished,
+                 CreatedDate, ModifiedDate
+          FROM TBProjects
+          WHERE User_ID = @UserID AND IsDeleted = 0
+          ORDER BY ModifiedDate DESC
         `);
 
       res.json(result.recordset);

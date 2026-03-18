@@ -1,6 +1,7 @@
 
   import { useState, useEffect } from 'react'
   import NavBar from './NavBar';
+  import { useUserContext } from './UserContextProvider';
   import Card from 'react-bootstrap/Card';
   import Button from 'react-bootstrap/Button';
   import Container from 'react-bootstrap/Container';
@@ -12,7 +13,7 @@
 
   export default function MyProject() {
     const navigate = useNavigate();
-    const [currentUser, setCurrentUser] = useState(null);
+    const { currentUser } = useUserContext();
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -22,19 +23,16 @@
     const [showDeleteModal, setShowDeleteModal] =useState(false);
     const [projectToDelete, setProjectToDelete] = useState(null);
 
-    // Load current user from localStorage
-    useEffect(() => {
-      const storedUser = localStorage.getItem('currentUser');
-      if (storedUser) {
-        setCurrentUser(JSON.parse(storedUser));
-      }
-    }, []);
 
     useEffect(() => {
-      if (currentUser?.User_ID) {
-        fetchProjects();
-      }
-    }, [currentUser]);
+      fetchProjects();
+    }, []);
+
+      useEffect(() => {
+    if (currentUser?.User_ID) {
+      fetchProjects();
+    }
+  }, [currentUser]);
 
      const fetchProjects = async () => {
       try {
@@ -125,33 +123,19 @@
   'blue' }} onClick={() => navigate('/create-new-project')}>Create
   one!</span></p>
           ) : (
-            <div style={{
-              display: 'flex',
-              overflowX: 'auto',
-              gap: '20px',
-              padding: '20px 0',
-              scrollBehavior: 'smooth'
-            }}>
+            <Row>
               {projects.map((project) => (
-               <div key={project.Project_ID} style={{ minWidth: '320px', maxWidth: '320px' }}>
-    <Card style={{ height: '100%' }}>
+               <Col key={project.Project_ID} xs={12} md={6} lg={4}
+  className="mb-4">
+    <Card>
       {/* Thumbnail at top of card */}
       {project.ThumbnailURL && (
-        <div
-          style={{
-            height: '200px',
-            overflow: 'auto',
-            borderBottom: '1px solid #dee2e6',
-            cursor: 'grab'
-          }}
-        >
-          <img
-            src={project.ThumbnailURL}
-            alt={project.ProjectName}
-            style={{ minWidth: '100%', display: 'block' }}
-            draggable={false}
-          />
-        </div>
+        <Card.Img
+          variant="top"
+          src={project.ThumbnailURL}
+          style={{ height: '180px', objectFit: 'cover',
+  borderBottom: '1px solid #dee2e6' }}
+        />
       )}
       <Card.Body>
         <Card.Title>
@@ -190,9 +174,9 @@
                         </Button>
                     </Card.Body>
                   </Card>
-                </div>
+                </Col>
               ))}
-            </div>
+            </Row>
           )}
         </Container>
          {/* Alert Modal */}
