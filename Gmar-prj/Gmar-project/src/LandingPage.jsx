@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
@@ -6,165 +6,255 @@ import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import NavBar from './NavBar';
+import './LandingPage.css';
 
 export default function LandingPage(props) {
+  const videoContainerRef = useRef(null);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  useEffect(() => {
+    initSmoothScrollAnimation();
+  }, []);
+
+  const initSmoothScrollAnimation = async () => {
+    const videoContainer = videoContainerRef.current;
+    if (!videoContainer) return;
+
+    const images = [];
+    let currentFrame = 0;
+    let totalFrames = 0;
+
+    // Create circular wrapper
+    const wrapper = document.createElement('div');
+    wrapper.className = 'circular-media-wrapper';
+
+    // Create image element
+    const img = document.createElement('img');
+    img.className = 'scroll-video';
+    img.alt = 'Scroll Animation';
+    wrapper.appendChild(img);
+
+    // Clear any existing content and append
+    videoContainer.innerHTML = '';
+    videoContainer.appendChild(wrapper);
+
+    // Load all frame images
+    const maxFrames = 200;
+    const framesToLoad = [];
+
+    for (let i = 1; i <= maxFrames; i++) {
+      const frameNum = String(i).padStart(3, '0');
+      const image = new Image();
+      image.src = `/frames/ezgif-frame-${frameNum}.jpg`;
+      image.loading = 'eager';
+
+      framesToLoad.push(new Promise((resolve) => {
+        image.onload = () => {
+          images[i] = image;
+          totalFrames = i;
+          resolve();
+        };
+        image.onerror = () => {
+          // Frame doesn't exist, stop here
+          resolve();
+        };
+      }));
+    }
+
+    await Promise.all(framesToLoad);
+    console.log(`✓ Loaded ${totalFrames} frames`);
+
+    // Show first frame
+    if (images[1]) {
+      img.src = images[1].src;
+    }
+
+    setImagesLoaded(true);
+
+    // Calculate scroll section height - REDUCED for faster animation
+    const scrollSection = document.querySelector('.video-scroll-section');
+    const scrollHeight = totalFrames * 2; // 2vh per frame = even less scrolling
+    if (scrollSection) {
+      scrollSection.style.height = scrollHeight + 'vh';
+    }
+
+    // Setup scroll listener
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const rect = scrollSection.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+          const scrollTop = -rect.top;
+          const scrollableHeight = rect.height - windowHeight;
+
+          if (scrollableHeight > 0) {
+            const progress = Math.max(0, Math.min(1, scrollTop / scrollableHeight));
+            const frameIndex = Math.floor(progress * (totalFrames - 1)) + 1;
+
+            if (frameIndex !== currentFrame && images[frameIndex]) {
+              currentFrame = frameIndex;
+              img.src = images[frameIndex].src;
+
+              // Update UI
+              const percent = Math.round(progress * 100);
+              const progressFill = document.querySelector('.progress-fill');
+              const percentDisplay = document.querySelector('.scroll-percentage');
+
+              if (progressFill) progressFill.style.width = percent + '%';
+              if (percentDisplay) percentDisplay.textContent = percent + '%';
+
+              // Update text
+              updateTextLines(percent);
+            }
+          }
+
+          ticking = false;
+        });
+
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+  };
+
+  const updateTextLines = (percent) => {
+    // Animate text lines
+    document.querySelectorAll('.text-line').forEach(line => {
+      const trigger = parseInt(line.dataset.progress);
+      const distance = Math.abs(percent - trigger);
+      line.style.opacity = distance < 15 ? 1 - (distance / 15) : 0;
+      line.style.transform = distance < 15
+        ? 'translateX(-50%) translateY(0)'
+        : 'translateX(-50%) translateY(50px)';
+    });
+
+    // Animate floating cards
+    document.querySelectorAll('.floating-card').forEach(card => {
+      const trigger = parseInt(card.dataset.progress);
+      const distance = Math.abs(percent - trigger);
+      if (distance < 10) {
+        card.classList.add('visible');
+      } else {
+        card.classList.remove('visible');
+      }
+    });
+  };
+
   return (
     <div>
       <NavBar />
 
-      {/* Hero Section */}
-      <div style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        minHeight: '80vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        color: 'white',
-        padding: '50px 20px'
-      }}>
-        <Container>
-          <h1 style={{ fontSize: '3.5rem', fontWeight: 'bold', marginBottom: '20px' }}>
-            Build Beautiful Websites in Minutes
-          </h1>
-          <p style={{ fontSize: '1.3rem', marginBottom: '40px', opacity: 0.9 }}>
-            No coding required. Drag, drop, and publish your professional website with our easy-to-use builder.
-          </p>
-          <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Button
-              as={Link}
-              to="/register"
-              size="lg"
-              style={{
-                padding: '15px 40px',
-                fontSize: '1.1rem',
-                borderRadius: '30px',
-                backgroundColor: 'white',
-                color: '#667eea',
-                border: 'none',
-                fontWeight: '600'
-              }}
-            >
-              Get Started Free
-            </Button>
-            <Button
-              as={Link}
-              to="/inspire-me"
-              size="lg"
-              style={{
-                padding: '15px 40px',
-                fontSize: '1.1rem',
-                borderRadius: '30px',
-                backgroundColor: 'transparent',
-                color: 'white',
-                border: '2px solid white',
-                fontWeight: '600'
-              }}
-            >
-              View Templates
-            </Button>
-          </div>
-        </Container>
+      {/* Progress Bar */}
+      <div className="progress-bar">
+        <div className="progress-fill"></div>
       </div>
 
+      {/* Scroll Percentage */}
+      <div className="scroll-percentage">0%</div>
+
+      {/* Hero Section - NO BLACK BACKGROUND */}
+      <section className="hero">
+        <h1>Build Beautiful Websites in Minutes</h1>
+        <p className="scroll-hint">↓ Scroll to see the magic</p>
+        <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap', marginTop: '40px', position: 'relative', zIndex: 10 }}>
+          <Button
+            as={Link}
+            to="/register"
+            size="lg"
+            className="cta-button-primary"
+          >
+            Get Started Free
+          </Button>
+          <Button
+            as={Link}
+            to="/inspire-me"
+            size="lg"
+            className="cta-button-secondary"
+          >
+            View Templates
+          </Button>
+        </div>
+      </section>
+
+      {/* Video Scroll Section - LIGHT BACKGROUND */}
+      <section className="video-scroll-section">
+        <div className="video-container" ref={videoContainerRef}>
+          {/* Image will be injected here by JS */}
+        </div>
+
+        {/* Text that appears as you scroll */}
+        <div className="scroll-text">
+          <div className="text-line" data-progress="0">The Journey Begins</div>
+          <div className="text-line" data-progress="25">Drag & Drop</div>
+          <div className="text-line" data-progress="50">Create Freely</div>
+          <div className="text-line" data-progress="75">Build Fast</div>
+          <div className="text-line" data-progress="100">Publish Instantly</div>
+        </div>
+
+        {/* Floating cards that appear at different scroll positions */}
+        <div className="floating-card floating-card-top" data-progress="10">
+          <div className="icon">🎨</div>
+          <h4>Drag & Drop</h4>
+          <p>Easy to use editor</p>
+        </div>
+
+        <div className="floating-card floating-card-bottom" data-progress="30">
+          <div className="icon">📱</div>
+          <h4>Responsive</h4>
+          <p>Works on all devices</p>
+        </div>
+
+        <div className="floating-card floating-card-left" data-progress="50">
+          <span>✨ No coding required</span>
+        </div>
+
+        <div className="floating-card floating-card-right" data-progress="70">
+          <span>🚀 One-click publish</span>
+        </div>
+
+        <div className="floating-card floating-card-top" data-progress="90" style={{ top: 'auto', bottom: '20%', left: 'auto', right: '15%' }}>
+          <div className="icon">💡</div>
+          <h4>Templates</h4>
+          <p>Start with a template</p>
+        </div>
+      </section>
+
       {/* Features Section */}
-      <Container style={{ padding: '80px 20px' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '60px', fontSize: '2.5rem', color: '#333' }}>
-          Everything You Need
-        </h2>
+      <Container className="features-section">
+        <h2 className="section-title">Everything You Need</h2>
         <Row>
-          <Col md={4} style={{ marginBottom: '30px' }}>
-            <Card style={{ border: 'none', textAlign: 'center', padding: '30px', height: '100%' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>🎨</div>
-              <Card.Title style={{ fontSize: '1.3rem', marginBottom: '15px', color: '#333' }}>Drag & Drop Builder</Card.Title>
-              <Card.Text style={{ color: '#666', fontSize: '1rem' }}>
-                Simply drag elements onto your page and customize them with ease. No technical skills required.
-              </Card.Text>
+          <Col md={4} className="mb-4">
+            <Card className="feature-card">
+              <div className="feature-icon">🎨</div>
+              <Card.Title>Drag & Drop Builder</Card.Title>
+              <Card.Text>Simply drag elements onto your page and customize them with ease.</Card.Text>
             </Card>
           </Col>
-          <Col md={4} style={{ marginBottom: '30px' }}>
-            <Card style={{ border: 'none', textAlign: 'center', padding: '30px', height: '100%' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>📱</div>
-              <Card.Title style={{ fontSize: '1.3rem', marginBottom: '15px', color: '#333' }}>Responsive Design</Card.Title>
-              <Card.Text style={{ color: '#666', fontSize: '1rem' }}>
-                Your site looks great on any device. Desktop, tablet, or mobile - we've got you covered.
-              </Card.Text>
+          <Col md={4} className="mb-4">
+            <Card className="feature-card">
+              <div className="feature-icon">📱</div>
+              <Card.Title>Responsive Design</Card.Title>
+              <Card.Text>Your site looks great on any device.</Card.Text>
             </Card>
           </Col>
-          <Col md={4} style={{ marginBottom: '30px' }}>
-            <Card style={{ border: 'none', textAlign: 'center', padding: '30px', height: '100%' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>🚀</div>
-              <Card.Title style={{ fontSize: '1.3rem', marginBottom: '15px', color: '#333' }}>Instant Publish</Card.Title>
-              <Card.Text style={{ color: '#666', fontSize: '1rem' }}>
-                Deploy your website to Netlify with one click. Share your creation with the world instantly.
-              </Card.Text>
+          <Col md={4} className="mb-4">
+            <Card className="feature-card">
+              <div className="feature-icon">🚀</div>
+              <Card.Title>Instant Publish</Card.Title>
+              <Card.Text>Deploy to Netlify with one click.</Card.Text>
             </Card>
           </Col>
         </Row>
       </Container>
 
-      {/* How It Works Section */}
-      <div style={{ backgroundColor: '#f8f9fa', padding: '80px 20px' }}>
-        <Container>
-          <h2 style={{ textAlign: 'center', marginBottom: '60px', fontSize: '2.5rem', color: '#333' }}>
-            How It Works
-          </h2>
-          <Row style={{ alignItems: 'center' }}>
-            <Col md={6} style={{ marginBottom: '30px' }}>
-              <div style={{ fontSize: '4rem', marginBottom: '20px' }}>1️⃣</div>
-              <h3 style={{ fontSize: '1.8rem', marginBottom: '15px', color: '#333' }}>Choose a Template</h3>
-              <p style={{ color: '#666', fontSize: '1.1rem', lineHeight: '1.6' }}>
-                Browse our collection of professionally designed templates. Find the perfect starting point for your project.
-              </p>
-            </Col>
-            <Col md={6} style={{ marginBottom: '30px' }}>
-              <div style={{ fontSize: '4rem', marginBottom: '20px' }}>2️⃣</div>
-              <h3 style={{ fontSize: '1.8rem', marginBottom: '15px', color: '#333' }}>Customize Everything</h3>
-              <p style={{ color: '#666', fontSize: '1.1rem', lineHeight: '1.6' }}>
-                Use our drag-and-drop editor to add text, images, videos, and more. Make it uniquely yours.
-              </p>
-            </Col>
-            <Col md={6} style={{ marginBottom: '30px' }}>
-              <div style={{ fontSize: '4rem', marginBottom: '20px' }}>3️⃣</div>
-              <h3 style={{ fontSize: '1.8rem', marginBottom: '15px', color: '#333' }}>Save & Publish</h3>
-              <p style={{ color: '#666', fontSize: '1.1rem', lineHeight: '1.6' }}>
-                Save your work and deploy to Netlify with a single click. Your website is live in seconds.
-              </p>
-            </Col>
-            <Col md={6} style={{ marginBottom: '30px', textAlign: 'center' }}>
-              <div style={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                borderRadius: '20px',
-                padding: '40px',
-                color: 'white'
-              }}>
-                <h3 style={{ fontSize: '1.5rem', marginBottom: '20px' }}>Ready to Start?</h3>
-                <Button
-                  as={Link}
-                  to="/register"
-                  size="lg"
-                  style={{
-                    backgroundColor: 'white',
-                    color: '#667eea',
-                    border: 'none',
-                    padding: '12px 30px',
-                    borderRadius: '25px',
-                    fontWeight: '600'
-                  }}
-                >
-                  Create Free Account
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-
       {/* Footer */}
-      <div style={{ backgroundColor: '#333', color: 'white', padding: '40px 20px', textAlign: 'center' }}>
+      <div className="landing-footer">
         <Container>
-          <p style={{ marginBottom: '10px', fontSize: '1.1rem' }}>Built with ❤️ for creators everywhere</p>
-          <p style={{ margin: 0, opacity: 0.7, fontSize: '0.9rem' }}>© 2026 Website Builder. All rights reserved.</p>
+          <p>Built with ❤️ for creators everywhere</p>
+          <p className="footer-copy">© 2026 Website Builder. All rights reserved.</p>
         </Container>
       </div>
     </div>
