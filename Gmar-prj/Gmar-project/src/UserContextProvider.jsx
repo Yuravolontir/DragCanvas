@@ -1,5 +1,6 @@
- import React, { createContext, useState, useEffect, useContext } from "react";
- import { v4 as uuidv4 } from 'uuid';
+  import React, { createContext, useState, useEffect, useContext }
+  from "react";
+  import { v4 as uuidv4 } from 'uuid';
 
   export const UserContext = createContext();
   export const useUserContext = () => useContext(UserContext);
@@ -13,6 +14,15 @@
     const [isSuperAdmin, setIsSuperAdmin] = useState(null);
     const [projects, setProjects] = useState([]);
 
+    // Add notification state and refetch function
+    const [notificationCount, setNotificationCount] = useState(0);
+    const [notificationsVersion, setNotificationsVersion] =
+  useState(0);
+
+    const refreshNotifications = () => {
+      setNotificationsVersion(prev => prev + 1);
+    };
+
     const addproject = (name,project) => {
       let newProject = {
         id: uuidv4(),
@@ -20,7 +30,7 @@
         name: name,
         project: project}
         setProjects([...projects, newProject]);
-      }
+    }
     const deleteproject = (id) => {
       setProjects(projects.filter(p => p.id !== id));
     }
@@ -29,7 +39,7 @@
     const storedUser = localStorage.getItem('currentUser');
     const storedIsAdmin = localStorage.getItem('isAdmin');
     const storedIsSuperAdmin =
-  localStorage.getItem('isSuperAdmin');
+    localStorage.getItem('isSuperAdmin');
     if (storedUser) {
       setCurrentUser(JSON.parse(storedUser));
       if (storedIsAdmin)
@@ -43,7 +53,8 @@
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch('http://localhost:3001/api/login', {
+        const response = await
+  fetch('http://localhost:3001/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
@@ -57,11 +68,13 @@
 
         setCurrentUser(data.user);
         setIsAdmin(data.admin);
-        setIsSuperAdmin(data.user.IsSuperAdmin); // Add this
-        localStorage.setItem('currentUser', JSON.stringify(data.user));
-        localStorage.setItem('isAdmin', JSON.stringify(data.admin));
+        setIsSuperAdmin(data.user.IsSuperAdmin);
+        localStorage.setItem('currentUser',
+  JSON.stringify(data.user));
+        localStorage.setItem('isAdmin',
+  JSON.stringify(data.admin));
         localStorage.setItem('isSuperAdmin',
-        JSON.stringify(data.user.IsSuperAdmin)); 
+        JSON.stringify(data.user.IsSuperAdmin));
 
         return { success: true };
       } catch (err) {
@@ -76,7 +89,8 @@
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch('http://localhost:3001/api/register', {
+        const response = await
+  fetch('http://localhost:3001/api/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, email, password })
@@ -89,7 +103,8 @@
         }
 
         setCurrentUser(data.user);
-        localStorage.setItem('currentUser', JSON.stringify(data.user));
+        localStorage.setItem('currentUser',
+  JSON.stringify(data.user));
         return { success: true };
       } catch (err) {
         setError(err.message);
@@ -102,16 +117,28 @@
   const logout = () => {
     setCurrentUser(null);
     setIsAdmin(null);
-    setIsSuperAdmin(null); // Add this
+    setIsSuperAdmin(null);
     localStorage.removeItem('currentUser');
     localStorage.removeItem('isAdmin');
-    localStorage.removeItem('isSuperAdmin'); // Add this
+    localStorage.removeItem('isSuperAdmin');
   };
 
     return (
-  <UserContext.Provider value={{ currentUser, login, register,
-  logout, loading, error, projects, addproject, deleteproject,
-  isAdmin, isSuperAdmin }}>
+      <UserContext.Provider value={{
+        currentUser,
+        login,
+        register,
+        logout,
+        loading,
+        error,
+        projects,
+        addproject,
+        deleteproject,
+        isAdmin,
+        isSuperAdmin,
+        notificationsVersion,
+        refreshNotifications
+      }}>
         {props.children}
       </UserContext.Provider>
     );

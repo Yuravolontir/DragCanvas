@@ -38,10 +38,22 @@ export default function AdminPanel() {
   const [userProfile, setUserProfile] = useState(null);
   const [userStats, setUserStats] = useState(null);
 
- 
+     const [notifications, setNotifications] = useState([]);
+    const [loadingNotifications, setLoadingNotifications] = useState(true);
+
+        // Newsletter Compose Modal
+    const [showNewsletterModal, setShowNewsletterModal] =
+  useState(false);
+    const [newsletterSubject, setNewsletterSubject] = useState('');
+    const [newsletterMessage, setNewsletterMessage] = useState('');
+    const [recipientType, setRecipientType] = useState('all'); //'all' or 'selected'
+    const [selectedRecipients, setSelectedRecipients] = useState([]);
+    const [sending, setSending] = useState(false);
+
     useEffect(() => {
       fetchUsers();
       fetchTemplates();
+      fetchNotifications();
     }, []);
 
     useEffect(() => {
@@ -51,10 +63,11 @@ export default function AdminPanel() {
       }
     }, []);
 
-    // Fetch templates when currentUser is loaded
+    // Fetch templates and notifications when currentUser is loaded
     useEffect(() => {
       if (currentUser?.User_ID) {
         fetchTemplates();
+        fetchNotifications();
       }
     }, [currentUser?.User_ID]);
 
@@ -335,6 +348,85 @@ const confirmRoleChange = async () => {
       }
     };
 
+
+    const fetchNotifications = async () => {
+      // Only fetch if we have a user
+      if (!currentUser?.User_ID) {
+        return;
+      }
+
+      setLoadingNotifications(true);
+      try {
+        const response = await fetch(`http://localhost:3001/api/notifications/all?userId=${currentUser.User_ID}`);
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch notifications');
+        }
+
+        const data = await response.json();
+        setNotifications(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error('Failed to fetch notifications:', err);
+        setNotifications([]);
+      } finally {
+        setLoadingNotifications(false);
+      }
+    };
+
+  const handleSendNewsletter = async () => {
+      if (!newsletterSubject.trim() || !newsletterMessage.trim()) {
+        showAlertModal('Please enter subject and message',
+  'error');
+        return;
+      }
+
+      if (recipientType === 'selected' && selectedRecipients.length
+   === 0) {
+        showAlertModal('Please select at least one recipient',
+  'error');
+        return;
+      }
+
+      setSending(true);
+      try {
+        const response = await
+  fetch('http://localhost:3001/api/notifications/send-newsletter',
+  {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            subject: newsletterSubject,
+            message: newsletterMessage,
+            recipientType: recipientType,
+            recipientIds: recipientType === 'selected' ?
+  selectedRecipients : null,
+            userId: currentUser.User_ID
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          showAlertModal(`Newsletter sent to ${data.sentCount}
+  recipients!`, 'success');
+          setShowNewsletterModal(false);
+          setNewsletterSubject('');
+          setNewsletterMessage('');
+          setRecipientType('all');
+          setSelectedRecipients([]);
+          fetchNotifications();
+        } else {
+          showAlertModal(data.error || 'Failed to send newsletter',
+   'error');
+        }
+      } catch (err) {
+        showAlertModal(err.message, 'error');
+      } finally {
+        setSending(false);
+      }
+    };
+
+
   if (loading) return (
     <div>
       <NavBar />
@@ -376,6 +468,14 @@ const confirmRoleChange = async () => {
               >
                 📄 Templates
               </Button>
+                              <Button
+                  variant={activeTab === 'notifications' ?
+  'primary' : 'outline-primary'}
+                  onClick={() => setActiveTab('notifications')}
+                  className="ms-2"
+                >
+                  🔔 Notifications
+                </Button>
             </div>
           </div>
 
@@ -569,6 +669,90 @@ const confirmRoleChange = async () => {
           )}
 
        
+{/* NOTIFICATIONS TAB */}
+            {activeTab === 'notifications' && (
+              <>
+
+               <div className="d-flex justify-content-between
+  align-items-center mb-3">
+                  <h4>🔔 Notifications</h4>
+                  <Button variant="primary" onClick={() =>
+  setShowNewsletterModal(true)}>
+                    ✉️ Compose Newsletter
+                  </Button>
+                </div>
+
+                {loadingNotifications ? (
+                  <p className="text-center mt-4">Loading
+  notifications...</p>
+                ) : notifications.length === 0 ? (
+                  <p className="text-center mt-4">No notifications
+  found.</p>
+                ) : (
+                  <Table striped bordered hover>
+                    <thead className="table-dark">
+                      <tr>
+                        <th>ID</th>
+                        <th>Subject</th>
+                        <th>Type</th>
+                        <th>Recipients</th>
+                        <th>Status</th>
+                        <th>Stats</th>
+                        <th>Created</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {notifications.map((notif) => (
+                        <tr key={notif.Notification_ID}>
+                          <td>#{notif.Notification_ID}</td>
+                          <td>{notif.Subject}</td>
+                          <td>
+                            {notif.NotificationType ===
+  'newsletter' && <Badge bg="primary">Newsletter</Badge>}
+                            {notif.NotificationType === 'birthday'
+  && <Badge bg="warning">Birthday</Badge>}
+                            {notif.NotificationType === 'event' &&
+  <Badge bg="info">Event</Badge>}
+                            {notif.NotificationType === 'automated'
+   && <Badge bg="secondary">Automated</Badge>}
+                          </td>
+                          <td>
+                            {notif.RecipientType === 'all' &&
+  <Badge bg="success">All Users</Badge>}
+                            {notif.RecipientType === 'selected' &&
+  <Badge bg="info">Selected ({notif.RecipientIDs ?
+  JSON.parse(notif.RecipientIDs).length : 0})</Badge>}
+                            {notif.RecipientType === 'automated' &&
+   <Badge bg="warning">Automated</Badge>}
+                          </td>
+                          <td>
+                            {notif.Status === 'draft' && <Badge
+  bg="secondary">Draft</Badge>}
+                            {notif.Status === 'scheduled' && <Badge
+   bg="info">Scheduled</Badge>}
+                            {notif.Status === 'sent' && <Badge
+  bg="success">Sent</Badge>}
+                            {notif.Status === 'failed' && <Badge
+  bg="danger">Failed</Badge>}
+                          </td>
+                          <td>
+                            <small>
+                              Sent: {notif.SentCount || 0}<br/>
+                              Opened: {notif.OpenedCount || 0}<br/>
+                              Failed: {notif.FailedCount || 0}
+                            </small>
+                          </td>
+                          <td>{new
+  Date(notif.CreatedDate).toLocaleDateString()}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                )}
+              </>
+            )}
+
+
       </Container>
 
       {/* Delete Confirmation Modal */}
@@ -792,7 +976,102 @@ const confirmRoleChange = async () => {
   setShowProfileModal(false)}>Close</Button>
           </Modal.Footer>
         </Modal>
+  {/* Newsletter Compose Modal */}
+        <Modal show={showNewsletterModal} onHide={() =>
+  setShowNewsletterModal(false)} centered size="lg">
+          <Modal.Header closeButton className="bg-primary
+  text-white">
+            <Modal.Title>✉️ Compose Newsletter</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label>Subject *</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter newsletter subject..."
+                  value={newsletterSubject}
+                  onChange={(e) =>
+  setNewsletterSubject(e.target.value)}
+                  maxLength={200}
+                />
+              </Form.Group>
 
+              <Form.Group className="mb-3">
+                <Form.Label>Recipients *</Form.Label>
+                <Form.Select
+                  value={recipientType}
+                  onChange={(e) =>
+  setRecipientType(e.target.value)}
+                >
+                  <option value="all">All Users</option>
+                  <option value="selected">Selected Users</option>
+                </Form.Select>
+              </Form.Group>
+
+              {recipientType === 'selected' && (
+                <Form.Group className="mb-3">
+                  <Form.Label>Select Users</Form.Label>
+                  <div style={{ maxHeight: '200px', overflowY:
+  'auto', border: '1px solid #dee2e6', padding: '10px',
+  borderRadius: '5px' }}>
+                    {users.filter(u => u.IsActive).map(user => (
+                      <Form.Check
+                        key={user.User_ID}
+                        type="checkbox"
+                        id={`user-${user.User_ID}`}
+                        label={`${user.UserName}
+  (${user.UserEmail})`}
+
+  checked={selectedRecipients.includes(user.User_ID)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+
+  setSelectedRecipients([...selectedRecipients, user.User_ID]);
+                          } else {
+
+  setSelectedRecipients(selectedRecipients.filter(id => id !==
+  user.User_ID));
+                          }
+                        }}
+                      />
+                    ))}
+                  </div>
+                  <small className="text-muted">
+                    {selectedRecipients.length} user(s) selected
+                  </small>
+                </Form.Group>
+              )}
+
+              <Form.Group className="mb-3">
+                <Form.Label>Message *</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={8}
+                  placeholder="Enter your newsletter message..."
+                  value={newsletterMessage}
+                  onChange={(e) =>
+  setNewsletterMessage(e.target.value)}
+                />
+                <small className="text-muted">HTML tags
+  allowed</small>
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() =>
+  setShowNewsletterModal(false)}>
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              onClick={handleSendNewsletter}
+              disabled={sending}
+            >
+              {sending ? 'Sending...' : '🚀 Send Newsletter'}
+            </Button>
+          </Modal.Footer>
+        </Modal>
        
     </div>
   );

@@ -756,8 +756,135 @@ app.delete('/api/templates/:id', async (req, res) => {
   });
 
 
-  
+      // Get all notifications (for admin panel)
+    app.get('/api/notifications/all', async (req, res) => {
+    try {
+      const { userId } = req.query;
 
+      if (!userId) {
+        return res.status(400).json({ error: 'userId required' });
+      }
+
+      const request = pool.request()
+        .input('AdminID', sql.Int, userId);
+
+      const result = await
+  request.execute('dbo.SP_GetAllNotifications');
+      res.json(result.recordset);
+    } catch (err) {
+      console.error('Get all notifications error:', err);
+
+      if (err.message.includes('Not authorized')) {
+        return res.status(403).json({ error: 'Only superadmins can view notifications' });
+      }
+
+      res.status(500).json({ error: err.message });
+    }
+  });
+  
+    // Send newsletter endpoint
+    
+  app.post('/api/notifications/send-newsletter', async (req, res) => {
+    try {
+      const { subject, message, recipientType, recipientIds, userId
+   } = req.body;
+
+      if (!subject || !message || !recipientType || !userId) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+
+      // Convert recipientIds array to JSON string
+      const recipientIdsString = (recipientType === 'selected' &&
+  recipientIds)
+        ? JSON.stringify(recipientIds)
+        : null;
+
+      const request = pool.request()
+        .input('Subject', sql.NVarChar(200), subject)
+        .input('Message', sql.NVarChar(sql.MAX), message)
+        .input('RecipientType', sql.NVarChar(50), recipientType)
+        .input('RecipientIDs', sql.NVarChar(sql.MAX),
+  recipientIdsString)
+        .input('AdminID', sql.Int, userId)
+        .output('NotificationID', sql.Int)
+        .output('SentCount', sql.Int)
+        .output('ResultCode', sql.Int);
+
+      const result = await
+  request.execute('dbo.SP_SendNewsletter');
+
+      const resultCode = result.output.ResultCode;
+      const notificationId = result.output.NotificationID;
+      const sentCount = result.output.SentCount;
+
+      if (resultCode === 0) {
+        return res.status(403).json({ error: 'Not authorized - only superadmins can send newsletters' });
+      }
+
+      console.log(`✅ Newsletter sent: ID=${notificationId},
+  Recipients=${sentCount}`);
+
+      res.json({
+        success: true,
+        notificationId: notificationId,
+        sentCount: sentCount,
+        message: `Newsletter sent to ${sentCount} recipients`
+      });
+
+    } catch (err) {
+      console.error('Send newsletter error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/notifications/user/:userId', async (req, res) => {
+    try {
+      const { userId } = req.params;
+
+      const request = pool.request()
+        .input('UserID', sql.Int, userId);
+
+      const result = await request.execute('dbo.SP_GetUserNotifications');
+      res.json(result.recordset);
+    } catch (err) {
+      console.error('Get user notifications error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  
+  // Delete notification
+  app.delete('/api/notifications/:notificationId', async (req, res) => {
+    try {
+      const { notificationId } = req.params;
+      const userId = req.query.userId;
+
+      if (!userId) {
+        return res.status(400).json({ error: 'User ID required' });
+      }
+
+      const request = pool.request()
+        .input('NotificationID', sql.Int, notificationId)
+        .input('UserID', sql.Int, userId)
+        .output('ResultCode', sql.Int);
+
+      const result = await
+  request.execute('dbo.SP_DeleteNotification');
+
+      const resultCode = result.output.ResultCode;
+
+      if (resultCode === 1) {
+        res.json({ success: true, message: 'Notification deleted'
+  });
+      } else {
+        res.status(404).json({ error: 'Notification not found' });
+      }
+    } catch (err) {
+      console.error('Delete notification error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+        
 // ---------- Robust JSON extraction/parsing ----------
 function extractBalancedJsonObject(text) {
   const s = String(text);

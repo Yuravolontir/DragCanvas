@@ -10,6 +10,7 @@ import MyProject from './MyProject';
 import InspireMe from './InspireMe';
 import UserContextProvider from './UserContextProvider';
 import AdminPanel from './AdminPanel';
+import NotificationsPage from './NotificationsPage'
 
 function App() {
   
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
         {
       path: "/admin-panel",
       element: <AdminPanel />
+    },
+            {
+      path: "/notifications",
+      element: <NotificationsPage />
     }
   ]);
 
