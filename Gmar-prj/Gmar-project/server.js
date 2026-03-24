@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import sql from 'mssql';
+import cron from 'node-cron';
 
 const app = express();
 app.use(cors());
@@ -24,11 +25,245 @@ async function start() {
     pool = await sql.connect(config);
     console.log('Connected to SQL Server!');
     app.listen(3001, () => console.log('Server running on port 3001'));
+
+    // Start the scheduled notification processor
+    startScheduleProcessor();
   } catch (err) {
     console.error('Database connection failed:', err);
   }
 }
 start();
+
+// ============================================
+// SCHEDULED NOTIFICATION PROCESSOR
+// ============================================
+function startScheduleProcessor() {
+  console.log('📅 Schedule processor started - checking every minute');
+
+  cron.schedule('* * * * *', async () => {
+    try {
+      const now = new Date();
+
+      // Find schedules that are due to run
+      const result = await pool.request().query(`
+        SELECT *
+        FROM TBNotificationSchedules
+        WHERE IsActive = 1
+          AND NextRunDate IS NOT NULL
+          AND NextRunDate <= GETDATE()
+      `);
+
+      const schedulesToRun = result.recordset;
+
+      if (schedulesToRun.length > 0) {
+        console.log(`🔔 Processing ${schedulesToRun.length} scheduled notification(s)...`);
+        schedulesToRun.forEach(s => console.log(`  - ${s.ScheduleName} (NextRun was: ${s.NextRunDate ? new Date(s.NextRunDate).toLocaleString() : 'N/A'})`));
+
+        for (const schedule of schedulesToRun) {
+          await processScheduledNotification(schedule, pool);
+        }
+      }
+    } catch (err) {
+      console.error('Schedule processor error:', err);
+    }
+  });
+}
+
+async function processScheduledNotification(schedule, pool) {
+  try {
+    console.log(`  → Executing schedule: ${schedule.ScheduleName} (ID: ${schedule.Schedule_ID}, Type: ${schedule.NotificationType})`);
+
+    // Get the message content
+    let subject, message;
+    if (schedule.Template_ID) {
+      const templateResult = await pool.request()
+        .input('Template_ID', sql.Int, schedule.Template_ID)
+        .query('SELECT * FROM TBNotificationTemplates WHERE Template_ID = @Template_ID');
+
+      if (templateResult.recordset && templateResult.recordset.length > 0) {
+        const template = templateResult.recordset[0];
+        subject = template.Subject;
+        message = template.Message;
+      } else {
+        // Template not found, try message override
+        if (schedule.MessageOverride) {
+          subject = schedule.ScheduleName;
+          message = schedule.MessageOverride;
+        } else {
+          console.log(`  ⚠️ Template not found and no message override for schedule: ${schedule.ScheduleName}`);
+          return;
+        }
+      }
+    } else if (schedule.MessageOverride) {
+      subject = schedule.ScheduleName;
+      message = schedule.MessageOverride;
+    } else {
+      console.log(`  ⚠️ No message content for schedule: ${schedule.ScheduleName}`);
+      return;
+    }
+
+    // Get recipients
+    let recipients;
+    if (schedule.RecipientType === 'all') {
+      const usersResult = await pool.request()
+        .query('SELECT User_ID FROM TBUsers WHERE IsActive = 1');
+      recipients = usersResult.recordset || [];
+    } else if (schedule.RecipientType === 'selected' && schedule.RecipientIDs) {
+      const recipientIds = JSON.parse(schedule.RecipientIDs);
+      const placeholders = recipientIds.map(() => '?').join(',');
+      const selectedResult = await pool.request()
+        .query(`SELECT User_ID FROM TBUsers WHERE User_ID IN (${recipientIds.join(',')})`);
+      recipients = selectedResult.recordset || [];
+    } else {
+      console.log(`  ⚠️ No recipients for schedule: ${schedule.ScheduleName}`);
+      return;
+    }
+
+    if (!recipients || recipients.length === 0) {
+      console.log(`  ⚠️ No recipients found for schedule: ${schedule.ScheduleName}`);
+      return;
+    }
+
+    // Create notification record
+    const notificationResult = await pool.request()
+      .input('Subject', sql.NVarChar, subject)
+      .input('Message', sql.NVarChar, message)
+      .input('NotificationType', sql.NVarChar, schedule.NotificationType)
+      .input('RecipientType', sql.NVarChar, schedule.RecipientType)
+      .input('RecipientIDs', sql.NVarChar, schedule.RecipientIDs)
+      .input('SentCount', sql.Int, recipients.length)
+      .input('CreatedBy', sql.Int, schedule.CreatedBy)
+      .query(`
+        DECLARE @NotificationID INT
+        INSERT INTO TBNotifications (Subject, Message, NotificationType, RecipientType, RecipientIDs, Status, SentCount, CreatedBy, CreatedDate, SentDate)
+        VALUES (@Subject, @Message, @NotificationType, @RecipientType, @RecipientIDs, 'sent', @SentCount, @CreatedBy, GETDATE(), GETDATE())
+
+        SELECT @NotificationID as NotificationID
+      `);
+
+    if (!notificationResult.recordset || notificationResult.recordset.length === 0) {
+      console.log(`  ❌ Failed to create notification for schedule: ${schedule.ScheduleName}`);
+      return;
+    }
+
+    const notificationId = notificationResult.recordset[0].NotificationID;
+
+    // Add delivery log entries
+    for (const recipient of recipients) {
+      try {
+        const userResult = await pool.request()
+          .input('User_ID', sql.Int, recipient.User_ID)
+          .query('SELECT UserName, UserEmail FROM TBUsers WHERE User_ID = @User_ID');
+
+        if (!userResult.recordset || userResult.recordset.length === 0) {
+          console.log(`  ⚠️ User not found: ${recipient.User_ID}`);
+          continue;
+        }
+
+        const user = userResult.recordset[0];
+
+        await pool.request()
+          .input('Notification_ID', sql.Int, notificationId)
+          .input('User_ID', sql.Int, recipient.User_ID)
+          .input('UserName', sql.NVarChar, user.UserName)
+          .input('UserEmail', sql.NVarChar, user.UserEmail)
+          .input('Status', sql.NVarChar, 'delivered')
+          .input('DeliveredDate', sql.DateTime, new Date())
+          .query(`
+            INSERT INTO TBNotificationDeliveryLog (Notification_ID, User_ID, UserName, UserEmail, Status, DeliveredDate)
+            VALUES (@Notification_ID, @User_ID, @UserName, @UserEmail, @Status, @DeliveredDate)
+          `);
+      } catch (err) {
+        console.error(`  ⚠️ Failed to log delivery for user ${recipient.User_ID}:`, err.message);
+      }
+    }
+
+    // Update schedule's LastRunDate and calculate NextRunDate
+    const nextRunDate = calculateNextRunDate(schedule.Frequency, schedule.ScheduleTime, schedule.ScheduleDay);
+
+    await pool.request()
+      .input('Schedule_ID', sql.Int, schedule.Schedule_ID)
+      .input('LastRunDate', sql.DateTime, new Date())
+      .input('NextRunDate', sql.DateTime, nextRunDate)
+      .query(`
+        UPDATE TBNotificationSchedules
+        SET LastRunDate = @LastRunDate,
+            NextRunDate = @NextRunDate
+        WHERE Schedule_ID = @Schedule_ID
+      `);
+
+    console.log(`  ✅ Sent ${recipients.length} notification(s), next run: ${nextRunDate.toLocaleString()}`);
+
+  } catch (err) {
+    console.error(`  ❌ Error processing schedule ${schedule.ScheduleName}:`, err.message);
+
+    // Still update NextRunDate to prevent infinite retry loop
+    try {
+      const nextRunDate = calculateNextRunDate(schedule.Frequency, schedule.ScheduleTime, schedule.ScheduleDay);
+      await pool.request()
+        .input('Schedule_ID', sql.Int, schedule.Schedule_ID)
+        .input('NextRunDate', sql.DateTime, nextRunDate)
+        .query('UPDATE TBNotificationSchedules SET NextRunDate = @NextRunDate WHERE Schedule_ID = @Schedule_ID');
+      console.log(`  🔄 Updated next run to: ${nextRunDate.toLocaleString()}`);
+    } catch (updateErr) {
+      console.error(`  ❌ Failed to update NextRunDate: ${updateErr.message}`);
+    }
+  }
+}
+
+function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
+  const now = new Date();
+  const [hours, minutes] = scheduleTime.split(':').map(Number);
+
+  // Start with today at the scheduled time
+  let nextRun = new Date();
+  nextRun.setHours(hours, minutes, 0, 0);
+
+  // If the scheduled time has already passed today, move to tomorrow first
+  if (nextRun <= now) {
+    nextRun.setDate(nextRun.getDate() + 1);
+  }
+
+  // Then apply the frequency logic
+  switch (frequency) {
+    case 'daily':
+      // Already handled by the check above - next run is tomorrow
+      break;
+    case 'weekly':
+      const currentDay = nextRun.getDay();
+      const targetDay = scheduleDay || 1;
+      let daysUntilTarget = (targetDay + 7 - currentDay) % 7;
+      if (daysUntilTarget === 0) daysUntilTarget = 7; // If today is the target day, move to next week
+      nextRun.setDate(nextRun.getDate() + daysUntilTarget);
+      break;
+    case 'monthly':
+      const targetDayOfMonth = scheduleDay || 1;
+      nextRun.setDate(targetDayOfMonth);
+      // If we've gone past the target day this month, move to next month
+      if (nextRun.getDate() !== targetDayOfMonth) {
+        // This happens when the target day doesn't exist (e.g., Feb 31) or we've passed it
+        nextRun.setDate(1); // Reset to 1st of next month
+        nextRun.setMonth(nextRun.getMonth() + 1);
+        nextRun.setDate(targetDayOfMonth);
+      }
+      // Double-check - if still in past, move to next month
+      if (nextRun <= now) {
+        nextRun.setMonth(nextRun.getMonth() + 1);
+      }
+      break;
+    case 'yearly':
+      nextRun.setFullYear(nextRun.getFullYear() + 1);
+      break;
+  }
+
+  // Final safety check - ensure next run is in the future
+  if (nextRun <= now) {
+    // If still in past, add 1 day as fallback
+    nextRun.setDate(nextRun.getDate() + 1);
+  }
+
+  return nextRun;
+}
 
  app.get('/api/users', async (req, res) => {
       try {
@@ -884,7 +1119,444 @@ app.delete('/api/templates/:id', async (req, res) => {
       res.status(500).json({ error: err.message });
     }
   });
-        
+
+  // ============================================
+  // NOTIFICATION SCHEDULES ENDPOINTS
+  // ============================================
+
+  // Get all schedules
+  app.get('/api/schedules', async (req, res) => {
+    try {
+      const { userId } = req.query;
+      if (!userId) {
+        return res.status(400).json({ error: 'User ID required' });
+      }
+
+      const result = await pool.request()
+        .input('UserID', sql.Int, userId)
+        .query(`
+          SELECT s.*, u.UserName as CreatedByName,
+                 (SELECT TemplateName FROM TBTemplates WHERE Template_ID = s.Template_ID) as TemplateName
+          FROM TBNotificationSchedules s
+          LEFT JOIN TBUsers u ON s.CreatedBy = u.User_ID
+          ORDER BY s.CreatedDate DESC
+        `);
+      res.json(result.recordset);
+    } catch (err) {
+      console.error('Get schedules error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Create new schedule
+  app.post('/api/schedules', async (req, res) => {
+    try {
+      const { scheduleName, notificationType, frequency, scheduleTime, scheduleDay,
+              templateId, recipientType, recipientIds, messageOverride, userId } = req.body;
+
+      if (!scheduleName || !notificationType || !frequency || !scheduleTime || !recipientType || !userId) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+
+      // Calculate next run date
+      const now = new Date();
+      const [hours, minutes] = scheduleTime.split(':').map(Number);
+      let nextRun = new Date();
+      nextRun.setHours(hours, minutes, 0, 0);
+
+      if (frequency === 'daily') {
+        if (nextRun <= now) nextRun.setDate(nextRun.getDate() + 1);
+      } else if (frequency === 'weekly') {
+        const dayOfWeek = scheduleDay || 1;
+        nextRun.setDate(nextRun.getDate() + ((dayOfWeek + 7 - nextRun.getDay()) % 7));
+        if (nextRun <= now) nextRun.setDate(nextRun.getDate() + 7);
+      } else if (frequency === 'monthly') {
+        const dayOfMonth = scheduleDay || 1;
+        nextRun.setDate(dayOfMonth);
+        if (nextRun <= now) nextRun.setMonth(nextRun.getMonth() + 1);
+      }
+
+      const result = await pool.request()
+        .input('ScheduleName', sql.NVarChar, scheduleName)
+        .input('NotificationType', sql.NVarChar, notificationType)
+        .input('Frequency', sql.NVarChar, frequency)
+        .input('ScheduleTime', sql.NVarChar, scheduleTime)
+        .input('ScheduleDay', sql.Int, scheduleDay || null)
+        .input('Template_ID', sql.Int, templateId || null)
+        .input('RecipientType', sql.NVarChar, recipientType)
+        .input('RecipientIDs', sql.NVarChar, JSON.stringify(recipientIds || []))
+        .input('MessageOverride', sql.NVarChar, messageOverride || null)
+        .input('CreatedBy', sql.Int, userId)
+        .input('NextRunDate', sql.DateTime, nextRun)
+        .query(`
+          INSERT INTO TBNotificationSchedules
+          (ScheduleName, NotificationType, Frequency, ScheduleTime, ScheduleDay,
+           Template_ID, RecipientType, RecipientIDs, MessageOverride, CreatedBy, NextRunDate)
+          VALUES
+          (@ScheduleName, @NotificationType, @Frequency, @ScheduleTime, @ScheduleDay,
+           @Template_ID, @RecipientType, @RecipientIDs, @MessageOverride, @CreatedBy, @NextRunDate)
+
+          SELECT SCOPE_IDENTITY() as ScheduleID
+        `);
+
+      res.json({ success: true, scheduleId: result.recordset[0].ScheduleID, nextRun });
+    } catch (err) {
+      console.error('Create schedule error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Update schedule
+  app.put('/api/schedules/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { scheduleName, notificationType, frequency, scheduleTime, scheduleDay,
+              templateId, recipientType, recipientIds, messageOverride } = req.body;
+
+      // Calculate next run date
+      const now = new Date();
+      const [hours, minutes] = scheduleTime.split(':').map(Number);
+      let nextRun = new Date();
+      nextRun.setHours(hours, minutes, 0, 0);
+
+      if (frequency === 'daily') {
+        if (nextRun <= now) nextRun.setDate(nextRun.getDate() + 1);
+      } else if (frequency === 'weekly') {
+        const dayOfWeek = scheduleDay || 1;
+        nextRun.setDate(nextRun.getDate() + ((dayOfWeek + 7 - nextRun.getDay()) % 7));
+        if (nextRun <= now) nextRun.setDate(nextRun.getDate() + 7);
+      } else if (frequency === 'monthly') {
+        const dayOfMonth = scheduleDay || 1;
+        nextRun.setDate(dayOfMonth);
+        if (nextRun <= now) nextRun.setMonth(nextRun.getMonth() + 1);
+      }
+
+      await pool.request()
+        .input('Schedule_ID', sql.Int, id)
+        .input('ScheduleName', sql.NVarChar, scheduleName)
+        .input('NotificationType', sql.NVarChar, notificationType)
+        .input('Frequency', sql.NVarChar, frequency)
+        .input('ScheduleTime', sql.NVarChar, scheduleTime)
+        .input('ScheduleDay', sql.Int, scheduleDay || null)
+        .input('Template_ID', sql.Int, templateId || null)
+        .input('RecipientType', sql.NVarChar, recipientType)
+        .input('RecipientIDs', sql.NVarChar, JSON.stringify(recipientIds || []))
+        .input('MessageOverride', sql.NVarChar, messageOverride || null)
+        .input('NextRunDate', sql.DateTime, nextRun)
+        .query(`
+          UPDATE TBNotificationSchedules
+          SET ScheduleName = @ScheduleName,
+              NotificationType = @NotificationType,
+              Frequency = @Frequency,
+              ScheduleTime = @ScheduleTime,
+              ScheduleDay = @ScheduleDay,
+              Template_ID = @Template_ID,
+              RecipientType = @RecipientType,
+              RecipientIDs = @RecipientIDs,
+              MessageOverride = @MessageOverride,
+              NextRunDate = @NextRunDate
+          WHERE Schedule_ID = @Schedule_ID
+        `);
+
+      res.json({ success: true, nextRun });
+    } catch (err) {
+      console.error('Update schedule error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Delete schedule
+  app.delete('/api/schedules/:id', async (req, res) => {
+    try {
+      await pool.request()
+        .input('Schedule_ID', sql.Int, req.params.id)
+        .query('DELETE FROM TBNotificationSchedules WHERE Schedule_ID = @Schedule_ID');
+
+      res.json({ success: true });
+    } catch (err) {
+      console.error('Delete schedule error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Toggle schedule active/inactive
+  app.patch('/api/schedules/:id/toggle', async (req, res) => {
+    try {
+      const { isActive } = req.body;
+      await pool.request()
+        .input('Schedule_ID', sql.Int, req.params.id)
+        .input('IsActive', sql.Bit, isActive)
+        .query('UPDATE TBNotificationSchedules SET IsActive = @IsActive WHERE Schedule_ID = @Schedule_ID');
+
+      res.json({ success: true, isActive });
+    } catch (err) {
+      console.error('Toggle schedule error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // ============================================
+  // NOTIFICATION TEMPLATES ENDPOINTS
+  // ============================================
+
+  // Get all notification templates
+  app.get('/api/notification-templates', async (req, res) => {
+    try {
+      const result = await pool.request()
+        .query(`
+          SELECT t.*, u.UserName as CreatedByName
+          FROM TBNotificationTemplates t
+          LEFT JOIN TBUsers u ON t.CreatedBy = u.User_ID
+          ORDER BY t.CreatedDate DESC
+        `);
+      res.json(result.recordset);
+    } catch (err) {
+      console.error('Get notification templates error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Create notification template
+  app.post('/api/notification-templates', async (req, res) => {
+    try {
+      const { templateName, templateType, subject, message, variables, userId } = req.body;
+
+      if (!templateName || !templateType || !subject || !message || !userId) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+
+      const result = await pool.request()
+        .input('TemplateName', sql.NVarChar, templateName)
+        .input('TemplateType', sql.NVarChar, templateType)
+        .input('Subject', sql.NVarChar, subject)
+        .input('Message', sql.NVarChar, message)
+        .input('Variables', sql.NVarChar, JSON.stringify(variables || []))
+        .input('CreatedBy', sql.Int, userId)
+        .query(`
+          INSERT INTO TBNotificationTemplates (TemplateName, TemplateType, Subject, Message, Variables, CreatedBy)
+          VALUES (@TemplateName, @TemplateType, @Subject, @Message, @Variables, @CreatedBy)
+
+          SELECT SCOPE_IDENTITY() as TemplateID
+        `);
+
+      res.json({ success: true, templateId: result.recordset[0].TemplateID });
+    } catch (err) {
+      console.error('Create notification template error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Update notification template
+  app.put('/api/notification-templates/:id', async (req, res) => {
+    try {
+      const { templateName, templateType, subject, message, variables } = req.body;
+
+      await pool.request()
+        .input('Template_ID', sql.Int, req.params.id)
+        .input('TemplateName', sql.NVarChar, templateName)
+        .input('TemplateType', sql.NVarChar, templateType)
+        .input('Subject', sql.NVarChar, subject)
+        .input('Message', sql.NVarChar, message)
+        .input('Variables', sql.NVarChar, JSON.stringify(variables || []))
+        .query(`
+          UPDATE TBNotificationTemplates
+          SET TemplateName = @TemplateName,
+              TemplateType = @TemplateType,
+              Subject = @Subject,
+              Message = @Message,
+              Variables = @Variables,
+              ModifiedDate = GETDATE()
+          WHERE Template_ID = @Template_ID
+        `);
+
+      res.json({ success: true });
+    } catch (err) {
+      console.error('Update notification template error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Delete notification template
+  app.delete('/api/notification-templates/:id', async (req, res) => {
+    try {
+      await pool.request()
+        .input('Template_ID', sql.Int, req.params.id)
+        .query('DELETE FROM TBNotificationTemplates WHERE Template_ID = @Template_ID');
+
+      res.json({ success: true });
+    } catch (err) {
+      console.error('Delete notification template error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Toggle template active/inactive
+  app.patch('/api/notification-templates/:id/toggle', async (req, res) => {
+    try {
+      const { isActive } = req.body;
+      await pool.request()
+        .input('Template_ID', sql.Int, req.params.id)
+        .input('IsActive', sql.Bit, isActive)
+        .query('UPDATE TBNotificationTemplates SET IsActive = @IsActive WHERE Template_ID = @Template_ID');
+
+      res.json({ success: true, isActive });
+    } catch (err) {
+      console.error('Toggle notification template error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // ============================================
+  // NOTIFICATION LOGS ENDPOINTS
+  // ============================================
+
+  // Get notification delivery logs with pagination and filters
+  app.get('/api/notification-logs', async (req, res) => {
+    try {
+      const { page = 1, limit = 50, status, startDate, endDate, search } = req.query;
+      const offset = (page - 1) * limit;
+
+      let whereClause = 'WHERE 1=1';
+      const params = [];
+
+      if (status) {
+        whereClause += ' AND Status = @Status';
+        params.push({ name: 'Status', type: sql.NVarChar, value: status });
+      }
+      if (startDate) {
+        whereClause += ' AND DeliveredDate >= @StartDate';
+        params.push({ name: 'StartDate', type: sql.DateTime, value: new Date(startDate) });
+      }
+      if (endDate) {
+        whereClause += ' AND DeliveredDate <= @EndDate';
+        params.push({ name: 'EndDate', type: sql.DateTime, value: new Date(endDate) });
+      }
+      if (search) {
+        whereClause += ' AND (UserName LIKE @Search OR UserEmail LIKE @Search)';
+        params.push({ name: 'Search', type: sql.NVarChar, value: `%${search}%` });
+      }
+
+      const request = pool.request();
+      params.forEach(p => request.input(p.name, p.type, p.value));
+      request.input('Limit', sql.Int, limit);
+      request.input('Offset', sql.Int, offset);
+
+      const result = await request.query(`
+        SELECT *
+        FROM TBNotificationDeliveryLog
+        ${whereClause}
+        ORDER BY DeliveredDate DESC
+        OFFSET @Offset ROWS
+        FETCH NEXT @Limit ROWS ONLY
+      `);
+
+      // Get total count
+      const countRequest = pool.request();
+      params.forEach(p => countRequest.input(p.name, p.type, p.value));
+      const countResult = await countRequest.query(`
+        SELECT COUNT(*) as Total FROM TBNotificationDeliveryLog ${whereClause}
+      `);
+
+      res.json({
+        logs: result.recordset,
+        total: countResult.recordset[0].Total,
+        page: parseInt(page),
+        limit: parseInt(limit)
+      });
+    } catch (err) {
+      console.error('Get notification logs error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Get notification log statistics
+  app.get('/api/notification-logs/stats', async (req, res) => {
+    try {
+      const result = await pool.request()
+        .query(`
+          SELECT
+            COUNT(*) as Total,
+            SUM(CASE WHEN Status = 'delivered' THEN 1 ELSE 0 END) as Delivered,
+            SUM(CASE WHEN Status = 'viewed' THEN 1 ELSE 0 END) as Viewed,
+            SUM(CASE WHEN Status = 'failed' THEN 1 ELSE 0 END) as Failed
+          FROM TBNotificationDeliveryLog
+          WHERE DeliveredDate >= DATEADD(day, -30, GETDATE())
+        `);
+
+      res.json(result.recordset[0]);
+    } catch (err) {
+      console.error('Get notification log stats error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Get logs for specific notification
+  app.get('/api/notification-logs/:notificationId', async (req, res) => {
+    try {
+      const result = await pool.request()
+        .input('Notification_ID', sql.Int, req.params.notificationId)
+        .query(`
+          SELECT *
+          FROM TBNotificationDeliveryLog
+          WHERE Notification_ID = @Notification_ID
+          ORDER BY DeliveredDate DESC
+        `);
+
+      res.json(result.recordset);
+    } catch (err) {
+      console.error('Get notification logs by ID error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // ============================================
+  // NOTIFICATION SETTINGS ENDPOINTS
+  // ============================================
+
+  // Get notification settings
+  app.get('/api/notification-settings', async (req, res) => {
+    try {
+      const result = await pool.request()
+        .query('SELECT * FROM TBNotificationSettings ORDER BY NotificationType');
+
+      res.json(result.recordset);
+    } catch (err) {
+      console.error('Get notification settings error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Update notification settings
+  app.patch('/api/notification-settings', async (req, res) => {
+    try {
+      const { settings, userId } = req.body; // settings: [{ notificationType, isEnabled }]
+
+      if (!settings || !Array.isArray(settings)) {
+        return res.status(400).json({ error: 'Settings array required' });
+      }
+
+      for (const setting of settings) {
+        await pool.request()
+          .input('NotificationType', sql.NVarChar, setting.notificationType)
+          .input('IsEnabled', sql.Bit, setting.isEnabled)
+          .input('ModifiedBy', sql.Int, userId || null)
+          .query(`
+            UPDATE TBNotificationSettings
+            SET IsEnabled = @IsEnabled,
+                ModifiedBy = @ModifiedBy,
+                ModifiedDate = GETDATE()
+            WHERE NotificationType = @NotificationType
+          `);
+      }
+
+      res.json({ success: true });
+    } catch (err) {
+      console.error('Update notification settings error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+
 // ---------- Robust JSON extraction/parsing ----------
 function extractBalancedJsonObject(text) {
   const s = String(text);
