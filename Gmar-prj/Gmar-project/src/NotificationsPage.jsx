@@ -21,10 +21,9 @@ import React, { useEffect, useState } from 'react';
 
     const navigate = useNavigate();
  const { currentUser, refreshNotifications } = useUserContext();
- 
-       useEffect(() => {
+
+ useEffect(() => {
       // Don't redirect while UserContext is still initializing
-      // Only redirect if we're certain there's no user (not loading)
       if (!currentUser && !loading) {
         navigate('/login');
         return;
@@ -40,6 +39,13 @@ import React, { useEffect, useState } from 'react';
           const response = await fetch(`http://localhost:3001/api/notifications/user/${currentUser.User_ID}`);
           const data = await response.json();
           setNotifications(data);
+
+          // Mark notifications as viewed (clears bell count)
+          const viewedIds = data.map(n => n.Notification_ID);
+          localStorage.setItem(`viewedNotifications_${currentUser.User_ID}`, JSON.stringify(viewedIds));
+
+          // Trigger NavBar refresh
+          refreshNotifications();
         } catch (err) {
           console.error('Failed to fetch notifications:', err);
         } finally {

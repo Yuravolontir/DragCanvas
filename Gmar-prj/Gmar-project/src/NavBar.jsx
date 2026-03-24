@@ -22,8 +22,12 @@
         try {
           const response = await fetch(`http://localhost:3001/api/notifications/user/${currentUser.User_ID}`);
           const data = await response.json();
-          setNotifications(data);
-          setUnreadCount(data.length);
+
+          // Filter out already viewed notifications
+  const viewedIds = JSON.parse(localStorage.getItem(`viewedNotifications_${currentUser.User_ID}`) || '[]');   
+  const unreadNotifications = data.filter(n =>!viewedIds.includes(n.Notification_ID));
+
+          setUnreadCount(unreadNotifications.length);
         } catch (err) {
           console.error('Failed to fetch notifications:', err);
         }
