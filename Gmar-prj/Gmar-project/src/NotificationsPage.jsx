@@ -38,11 +38,20 @@ import React, { useEffect, useState } from 'react';
         try {
           const response = await fetch(`http://localhost:3001/api/notifications/user/${currentUser.User_ID}`);
           const data = await response.json();
-          setNotifications(data);
+          setNotifications(Array.isArray(data) ? data : []);
 
           // Mark notifications as viewed (clears bell count)
           const viewedIds = data.map(n => n.Notification_ID);
           localStorage.setItem(`viewedNotifications_${currentUser.User_ID}`, JSON.stringify(viewedIds));
+
+          // Mark as viewed on server (updates delivery log)
+          if (viewedIds.length > 0) {
+            fetch('http://localhost:3001/api/notifications/mark-viewed', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ userId: currentUser.User_ID, notificationIds: viewedIds })
+            }).catch(err => console.error('Mark viewed error:', err));
+          }
 
           // Trigger NavBar refresh
           refreshNotifications();
@@ -202,10 +211,11 @@ import React, { useEffect, useState } from 'react';
                               </div>
                               <div style={{ fontSize: '14px',
   color: '#6c757d', marginBottom: '8px' }}>
-                                {notif.Message.replace(/<[^>]*>/g,
-  '').substring(0, 150)}
-                                {notif.Message.length > 150 &&
-  '...'}
+                                {notif.Message.includes('<html') || notif.Message.includes('<!DOCTYPE')
+                                  ? '📄 HTML Content — click to preview'
+                                  : notif.Message.replace(/<[^>]*>/g,
+  '').substring(0, 150) + (notif.Message.length > 150 ? '...' : '')
+                                }
                               </div>
                               <div style={{ fontSize: '12px',
   color: '#adb5bd' }}>
@@ -233,13 +243,31 @@ import React, { useEffect, useState } from 'react';
   notif.Notification_ID && (
                           <div style={{
                             marginTop: '12px',
-                            padding: '12px',
-                            background: '#f8f9fa',
                             borderRadius: '6px',
-                            fontSize: '14px'
+                            overflow: 'hidden',
+                            border: '1px solid #dee2e6'
                           }}>
-                            <div dangerouslySetInnerHTML={{ __html:
+                            {notif.Message.includes('<html') || notif.Message.includes('<!DOCTYPE') ? (
+                              <iframe
+                                srcDoc={notif.Message}
+                                style={{
+                                  width: '100%',
+                                  minHeight: '400px',
+                                  border: 'none'
+                                }}
+                                title="Notification content"
+                                sandbox="allow-same-origin"
+                              />
+                            ) : (
+                              <div style={{
+                                padding: '12px',
+                                background: '#f8f9fa',
+                                fontSize: '14px'
+                              }}>
+                                <div dangerouslySetInnerHTML={{ __html:
    notif.Message }} />
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>

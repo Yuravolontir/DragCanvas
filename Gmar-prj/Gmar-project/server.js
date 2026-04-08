@@ -5,7 +5,14 @@ import sql from 'mssql';
 import cron from 'node-cron';
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://localhost:3001'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+}));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
@@ -45,12 +52,14 @@ function startScheduleProcessor() {
       const now = new Date();
 
       // Find schedules that are due to run
+      // Only fire if LastRunDate is NULL or before today (prevents duplicate spam)
       const result = await pool.request().query(`
         SELECT *
         FROM TBNotificationSchedules
         WHERE IsActive = 1
           AND NextRunDate IS NOT NULL
           AND NextRunDate <= GETDATE()
+          AND (LastRunDate IS NULL OR LastRunDate < DATEADD(day, -1, GETDATE()) OR Frequency != 'daily' OR DATEDIFF(minute, ISNULL(LastRunDate, '2000-01-01'), GETDATE()) >= 60)
       `);
 
       const schedulesToRun = result.recordset;
@@ -74,8 +83,12 @@ async function processScheduledNotification(schedule, pool) {
     console.log(`  → Executing schedule: ${schedule.ScheduleName} (ID: ${schedule.Schedule_ID}, Type: ${schedule.NotificationType})`);
 
     // Get the message content
+    // Priority: Message Override > Template
     let subject, message;
-    if (schedule.Template_ID) {
+    if (schedule.MessageOverride) {
+      subject = schedule.ScheduleName;
+      message = schedule.MessageOverride;
+    } else if (schedule.Template_ID) {
       const templateResult = await pool.request()
         .input('Template_ID', sql.Int, schedule.Template_ID)
         .query('SELECT * FROM TBNotificationTemplates WHERE Template_ID = @Template_ID');
@@ -84,19 +97,26 @@ async function processScheduledNotification(schedule, pool) {
         const template = templateResult.recordset[0];
         subject = template.Subject;
         message = template.Message;
-      } else {
-        // Template not found, try message override
-        if (schedule.MessageOverride) {
-          subject = schedule.ScheduleName;
-          message = schedule.MessageOverride;
-        } else {
-          console.log(`  ⚠️ Template not found and no message override for schedule: ${schedule.ScheduleName}`);
-          return;
+
+        // Replace placeholders with actual values (except {username} - handled per-recipient)
+        const now = new Date();
+        const globalReplacements = {
+          event_name: schedule.ScheduleName || 'Upcoming Event',
+          event_date: now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+          event_time: schedule.ScheduleTime || now.toLocaleTimeString(),
+          date: now.toLocaleDateString(),
+          time: now.toLocaleTimeString(),
+        };
+
+        for (const [placeholder, value] of Object.entries(globalReplacements)) {
+          const regex = new RegExp(`\\{${placeholder}\\}`, 'gi');
+          subject = subject.replace(regex, value);
+          message = message.replace(regex, value);
         }
+      } else {
+        console.log(`  ⚠️ Template not found and no message override for schedule: ${schedule.ScheduleName}`);
+        return;
       }
-    } else if (schedule.MessageOverride) {
-      subject = schedule.ScheduleName;
-      message = schedule.MessageOverride;
     } else {
       console.log(`  ⚠️ No message content for schedule: ${schedule.ScheduleName}`);
       return;
@@ -124,31 +144,7 @@ async function processScheduledNotification(schedule, pool) {
       return;
     }
 
-    // Create notification record
-    const notificationResult = await pool.request()
-      .input('Subject', sql.NVarChar, subject)
-      .input('Message', sql.NVarChar, message)
-      .input('NotificationType', sql.NVarChar, schedule.NotificationType)
-      .input('RecipientType', sql.NVarChar, schedule.RecipientType)
-      .input('RecipientIDs', sql.NVarChar, schedule.RecipientIDs)
-      .input('SentCount', sql.Int, recipients.length)
-      .input('CreatedBy', sql.Int, schedule.CreatedBy)
-      .query(`
-        DECLARE @NotificationID INT
-        INSERT INTO TBNotifications (Subject, Message, NotificationType, RecipientType, RecipientIDs, Status, SentCount, CreatedBy, CreatedDate, SentDate)
-        VALUES (@Subject, @Message, @NotificationType, @RecipientType, @RecipientIDs, 'sent', @SentCount, @CreatedBy, GETDATE(), GETDATE())
-
-        SELECT @NotificationID as NotificationID
-      `);
-
-    if (!notificationResult.recordset || notificationResult.recordset.length === 0) {
-      console.log(`  ❌ Failed to create notification for schedule: ${schedule.ScheduleName}`);
-      return;
-    }
-
-    const notificationId = notificationResult.recordset[0].NotificationID;
-
-    // Add delivery log entries
+    // Create a personalized notification for each recipient
     for (const recipient of recipients) {
       try {
         const userResult = await pool.request()
@@ -162,19 +158,36 @@ async function processScheduledNotification(schedule, pool) {
 
         const user = userResult.recordset[0];
 
-        await pool.request()
-          .input('Notification_ID', sql.Int, notificationId)
+        // Replace {username} per recipient
+        let personalSubject = subject.replace(/\{username\}/gi, user.UserName);
+        let personalMessage = message.replace(/\{username\}/gi, user.UserName);
+
+        const notificationResult = await pool.request()
+          .input('Subject', sql.NVarChar(200), personalSubject)
+          .input('Message', sql.NVarChar(sql.MAX), personalMessage)
+          .input('NotificationType', sql.NVarChar(50), schedule.NotificationType)
+          .input('RecipientType', sql.NVarChar(50), schedule.RecipientType)
+          .input('RecipientIDs', sql.NVarChar(sql.MAX), JSON.stringify([recipient.User_ID]))
+          .input('SentCount', sql.Int, 1)
+          .input('CreatedBy', sql.Int, schedule.CreatedBy)
           .input('User_ID', sql.Int, recipient.User_ID)
           .input('UserName', sql.NVarChar, user.UserName)
           .input('UserEmail', sql.NVarChar, user.UserEmail)
-          .input('Status', sql.NVarChar, 'delivered')
-          .input('DeliveredDate', sql.DateTime, new Date())
           .query(`
+            DECLARE @NotificationID INT
+            INSERT INTO TBNotifications (Subject, Message, NotificationType, RecipientType, RecipientIDs, Status, SentCount, CreatedBy, CreatedDate, SentDate)
+            VALUES (@Subject, @Message, @NotificationType, @RecipientType, @RecipientIDs, 'sent', @SentCount, @CreatedBy, GETDATE(), GETDATE())
+
+            SET @NotificationID = SCOPE_IDENTITY()
+
             INSERT INTO TBNotificationDeliveryLog (Notification_ID, User_ID, UserName, UserEmail, Status, DeliveredDate)
-            VALUES (@Notification_ID, @User_ID, @UserName, @UserEmail, @Status, @DeliveredDate)
+            VALUES (@NotificationID, @User_ID, @UserName, @UserEmail, 'delivered', GETDATE())
+
+            SELECT @NotificationID as NotificationID
           `);
+
       } catch (err) {
-        console.error(`  ⚠️ Failed to log delivery for user ${recipient.User_ID}:`, err.message);
+        console.error(`  ⚠️ Failed to create notification for user ${recipient.User_ID}:`, err.message);
       }
     }
 
@@ -952,7 +965,7 @@ app.delete('/api/templates/:id', async (req, res) => {
 
 
      // Update template visibility
-  app.patch('/api/templates/:id/visibility', async (req, res) => {
+  app.put('/api/templates/:id/visibility', async (req, res) => {
     try {
       const { id } = req.params;
       const { isActive, userId } = req.body;
@@ -1005,7 +1018,30 @@ app.delete('/api/templates/:id', async (req, res) => {
 
       const result = await
   request.execute('dbo.SP_GetAllNotifications');
-      res.json(result.recordset);
+
+      // Add OpenedCount from delivery log for each notification
+      const notifications = result.recordset;
+      if (notifications.length > 0) {
+        const ids = notifications.map(n => n.Notification_ID).join(',');
+        const statsResult = await pool.request().query(`
+          SELECT Notification_ID,
+            SUM(CASE WHEN Status = 'viewed' THEN 1 ELSE 0 END) as OpenedCount,
+            SUM(CASE WHEN Status = 'failed' THEN 1 ELSE 0 END) as FailedCount
+          FROM TBNotificationDeliveryLog
+          WHERE Notification_ID IN (${ids})
+          GROUP BY Notification_ID
+        `);
+        const statsMap = {};
+        statsResult.recordset.forEach(s => statsMap[s.Notification_ID] = s);
+
+        notifications.forEach(n => {
+          const stats = statsMap[n.Notification_ID];
+          n.OpenedCount = stats ? stats.OpenedCount : 0;
+          n.FailedCount = stats ? stats.FailedCount : 0;
+        });
+      }
+
+      res.json(notifications);
     } catch (err) {
       console.error('Get all notifications error:', err);
 
@@ -1083,6 +1119,33 @@ app.delete('/api/templates/:id', async (req, res) => {
       res.json(result.recordset);
     } catch (err) {
       console.error('Get user notifications error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Mark notifications as viewed
+  app.put('/api/notifications/mark-viewed', async (req, res) => {
+    try {
+      const { userId, notificationIds } = req.body;
+
+      if (!userId || !notificationIds || !notificationIds.length) {
+        return res.status(400).json({ error: 'userId and notificationIds required' });
+      }
+
+      const idList = notificationIds.join(',');
+      await pool.request()
+        .input('UserID', sql.Int, userId)
+        .query(`
+          UPDATE TBNotificationDeliveryLog
+          SET Status = 'viewed', ViewedDate = GETDATE()
+          WHERE User_ID = @UserID
+            AND Notification_ID IN (${idList})
+            AND Status = 'delivered'
+        `);
+
+      res.json({ success: true });
+    } catch (err) {
+      console.error('Mark viewed error:', err);
       res.status(500).json({ error: err.message });
     }
   });
@@ -1184,8 +1247,8 @@ app.delete('/api/templates/:id', async (req, res) => {
         .input('ScheduleDay', sql.Int, scheduleDay || null)
         .input('Template_ID', sql.Int, templateId || null)
         .input('RecipientType', sql.NVarChar, recipientType)
-        .input('RecipientIDs', sql.NVarChar, JSON.stringify(recipientIds || []))
-        .input('MessageOverride', sql.NVarChar, messageOverride || null)
+        .input('RecipientIDs', sql.NVarChar(sql.MAX), JSON.stringify(recipientIds || []))
+        .input('MessageOverride', sql.NVarChar(sql.MAX), messageOverride || null)
         .input('CreatedBy', sql.Int, userId)
         .input('NextRunDate', sql.DateTime, nextRun)
         .query(`
@@ -1240,8 +1303,8 @@ app.delete('/api/templates/:id', async (req, res) => {
         .input('ScheduleDay', sql.Int, scheduleDay || null)
         .input('Template_ID', sql.Int, templateId || null)
         .input('RecipientType', sql.NVarChar, recipientType)
-        .input('RecipientIDs', sql.NVarChar, JSON.stringify(recipientIds || []))
-        .input('MessageOverride', sql.NVarChar, messageOverride || null)
+        .input('RecipientIDs', sql.NVarChar(sql.MAX), JSON.stringify(recipientIds || []))
+        .input('MessageOverride', sql.NVarChar(sql.MAX), messageOverride || null)
         .input('NextRunDate', sql.DateTime, nextRun)
         .query(`
           UPDATE TBNotificationSchedules
@@ -1280,7 +1343,7 @@ app.delete('/api/templates/:id', async (req, res) => {
   });
 
   // Toggle schedule active/inactive
-  app.patch('/api/schedules/:id/toggle', async (req, res) => {
+  app.put('/api/schedules/:id/toggle', async (req, res) => {
     try {
       const { isActive } = req.body;
       await pool.request()
@@ -1391,7 +1454,7 @@ app.delete('/api/templates/:id', async (req, res) => {
   });
 
   // Toggle template active/inactive
-  app.patch('/api/notification-templates/:id/toggle', async (req, res) => {
+  app.put('/api/notification-templates/:id/toggle', async (req, res) => {
     try {
       const { isActive } = req.body;
       await pool.request()
@@ -1420,19 +1483,19 @@ app.delete('/api/templates/:id', async (req, res) => {
       const params = [];
 
       if (status) {
-        whereClause += ' AND Status = @Status';
+        whereClause += ' AND dl.Status = @Status';
         params.push({ name: 'Status', type: sql.NVarChar, value: status });
       }
       if (startDate) {
-        whereClause += ' AND DeliveredDate >= @StartDate';
+        whereClause += ' AND dl.DeliveredDate >= @StartDate';
         params.push({ name: 'StartDate', type: sql.DateTime, value: new Date(startDate) });
       }
       if (endDate) {
-        whereClause += ' AND DeliveredDate <= @EndDate';
+        whereClause += ' AND dl.DeliveredDate <= @EndDate';
         params.push({ name: 'EndDate', type: sql.DateTime, value: new Date(endDate) });
       }
       if (search) {
-        whereClause += ' AND (UserName LIKE @Search OR UserEmail LIKE @Search)';
+        whereClause += ' AND (dl.UserName LIKE @Search OR dl.UserEmail LIKE @Search)';
         params.push({ name: 'Search', type: sql.NVarChar, value: `%${search}%` });
       }
 
@@ -1442,10 +1505,11 @@ app.delete('/api/templates/:id', async (req, res) => {
       request.input('Offset', sql.Int, offset);
 
       const result = await request.query(`
-        SELECT *
-        FROM TBNotificationDeliveryLog
+        SELECT dl.*, n.Subject
+        FROM TBNotificationDeliveryLog dl
+        LEFT JOIN TBNotifications n ON dl.Notification_ID = n.Notification_ID
         ${whereClause}
-        ORDER BY DeliveredDate DESC
+        ORDER BY dl.DeliveredDate DESC
         OFFSET @Offset ROWS
         FETCH NEXT @Limit ROWS ONLY
       `);
@@ -1454,7 +1518,7 @@ app.delete('/api/templates/:id', async (req, res) => {
       const countRequest = pool.request();
       params.forEach(p => countRequest.input(p.name, p.type, p.value));
       const countResult = await countRequest.query(`
-        SELECT COUNT(*) as Total FROM TBNotificationDeliveryLog ${whereClause}
+        SELECT COUNT(*) as Total FROM TBNotificationDeliveryLog dl ${whereClause}
       `);
 
       res.json({
@@ -1527,18 +1591,19 @@ app.delete('/api/templates/:id', async (req, res) => {
   });
 
   // Update notification settings
-  app.patch('/api/notification-settings', async (req, res) => {
+  app.put('/api/notification-settings', async (req, res) => {
     try {
-      const { settings, userId } = req.body; // settings: [{ notificationType, isEnabled }]
+      const { settings, userId } = req.body;
 
       if (!settings || !Array.isArray(settings)) {
         return res.status(400).json({ error: 'Settings array required' });
       }
 
       for (const setting of settings) {
-        await pool.request()
+        const isEnabled = setting.isEnabled ? 1 : 0;
+        const result = await pool.request()
           .input('NotificationType', sql.NVarChar, setting.notificationType)
-          .input('IsEnabled', sql.Bit, setting.isEnabled)
+          .input('IsEnabled', sql.Bit, isEnabled)
           .input('ModifiedBy', sql.Int, userId || null)
           .query(`
             UPDATE TBNotificationSettings
@@ -1547,6 +1612,18 @@ app.delete('/api/templates/:id', async (req, res) => {
                 ModifiedDate = GETDATE()
             WHERE NotificationType = @NotificationType
           `);
+
+        // If no row was updated, insert it
+        if (result.rowsAffected[0] === 0) {
+          await pool.request()
+            .input('NotificationType', sql.NVarChar, setting.notificationType)
+            .input('IsEnabled', sql.Bit, isEnabled)
+            .input('ModifiedBy', sql.Int, userId || null)
+            .query(`
+              INSERT INTO TBNotificationSettings (NotificationType, IsEnabled, ModifiedBy, ModifiedDate)
+              VALUES (@NotificationType, @IsEnabled, @ModifiedBy, GETDATE())
+            `);
+        }
       }
 
       res.json({ success: true });
@@ -1692,7 +1769,82 @@ function normalizeLayout(parsed) {
   return { sections: (wrapped.sections || []).map(normalizeNode) };
 }
 
-// ---------- AI endpoint ----------
+// ---------- Pexels image/video search ----------
+async function fetchPexelsImages(query, count = 10) {
+  try {
+    const r = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${count}&orientation=landscape`, {
+      headers: { 'Authorization': process.env.PEXELS_API_KEY }
+    });
+    const data = await r.json();
+    if (data.photos && data.photos.length > 0) {
+      return data.photos.map(p => ({
+        src: `http://localhost:3001/api/image-proxy?url=${encodeURIComponent(p.src.landscape)}`,
+        alt: p.alt || query,
+        width: p.width,
+        height: p.height
+      }));
+    }
+    return [];
+  } catch (e) {
+    console.log('Pexels image search error:', e.message);
+    return [];
+  }
+}
+
+async function fetchPexelsVideos(query, count = 5) {
+  try {
+    const r = await fetch(`https://api.pexels.com/videos/search?query=${encodeURIComponent(query)}&per_page=${count}&orientation=landscape`, {
+      headers: { 'Authorization': process.env.PEXELS_API_KEY }
+    });
+    const data = await r.json();
+    if (data.videos && data.videos.length > 0) {
+      return data.videos.map(v => {
+        const hd = v.video_files.find(f => f.quality === 'hd') || v.video_files[0];
+        return { videoUrl: hd?.link || '', text: query };
+      });
+    }
+    return [];
+  } catch (e) {
+    console.log('Pexels video search error:', e.message);
+    return [];
+  }
+}
+
+function replacePlaceholdersInJson(obj, images, videos) {
+  if (!obj || typeof obj !== 'object') return;
+  if (Array.isArray(obj)) {
+    for (let i = 0; i < obj.length; i++) replacePlaceholdersInJson(obj[i], images, videos);
+    return;
+  }
+  for (const key of Object.keys(obj)) {
+    if (typeof obj[key] === 'string') {
+      // Replace image placeholders
+      const imgMatch = obj[key].match(/IMAGE_PLACEHOLDER_(\d+)/);
+      if (imgMatch) {
+        const idx = parseInt(imgMatch[1]) - 1;
+        if (idx >= 0 && idx < images.length) {
+          obj[key] = images[idx].src;
+        }
+      }
+      // Replace video placeholders
+      const vidMatch = obj[key].match(/VIDEO_PLACEHOLDER_(\d+)/);
+      if (vidMatch) {
+        const idx = parseInt(vidMatch[1]) - 1;
+        if (idx >= 0 && idx < videos.length) {
+          obj['videoUrl'] = videos[idx].videoUrl;
+          obj['videoId'] = '';
+          if (!obj['text'] || obj['text'].startsWith('VIDEO_PLACEHOLDER')) {
+            obj['text'] = '';
+          }
+        }
+      }
+    } else if (typeof obj[key] === 'object') {
+      replacePlaceholdersInJson(obj[key], images, videos);
+    }
+  }
+}
+
+// ---------- AI endpoint (Groq) ----------
 app.post('/api/ai-generate', async (req, res) => {
   try {
     const { prompt } = req.body || {};
@@ -1700,100 +1852,106 @@ app.post('/api/ai-generate', async (req, res) => {
       return res.status(400).json({ error: 'Missing prompt' });
     }
 
-    if (!process.env.PPLX_API_KEY) {
-      return res.status(500).json({ error: 'Missing PPLX_API_KEY in .env' });
+    if (!process.env.GROQ_API_KEY) {
+      return res.status(500).json({ error: 'Missing GROQ_API_KEY in .env' });
     }
 
-    const systemPrompt = `Output ONLY valid JSON: {"sections":[{type,props,children}]}
+    const systemPrompt = `You are a professional web designer. Output ONLY valid JSON matching this exact schema:
+{"sections":[{"type":"container","props":{},"children":[...]}]}
 
-# ELEMENT PROPS (ALL must be included)
-Container: width,height,padding=[t,r,b,l],margin=[t,r,b,l],background={r,g,b,a},color={r,g,b,a},radius,shadow,flexDirection,alignItems,justifyContent
-Text: text,fontSize,fontWeight,textAlign,color={r,g,b,a},margin=[t,r,b,l],shadow
-Button: text,buttonStyle,background={r,g,b,a},color={r,g,b,a},margin=[t,r,b,l]
-Video: videoId="",videoUrl,text (ALL 3 required)
+# ELEMENT TYPES & REQUIRED PROPS
+Container: width,height,padding=[top,right,bottom,left],margin=[t,r,b,l],background={"r":0,"g":0,"b":0,"a":1},color={"r":0,"g":0,"b":0,"a":1},radius,shadow,flexDirection="row"|"column",alignItems,justifyContent,gap
+Text: text,fontSize,fontWeight("400"|"500"|"600"|"700"),textAlign("left"|"center"|"right"),color={"r","g","b","a"},margin=[t,r,b,l],shadow
+Button: text,buttonStyle("filled"|"outline"),background={"r","g","b","a"},color={"r","g","b","a"},margin=[t,r,b,l],radius
+Video: videoId="",videoUrl,text (ALL 3 required, use videoId="" when using videoUrl)
 Image: src,radius,width,height
 Link: href,text,fontSize
 
-# VIDEO URLs (choose based on topic)
-Tech: https://www.pexels.com/download/video/3129671/
-Abstract: https://www.pexels.com/download/video/35969886/
-Stars: https://www.pexels.com/download/video/3121459/
-Nature: https://www.pexels.com/download/video/853800/
-Ocean: https://www.pexels.com/download/video/2099384/
-City: https://www.pexels.com/download/video/3252783/
+# IMAGE USAGE — VERY IMPORTANT
+- Use IMAGE_PLACEHOLDER_1 through IMAGE_PLACEHOLDER_10 as src values for Image elements
+- Images will be auto-replaced with real photos matching the website topic
+- Use MANY images throughout the layout — NOT just one or two
+- EVERY section (except Stats and Footer) should contain at least 1 Image
+- Use different placeholder numbers for variety: IMAGE_PLACEHOLDER_1, IMAGE_PLACEHOLDER_2, etc.
+- Example: {"type":"Image","props":{"src":"IMAGE_PLACEHOLDER_1","width":"100%","height":"300px","radius":12}}
 
-# IMAGE URLs (choose based on topic)
-Office: https://images.unsplash.com/photo-1497366216548-37526070297c?w=800
-Tech: https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800
-Meeting: https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800
-Team: https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800
-Coding: https://images.unsplash.com/photo-1551434678-e076c223a692?w=800
-Nature: https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800
-Food: https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800
-Fitness: https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800
+# VIDEO USAGE
+- Use VIDEO_PLACEHOLDER_1 as videoUrl in the Hero section video
+- Example: {"type":"Video","props":{"videoId":"","videoUrl":"VIDEO_PLACEHOLDER_1","text":""}}
 
-# EXAMPLES (VARY styling, content based on topic)
-Hero:
-{"type":"container","props":{"width":"100%","height":"500px","padding":[80,60,80,60],"background":{"r":20,"g":30,"b":50,"a":1},"alignItems":"center","justifyContent":"center"},"children":[
-  {"type":"video","props":{"videoId":"","videoUrl":"https://www.pexels.com/download/video/3129671/","text":"Transform Your Business"}}
-]}
+# COLOR PALETTES — use a DIFFERENT palette per section, alternate light/dark
+Dark Blue: {"r":15,"g":23,"b":42,"a":1}
+Dark Teal: {"r":6,"g":78,"b":82,"a":1}
+Dark Purple: {"r":30,"g":15,"b":60,"a":1}
+Dark Green: {"r":5,"g":46,"b":22,"a":1}
+Warm Dark: {"r":40,"g":20,"b":10,"a":1}
+Charcoal: {"r":30,"g":30,"b":35,"a":1}
+Light Cream: {"r":255,"g":248,"b":240,"a":1}
+Light Gray: {"r":245,"g":245,"b":250,"a":1}
+White: {"r":255,"g":255,"b":255,"a":1}
+Light Blue: {"r":240,"g":248,"b":255,"a":1}
 
-Feature:
-{"type":"container","props":{"width":"100%","padding":[40,60,40,60],"background":{"r":250,"g":250,"b":250,"a":1},"alignItems":"center"},"children":[
-  {"type":"text","props":{"text":"Powerful Features","fontSize":42,"fontWeight":"700","textAlign":"center","color":{"r":30,"g":40,"b":60,"a":1},"margin":[0,0,30,0],"shadow":0}},
-  {"type":"image","props":{"src":"https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800","radius":16,"width":"100%","height":"300px"}}
-]}
+# SECTION PATTERNS — create 6-8 sections, images in MOST sections:
+1. HERO — full-width, tall (500-600px), dark bg, VIDEO_PLACEHOLDER_1 as background video, big heading + button
+2. ABOUT — light bg, IMAGE_PLACEHOLDER_1 on one side, text on the other (row layout)
+3. SERVICES/FEATURES — 3 cards in a row, each with IMAGE_PLACEHOLDER_2/3/4 + title + description
+4. GALLERY/SHOWCASE — 2-3 images in a row: IMAGE_PLACEHOLDER_5, IMAGE_PLACEHOLDER_6, IMAGE_PLACEHOLDER_7 with radius
+5. STATS/NUMBERS — big numbers with labels (no images needed here)
+6. TESTIMONIAL — IMAGE_PLACEHOLDER_8 as avatar, quote text with customer name
+7. CTA (Call to Action) — bold dark section with IMAGE_PLACEHOLDER_9 as background, button overlay
+8. FOOTER — simple dark section with copyright text
 
-# RULES
-1. VARY content based on topic - don't use same text
-2. VARY colors - use different backgrounds per section
-3. VARY font sizes - headings 36-56, body 16-20
-4. VARY padding/margin - create spacing
-5. ALWAYS include radius (8-24) for modern look
-6. ALWAYS include shadow (10-40) for depth
-7. Match videos/images to topic
-8. Generate 4-6 sections with different content
+# DESIGN RULES — STRICT
+1. EVERY section must have different background color
+2. Alternate dark/light sections for contrast
+3. Hero = dark bg with light text. Features = light bg with dark text
+4. Headings: fontSize 36-56, fontWeight "700". Body: fontSize 16-20, fontWeight "400"
+5. ALL containers need radius: 0 (full-width) or 8-20 (cards)
+6. ALL cards/elements need shadow: 10-30
+7. Use gap: "20px" or "30px" between children in containers
+8. Use realistic, professional text — NOT generic lorem ipsum
+9. Text should be 3-15 words for headings, 10-30 words for descriptions
+10. EVERY prop listed above MUST be included — never omit required props
+11. Children arrays can nest up to 3 levels deep
+12. Use flexDirection:"column" for vertical layouts, "row" for horizontal
+13. Include 6-10 Image elements across the layout — media-rich design`;
 
-Topic: ${prompt}`;
+    const userMessage = `Create a media-rich, professional website for "${prompt}". Use IMAGE_PLACEHOLDER_1 through IMAGE_PLACEHOLDER_10 for all images (they will be replaced with real photos). Use VIDEO_PLACEHOLDER_1 for hero video. Include 6-8 sections with images in most of them. Use topic-specific headlines and descriptions. Alternate dark/light sections. Output ONLY the JSON, no markdown, no code blocks.`;
 
-    const requestData = {
-      model: 'sonar-pro',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: `Create unique website for "${prompt}". VARY all content - use topic-specific headlines, descriptions. Choose DIFFERENT videos/images that match topic. Use DIFFERENT colors per section. Make it visually impressive with proper spacing and styling.` }
-      ],
-      max_tokens: 10000,
-      temperature: 0.7
-    };
-
-    const r = await fetch('https://api.perplexity.ai/chat/completions', {
+    const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.PPLX_API_KEY}`
+        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
       },
-      body: JSON.stringify(requestData)
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userMessage }
+        ],
+        max_tokens: 10000,
+        temperature: 0.7,
+        response_format: { type: 'json_object' }
+      })
     });
 
-    const txt = await r.text();
-    let data;
-    try { data = JSON.parse(txt); } catch { data = null; }
+    const data = await r.json();
 
     if (!r.ok) {
       return res.status(r.status).json({
-        error: 'Perplexity API error',
+        error: 'Groq API error',
         status: r.status,
-        body: data ?? txt
+        body: data
       });
     }
 
     const raw = data?.choices?.[0]?.message?.content;
     console.log('AI Response length:', raw?.length);
     console.log('AI Response (first 500 chars):', raw?.substring(0, 500));
-    console.log('AI Response (last 200 chars):', raw?.slice(-200));
 
     if (!raw) {
-      return res.status(500).json({ error: 'No choices[0].message.content', body: data });
+      return res.status(500).json({ error: 'No content in Groq response', body: data });
     }
 
     // Parse with repair fallback
@@ -1804,7 +1962,20 @@ Topic: ${prompt}`;
       console.log('Parse error:', e1.message);
       console.log('Attempting repair...');
       try {
-        const fixedRaw = await repairJsonWithAI(raw, process.env.PPLX_API_KEY);
+        const repairR = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
+          },
+          body: JSON.stringify({
+            model: 'llama-3.3-70b-versatile',
+            messages: [{ role: 'user', content: `Fix this broken JSON and return ONLY valid JSON matching this schema: {"sections":[{type,props,children}]}\n\n${raw}` }],
+            response_format: { type: 'json_object' }
+          })
+        });
+        const repairData = await repairR.json();
+        const fixedRaw = repairData?.choices?.[0]?.message?.content;
         parsed = safeParseAIJson(fixedRaw);
       } catch (e2) {
         console.log('Repair failed:', e2.message);
@@ -1825,6 +1996,19 @@ Topic: ${prompt}`;
       return res.status(400).json({ error: 'No sections generated', parsed, normalized });
     }
 
+    // Fetch real images/videos from Pexels based on user prompt
+    if (process.env.PEXELS_API_KEY) {
+      const searchQuery = String(prompt).trim();
+      const [images, videos] = await Promise.all([
+        fetchPexelsImages(searchQuery, 10),
+        fetchPexelsVideos(searchQuery, 3)
+      ]);
+      console.log(`Pexels: found ${images.length} images, ${videos.length} videos for "${searchQuery}"`);
+      if (images.length > 0 || videos.length > 0) {
+        replacePlaceholdersInJson(normalized, images, videos);
+      }
+    }
+
     return res.json(normalized);
   } catch (e) {
     return res.status(500).json({
@@ -1832,6 +2016,33 @@ Topic: ${prompt}`;
       message: e?.message,
       stack: e?.stack
     });
+  }
+});
+
+// ---------- Image proxy (avoids tainted canvas for external images) ----------
+app.get('/api/image-proxy', async (req, res) => {
+  try {
+    const imageUrl = req.query.url;
+    if (!imageUrl) return res.status(400).send('Missing url parameter');
+
+    const allowedHosts = ['images.pexels.com', 'images.unsplash.com', 'player.vimeo.com', 'pexels.com'];
+    const urlObj = new URL(imageUrl);
+    if (!allowedHosts.some(h => urlObj.hostname.endsWith(h))) {
+      return res.status(403).send('Domain not allowed');
+    }
+
+    const r = await fetch(imageUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    });
+    if (!r.ok) return res.status(r.status).send('Upstream error');
+
+    res.set('Content-Type', r.headers.get('content-type') || 'image/jpeg');
+    res.set('Cache-Control', 'public, max-age=86400');
+    res.set('Access-Control-Allow-Origin', '*');
+    const buf = Buffer.from(await r.arrayBuffer());
+    res.send(buf);
+  } catch (e) {
+    res.status(500).send('Proxy error: ' + e.message);
   }
 });
 

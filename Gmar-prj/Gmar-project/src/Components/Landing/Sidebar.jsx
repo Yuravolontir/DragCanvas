@@ -85,7 +85,7 @@ export const SidebarDiv = styled.div`
 `;
 
 export const Sidebar = () => {
-  const [layersVisible, setLayerVisible] = useState(true);
+  const [layersVisible, setLayerVisible] = useState(false);
   const [toolbarVisible, setToolbarVisible] = useState(true);
   const { enabled } = useEditor((state) => ({
     enabled: state.options.enabled,

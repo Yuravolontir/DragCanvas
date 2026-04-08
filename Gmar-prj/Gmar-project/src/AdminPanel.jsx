@@ -289,9 +289,11 @@ const confirmRoleChange = async () => {
       setError(null);
       try {
         const response = await
-  fetch('http://localhost:3001/api/users');
+  fetch('https://localhost:7112/api/Users');    //C#
         const data = await response.json();
-
+        
+        console.log(data)
+        
         if (!response.ok) {
           throw new Error(data.error || 'Failed to fetch users');
         }
@@ -312,7 +314,7 @@ const confirmRoleChange = async () => {
       // Fetch user statistics
       try {
         const response = await
-  fetch(`http://localhost:3001/api/users/${user.User_ID}/stats`);
+  fetch(`'https://localhost:7112/api/Users/${user.User_ID}`);   //C#
         const data = await response.json();
         setUserStats(data);
       } catch (err) {
@@ -352,7 +354,7 @@ const confirmRoleChange = async () => {
       try {
         const response = await
   fetch(`http://localhost:3001/api/templates/${templateId}/visibility`, {
-          method: 'PATCH',
+          method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             isActive: !currentStatus,
@@ -500,7 +502,7 @@ const confirmRoleChange = async () => {
   const handleToggleSchedule = async (scheduleId, isActive) => {
     try {
       const response = await fetch(`http://localhost:3001/api/schedules/${scheduleId}/toggle`, {
-        method: 'PATCH',
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isActive })
       });
@@ -576,7 +578,7 @@ const confirmRoleChange = async () => {
   const handleToggleNotificationTemplate = async (templateId, isActive) => {
     try {
       const response = await fetch(`http://localhost:3001/api/notification-templates/${templateId}/toggle`, {
-        method: 'PATCH',
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isActive })
       });
@@ -658,7 +660,7 @@ const confirmRoleChange = async () => {
   const handleSaveNotificationSettings = async (settings) => {
     try {
       const response = await fetch('http://localhost:3001/api/notification-settings', {
-        method: 'PATCH',
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ settings, userId: currentUser.User_ID })
       });
@@ -1280,14 +1282,29 @@ const confirmRoleChange = async () => {
                             </div>
                             <Button
                               variant={setting.IsEnabled ? 'success' : 'secondary'}
-                              onClick={() => {
-                                const updatedSettings = notificationSettings.map(s =>
-                                  s.Setting_ID === setting.Setting_ID
-                                    ? { ...s, IsEnabled: !s.IsEnabled }
-                                    : s
-                                );
-                                setNotificationSettings(updatedSettings);
-                                handleSaveNotificationSettings(updatedSettings);
+                              onClick={async () => {
+                                const newEnabled = !setting.IsEnabled;
+                                try {
+                                  const response = await fetch('http://localhost:3001/api/notification-settings', {
+                                    method: 'PUT',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                      settings: [{ notificationType: setting.NotificationType, isEnabled: newEnabled }],
+                                      userId: currentUser.User_ID
+                                    })
+                                  });
+                                  if (response.ok) {
+                                    setNotificationSettings(prev => prev.map(s =>
+                                      s.Setting_ID === setting.Setting_ID ? { ...s, IsEnabled: newEnabled } : s
+                                    ));
+                                    showAlertModal(`${setting.NotificationType} ${newEnabled ? 'enabled' : 'disabled'}!`, 'success');
+                                  } else {
+                                    const data = await response.json();
+                                    showAlertModal(data.error || 'Failed to update', 'error');
+                                  }
+                                } catch (err) {
+                                  showAlertModal(err.message, 'error');
+                                }
                               }}
                             >
                               {setting.IsEnabled ? 'Enabled' : 'Disabled'}

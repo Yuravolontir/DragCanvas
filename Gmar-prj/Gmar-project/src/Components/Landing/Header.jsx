@@ -116,7 +116,7 @@ export const Header = () => {
           backgroundColor: '#ffffff',
           scale: 1,
           useCORS: true,
-          allowTaint: true,
+          allowTaint: false,
           logging: false
         });
         thumbnailData = canvas.toDataURL('image/jpeg', 0.8);
@@ -180,9 +180,9 @@ export const Header = () => {
 
         const canvas = await html2canvas(canvasElement, {
           backgroundColor: '#ffffff',
-          scale: 1, // Changed from 0.3 - higher quality
+          scale: 1,
           useCORS: true,
-          allowTaint: true,
+          allowTaint: false,
           logging: false,
           windowWidth: canvasElement.scrollWidth,
           windowHeight: canvasElement.scrollHeight,
