@@ -1,3 +1,7 @@
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+
+
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
@@ -6,7 +10,7 @@ import cron from 'node-cron';
 
 const app = express();
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3001'],
+  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3001'],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -18,10 +22,10 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // ---------- SQL ----------
 const config = {
-  server: 'YURA\\SQLEXPRESS',
-  database: 'DragCanvas',
-  user: 'DragCanvasWebApp',
-  password: 'WebApp@2026!',
+  server: process.env.DB_SERVER || 'YURA\\SQLEXPRESS',
+  database: process.env.DB_DATABASE || 'DragCanvas',
+  user: process.env.DB_USER || 'DragCanvasWebApp',
+  password: process.env.DB_PASSWORD || '',
   options: { encrypt: false, trustServerCertificate: true }
 };
 
@@ -280,8 +284,9 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
 
  app.get('/api/users', async (req, res) => {
       try {
-        const result = await pool.request().query('SELECT User_ID,UserName, UserEmail, IsActive, IsAdmin, IsSuperAdmin, CreatedDate, LastLoginDate FROM TBUsers ');
-        res.json(result.recordset);
+       const response = await fetch('https://localhost:7112/api/Users');
+        const users = await response.json();
+        res.json(users);
       } catch (err) {
         res.status(500).json({ error: err.message });
       }
@@ -290,13 +295,12 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
   // GET user by id
   app.get('/api/users/:id', async (req, res) => {
     try {
-      const result = await pool.request()
-        .input('id', sql.Int, req.params.id)
-        .query('SELECT User_ID, UserName, UserEmail, UserPassword FROM TBUsers WHERE User_ID = @id');
-      if (result.recordset.length === 0) {
+       const response = await fetch(`https://localhost:7112/api/Users/${req.params.id}`);
+      const user = await response.json();
+      if (user.length === 0) {
         return res.status(404).json({ error: 'User not found' });
       }
-      res.json(result.recordset[0]);
+      res.json(user[0]);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -317,56 +321,7 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
     }
   });
 
-  // POST login - using Stored Procedure
-  app.post('/api/login', async (req, res) => {
-    try {
-      const { email, password } = req.body;
 
-      if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required' });
-      }
-
-      // Use stored procedure for login
-      const result = await pool.request()
-        .input('Email', sql.NVarChar(100), email)
-        .input('Password', sql.NVarChar(255), password)
-        .input('IPAddress', sql.NVarChar(50), req.ip || 'unknown')
-        .output('UserID', sql.Int)
-        .output('UserName', sql.NVarChar(50))
-        .output('IsAdmin', sql.Bit)
-        .output('ResultCode', sql.Int)
-        .execute('dbo.SP_UserLogin');
-
-      // Get the output parameters
-      const outputs = result.output;
-      const resultCode = outputs.ResultCode;
-      const userID = outputs.UserID;
-      const userName = outputs.UserName;
-      const isAdmin = outputs.IsAdmin;
-
-      if (resultCode !== 1 || !userID) {
-        return res.status(401).json({ error: 'Invalid email or password' });
-      }
-
-      // Fetch full user data without password
-      const userResult = await pool.request()
-        .input('UserID', sql.Int, userID)
-          .query('SELECT User_ID, UserName, UserEmail, IsActive, IsAdmin, IsSuperAdmin FROM TBUsers WHERE User_ID = @UserID');
-
-      if (userResult.recordset.length === 0) {
-        return res.status(401).json({ error: 'User not found' });
-      }
-
-      res.json({
-        user: userResult.recordset[0],
-        admin: isAdmin,
-        message: 'Login successful'
-      });
-    } catch (err) {
-      console.error('Login error:', err);
-      res.status(500).json({ error: err.message });
-    }
-  });
 
   // POST register - using Stored Procedure
   app.post('/api/register', async (req, res) => {
@@ -1633,6 +1588,73 @@ app.delete('/api/templates/:id', async (req, res) => {
     }
   });
 
+// ---------- Publish site ----------
+  app.post('/api/publish-site', async (req, res) => {
+    try {
+      const { projectId, html, domain } = req.body;
+      if (!projectId || !html) return res.status(400).json({ error:
+   'Missing data' });
+
+      // Check if domain already taken by another project
+      if (domain) {
+        const pool = await poolPromise;
+        const check = await pool.request()
+          .input('DOMAIN', sql.NVarChar(255), domain)
+          .input('PID', sql.Int, projectId)
+          .query(`SELECT Project_ID FROM TBProjects WHERE CustomDomain = @DOMAIN AND Project_ID != @PID`);
+        if (check.recordset.length > 0) {
+          return res.status(400).json({ error: 'Domain already connected to another project' });
+        }
+      }
+
+      const pool = await poolPromise;
+      await pool.request()
+        .input('HTML', sql.NVarChar(sql.MAX), html)
+        .input('DOMAIN', sql.NVarChar(255), domain || null)
+        .input('PID', sql.Int, projectId)
+        .query(`UPDATE TBProjects SET PublishedHtml = @HTML,
+  CustomDomain = @DOMAIN, IsPublished = 1 WHERE Project_ID =
+  @PID`);
+
+      res.json({
+        success: true,
+        domain,
+        message: domain
+          ? `Site published. Point your domain DNS to this server's
+   IP with an A record: @ → your-server-ip`
+          : 'Site published'
+      });
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
+  // ---------- Serve published sites by domain ----------
+  app.get('/site-by-domain/:domain', async (req, res) => {
+    try {
+      const pool = await poolPromise;
+      const result = await pool.request()
+        .input('DOMAIN', sql.NVarChar(255), req.params.domain)
+        .query('SELECT PublishedHtml FROM TBProjects WHERE CustomDomain = @DOMAIN AND IsPublished = 1');
+
+      if (!result.recordset.length ||
+  !result.recordset[0].PublishedHtml) {
+        return res.status(404).send('Site not found');
+      }
+      res.setHeader('Content-Type', 'text/html');
+      res.send(result.recordset[0].PublishedHtml);
+    } catch (e) {
+      res.status(500).send('Server error');
+    }
+  });
+
+
+
+
+
+
+
+
 
 // ---------- Robust JSON extraction/parsing ----------
 function extractBalancedJsonObject(text) {
@@ -1844,7 +1866,7 @@ function replacePlaceholdersInJson(obj, images, videos) {
   }
 }
 
-// ---------- AI endpoint (Groq) ----------
+// ---------- AI endpoint (ZhipuAI GLM) ----------
 app.post('/api/ai-generate', async (req, res) => {
   try {
     const { prompt } = req.body || {};
@@ -1852,87 +1874,54 @@ app.post('/api/ai-generate', async (req, res) => {
       return res.status(400).json({ error: 'Missing prompt' });
     }
 
-    if (!process.env.GROQ_API_KEY) {
-      return res.status(500).json({ error: 'Missing GROQ_API_KEY in .env' });
+    if (!process.env.GLM_API_KEY) {
+      return res.status(500).json({ error: 'Missing GLM_API_KEY in .env' });
     }
 
-    const systemPrompt = `You are a professional web designer. Output ONLY valid JSON matching this exact schema:
-{"sections":[{"type":"container","props":{},"children":[...]}]}
+    const systemPrompt = `You are a web designer. Output ONLY valid JSON — no markdown, no code blocks, no commentary. Schema: {"sections":[{"type":"container","props":{},"children":[]}]}
 
-# ELEMENT TYPES & REQUIRED PROPS
-Container: width,height,padding=[top,right,bottom,left],margin=[t,r,b,l],background={"r":0,"g":0,"b":0,"a":1},color={"r":0,"g":0,"b":0,"a":1},radius,shadow,flexDirection="row"|"column",alignItems,justifyContent,gap
-Text: text,fontSize,fontWeight("400"|"500"|"600"|"700"),textAlign("left"|"center"|"right"),color={"r","g","b","a"},margin=[t,r,b,l],shadow
-Button: text,buttonStyle("filled"|"outline"),background={"r","g","b","a"},color={"r","g","b","a"},margin=[t,r,b,l],radius
-Video: videoId="",videoUrl,text (ALL 3 required, use videoId="" when using videoUrl)
-Image: src,radius,width,height
-Link: href,text,fontSize
+ELEMENT TYPES: Container, Text, Button, Video, Image, Link.
 
-# IMAGE USAGE — VERY IMPORTANT
-- Use IMAGE_PLACEHOLDER_1 through IMAGE_PLACEHOLDER_10 as src values for Image elements
-- Images will be auto-replaced with real photos matching the website topic
-- Use MANY images throughout the layout — NOT just one or two
-- EVERY section (except Stats and Footer) should contain at least 1 Image
-- Use different placeholder numbers for variety: IMAGE_PLACEHOLDER_1, IMAGE_PLACEHOLDER_2, etc.
-- Example: {"type":"Image","props":{"src":"IMAGE_PLACEHOLDER_1","width":"100%","height":"300px","radius":12}}
+Container props: width,height,padding[top,right,bottom,left],margin[t,r,b,l],background{"r","g","b","a"},color{"r","g","b","a"},radius,shadow,flexDirection,alignItems,justifyContent,gap
+Text props: text,fontSize,fontWeight,textAlign,color{"r","g","b","a"},margin[t,r,b,l],shadow
+Button props: text,buttonStyle,background{"r","g","b","a"},color{"r","g","b","a"},margin[t,r,b,l],radius
+Video props: videoId,videoUrl,text
+Image props: src,radius,width,height
+Link props: href,text,fontSize
 
-# VIDEO USAGE
-- Use VIDEO_PLACEHOLDER_1 as videoUrl in the Hero section video
-- Example: {"type":"Video","props":{"videoId":"","videoUrl":"VIDEO_PLACEHOLDER_1","text":""}}
+IMAGES: Use IMAGE_PLACEHOLDER_1..8 as src. They auto-replace with real photos.
+VIDEO: Use VIDEO_PLACEHOLDER_1 as videoUrl in hero.
 
-# COLOR PALETTES — use a DIFFERENT palette per section, alternate light/dark
-Dark Blue: {"r":15,"g":23,"b":42,"a":1}
-Dark Teal: {"r":6,"g":78,"b":82,"a":1}
-Dark Purple: {"r":30,"g":15,"b":60,"a":1}
-Dark Green: {"r":5,"g":46,"b":22,"a":1}
-Warm Dark: {"r":40,"g":20,"b":10,"a":1}
-Charcoal: {"r":30,"g":30,"b":35,"a":1}
-Light Cream: {"r":255,"g":248,"b":240,"a":1}
-Light Gray: {"r":245,"g":245,"b":250,"a":1}
-White: {"r":255,"g":255,"b":255,"a":1}
-Light Blue: {"r":240,"g":248,"b":255,"a":1}
+Create exactly 5 sections:
+1. HERO — dark bg, 500px, VIDEO_PLACEHOLDER_1, heading + button
+2. ABOUT — light bg, row: IMAGE_PLACEHOLDER_1 + text
+3. SERVICES — 3 cards row, each with IMAGE + title + short desc
+4. GALLERY — row of 3 images
+5. FOOTER — dark, short text
 
-# SECTION PATTERNS — create 6-8 sections, images in MOST sections:
-1. HERO — full-width, tall (500-600px), dark bg, VIDEO_PLACEHOLDER_1 as background video, big heading + button
-2. ABOUT — light bg, IMAGE_PLACEHOLDER_1 on one side, text on the other (row layout)
-3. SERVICES/FEATURES — 3 cards in a row, each with IMAGE_PLACEHOLDER_2/3/4 + title + description
-4. GALLERY/SHOWCASE — 2-3 images in a row: IMAGE_PLACEHOLDER_5, IMAGE_PLACEHOLDER_6, IMAGE_PLACEHOLDER_7 with radius
-5. STATS/NUMBERS — big numbers with labels (no images needed here)
-6. TESTIMONIAL — IMAGE_PLACEHOLDER_8 as avatar, quote text with customer name
-7. CTA (Call to Action) — bold dark section with IMAGE_PLACEHOLDER_9 as background, button overlay
-8. FOOTER — simple dark section with copyright text
+RULES:
+- Alternate dark/light backgrounds
+- Headings: 36-48px, bold. Body: 16-18px
+- Short realistic text (3-8 word headings, 8-15 word descriptions)
+- Every prop MUST be present
+- Output ONLY the JSON object starting with { and ending with }`;
 
-# DESIGN RULES — STRICT
-1. EVERY section must have different background color
-2. Alternate dark/light sections for contrast
-3. Hero = dark bg with light text. Features = light bg with dark text
-4. Headings: fontSize 36-56, fontWeight "700". Body: fontSize 16-20, fontWeight "400"
-5. ALL containers need radius: 0 (full-width) or 8-20 (cards)
-6. ALL cards/elements need shadow: 10-30
-7. Use gap: "20px" or "30px" between children in containers
-8. Use realistic, professional text — NOT generic lorem ipsum
-9. Text should be 3-15 words for headings, 10-30 words for descriptions
-10. EVERY prop listed above MUST be included — never omit required props
-11. Children arrays can nest up to 3 levels deep
-12. Use flexDirection:"column" for vertical layouts, "row" for horizontal
-13. Include 6-10 Image elements across the layout — media-rich design`;
+    const userMessage = `Create a website for "${prompt}". Use IMAGE_PLACEHOLDER_1..8 for images, VIDEO_PLACEHOLDER_1 for hero video. 5 sections. Output ONLY raw JSON, no markdown.`;
 
-    const userMessage = `Create a media-rich, professional website for "${prompt}". Use IMAGE_PLACEHOLDER_1 through IMAGE_PLACEHOLDER_10 for all images (they will be replaced with real photos). Use VIDEO_PLACEHOLDER_1 for hero video. Include 6-8 sections with images in most of them. Use topic-specific headlines and descriptions. Alternate dark/light sections. Output ONLY the JSON, no markdown, no code blocks.`;
-
-    const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const r = await fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
+        'Authorization': `Bearer ${process.env.GLM_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'glm-4-plus',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userMessage }
         ],
-        max_tokens: 10000,
+        max_tokens: 16000,
         temperature: 0.7,
-        response_format: { type: 'json_object' }
       })
     });
 
@@ -1940,7 +1929,7 @@ Light Blue: {"r":240,"g":248,"b":255,"a":1}
 
     if (!r.ok) {
       return res.status(r.status).json({
-        error: 'Groq API error',
+        error: 'GLM API error',
         status: r.status,
         body: data
       });
@@ -1951,7 +1940,7 @@ Light Blue: {"r":240,"g":248,"b":255,"a":1}
     console.log('AI Response (first 500 chars):', raw?.substring(0, 500));
 
     if (!raw) {
-      return res.status(500).json({ error: 'No content in Groq response', body: data });
+      return res.status(500).json({ error: 'No content in GLM response', body: data });
     }
 
     // Parse with repair fallback
@@ -1962,16 +1951,15 @@ Light Blue: {"r":240,"g":248,"b":255,"a":1}
       console.log('Parse error:', e1.message);
       console.log('Attempting repair...');
       try {
-        const repairR = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        const repairR = await fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
+            'Authorization': `Bearer ${process.env.GLM_API_KEY}`
           },
           body: JSON.stringify({
-            model: 'llama-3.3-70b-versatile',
+            model: 'glm-4-plus',
             messages: [{ role: 'user', content: `Fix this broken JSON and return ONLY valid JSON matching this schema: {"sections":[{type,props,children}]}\n\n${raw}` }],
-            response_format: { type: 'json_object' }
           })
         });
         const repairData = await repairR.json();

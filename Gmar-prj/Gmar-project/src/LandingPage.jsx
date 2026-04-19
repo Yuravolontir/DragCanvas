@@ -155,10 +155,13 @@ export default function LandingPage(props) {
       {/* Scroll Percentage */}
       <div className="scroll-percentage">0%</div>
 
-      {/* Hero Section - NO BLACK BACKGROUND */}
+      {/* Hero Section */}
       <section className="hero">
-        <h1>Build Beautiful Websites in Minutes</h1>
-        <p className="scroll-hint">↓ Scroll to see the magic</p>
+        <h1>
+          Build Beautiful<br />
+          Websites<span className="accent"> in Minutes</span>
+        </h1>
+        <p className="scroll-hint">Scroll to explore</p>
         <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap', marginTop: '40px', position: 'relative', zIndex: 10 }}>
           <Button
             as={Link}
@@ -187,36 +190,40 @@ export default function LandingPage(props) {
 
         {/* Text that appears as you scroll */}
         <div className="scroll-text">
-          <div className="text-line" data-progress="0">The Journey Begins</div>
           <div className="text-line" data-progress="25">Drag & Drop</div>
-          <div className="text-line" data-progress="50">Create Freely</div>
-          <div className="text-line" data-progress="75">Build Fast</div>
-          <div className="text-line" data-progress="100">Publish Instantly</div>
+          <div className="text-line" data-progress="55">Create Freely</div>
+          <div className="text-line" data-progress="85">Build Fast</div>
         </div>
 
         {/* Floating cards that appear at different scroll positions */}
         <div className="floating-card floating-card-top" data-progress="10">
-          <div className="icon">🎨</div>
+          <div className="icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f6ef7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+          </div>
           <h4>Drag & Drop</h4>
-          <p>Easy to use editor</p>
+          <p>Intuitive visual editor</p>
         </div>
 
         <div className="floating-card floating-card-bottom" data-progress="30">
-          <div className="icon">📱</div>
+          <div className="icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          </div>
           <h4>Responsive</h4>
           <p>Works on all devices</p>
         </div>
 
         <div className="floating-card floating-card-left" data-progress="50">
-          <span>✨ No coding required</span>
+          <span>No coding required</span>
         </div>
 
         <div className="floating-card floating-card-right" data-progress="70">
-          <span>🚀 One-click publish</span>
+          <span>One-click publish</span>
         </div>
 
-        <div className="floating-card floating-card-top" data-progress="90" style={{ top: 'auto', bottom: '20%', left: 'auto', right: '15%' }}>
-          <div className="icon">💡</div>
+        <div className="floating-card floating-card-top" data-progress="90" style={{ top: 'auto', bottom: '20%', left: 'auto', right: '12%' }}>
+          <div className="icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f5a623" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
           <h4>Templates</h4>
           <p>Start with a template</p>
         </div>
@@ -225,26 +232,33 @@ export default function LandingPage(props) {
       {/* Features Section */}
       <Container className="features-section">
         <h2 className="section-title">Everything You Need</h2>
+        <p className="section-subtitle">Powerful tools to bring your ideas to life, without writing a single line of code.</p>
         <Row>
           <Col md={4} className="mb-4">
-            <Card className="feature-card">
-              <div className="feature-icon">🎨</div>
+            <Card className="feature-card animate-fade-in-up stagger-1">
+              <div className="feature-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4f6ef7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+              </div>
               <Card.Title>Drag & Drop Builder</Card.Title>
               <Card.Text>Simply drag elements onto your page and customize them with ease.</Card.Text>
             </Card>
           </Col>
           <Col md={4} className="mb-4">
-            <Card className="feature-card">
-              <div className="feature-icon">📱</div>
+            <Card className="feature-card animate-fade-in-up stagger-2">
+              <div className="feature-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4f6ef7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+              </div>
               <Card.Title>Responsive Design</Card.Title>
-              <Card.Text>Your site looks great on any device.</Card.Text>
+              <Card.Text>Your site looks stunning on any device, from mobile to desktop.</Card.Text>
             </Card>
           </Col>
           <Col md={4} className="mb-4">
-            <Card className="feature-card">
-              <div className="feature-icon">🚀</div>
+            <Card className="feature-card animate-fade-in-up stagger-3">
+              <div className="feature-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4f6ef7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+              </div>
               <Card.Title>Instant Publish</Card.Title>
-              <Card.Text>Deploy to Netlify with one click.</Card.Text>
+              <Card.Text>Deploy your website to the web with a single click.</Card.Text>
             </Card>
           </Col>
         </Row>
@@ -253,8 +267,8 @@ export default function LandingPage(props) {
       {/* Footer */}
       <div className="landing-footer">
         <Container>
-          <p>Built with ❤️ for creators everywhere</p>
-          <p className="footer-copy">© 2026 Website Builder. All rights reserved.</p>
+          <p style={{ fontSize: '1rem', opacity: 0.5, marginBottom: '8px', fontFamily: "'Noto Serif', serif" }}>DragCanvas</p>
+          <p className="footer-copy">&copy; 2026 All rights reserved.</p>
         </Container>
       </div>
     </div>

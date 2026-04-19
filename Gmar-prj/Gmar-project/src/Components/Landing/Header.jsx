@@ -7,6 +7,8 @@
   import { useUserContext } from '../../UserContextProvider';
   import { Checkmark, Customize, Redo, Undo } from '../Icons';
   import html2canvas from 'html2canvas';
+  import { exportToHtml } from '../../utils/exportToHtml';
+
 
 const HeaderDiv = styled.div`
   width: 100%;
@@ -69,6 +71,10 @@ export const Header = () => {
   const [saveAsTemplate, setSaveAsTemplate] = useState(false);
   const [templateName, setTemplateName] = useState('');
   const [templateCategory, setTemplateCategory] = useState('Landing Page');
+
+  const [publishModal, setPublishModal] = useState(false);
+  const [publishing, setPublishing] = useState(false);
+  const [customDomain, setCustomDomain] = useState('');
 
   const { enabled, canUndo, canRedo, actions , query } = useEditor((state, query) => ({
     enabled: state.options.enabled,
@@ -440,7 +446,34 @@ async function deployToNetlify(htmlString, token) {
   }
 }
 
-
+const handlePublish = async () => {
+    setPublishing(true);
+    try {
+      const json = query.serialize();
+      const html = exportToHtml(JSON.parse(json), projectName);
+      const res = await
+  fetch('http://localhost:3001/api/publish-site', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ projectId: null, html, domain:
+  customDomain || null })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(customDomain
+          ? `Published! Go to your domain registrar and add:\n\nA
+  record: @ → your-server-ip\nCNAME: www → your-server-ip\n\nThen
+  ${customDomain} will show your site.`
+          : 'Site published!');
+        setPublishModal(false);
+      } else {
+        alert('Error: ' + (data.error || 'Unknown'));
+      }
+    } catch (e) {
+      alert('Error: ' + e.message);
+    }
+    setPublishing(false);
+  };
 
   return (
     <HeaderDiv className="header text-white transition w-full">
@@ -494,8 +527,12 @@ async function deployToNetlify(htmlString, token) {
 
           <Btn className="ml-2 bg-blue-500" onClick={openSaveModal}>
             Save
-          </Btn>
+              </Btn>
 
+      <Btn className="ml-2 bg-green-500" onClick={() =>
+      setPublishModal(true)}>
+        Publish
+      </Btn>
 
 <Btn   className="ml-2 bg-blue-500" onClick={deploy} style={{ cursor: accessToken ? 'pointer' : 'not-allowed', opacity: accessToken ? 1 : 0.5 }}>
            Netlify
@@ -611,6 +648,45 @@ async function deployToNetlify(htmlString, token) {
         setShowAlert(false)}>OK</Button>
                 </Modal.Footer>
               </Modal>
+
+  {publishModal && (
+    <div style={{ position: 'fixed', inset: 0, background:
+  'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center',
+  justifyContent: 'center', zIndex: 99999 }}>
+      <div style={{ background: '#1a1a2e', padding: '32px',
+  borderRadius: '16px', width: '420px', color: 'white' }}>
+        <h3 style={{ marginBottom: '20px' }}>Publish Your Site</h3>
+        <label style={{ fontSize: '0.85rem', opacity: 0.6 }}>Your
+  Domain (optional)</label>
+        <input
+          placeholder="mysite.com"
+          value={customDomain}
+          onChange={(e) => setCustomDomain(e.target.value)}
+          style={{ width: '100%', padding: '10px', margin: '8px 0', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'white', fontSize: '0.95rem' }}
+        />
+        <p style={{ fontSize: '0.8rem', opacity: 0.35, marginBottom: '20px' }}>
+          Buy a domain on Namecheap or GoDaddy, then enter it here
+        </p>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            onClick={handlePublish}
+            disabled={publishing}
+            style={{ flex: 1, padding: '10px', background: publishing ? 'rgba(79,110,247,0.5)' : '#4f6ef7', color: 'white', border: 'none', borderRadius: '8px', cursor: publishing ? 'not-allowed' : 'pointer', fontWeight: 600 }}
+          >
+            {publishing ? 'Publishing...' : 'Publish'}
+          </button>
+          <button
+            onClick={() => setPublishModal(false)}
+            style={{ padding: '10px 20px', background: 'transparent', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', cursor: 'pointer' }}
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  )}
+
+              
     </HeaderDiv>
   );
 };
