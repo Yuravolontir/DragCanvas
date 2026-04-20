@@ -99,36 +99,36 @@ export default function MyProject() {
   };
 
   return (
-    <div style={{ background: '#0b1325', minHeight: '100vh' }}>
+    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
       <NavBar />
 
       <div style={{ paddingTop: '100px', paddingBottom: '80px', paddingLeft: '24px', paddingRight: '24px', maxWidth: '1200px', margin: '0 auto' }}>
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '48px' }}>
           <div>
-            <p style={{ fontFamily: "'Manrope', sans-serif", fontSize: '0.8rem', color: '#4f6ef7', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '12px', fontWeight: 700 }}>
-              The Collection
+            <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.75rem', color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '12px', fontWeight: 700 }}>
+              Dashboard
             </p>
             <h1 style={{
-              fontFamily: "'Noto Serif', serif",
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
-              fontWeight: 900,
-              color: '#dbe2fb',
+              fontWeight: 800,
+              color: 'var(--on-surface)',
               letterSpacing: '-0.04em',
               lineHeight: 1,
               margin: 0,
             }}>
-              Workspace<span style={{ color: '#4f6ef7' }}>.</span>
+              My Workspace
             </h1>
             <p style={{
-              fontFamily: "'Manrope', sans-serif",
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontSize: '1rem',
-              color: '#71717a',
+              color: 'var(--on-surface-variant)',
               marginTop: '16px',
               maxWidth: '400px',
               lineHeight: 1.6,
             }}>
-              Curate your digital presence. {projects.length} {projects.length === 1 ? 'project' : 'projects'} in your workspace.
+              {projects.length} {projects.length === 1 ? 'project' : 'projects'} in your workspace.
             </p>
           </div>
           <button
@@ -137,25 +137,27 @@ export default function MyProject() {
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              padding: '14px 28px',
-              background: '#4f6ef7',
+              padding: '12px 24px',
+              background: 'var(--primary)',
               color: 'white',
               border: 'none',
-              borderRadius: '8px',
-              fontFamily: "'Manrope', sans-serif",
+              borderRadius: '9999px',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontSize: '0.85rem',
               fontWeight: 700,
               cursor: 'pointer',
               transition: 'all 0.2s ease',
-              letterSpacing: '0.02em',
+              boxShadow: '0 2px 8px rgba(0, 96, 172, 0.2)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#6e88ff';
+              e.currentTarget.style.background = 'var(--primary-hover)';
               e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 96, 172, 0.3)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#4f6ef7';
+              e.currentTarget.style.background = 'var(--primary)';
               e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 96, 172, 0.2)';
             }}
           >
             <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>add</span>
@@ -165,7 +167,7 @@ export default function MyProject() {
 
         {loading ? (
           <div style={{ display: 'flex', justifyContent: 'center', padding: '120px 0' }}>
-            <div style={{ fontFamily: "'Manrope', sans-serif", color: '#71717a', fontSize: '0.9rem' }}>
+            <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: 'var(--muted)', fontSize: '0.9rem' }}>
               Loading projects...
             </div>
           </div>
@@ -173,56 +175,57 @@ export default function MyProject() {
           <div style={{
             textAlign: 'center',
             padding: '100px 40px',
-            background: 'rgba(23, 31, 50, 0.5)',
-            borderRadius: '20px',
-            border: '2px dashed rgba(68, 70, 84, 0.3)',
+            background: 'white',
+            borderRadius: '24px',
+            border: '2px dashed var(--outline-light)',
+            boxShadow: 'var(--shadow-sm)',
           }}>
             <div style={{
               width: '64px',
               height: '64px',
-              background: 'rgba(79, 110, 247, 0.1)',
-              borderRadius: '16px',
+              background: 'var(--primary-light)',
+              borderRadius: '18px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               margin: '0 auto 20px',
-              border: '1px solid rgba(79, 110, 247, 0.15)',
             }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '28px', color: '#4f6ef7' }}>add_circle</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '28px', color: 'var(--primary)' }}>add_circle</span>
             </div>
             <h3 style={{
-              fontFamily: "'Noto Serif', serif",
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontSize: '1.3rem',
               fontWeight: 700,
-              color: '#71717a',
+              color: 'var(--on-surface)',
               marginBottom: '8px',
             }}>
-              Create Template
+              No projects yet
             </h3>
             <p style={{
-              fontFamily: "'Manrope', sans-serif",
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontSize: '0.85rem',
-              color: '#71717a',
+              color: 'var(--muted)',
               marginBottom: '24px',
             }}>
-              Start with a curated layout
+              Start with a curated layout or create from scratch
             </p>
             <button
               onClick={() => navigate('/create-new-project')}
               style={{
                 padding: '12px 28px',
-                background: 'rgba(79, 110, 247, 0.1)',
-                color: '#b9c3ff',
-                border: '1px solid rgba(79, 110, 247, 0.2)',
-                borderRadius: '10px',
-                fontFamily: "'Manrope', sans-serif",
+                background: 'var(--primary)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '9999px',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontSize: '0.85rem',
                 fontWeight: 600,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
+                boxShadow: '0 2px 8px rgba(0, 96, 172, 0.2)',
               }}
-              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(79, 110, 247, 0.2)'}
-              onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(79, 110, 247, 0.1)'}
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
             >
               Create Project
             </button>
@@ -241,24 +244,21 @@ export default function MyProject() {
                   className={`animate-fade-in-up stagger-${Math.min(index + 1, 5)}`}
                   style={{
                     gridColumn: isFirst ? 'span 8' : 'span 4',
-                    background: 'rgba(19, 27, 45, 0.6)',
-                    backdropFilter: 'blur(12px)',
-                    borderRadius: '16px',
+                    background: 'white',
+                    borderRadius: '20px',
                     overflow: 'hidden',
-                    border: '1px solid rgba(68, 70, 84, 0.15)',
+                    border: '1px solid var(--outline-light)',
                     transition: 'all 0.4s ease',
                     cursor: 'default',
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
+                    boxShadow: 'var(--shadow-sm)',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(34, 42, 61, 0.8)';
+                    e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
                     e.currentTarget.style.transform = 'translateY(-4px)';
-                    e.currentTarget.style.boxShadow = '0 16px 48px rgba(0, 0, 0, 0.25)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(19, 27, 45, 0.6)';
+                    e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
                     e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.15)';
                   }}
                 >
                   {/* Thumbnail */}
@@ -266,7 +266,7 @@ export default function MyProject() {
                     <div style={{
                       height: isFirst ? '300px' : '200px',
                       overflow: 'hidden',
-                      background: '#060e1f',
+                      background: 'var(--surface-dim)',
                     }}>
                       <img
                         src={project.ThumbnailURL}
@@ -276,16 +276,13 @@ export default function MyProject() {
                           height: '100%',
                           objectFit: 'cover',
                           display: 'block',
-                          opacity: 0.7,
                           transition: 'all 0.5s ease',
                         }}
                         draggable={false}
                         onMouseEnter={(e) => {
-                          e.target.style.opacity = '1';
                           e.target.style.transform = 'scale(1.05)';
                         }}
                         onMouseLeave={(e) => {
-                          e.target.style.opacity = '0.7';
                           e.target.style.transform = 'scale(1)';
                         }}
                       />
@@ -297,15 +294,15 @@ export default function MyProject() {
                     {isFirst && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
                         <span style={{
-                          padding: '4px 10px',
+                          padding: '4px 12px',
                           borderRadius: '9999px',
-                          background: 'rgba(79, 110, 247, 0.15)',
-                          color: '#b9c3ff',
-                          fontSize: '10px',
+                          background: 'var(--secondary-light)',
+                          color: 'var(--secondary)',
+                          fontSize: '0.7rem',
                           fontWeight: 700,
                           textTransform: 'uppercase',
                           letterSpacing: '0.1em',
-                          fontFamily: "'Manrope', sans-serif",
+                          fontFamily: "'Plus Jakarta Sans', sans-serif",
                         }}>
                           Featured
                         </span>
@@ -313,12 +310,11 @@ export default function MyProject() {
                     )}
 
                     <h3 style={{
-                      fontFamily: "'Noto Serif', serif",
-                      fontSize: isFirst ? '1.5rem' : '1.15rem',
+                      fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      fontSize: isFirst ? '1.5rem' : '1.1rem',
                       fontWeight: 700,
-                      color: '#dbe2fb',
+                      color: 'var(--on-surface)',
                       marginBottom: '6px',
-                      letterSpacing: '-0.01em',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
@@ -328,9 +324,9 @@ export default function MyProject() {
 
                     {project.ProjectDescription && (
                       <p style={{
-                        fontFamily: "'Manrope', sans-serif",
+                        fontFamily: "'Plus Jakarta Sans', sans-serif",
                         fontSize: '0.85rem',
-                        color: '#71717a',
+                        color: 'var(--on-surface-variant)',
                         marginBottom: '12px',
                         lineHeight: 1.5,
                         overflow: 'hidden',
@@ -346,9 +342,9 @@ export default function MyProject() {
                       display: 'flex',
                       gap: '12px',
                       marginBottom: '16px',
-                      fontFamily: "'Manrope', sans-serif",
+                      fontFamily: "'Plus Jakarta Sans', sans-serif",
                       fontSize: '0.75rem',
-                      color: '#71717a',
+                      color: 'var(--muted)',
                     }}>
                       <span>{project.ComponentCount} components</span>
                       <span>{project.ProjectSizeKB} KB</span>
@@ -362,11 +358,11 @@ export default function MyProject() {
                         style={{
                           flex: 1,
                           padding: '10px 16px',
-                          background: 'rgba(79, 110, 247, 0.1)',
-                          color: '#b9c3ff',
-                          border: '1px solid rgba(79, 110, 247, 0.2)',
-                          borderRadius: '8px',
-                          fontFamily: "'Manrope', sans-serif",
+                          background: 'var(--primary-light)',
+                          color: 'var(--primary)',
+                          border: 'none',
+                          borderRadius: '9999px',
+                          fontFamily: "'Plus Jakarta Sans', sans-serif",
                           fontSize: '0.8rem',
                           fontWeight: 600,
                           cursor: 'pointer',
@@ -377,14 +373,12 @@ export default function MyProject() {
                           gap: '6px',
                         }}
                         onMouseEnter={(e) => {
-                          e.target.style.background = '#4f6ef7';
+                          e.target.style.background = 'var(--primary)';
                           e.target.style.color = 'white';
-                          e.target.style.borderColor = '#4f6ef7';
                         }}
                         onMouseLeave={(e) => {
-                          e.target.style.background = 'rgba(79, 110, 247, 0.1)';
-                          e.target.style.color = '#b9c3ff';
-                          e.target.style.borderColor = 'rgba(79, 110, 247, 0.2)';
+                          e.target.style.background = 'var(--primary-light)';
+                          e.target.style.color = 'var(--primary)';
                         }}
                       >
                         <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>edit</span>
@@ -395,9 +389,9 @@ export default function MyProject() {
                         style={{
                           padding: '10px',
                           background: 'transparent',
-                          color: '#71717a',
-                          border: '1px solid rgba(68, 70, 84, 0.2)',
-                          borderRadius: '8px',
+                          color: 'var(--muted)',
+                          border: '1px solid var(--outline-light)',
+                          borderRadius: '12px',
                           cursor: 'pointer',
                           transition: 'all 0.2s ease',
                           display: 'flex',
@@ -405,13 +399,13 @@ export default function MyProject() {
                           justifyContent: 'center',
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.color = '#ff6b6b';
-                          e.currentTarget.style.borderColor = '#ff6b6b';
-                          e.currentTarget.style.background = 'rgba(255,107,107,0.08)';
+                          e.currentTarget.style.color = 'var(--error)';
+                          e.currentTarget.style.borderColor = 'var(--error)';
+                          e.currentTarget.style.background = 'rgba(186,26,26,0.05)';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.color = '#71717a';
-                          e.currentTarget.style.borderColor = 'rgba(68, 70, 84, 0.2)';
+                          e.currentTarget.style.color = 'var(--muted)';
+                          e.currentTarget.style.borderColor = 'var(--outline-light)';
                           e.currentTarget.style.background = 'transparent';
                         }}
                       >

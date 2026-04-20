@@ -1,81 +1,74 @@
 @tailwind base;
 @tailwind components;
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700;900&family=Manrope:wght@300;400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
-/* ─── Design System ─── */
+/* ─── Design System — Friendly Canvas ─── */
 :root {
-  /* Surface system */
-  --surface: #0b1325;
-  --surface-dim: #0b1325;
-  --surface-bright: #31394c;
-  --surface-container-lowest: #060e1f;
-  --surface-container-low: #131b2d;
-  --surface-container: #171f32;
-  --surface-container-high: #222a3d;
-  --surface-container-highest: #2d3448;
+  /* Background */
+  --bg: #fcf9f1;
+  --bg-dim: #f3efe4;
+  --bg-bright: #ffffff;
 
-  /* Primary */
-  --primary: #b9c3ff;
-  --primary-container: #6e88ff;
-  --primary-fixed: #dde1ff;
-  --primary-fixed-dim: #b9c3ff;
-  --on-primary: #00228a;
-  --on-primary-container: #001d79;
-  --on-primary-fixed: #001257;
-  --on-primary-fixed-variant: #0034c0;
-  --indigo-500: #4f6ef7;
+  /* Surface system (cards, panels) */
+  --surface: #ffffff;
+  --surface-dim: #f7f4ec;
+  --surface-container: #f0ece3;
+  --surface-container-high: #e8e4db;
+  --surface-container-highest: #dfd9ce;
 
-  /* On surface */
-  --on-surface: #dbe2fb;
-  --on-surface-variant: #c4c5d7;
-  --on-background: #dbe2fb;
+  /* Primary — Blue */
+  --primary: #0060ac;
+  --primary-hover: #004d8a;
+  --primary-light: #e3f2fd;
+  --primary-container: #d1e8ff;
+  --on-primary: #ffffff;
+  --on-primary-container: #001d38;
 
-  /* Secondary */
-  --secondary: #c6c5cf;
-  --secondary-container: #4a4b53;
-  --on-secondary: #2f3038;
-  --on-secondary-container: #bcbbc5;
+  /* Secondary — Coral/Rose */
+  --secondary: #a93349;
+  --secondary-hover: #8c2a3c;
+  --secondary-light: #fce8ec;
+  --secondary-container: #ffdad9;
+  --on-secondary: #ffffff;
+  --on-secondary-container: #3b0618;
 
-  /* Tertiary */
-  --tertiary: #c6c6c7;
-  --tertiary-container: #909191;
+  /* Tertiary — Warm Amber */
+  --tertiary: #7a5900;
+  --tertiary-light: #fff8e1;
+  --tertiary-container: #ffe08a;
+
+  /* On surface text */
+  --on-surface: #1c1b1f;
+  --on-surface-variant: #49454f;
+  --on-background: #1c1b1f;
+  --muted: #79747e;
+  --hint: #9994a0;
 
   /* Outlines */
-  --outline: #8e90a0;
-  --outline-variant: #444654;
+  --outline: #79747e;
+  --outline-variant: #cac4d0;
+  --outline-light: #e8e0eb;
 
   /* Semantic */
-  --error: #ffb4ab;
-  --coral-500: #ff6b6b;
-  --amber-500: #f5a623;
-  --emerald-500: #34d399;
+  --error: #ba1a1a;
+  --success: #2e7d32;
+  --warning: #f57c00;
 
-  /* Inverse */
-  --inverse-surface: #dbe2fb;
-  --inverse-on-surface: #283043;
-  --inverse-primary: #2d50d9;
-
-  /* Legacy compatibility */
-  --navy-900: #0b1325;
-  --navy-800: #131b2d;
-  --gray-950: #060e1f;
-  --gray-700: #444654;
-  --gray-600: #52525b;
-  --gray-400: #8e90a0;
-  --gray-300: #c4c5d7;
-  --gray-200: #c6c5cf;
-  --gray-100: #dbe2fb;
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.05);
 
   /* Typography */
-  --font-display: 'Noto Serif', Georgia, serif;
-  --font-heading: 'Noto Serif', Georgia, serif;
-  --font-body: 'Manrope', system-ui, sans-serif;
-  --font-label: 'Manrope', system-ui, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-label: 'Plus Jakarta Sans', system-ui, sans-serif;
 
   /* Misc */
-  --radius-md: 10px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
   --radius-lg: 16px;
+  --radius-xl: 24px;
   --radius-full: 9999px;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-fast: 150ms;
@@ -90,18 +83,28 @@
 
 /* Glass panel utility */
 .glass-panel {
-  background: rgba(11, 19, 37, 0.7);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 html,
 body {
-  font-family: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
     'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
     'Helvetica Neue', sans-serif;
   color: var(--on-surface);
-  background: var(--surface);
+  background: var(--bg);
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* Reset Bootstrap container backgrounds */
+.container,
+.container-fluid {
+  background: transparent !important;
 }
 
 @tailwind utilities;
@@ -165,9 +168,23 @@ body {
   to { opacity: 1; transform: scale(1); }
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+@keyframes bellShake {
+  0% { transform: rotate(0); }
+  10% { transform: rotate(14deg); }
+  20% { transform: rotate(-12deg); }
+  30% { transform: rotate(10deg); }
+  40% { transform: rotate(-8deg); }
+  50% { transform: rotate(6deg); }
+  60% { transform: rotate(-4deg); }
+  70% { transform: rotate(2deg); }
+  80% { transform: rotate(0); }
+  100% { transform: rotate(0); }
+}
+
+.bell-icon {
+  animation: bellShake 2s ease-in-out 1s both;
+  transform-origin: top center;
+  display: inline-block;
 }
 
 .animate-fade-in {
@@ -195,6 +212,6 @@ body {
 
 /* ─── Selection ─── */
 ::selection {
-  background: var(--indigo-500);
+  background: var(--primary);
   color: white;
 }

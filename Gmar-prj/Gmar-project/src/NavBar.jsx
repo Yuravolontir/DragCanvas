@@ -56,36 +56,36 @@ export default function NavBar() {
       expand="lg"
       fixed="top"
       style={{
-        background: scrolled ? 'rgba(11, 19, 37, 0.85)' : 'rgba(11, 19, 37, 0.7)',
+        background: scrolled ? 'rgba(252, 249, 241, 0.9)' : 'rgba(252, 249, 241, 0.7)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(68, 70, 84, 0.15)',
+        borderBottom: scrolled ? '1px solid rgba(0, 0, 0, 0.06)' : '1px solid transparent',
         padding: '0',
         transition: 'all 0.3s ease',
-        boxShadow: '0 8px 32px 0 rgba(0, 8, 20, 0.08)',
+        boxShadow: scrolled ? '0 1px 8px rgba(0,0,0,0.04)' : 'none',
       }}
     >
       <Container style={{ maxWidth: '1200px' }}>
         <Navbar.Brand
           onClick={() => navigate("/")}
           style={{
-            fontFamily: "'Noto Serif', serif",
-            fontWeight: 900,
-            fontSize: '1.35rem',
-            color: '#4f6ef7',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontWeight: 800,
+            fontSize: '1.25rem',
+            color: 'var(--primary)',
             cursor: 'pointer',
             letterSpacing: '-0.02em',
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
-            padding: '12px 0',
+            padding: '14px 0',
           }}
         >
-          <span className="material-symbols-outlined" style={{ fontSize: '24px', color: '#b9c3ff' }}>grid_view</span>
+          <span className="material-symbols-outlined" style={{ fontSize: '24px', color: 'var(--secondary)' }}>grid_view</span>
           DragCanvas
         </Navbar.Brand>
 
-        <Navbar.Toggle aria-controls="main-nav" style={{ border: '1px solid rgba(68, 70, 84, 0.3)' }} />
+        <Navbar.Toggle aria-controls="main-nav" style={{ border: '1px solid var(--outline-light)' }} />
 
         <Navbar.Collapse id="main-nav">
           <Nav className="me-auto" style={{ gap: '4px', marginLeft: '24px' }}>
@@ -98,9 +98,9 @@ export default function NavBar() {
                 key={i}
                 onClick={item.onClick}
                 style={{
-                  color: '#71717a',
+                  color: 'var(--on-surface-variant)',
                   fontSize: '0.875rem',
-                  fontFamily: "'Manrope', sans-serif",
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
                   fontWeight: 500,
                   padding: '8px 14px',
                   borderRadius: '8px',
@@ -108,11 +108,11 @@ export default function NavBar() {
                   letterSpacing: '0.01em',
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.color = '#b9c3ff';
-                  e.target.style.background = 'rgba(79, 110, 247, 0.08)';
+                  e.target.style.color = 'var(--primary)';
+                  e.target.style.background = 'var(--primary-light)';
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.color = '#71717a';
+                  e.target.style.color = 'var(--on-surface-variant)';
                   e.target.style.background = 'transparent';
                 }}
               >
@@ -125,25 +125,25 @@ export default function NavBar() {
             {currentUser ? (
               <>
                 <span style={{
-                  color: '#71717a',
+                  color: 'var(--on-surface-variant)',
                   fontSize: '0.8rem',
-                  fontFamily: "'Manrope', sans-serif",
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
                   padding: '6px 14px',
-                  background: 'rgba(34, 42, 61, 0.6)',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(68, 70, 84, 0.15)',
+                  background: 'var(--surface-dim)',
+                  borderRadius: '9999px',
+                  border: '1px solid var(--outline-light)',
                 }}>
-                  <span style={{ color: '#c4c5d7' }}>{getGreeting()}</span>,{' '}
-                  <span style={{ color: '#b9c3ff', fontWeight: 600 }}>{currentUser.UserName}</span>
+                  <span style={{ color: 'var(--muted)' }}>{getGreeting()}</span>,{' '}
+                  <span style={{ color: 'var(--primary)', fontWeight: 600 }}>{currentUser.UserName}</span>
                 </span>
 
                 {(isAdmin || isSuperAdmin) && (
                   <Nav.Link
                     onClick={() => navigate("/admin-panel")}
                     style={{
-                      color: '#71717a',
+                      color: 'var(--on-surface-variant)',
                       fontSize: '0.8rem',
-                      fontFamily: "'Manrope', sans-serif",
+                      fontFamily: "'Plus Jakarta Sans', sans-serif",
                       fontWeight: 500,
                       padding: '6px 12px',
                       borderRadius: '8px',
@@ -158,16 +158,16 @@ export default function NavBar() {
                   style={{
                     position: 'relative',
                     padding: '8px',
-                    color: '#71717a',
+                    color: 'var(--on-surface-variant)',
                   }}
                 >
-                  <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>notifications</span>
+                  <span className="material-symbols-outlined bell-icon" style={{ fontSize: '20px' }}>notifications</span>
                   {unreadCount > 0 && (
                     <span style={{
                       position: 'absolute',
                       top: '2px',
                       right: '2px',
-                      background: '#ff6b6b',
+                      background: 'var(--secondary)',
                       color: 'white',
                       borderRadius: '50%',
                       width: '16px',
@@ -177,7 +177,7 @@ export default function NavBar() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      border: '2px solid #0b1325',
+                      border: '2px solid var(--bg)',
                     }}>
                       {unreadCount > 9 ? '9+' : unreadCount}
                     </span>
@@ -187,9 +187,9 @@ export default function NavBar() {
                 <Nav.Link
                   onClick={logout}
                   style={{
-                    color: '#71717a',
+                    color: 'var(--on-surface-variant)',
                     fontSize: '0.8rem',
-                    fontFamily: "'Manrope', sans-serif",
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
                     padding: '6px 12px',
                     borderRadius: '8px',
                   }}
@@ -202,9 +202,9 @@ export default function NavBar() {
                 <Nav.Link
                   onClick={() => navigate("/login")}
                   style={{
-                    color: '#71717a',
+                    color: 'var(--on-surface-variant)',
                     fontSize: '0.85rem',
-                    fontFamily: "'Manrope', sans-serif",
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
                     fontWeight: 500,
                     padding: '8px 16px',
                     borderRadius: '8px',
@@ -215,22 +215,22 @@ export default function NavBar() {
                 <button
                   onClick={() => navigate("/register")}
                   style={{
-                    background: 'rgba(79, 110, 247, 0.1)',
-                    color: '#b9c3ff',
+                    background: 'var(--primary)',
+                    color: 'white',
                     border: 'none',
                     fontSize: '0.85rem',
-                    fontFamily: "'Manrope', sans-serif",
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
                     fontWeight: 600,
                     padding: '8px 20px',
-                    borderRadius: '8px',
+                    borderRadius: '9999px',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.background = 'rgba(79, 110, 247, 0.2)';
+                    e.target.style.background = 'var(--primary-hover)';
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.background = 'rgba(79, 110, 247, 0.1)';
+                    e.target.style.background = 'var(--primary)';
                   }}
                 >
                   Get Started

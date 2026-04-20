@@ -127,34 +127,34 @@ export default function InspireMe() {
   }, [filteredTemplates.length]);
 
   return (
-    <div style={{ background: '#0b1325', minHeight: '100vh' }}>
+    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
       <NavBar />
 
       <div style={{ paddingTop: '100px', paddingBottom: '80px', paddingLeft: '24px', paddingRight: '24px', maxWidth: '1200px', margin: '0 auto' }}>
         {/* Header */}
         <div style={{ marginBottom: '48px' }}>
-          <p style={{ fontFamily: "'Manrope', sans-serif", fontSize: '0.8rem', color: '#4f6ef7', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '12px', fontWeight: 700 }}>
-            The Collection
+          <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.75rem', color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '12px', fontWeight: 700 }}>
+            Templates
           </p>
           <h1 style={{
-            fontFamily: "'Noto Serif', serif",
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
-            fontWeight: 900,
-            color: '#dbe2fb',
+            fontWeight: 800,
+            color: 'var(--on-surface)',
             letterSpacing: '-0.04em',
             lineHeight: 1,
             marginBottom: '16px',
           }}>
-            Obsidian <br />Archive
+            Choose a Starting Point
           </h1>
           <p style={{
-            fontFamily: "'Manrope', sans-serif",
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontSize: '1rem',
-            color: '#71717a',
+            color: 'var(--on-surface-variant)',
             marginBottom: '32px',
-            maxWidth: '400px',
+            maxWidth: '500px',
           }}>
-            Choose a starting point for your next project
+            Browse our curated collection of templates to kickstart your next project
           </p>
 
           {/* Category Pills */}
@@ -171,24 +171,26 @@ export default function InspireMe() {
                   padding: '8px 20px',
                   borderRadius: '9999px',
                   border: 'none',
-                  background: filterCategory === cat ? '#4f6ef7' : '#222a3d',
-                  color: filterCategory === cat ? 'white' : '#c4c5d7',
-                  fontFamily: "'Manrope', sans-serif",
+                  background: filterCategory === cat ? 'var(--primary)' : 'white',
+                  color: filterCategory === cat ? 'white' : 'var(--on-surface-variant)',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
                   fontSize: '0.8rem',
                   fontWeight: filterCategory === cat ? 700 : 500,
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
+                  boxShadow: 'var(--shadow-sm)',
+                  border: filterCategory === cat ? 'none' : '1px solid var(--outline-light)',
                 }}
                 onMouseEnter={(e) => {
                   if (filterCategory !== cat) {
-                    e.target.style.background = '#2d3448';
-                    e.target.style.color = '#dbe2fb';
+                    e.target.style.borderColor = 'var(--primary)';
+                    e.target.style.color = 'var(--primary)';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (filterCategory !== cat) {
-                    e.target.style.background = '#222a3d';
-                    e.target.style.color = '#c4c5d7';
+                    e.target.style.borderColor = 'var(--outline-light)';
+                    e.target.style.color = 'var(--on-surface-variant)';
                   }
                 }}
               >
@@ -200,7 +202,7 @@ export default function InspireMe() {
 
         {loading ? (
           <div style={{ textAlign: 'center', padding: '120px 0' }}>
-            <div style={{ fontFamily: "'Manrope', sans-serif", color: '#71717a', fontSize: '0.9rem' }}>
+            <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: 'var(--muted)', fontSize: '0.9rem' }}>
               Loading templates...
             </div>
           </div>
@@ -208,14 +210,15 @@ export default function InspireMe() {
           <div style={{
             textAlign: 'center',
             padding: '100px 40px',
-            background: 'rgba(23, 31, 50, 0.5)',
-            borderRadius: '20px',
-            border: '2px dashed rgba(68, 70, 84, 0.3)',
+            background: 'white',
+            borderRadius: '24px',
+            border: '2px dashed var(--outline-light)',
+            boxShadow: 'var(--shadow-sm)',
           }}>
             <h3 style={{
-              fontFamily: "'Noto Serif', serif",
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontSize: '1.2rem',
-              color: '#71717a',
+              color: 'var(--muted)',
               fontWeight: 700,
             }}>
               No templates found
@@ -234,27 +237,26 @@ export default function InspireMe() {
                 zIndex: 1000,
                 width: '48px',
                 height: '48px',
-                borderRadius: '12px',
-                border: '1px solid rgba(68, 70, 84, 0.3)',
-                background: 'rgba(23, 31, 50, 0.8)',
-                backdropFilter: 'blur(20px)',
+                borderRadius: '9999px',
+                border: '1px solid var(--outline-light)',
+                background: 'rgba(255, 255, 255, 0.9)',
+                backdropFilter: 'blur(16px)',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+                boxShadow: 'var(--shadow-md)',
                 transition: 'all 0.2s ease',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(79, 110, 247, 0.4)';
-                e.currentTarget.style.background = 'rgba(34, 42, 61, 0.9)';
+                e.currentTarget.style.borderColor = 'var(--primary)';
+                e.currentTarget.style.color = 'var(--primary)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(68, 70, 84, 0.3)';
-                e.currentTarget.style.background = 'rgba(23, 31, 50, 0.8)';
+                e.currentTarget.style.borderColor = 'var(--outline-light)';
               }}
             >
-              <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#b9c3ff' }}>arrow_back</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--on-surface-variant)' }}>arrow_back</span>
             </button>
 
             <button
@@ -267,37 +269,34 @@ export default function InspireMe() {
                 zIndex: 1000,
                 width: '48px',
                 height: '48px',
-                borderRadius: '12px',
-                border: '1px solid rgba(68, 70, 84, 0.3)',
-                background: 'rgba(23, 31, 50, 0.8)',
-                backdropFilter: 'blur(20px)',
+                borderRadius: '9999px',
+                border: '1px solid var(--outline-light)',
+                background: 'rgba(255, 255, 255, 0.9)',
+                backdropFilter: 'blur(16px)',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+                boxShadow: 'var(--shadow-md)',
                 transition: 'all 0.2s ease',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(79, 110, 247, 0.4)';
-                e.currentTarget.style.background = 'rgba(34, 42, 61, 0.9)';
+                e.currentTarget.style.borderColor = 'var(--primary)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(68, 70, 84, 0.3)';
-                e.currentTarget.style.background = 'rgba(23, 31, 50, 0.8)';
+                e.currentTarget.style.borderColor = 'var(--outline-light)';
               }}
             >
-              <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#b9c3ff' }}>arrow_forward</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--on-surface-variant)' }}>arrow_forward</span>
             </button>
 
             {/* Template Card */}
             <div style={{
-              background: 'rgba(19, 27, 45, 0.6)',
-              backdropFilter: 'blur(12px)',
-              borderRadius: '20px',
-              border: '1px solid rgba(68, 70, 84, 0.15)',
+              background: 'white',
+              borderRadius: '24px',
+              border: '1px solid var(--outline-light)',
               overflow: 'hidden',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+              boxShadow: 'var(--shadow-md)',
               transition: 'all 0.3s ease',
             }}>
               {/* Template Preview */}
@@ -305,7 +304,7 @@ export default function InspireMe() {
                 <div style={{
                   height: '420px',
                   overflow: 'hidden',
-                  background: '#060e1f',
+                  background: 'var(--surface-dim)',
                   position: 'relative',
                 }}>
                   <img
@@ -316,23 +315,20 @@ export default function InspireMe() {
                       height: '100%',
                       objectFit: 'cover',
                       display: 'block',
-                      opacity: 0.8,
                       transition: 'all 0.5s ease',
                     }}
                     draggable={false}
                     onMouseEnter={(e) => {
-                      e.target.style.opacity = '1';
                       e.target.style.transform = 'scale(1.03)';
                     }}
                     onMouseLeave={(e) => {
-                      e.target.style.opacity = '0.8';
                       e.target.style.transform = 'scale(1)';
                     }}
                   />
                   <div style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(to top, #0b1325, transparent)',
+                    background: 'linear-gradient(to top, white, transparent)',
                   }} />
                 </div>
               )}
@@ -341,10 +337,10 @@ export default function InspireMe() {
               <div style={{ padding: '28px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
                 <div>
                   <h2 style={{
-                    fontFamily: "'Noto Serif', serif",
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
                     fontSize: '1.5rem',
                     fontWeight: 700,
-                    color: '#dbe2fb',
+                    color: 'var(--on-surface)',
                     marginBottom: '8px',
                     letterSpacing: '-0.02em',
                   }}>
@@ -354,14 +350,14 @@ export default function InspireMe() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '12px',
-                    fontFamily: "'Manrope', sans-serif",
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
                     fontSize: '0.85rem',
-                    color: '#71717a',
+                    color: 'var(--muted)',
                   }}>
                     <span style={{
                       padding: '4px 12px',
-                      background: 'rgba(79, 110, 247, 0.15)',
-                      color: '#b9c3ff',
+                      background: 'var(--primary-light)',
+                      color: 'var(--primary)',
                       borderRadius: '9999px',
                       fontSize: '0.75rem',
                       fontWeight: 700,
@@ -380,9 +376,9 @@ export default function InspireMe() {
                       style={{
                         padding: '12px 20px',
                         background: 'transparent',
-                        color: '#71717a',
-                        border: '1px solid rgba(68, 70, 84, 0.2)',
-                        borderRadius: '8px',
+                        color: 'var(--muted)',
+                        border: '1px solid var(--outline-light)',
+                        borderRadius: '9999px',
                         cursor: 'pointer',
                         transition: 'all 0.2s ease',
                         display: 'flex',
@@ -390,13 +386,13 @@ export default function InspireMe() {
                         gap: '6px',
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.color = '#ff6b6b';
-                        e.currentTarget.style.borderColor = '#ff6b6b';
-                        e.currentTarget.style.background = 'rgba(255,107,107,0.08)';
+                        e.currentTarget.style.color = 'var(--error)';
+                        e.currentTarget.style.borderColor = 'var(--error)';
+                        e.currentTarget.style.background = 'rgba(186,26,26,0.05)';
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.color = '#71717a';
-                        e.currentTarget.style.borderColor = 'rgba(68, 70, 84, 0.2)';
+                        e.currentTarget.style.color = 'var(--muted)';
+                        e.currentTarget.style.borderColor = 'var(--outline-light)';
                         e.currentTarget.style.background = 'transparent';
                       }}
                     >
@@ -407,11 +403,11 @@ export default function InspireMe() {
                     onClick={() => useTemplate(currentTemplate?.Template_ID)}
                     style={{
                       padding: '12px 28px',
-                      background: 'rgba(79, 110, 247, 0.1)',
-                      color: '#b9c3ff',
-                      border: '1px solid rgba(79, 110, 247, 0.2)',
-                      borderRadius: '8px',
-                      fontFamily: "'Manrope', sans-serif",
+                      background: 'var(--primary)',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '9999px',
+                      fontFamily: "'Plus Jakarta Sans', sans-serif",
                       fontSize: '0.85rem',
                       fontWeight: 700,
                       cursor: 'pointer',
@@ -419,16 +415,15 @@ export default function InspireMe() {
                       display: 'flex',
                       alignItems: 'center',
                       gap: '8px',
+                      boxShadow: '0 2px 8px rgba(0, 96, 172, 0.2)',
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = '#4f6ef7';
-                      e.currentTarget.style.color = 'white';
-                      e.currentTarget.style.borderColor = '#4f6ef7';
+                      e.currentTarget.style.background = 'var(--primary-hover)';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'rgba(79, 110, 247, 0.1)';
-                      e.currentTarget.style.color = '#b9c3ff';
-                      e.currentTarget.style.borderColor = 'rgba(79, 110, 247, 0.2)';
+                      e.currentTarget.style.background = 'var(--primary)';
+                      e.currentTarget.style.transform = 'translateY(0)';
                     }}
                   >
                     Use Template
@@ -448,7 +443,7 @@ export default function InspireMe() {
                     width: i === currentIndex ? '24px' : '8px',
                     height: '8px',
                     borderRadius: '4px',
-                    background: i === currentIndex ? '#4f6ef7' : '#2d3448',
+                    background: i === currentIndex ? 'var(--primary)' : 'var(--outline-light)',
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
                   }}

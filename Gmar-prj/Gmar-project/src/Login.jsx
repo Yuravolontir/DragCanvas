@@ -25,19 +25,28 @@ export default function Login() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: 'linear-gradient(135deg, #0b1325 0%, #131b2d 50%, #171f32 100%)',
+      background: 'var(--bg)',
       padding: '24px',
       position: 'relative',
       overflow: 'hidden',
     }}>
-      {/* Ambient glow */}
+      {/* Decorative shapes */}
       <div style={{
         position: 'absolute',
-        width: '600px',
-        height: '600px',
-        background: 'radial-gradient(circle, rgba(79, 110, 247, 0.08) 0%, transparent 70%)',
-        top: '-200px',
+        width: '500px',
+        height: '500px',
+        background: 'radial-gradient(circle, rgba(0, 96, 172, 0.04) 0%, transparent 70%)',
+        top: '-150px',
         right: '-100px',
+        pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'absolute',
+        width: '400px',
+        height: '400px',
+        background: 'radial-gradient(circle, rgba(169, 51, 73, 0.04) 0%, transparent 70%)',
+        bottom: '-150px',
+        left: '-100px',
         pointerEvents: 'none',
       }} />
 
@@ -45,11 +54,12 @@ export default function Login() {
       <div style={{
         width: '100%',
         maxWidth: '420px',
-        background: 'rgba(255, 255, 255, 0.03)',
+        background: 'rgba(255, 255, 255, 0.85)',
         backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255, 255, 255, 0.08)',
-        borderRadius: '20px',
+        border: '1px solid rgba(0, 0, 0, 0.06)',
+        borderRadius: '24px',
         padding: '48px 40px',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.06)',
         animation: 'fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both',
       }}>
         {/* Logo */}
@@ -63,15 +73,12 @@ export default function Login() {
         }}
           onClick={() => navigate('/')}
         >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <rect width="24" height="24" rx="6" fill="#4f6ef7"/>
-            <path d="M7 12h4m4 0h2M7 8h10M7 16h10" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-          </svg>
+          <span className="material-symbols-outlined" style={{ fontSize: '28px', color: 'var(--secondary)' }}>grid_view</span>
           <span style={{
-            fontFamily: "'Noto Serif', serif",
-            fontWeight: 700,
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontWeight: 800,
             fontSize: '1.3rem',
-            color: 'white',
+            color: 'var(--primary)',
             letterSpacing: '-0.02em',
           }}>
             DragCanvas
@@ -79,10 +86,10 @@ export default function Login() {
         </div>
 
         <h2 style={{
-          fontFamily: "'Sora', sans-serif",
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
           fontSize: '1.5rem',
-          fontWeight: 600,
-          color: 'white',
+          fontWeight: 700,
+          color: 'var(--on-surface)',
           textAlign: 'center',
           marginBottom: '8px',
           letterSpacing: '-0.02em',
@@ -90,9 +97,9 @@ export default function Login() {
           Welcome back
         </h2>
         <p style={{
-          fontFamily: "'DM Sans', sans-serif",
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
           fontSize: '0.9rem',
-          color: 'rgba(255, 255, 255, 0.45)',
+          color: 'var(--muted)',
           textAlign: 'center',
           marginBottom: '36px',
         }}>
@@ -103,10 +110,10 @@ export default function Login() {
           <div>
             <label style={{
               display: 'block',
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontSize: '0.8rem',
-              fontWeight: 500,
-              color: 'rgba(255, 255, 255, 0.5)',
+              fontWeight: 600,
+              color: 'var(--on-surface-variant)',
               marginBottom: '6px',
               letterSpacing: '0.02em',
             }}>
@@ -121,21 +128,21 @@ export default function Login() {
               style={{
                 width: '100%',
                 padding: '12px 16px',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '10px',
-                color: 'white',
-                fontFamily: "'DM Sans', sans-serif",
+                background: 'var(--surface-dim)',
+                border: '1px solid var(--outline-light)',
+                borderRadius: '12px',
+                color: 'var(--on-surface)',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontSize: '0.95rem',
                 outline: 'none',
                 transition: 'all 0.15s ease',
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = 'rgba(79, 110, 247, 0.5)';
-                e.target.style.boxShadow = '0 0 0 3px rgba(79, 110, 247, 0.1)';
+                e.target.style.borderColor = 'var(--primary)';
+                e.target.style.boxShadow = '0 0 0 3px rgba(0, 96, 172, 0.08)';
               }}
               onBlur={(e) => {
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                e.target.style.borderColor = 'var(--outline-light)';
                 e.target.style.boxShadow = 'none';
               }}
             />
@@ -144,10 +151,10 @@ export default function Login() {
           <div>
             <label style={{
               display: 'block',
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontSize: '0.8rem',
-              fontWeight: 500,
-              color: 'rgba(255, 255, 255, 0.5)',
+              fontWeight: 600,
+              color: 'var(--on-surface-variant)',
               marginBottom: '6px',
               letterSpacing: '0.02em',
             }}>
@@ -162,21 +169,21 @@ export default function Login() {
               style={{
                 width: '100%',
                 padding: '12px 16px',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '10px',
-                color: 'white',
-                fontFamily: "'DM Sans', sans-serif",
+                background: 'var(--surface-dim)',
+                border: '1px solid var(--outline-light)',
+                borderRadius: '12px',
+                color: 'var(--on-surface)',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontSize: '0.95rem',
                 outline: 'none',
                 transition: 'all 0.15s ease',
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = 'rgba(79, 110, 247, 0.5)';
-                e.target.style.boxShadow = '0 0 0 3px rgba(79, 110, 247, 0.1)';
+                e.target.style.borderColor = 'var(--primary)';
+                e.target.style.boxShadow = '0 0 0 3px rgba(0, 96, 172, 0.08)';
               }}
               onBlur={(e) => {
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                e.target.style.borderColor = 'var(--outline-light)';
                 e.target.style.boxShadow = 'none';
               }}
             />
@@ -188,18 +195,17 @@ export default function Login() {
             style={{
               width: '100%',
               padding: '13px',
-              background: loading ? 'rgba(79, 110, 247, 0.5)' : '#4f6ef7',
+              background: loading ? 'rgba(0, 96, 172, 0.5)' : 'var(--primary)',
               color: 'white',
               border: 'none',
-              borderRadius: '10px',
-              fontFamily: "'Noto Serif', serif",
-              fontSize: '0.95rem',
-              fontWeight: 600,
+              borderRadius: '9999px',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontSize: '0.9rem',
+              fontWeight: 700,
               cursor: loading ? 'not-allowed' : 'pointer',
               marginTop: '8px',
               transition: 'all 0.15s ease',
-              boxShadow: '0 2px 8px rgba(79, 110, 247, 0.3)',
-              letterSpacing: '-0.01em',
+              boxShadow: '0 2px 8px rgba(0, 96, 172, 0.2)',
             }}
           >
             {loading ? 'Signing in...' : 'Sign In'}
@@ -210,11 +216,11 @@ export default function Login() {
           <div style={{
             marginTop: '16px',
             padding: '12px 16px',
-            background: 'rgba(255, 107, 107, 0.1)',
-            border: '1px solid rgba(255, 107, 107, 0.2)',
-            borderRadius: '10px',
-            color: '#ff8a8a',
-            fontFamily: "'DM Sans', sans-serif",
+            background: 'rgba(186, 26, 26, 0.05)',
+            border: '1px solid rgba(186, 26, 26, 0.12)',
+            borderRadius: '12px',
+            color: 'var(--error)',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
             fontSize: '0.85rem',
             textAlign: 'center',
           }}>
@@ -225,17 +231,17 @@ export default function Login() {
         <p style={{
           textAlign: 'center',
           marginTop: '28px',
-          fontFamily: "'DM Sans', sans-serif",
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
           fontSize: '0.85rem',
-          color: 'rgba(255, 255, 255, 0.4)',
+          color: 'var(--muted)',
         }}>
           Don't have an account?{' '}
           <span
             onClick={() => navigate('/register')}
             style={{
-              color: '#6b85f9',
+              color: 'var(--primary)',
               cursor: 'pointer',
-              fontWeight: 500,
+              fontWeight: 600,
             }}
           >
             Create one

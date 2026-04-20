@@ -24,21 +24,17 @@ export default function LandingPage(props) {
     let currentFrame = 0;
     let totalFrames = 0;
 
-    // Create circular wrapper
     const wrapper = document.createElement('div');
     wrapper.className = 'circular-media-wrapper';
 
-    // Create image element
     const img = document.createElement('img');
     img.className = 'scroll-video';
     img.alt = 'Scroll Animation';
     wrapper.appendChild(img);
 
-    // Clear any existing content and append
     videoContainer.innerHTML = '';
     videoContainer.appendChild(wrapper);
 
-    // Load all frame images
     const maxFrames = 200;
     const framesToLoad = [];
 
@@ -55,30 +51,26 @@ export default function LandingPage(props) {
           resolve();
         };
         image.onerror = () => {
-          // Frame doesn't exist, stop here
           resolve();
         };
       }));
     }
 
     await Promise.all(framesToLoad);
-    console.log(`✓ Loaded ${totalFrames} frames`);
+    console.log(`Loaded ${totalFrames} frames`);
 
-    // Show first frame
     if (images[1]) {
       img.src = images[1].src;
     }
 
     setImagesLoaded(true);
 
-    // Calculate scroll section height - REDUCED for faster animation
     const scrollSection = document.querySelector('.video-scroll-section');
-    const scrollHeight = totalFrames * 2; // 2vh per frame = even less scrolling
+    const scrollHeight = totalFrames * 2;
     if (scrollSection) {
       scrollSection.style.height = scrollHeight + 'vh';
     }
 
-    // Setup scroll listener
     let ticking = false;
 
     const handleScroll = () => {
@@ -97,7 +89,6 @@ export default function LandingPage(props) {
               currentFrame = frameIndex;
               img.src = images[frameIndex].src;
 
-              // Update UI
               const percent = Math.round(progress * 100);
               const progressFill = document.querySelector('.progress-fill');
               const percentDisplay = document.querySelector('.scroll-percentage');
@@ -105,7 +96,6 @@ export default function LandingPage(props) {
               if (progressFill) progressFill.style.width = percent + '%';
               if (percentDisplay) percentDisplay.textContent = percent + '%';
 
-              // Update text
               updateTextLines(percent);
             }
           }
@@ -121,7 +111,6 @@ export default function LandingPage(props) {
   };
 
   const updateTextLines = (percent) => {
-    // Animate text lines
     document.querySelectorAll('.text-line').forEach(line => {
       const trigger = parseInt(line.dataset.progress);
       const distance = Math.abs(percent - trigger);
@@ -131,7 +120,6 @@ export default function LandingPage(props) {
         : 'translateX(-50%) translateY(50px)';
     });
 
-    // Animate floating cards
     document.querySelectorAll('.floating-card').forEach(card => {
       const trigger = parseInt(card.dataset.progress);
       const distance = Math.abs(percent - trigger);
@@ -147,12 +135,10 @@ export default function LandingPage(props) {
     <div>
       <NavBar />
 
-      {/* Progress Bar */}
       <div className="progress-bar">
         <div className="progress-fill"></div>
       </div>
 
-      {/* Scroll Percentage */}
       <div className="scroll-percentage">0%</div>
 
       {/* Hero Section */}
@@ -161,8 +147,11 @@ export default function LandingPage(props) {
           Build Beautiful<br />
           Websites<span className="accent"> in Minutes</span>
         </h1>
+        <p className="subtitle" style={{ position: 'relative', zIndex: 1 }}>
+          Create stunning, responsive websites with our intuitive drag-and-drop builder. No coding required.
+        </p>
         <p className="scroll-hint">Scroll to explore</p>
-        <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap', marginTop: '40px', position: 'relative', zIndex: 10 }}>
+        <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap', marginTop: '20px', position: 'relative', zIndex: 10 }}>
           <Button
             as={Link}
             to="/register"
@@ -182,23 +171,20 @@ export default function LandingPage(props) {
         </div>
       </section>
 
-      {/* Video Scroll Section - LIGHT BACKGROUND */}
+      {/* Video Scroll Section */}
       <section className="video-scroll-section">
         <div className="video-container" ref={videoContainerRef}>
-          {/* Image will be injected here by JS */}
         </div>
 
-        {/* Text that appears as you scroll */}
         <div className="scroll-text">
           <div className="text-line" data-progress="25">Drag & Drop</div>
           <div className="text-line" data-progress="55">Create Freely</div>
           <div className="text-line" data-progress="85">Build Fast</div>
         </div>
 
-        {/* Floating cards that appear at different scroll positions */}
         <div className="floating-card floating-card-top" data-progress="10">
           <div className="icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f6ef7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+            <span className="material-symbols-outlined" style={{ fontSize: '28px', color: 'var(--primary)' }}>design_services</span>
           </div>
           <h4>Drag & Drop</h4>
           <p>Intuitive visual editor</p>
@@ -206,7 +192,7 @@ export default function LandingPage(props) {
 
         <div className="floating-card floating-card-bottom" data-progress="30">
           <div className="icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            <span className="material-symbols-outlined" style={{ fontSize: '28px', color: 'var(--primary)' }}>devices</span>
           </div>
           <h4>Responsive</h4>
           <p>Works on all devices</p>
@@ -222,7 +208,7 @@ export default function LandingPage(props) {
 
         <div className="floating-card floating-card-top" data-progress="90" style={{ top: 'auto', bottom: '20%', left: 'auto', right: '12%' }}>
           <div className="icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f5a623" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span className="material-symbols-outlined" style={{ fontSize: '28px', color: 'var(--tertiary)' }}>star</span>
           </div>
           <h4>Templates</h4>
           <p>Start with a template</p>
@@ -237,37 +223,51 @@ export default function LandingPage(props) {
           <Col md={4} className="mb-4">
             <Card className="feature-card animate-fade-in-up stagger-1">
               <div className="feature-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4f6ef7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+                <span className="material-symbols-outlined" style={{ fontSize: '24px', color: 'var(--primary)' }}>design_services</span>
               </div>
-              <Card.Title>Drag & Drop Builder</Card.Title>
-              <Card.Text>Simply drag elements onto your page and customize them with ease.</Card.Text>
+              <Card.Title className="card-title">Drag & Drop Builder</Card.Title>
+              <Card.Text className="card-text">Simply drag elements onto your page and customize them with ease.</Card.Text>
             </Card>
           </Col>
           <Col md={4} className="mb-4">
             <Card className="feature-card animate-fade-in-up stagger-2">
               <div className="feature-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4f6ef7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                <span className="material-symbols-outlined" style={{ fontSize: '24px', color: 'var(--primary)' }}>devices</span>
               </div>
-              <Card.Title>Responsive Design</Card.Title>
-              <Card.Text>Your site looks stunning on any device, from mobile to desktop.</Card.Text>
+              <Card.Title className="card-title">Responsive Design</Card.Title>
+              <Card.Text className="card-text">Your site looks stunning on any device, from mobile to desktop.</Card.Text>
             </Card>
           </Col>
           <Col md={4} className="mb-4">
             <Card className="feature-card animate-fade-in-up stagger-3">
               <div className="feature-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4f6ef7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                <span className="material-symbols-outlined" style={{ fontSize: '24px', color: 'var(--primary)' }}>rocket_launch</span>
               </div>
-              <Card.Title>Instant Publish</Card.Title>
-              <Card.Text>Deploy your website to the web with a single click.</Card.Text>
+              <Card.Title className="card-title">Instant Publish</Card.Title>
+              <Card.Text className="card-text">Deploy your website to the web with a single click.</Card.Text>
             </Card>
           </Col>
         </Row>
       </Container>
 
+      {/* CTA Section */}
+      <section className="cta-section">
+        <h2>Ready to Build Something Beautiful?</h2>
+        <p>Join thousands of creators who build stunning websites with DragCanvas.</p>
+        <button
+          className="cta-white"
+          onClick={() => window.location.href = '/register'}
+        >
+          Start Building for Free
+        </button>
+      </section>
+
       {/* Footer */}
       <div className="landing-footer">
         <Container>
-          <p style={{ fontSize: '1rem', opacity: 0.5, marginBottom: '8px', fontFamily: "'Noto Serif', serif" }}>DragCanvas</p>
+          <p style={{ fontSize: '1rem', opacity: 0.4, marginBottom: '8px', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>
+            DragCanvas
+          </p>
           <p className="footer-copy">&copy; 2026 All rights reserved.</p>
         </Container>
       </div>
