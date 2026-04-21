@@ -50,7 +50,8 @@ export const Viewport = ({ children }) => {
           <div className="page-container flex flex-1 h-full flex-col">
             <Header />
             <div
-              className={`craftjs-renderer flex-1 h-full w-full transition pb-8 overflow-auto ${enabled ? 'bg-gray-100' : ''}`}
+              className={`craftjs-renderer flex-1 h-full w-full transition pb-8 overflow-auto ${enabled ? '' : ''}`}
+              style={{ background: enabled ? 'var(--surface-dim, #f7f4ec)' : 'transparent' }}
               ref={(ref) => {
                 connectors.select(connectors.hover(ref, null), null);
               }}
@@ -58,13 +59,13 @@ export const Viewport = ({ children }) => {
               <div className="relative flex-col flex items-center pt-8">
                  <AIAssistant/>
                 {children}
-                
+
               </div>
             </div>
           </div>
-         
+
           <Sidebar />
-           
+
         </div>
       </div>
     </ViewportDiv>

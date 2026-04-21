@@ -29,7 +29,7 @@ const Indicators = styled.div`
     box-shadow: 0px 0px 12px -1px rgba(0, 0, 0, 0.25);
     z-index: 99999;
     pointer-events: none;
-    border: 2px solid #36a9e0;
+    border: 2px solid #0060ac;
     &:nth-child(1) {
       ${(props) =>
         props.$bound

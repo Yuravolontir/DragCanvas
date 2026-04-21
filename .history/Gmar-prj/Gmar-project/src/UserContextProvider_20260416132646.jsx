@@ -37,23 +37,16 @@ export default function UserContextProvider(props) {
   }
   // Check if user is logged in on mount
   useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem('currentUser');
-      const storedIsAdmin = localStorage.getItem('isAdmin');
-      const storedIsSuperAdmin = localStorage.getItem('isSuperAdmin');
-      if (storedUser && storedUser !== 'undefined') {
-        setCurrentUser(JSON.parse(storedUser));
-      }
-      if (storedIsAdmin && storedIsAdmin !== 'undefined') {
+    const storedUser = localStorage.getItem('currentUser');
+    const storedIsAdmin = localStorage.getItem('isAdmin');
+    const storedIsSuperAdmin =
+      localStorage.getItem('isSuperAdmin');
+    if (storedUser) {
+      setCurrentUser(JSON.parse(storedUser));
+      if (storedIsAdmin)
         setIsAdmin(JSON.parse(storedIsAdmin));
-      }
-      if (storedIsSuperAdmin && storedIsSuperAdmin !== 'undefined') {
+      if (storedIsSuperAdmin)
         setIsSuperAdmin(JSON.parse(storedIsSuperAdmin));
-      }
-    } catch (e) {
-      localStorage.removeItem('currentUser');
-      localStorage.removeItem('isAdmin');
-      localStorage.removeItem('isSuperAdmin');
     }
   }, []);
 
@@ -66,10 +59,12 @@ export default function UserContextProvider(props) {
       return { success: false, error: 'Email and password are required' };
     }
     try {
-      const data = {
-        UserEmail: `${email}`,
-        Password: `${password}`,
-        IPAddress: "uknown"
+      debugger;
+
+      const dataObj = {
+        UserEmail: "test@example.com",
+        Password: "yourpassword",
+        IPAddress: "127.0.0.1"
       }
 
       const response = await fetch('https://localhost:7112/api/Users/login', {
@@ -78,21 +73,21 @@ export default function UserContextProvider(props) {
           'Content-Type': 'application/json; charset=utf-8 ',
           'Accept': 'application/json; charset=utf-8 '
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(dataObj)
       });
 
-      const data2 = await response.json();
+      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data2.error || 'Login failed');
+        throw new Error(data.error || 'Login failed');
       }
 
-      setCurrentUser(data2);
-      setIsAdmin(data2.IsAdmin);
-      setIsSuperAdmin(data2.IsSuperAdmin);
-      localStorage.setItem('currentUser',JSON.stringify(data2));
-      localStorage.setItem('isAdmin',JSON.stringify(data2.IsAdmin));
-      localStorage.setItem('isSuperAdmin',JSON.stringify(data2.IsSuperAdmin));
+      setCurrentUser(data.user);
+      setIsAdmin(data.admin);
+      setIsSuperAdmin(data.user.IsSuperAdmin);
+      localStorage.setItem('currentUser', JSON.stringify(data.user));
+      localStorage.setItem('isAdmin', JSON.stringify(data.admin));
+      localStorage.setItem('isSuperAdmin', JSON.stringify(data.user.IsSuperAdmin));
 
       return { success: true };
     } catch (err) {

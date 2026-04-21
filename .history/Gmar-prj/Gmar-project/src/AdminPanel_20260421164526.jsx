@@ -353,14 +353,14 @@ const confirmRoleChange = async () => {
    {
       try {
         const response = await
-          fetch(`https://localhost:7112/api/Users/templates/${templateId}/visibility`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              isActive: !currentStatus,
-              userId: currentUser.User_ID
-            })
-          });
+  fetch(`http://localhost:3001/api/templates/${templateId}/visibility`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            isActive: !currentStatus,
+            userId: currentUser.User_ID
+          })
+        });
 
         if (response.ok) {
           showAlertModal('Template visibility updated', 'success');

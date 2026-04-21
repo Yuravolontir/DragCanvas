@@ -24,12 +24,14 @@ export const Toolbar = () => {
         <div
           className="px-5 py-2 flex flex-col items-center h-full justify-center text-center"
           style={{
-            color: 'rgba(0, 0, 0, 0.5607843137254902)',
-            fontSize: '11px',
+            color: '#9994a0',
+            fontSize: '12px',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}
         >
-          <h2 className="pb-1">Click on a component to start editing.</h2>
-          <h2>
+          <span className="material-symbols-outlined" style={{ fontSize: '32px', color: '#cac4d0', marginBottom: '12px' }}>touch_app</span>
+          <h2 className="pb-1" style={{ fontWeight: 500 }}>Click on a component to start editing.</h2>
+          <h2 style={{ fontWeight: 400 }}>
             You could also double click on the layers below to edit their names,
             like in Photoshop
           </h2>

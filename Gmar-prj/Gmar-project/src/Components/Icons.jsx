@@ -13,7 +13,7 @@ export const Delete = (props) => (
       <style>
         {`
           .a {
-            fill: #707070;
+            fill: #49454f;
           }
         `}
       </style>
@@ -33,7 +33,7 @@ export const Move = (props) => (
       <style>
         {`
           .a {
-            fill: #707070;
+            fill: #49454f;
           }
         `}
       </style>
@@ -53,7 +53,7 @@ export const Undo = (props) => (
       <style>
         {`
           .a {
-            fill: #707070;
+            fill: #49454f;
           }
         `}
       </style>
@@ -70,7 +70,7 @@ export const Redo = (props) => (
       <style>
         {`
           .a {
-            fill: #707070;
+            fill: #49454f;
           }
         `}
       </style>

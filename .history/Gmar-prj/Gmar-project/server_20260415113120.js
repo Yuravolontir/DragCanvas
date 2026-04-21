@@ -1,7 +1,3 @@
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
-
-
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
@@ -10,7 +6,7 @@ import cron from 'node-cron';
 
 const app = express();
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3001'],
+  origin: ['http://localhost:5173', 'http://localhost:3001'],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -281,30 +277,30 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
 
   return nextRun;
 }
-//-----------------------MOVED TO C#-------------------------------
-//  app.get('/api/users', async (req, res) => {
-//       try {
-//        const response = await fetch('https://localhost:7112/api/Users');
-//         const users = await response.json();
-//         res.json(users);
-//       } catch (err) {
-//         res.status(500).json({ error: err.message });
-//       }
-//     });
 
-//   // GET user by id
-//   app.get('/api/users/:id', async (req, res) => {
-//     try {
-//        const response = await fetch(`https://localhost:7112/api/Users/${req.params.id}`);
-//       const user = await response.json();
-//       if (user.length === 0) {
-//         return res.status(404).json({ error: 'User not found' });
-//       }
-//       res.json(user[0]);
-//     } catch (err) {
-//       res.status(500).json({ error: err.message });
-//     }
-//   });
+ app.get('/api/users', async (req, res) => {
+      try {
+       const response = await fetch('http://localhost:5172/api/users');
+        const users = await response.json();
+        res.json(users);
+      } catch (err) {
+        res.status(500).json({ error: err.message });
+      }
+    });
+
+  // GET user by id
+  app.get('/api/users/:id', async (req, res) => {
+    try {
+       const response = await fetch(`http://localhost:5172/api/users/${req.params.id}`);
+      const user = await response.json();
+      if (user.length === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      res.json(user[0]);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
 
   // POST create user
   app.post('/api/users', async (req, res) => {
@@ -321,7 +317,48 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
     }
   });
 
+  // POST login - using Stored Procedure
+  app.post('/api/login', async (req, res) => {
+    try {
+      const { email, password } = req.body;
 
+      if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password are required' });
+      }
+
+      // Use stored procedure for login
+       const response = await fetch(`http://localhost:5172/api/login/${email}/${password}`);
+
+      // Get the output parameters
+      const outputs = result.output;
+      const resultCode = outputs.ResultCode;
+      const userID = outputs.UserID;
+      const userName = outputs.UserName;
+      const isAdmin = outputs.IsAdmin;
+
+      if (resultCode !== 1 || !userID) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+
+      // Fetch full user data without password
+      const userResult = await pool.request()
+        .input('UserID', sql.Int, userID)
+          .query('SELECT User_ID, UserName, UserEmail, IsActive, IsAdmin, IsSuperAdmin FROM TBUsers WHERE User_ID = @UserID');
+
+      if (userResult.recordset.length === 0) {
+        return res.status(401).json({ error: 'User not found' });
+      }
+
+      res.json({
+        user: userResult.recordset[0],
+        admin: isAdmin,
+        message: 'Login successful'
+      });
+    } catch (err) {
+      console.error('Login error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
 
   // POST register - using Stored Procedure
   app.post('/api/register', async (req, res) => {
@@ -384,47 +421,47 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
     }
   });
 
-//-------------------------------moved to c#-----------------------------------
-// app.delete('/api/delete-user', async (req, res) => {
-//     try {
-//       const { targetID, adminID, confirmDelete } = req.body;
 
-//       if (!targetID || !adminID) {
-//         return res.status(400).json({ error: 'targetID and adminID are required' });
-//       }
+app.delete('/api/delete-user', async (req, res) => {
+    try {
+      const { targetID, adminID, confirmDelete } = req.body;
 
-//       if (confirmDelete !== true && confirmDelete !== 1) {
-//         return res.status(400).json({ error: 'confirmDelete must be true' });
-//       }
-//       // Create request
-//       const request = pool.request()
-//         .input('TargetUserID', sql.Int, targetID)
-//         .input('AdminID', sql.Int, adminID)
-//         .input('ConfirmDelete', sql.Bit, confirmDelete);
+      if (!targetID || !adminID) {
+        return res.status(400).json({ error: 'targetID and adminID are required' });
+      }
 
-//             // Add OUTPUT parameters
-//       request.output('ResultCode', sql.Int);
-//       request.output('ResultMessage', sql.NVarChar(500));
+      if (confirmDelete !== true && confirmDelete !== 1) {
+        return res.status(400).json({ error: 'confirmDelete must be true' });
+      }
+      // Create request
+      const request = pool.request()
+        .input('TargetUserID', sql.Int, targetID)
+        .input('AdminID', sql.Int, adminID)
+        .input('ConfirmDelete', sql.Bit, confirmDelete);
 
-//       const result = await
-//   request.execute('dbo.SP_DeleteUserPermanently');
+            // Add OUTPUT parameters
+      request.output('ResultCode', sql.Int);
+      request.output('ResultMessage', sql.NVarChar(500));
 
-//       // Get output values
-//       const outputs = result.output;
-//       const resultCode = outputs.ResultCode;
-//       const resultMessage = outputs.ResultMessage;
+      const result = await
+  request.execute('dbo.SP_DeleteUserPermanently');
 
-//       if (resultCode === 1) {
-//         return res.json({ message: resultMessage });
-//       } else {
-//         return res.status(400).json({ error: resultMessage });
-//       }
+      // Get output values
+      const outputs = result.output;
+      const resultCode = outputs.ResultCode;
+      const resultMessage = outputs.ResultMessage;
 
-//     } catch (err) {
-//       console.error('Delete user error:', err);
-//       res.status(500).json({ error: err.message });
-//     }
-//   });
+      if (resultCode === 1) {
+        return res.json({ message: resultMessage });
+      } else {
+        return res.status(400).json({ error: resultMessage });
+      }
+
+    } catch (err) {
+      console.error('Delete user error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
 
 
 
@@ -918,45 +955,45 @@ app.delete('/api/templates/:id', async (req, res) => {
       }
     });
 
-//---------------------------------MOVED TO C#-------------------------------------
-  //    // Update template visibility
-  // app.put('/api/templates/:id/visibility', async (req, res) => {
-  //   try {
-  //     const { id } = req.params;
-  //     const { isActive, userId } = req.body;
 
-  //     if (!userId) {
-  //       return res.status(400).json({ error: 'userId required' });
-  //     }
+     // Update template visibility
+  app.put('/api/templates/:id/visibility', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { isActive, userId } = req.body;
 
-  //     // Check if user is admin or superadmin
-  //     const userResult = await pool.request()
-  //       .input('UserID', sql.Int, userId)
-  //       .query('SELECT IsAdmin, IsSuperAdmin FROM TBUsers WHERE User_ID = @UserID');
+      if (!userId) {
+        return res.status(400).json({ error: 'userId required' });
+      }
 
-  //     if (userResult.recordset.length === 0) {
-  //       return res.status(404).json({ error: 'User not found' });
-  //     }
+      // Check if user is admin or superadmin
+      const userResult = await pool.request()
+        .input('UserID', sql.Int, userId)
+        .query('SELECT IsAdmin, IsSuperAdmin FROM TBUsers WHERE User_ID = @UserID');
 
-  //     const user = userResult.recordset[0];
-  //     if (!user.IsAdmin && !user.IsSuperAdmin) {
-  //       return res.status(403).json({ error: 'Only admins can update templates' });
-  //     }
+      if (userResult.recordset.length === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
 
-  //     await pool.request()
-  //       .input('TemplateID', sql.Int, id)
-  //       .input('IsActive', sql.Bit, isActive)
-  //       .query('UPDATE TBTemplates SET IsActive = @IsActive WHERE Template_ID = @TemplateID');
+      const user = userResult.recordset[0];
+      if (!user.IsAdmin && !user.IsSuperAdmin) {
+        return res.status(403).json({ error: 'Only admins can update templates' });
+      }
 
-  //     console.log('✅ Template visibility updated:', id, 'isActive:',
-  // isActive);
-  //     res.json({ message: 'Template visibility updated' });
+      await pool.request()
+        .input('TemplateID', sql.Int, id)
+        .input('IsActive', sql.Bit, isActive)
+        .query('UPDATE TBTemplates SET IsActive = @IsActive WHERE Template_ID = @TemplateID');
 
-  //   } catch (err) {
-  //     console.error('❌ Update template visibility error:', err);
-  //     res.status(500).json({ error: err.message });
-  //   }
-  // });
+      console.log('✅ Template visibility updated:', id, 'isActive:',
+  isActive);
+      res.json({ message: 'Template visibility updated' });
+
+    } catch (err) {
+      console.error('❌ Update template visibility error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
 
 
       // Get all notifications (for admin panel)

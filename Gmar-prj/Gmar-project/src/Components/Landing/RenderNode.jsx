@@ -4,13 +4,13 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
-import { ArrowUp, Delete, Move } from '../Icons';
-
 const IndicatorDiv = styled.div`
   height: 30px;
   margin-top: -29px;
   font-size: 12px;
   line-height: 12px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  border-radius: 6px 6px 0 0;
 
   svg {
     fill: #fff;
@@ -24,6 +24,11 @@ const Btn = styled.a`
   opacity: 0.9;
   display: flex;
   align-items: center;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
   > div {
     position: relative;
     top: -50%;
@@ -103,11 +108,14 @@ export const RenderNode = ({ render }) => {
         ? ReactDOM.createPortal(
             <IndicatorDiv
               ref={currentRef}
-              className="px-2 py-2 text-white bg-primary fixed flex items-center"
+              className="px-2 py-2 text-white fixed flex items-center"
               style={{
                 left: getPos(dom).left,
                 top: getPos(dom).top,
                 zIndex: 9999,
+                background: '#0060ac',
+                borderRadius: '6px 6px 0 0',
+                boxShadow: '0 2px 8px rgba(0, 96, 172, 0.3)',
               }}
             >
               <h2 className="flex-1 mr-4">{name}</h2>
@@ -118,7 +126,7 @@ export const RenderNode = ({ render }) => {
                     drag(dom);
                   }}
                 >
-                  <Move viewBox="-4 -3 24 24" />
+                  <span className="material-symbols-outlined" style={{ fontSize: '15px', color: '#fff' }}>open_with</span>
                 </Btn>
               ) : null}
               {id !== ROOT_NODE && (
@@ -128,7 +136,7 @@ export const RenderNode = ({ render }) => {
                     actions.selectNode(parent);
                   }}
                 >
-                  <ArrowUp viewBox="-4 -1 24 24" />
+                  <span className="material-symbols-outlined" style={{ fontSize: '15px', color: '#fff' }}>arrow_upward</span>
                 </Btn>
               )}
               {deletable ? (
@@ -139,7 +147,7 @@ export const RenderNode = ({ render }) => {
                     actions.delete(id);
                   }}
                 >
-                  <Delete viewBox="-4 -3 24 24" />
+                  <span className="material-symbols-outlined" style={{ fontSize: '15px', color: '#fff' }}>delete</span>
                 </Btn>
               ) : null}
             </IndicatorDiv>,

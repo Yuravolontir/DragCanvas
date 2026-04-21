@@ -75,9 +75,10 @@
             marginTop: 7,
             position: 'relative',
             '.MuiInputBase-input': {
-              background: '#e5e5e5',
+              background: '#f7f4ec',
               borderRadius: '100px',
-              fontSize: '0.9rem',
+              fontSize: '0.85rem',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
               position: 'relative',
               paddingLeft: '28px',
             },

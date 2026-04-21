@@ -5,7 +5,6 @@
   import React, { useEffect, useState } from 'react';
   import styled from 'styled-components';
   import { useUserContext } from '../../UserContextProvider';
-  import { Checkmark, Customize, Redo, Undo } from '../Icons';
   import html2canvas from 'html2canvas';
   import { exportToHtml } from '../../utils/exportToHtml';
 
@@ -16,40 +15,59 @@ const HeaderDiv = styled.div`
   z-index: 99999;
   position: relative;
   padding: 0px 10px;
-  background: #d4d4d4;
+  background: #f7f4ec;
   display: flex;
 `;
 
 const Btn = styled.a`
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  padding: 5px 15px;
-  border-radius: 3px;
+  padding: 6px 14px;
+  border-radius: 9999px;
   color: #fff;
-  font-size: 13px;
+  font-size: 12px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
   text-decoration: none;
-  svg {
-    margin-right: 6px;
-    width: 12px;
-    height: 12px;
-    fill: #fff;
-    opacity: 0.9;
+  transition: all 0.15s ease;
+  gap: 5px;
+  white-space: nowrap;
+  .material-symbols-outlined {
+    font-size: 15px;
+    color: #fff;
+  }
+  &:hover {
+    filter: brightness(1.08);
   }
 `;
 
 const Item = styled.a`
   margin-right: 10px;
   cursor: pointer;
-  svg {
-    width: 20px;
-    height: 20px;
-    fill: #707070;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+  .material-symbols-outlined {
+    font-size: 20px;
+    color: #79747e;
+    transition: color 0.15s ease;
+  }
+  &:hover {
+    background: #e3f2fd;
+    .material-symbols-outlined {
+      color: #0060ac;
+    }
   }
   ${(props) =>
     props.$disabled &&
     `
     opacity:0.5;
     cursor: not-allowed;
+    pointer-events: none;
   `}
 `;
 
@@ -485,7 +503,7 @@ const handlePublish = async () => {
                 $disabled={!canUndo}
                 onClick={() => canUndo && actions.history.undo()}
               >
-                <Undo />
+                <span className="material-symbols-outlined">undo</span>
               </Item>
             </Tooltip>
             <Tooltip title="Redo" placement="bottom">
@@ -493,60 +511,53 @@ const handlePublish = async () => {
                 $disabled={!canRedo}
                 onClick={() => canRedo && actions.history.redo()}
               >
-                <Redo />
+                <span className="material-symbols-outlined">redo</span>
               </Item>
             </Tooltip>
           </div>
         )}
-        <div className="flex">
+        <div className="flex" style={{ gap: '6px', alignItems: 'center' }}>
           <Btn
             className={cx([
               'transition cursor-pointer',
               {
-                'bg-green-400': enabled,
-                'bg-primary': !enabled,
+                'bg-green-600': enabled,
+                'bg-blue-600': !enabled,
               },
             ])}
             onClick={() => {
               actions.setOptions((options) => (options.enabled = !enabled));
             }}
           >
-            {enabled ? (
-              <Checkmark viewBox="-3 -3 20 20" />
-            ) : (
-              <Customize viewBox="2 0 16 16" />
-            )}
-            {enabled ? 'Finish Editing' : 'Edit'}
+            <span className="material-symbols-outlined">{enabled ? 'check_circle' : 'edit'}</span>
+            {enabled ? 'Finish' : 'Edit'}
           </Btn>
 
-            <Btn className="ml-2 bg-purple-500"
-  onClick={downloadHTML}>
-              <Checkmark viewBox="-3 -3 20 20" />
-              Get HTML
+            <Btn style={{ background: '#8b6f47' }} onClick={downloadHTML}>
+              <span className="material-symbols-outlined">code</span>
+              HTML
             </Btn>
 
-          <Btn className="ml-2 bg-blue-500" onClick={openSaveModal}>
+          <Btn style={{ background: '#3b82c4' }} onClick={openSaveModal}>
+            <span className="material-symbols-outlined">save</span>
             Save
-              </Btn>
+          </Btn>
 
-      <Btn className="ml-2 bg-green-500" onClick={() =>
-      setPublishModal(true)}>
-        Publish
-      </Btn>
+          <Btn style={{ background: '#4caf6a' }} onClick={() => setPublishModal(true)}>
+            <span className="material-symbols-outlined">rocket_launch</span>
+            Publish
+          </Btn>
 
-<Btn   className="ml-2 bg-blue-500" onClick={deploy} style={{ cursor: accessToken ? 'pointer' : 'not-allowed', opacity: accessToken ? 1 : 0.5 }}>
-           Netlify
+          <Btn style={{ background: '#7e57c2', cursor: accessToken ? 'pointer' : 'not-allowed', opacity: accessToken ? 1 : 0.5 }} onClick={deploy}>
+            <span className="material-symbols-outlined">cloud_upload</span>
+            Netlify
             <input
-    type="text"
-    placeholder="Personal Access Token"
-    value={accessToken}
-    onChange={(e) => setAccessToken(e.target.value)}
-    className="ml-2 p-1 rounded"
-    style={{ width: '150px' }}
-  />
-  {!accessToken && (
-    <small className="ml-2 text-danger">* Required</small>                                               
-  )}
+              type="text"
+              placeholder="Token"
+              value={accessToken}
+              onChange={(e) => setAccessToken(e.target.value)}
+              style={{ width: '90px', padding: '3px 8px', borderRadius: '9999px', border: 'none', background: 'rgba(255,255,255,0.25)', color: '#fff', fontSize: '11px', outline: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            />
           </Btn>
 
 
@@ -651,33 +662,33 @@ const handlePublish = async () => {
 
   {publishModal && (
     <div style={{ position: 'fixed', inset: 0, background:
-  'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center',
+  'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center',
   justifyContent: 'center', zIndex: 99999 }}>
-      <div style={{ background: '#1a1a2e', padding: '32px',
-  borderRadius: '16px', width: '420px', color: 'white' }}>
-        <h3 style={{ marginBottom: '20px' }}>Publish Your Site</h3>
-        <label style={{ fontSize: '0.85rem', opacity: 0.6 }}>Your
+      <div style={{ background: 'white', padding: '32px',
+  borderRadius: '20px', width: '420px', color: '#1c1b1f', boxShadow: '0 16px 48px rgba(0,0,0,0.12)' }}>
+        <h3 style={{ marginBottom: '20px', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>Publish Your Site</h3>
+        <label style={{ fontSize: '0.85rem', color: '#79747e' }}>Your
   Domain (optional)</label>
         <input
           placeholder="mysite.com"
           value={customDomain}
           onChange={(e) => setCustomDomain(e.target.value)}
-          style={{ width: '100%', padding: '10px', margin: '8px 0', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'white', fontSize: '0.95rem' }}
+          style={{ width: '100%', padding: '10px', margin: '8px 0', background: '#f7f4ec', border: '1px solid #e8e0eb', borderRadius: '12px', color: '#1c1b1f', fontSize: '0.95rem', outline: 'none' }}
         />
-        <p style={{ fontSize: '0.8rem', opacity: 0.35, marginBottom: '20px' }}>
+        <p style={{ fontSize: '0.8rem', color: '#9994a0', marginBottom: '20px' }}>
           Buy a domain on Namecheap or GoDaddy, then enter it here
         </p>
         <div style={{ display: 'flex', gap: '8px' }}>
           <button
             onClick={handlePublish}
             disabled={publishing}
-            style={{ flex: 1, padding: '10px', background: publishing ? 'rgba(79,110,247,0.5)' : '#4f6ef7', color: 'white', border: 'none', borderRadius: '8px', cursor: publishing ? 'not-allowed' : 'pointer', fontWeight: 600 }}
+            style={{ flex: 1, padding: '10px', background: publishing ? 'rgba(0,96,172,0.5)' : '#0060ac', color: 'white', border: 'none', borderRadius: '9999px', cursor: publishing ? 'not-allowed' : 'pointer', fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             {publishing ? 'Publishing...' : 'Publish'}
           </button>
           <button
             onClick={() => setPublishModal(false)}
-            style={{ padding: '10px 20px', background: 'transparent', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', cursor: 'pointer' }}
+            style={{ padding: '10px 20px', background: 'transparent', color: '#79747e', border: '1px solid #e8e0eb', borderRadius: '9999px', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             Cancel
           </button>

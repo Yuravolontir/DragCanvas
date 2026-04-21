@@ -10,7 +10,7 @@ function StyledRadio(props) {
       size="small"
       sx={{
         '&.Mui-checked': {
-          color: 'rgb(19, 115, 230)',
+          color: '#0060ac',
         },
       }}
       {...props}

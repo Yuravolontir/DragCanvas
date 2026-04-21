@@ -66,6 +66,8 @@ export default function UserContextProvider(props) {
       return { success: false, error: 'Email and password are required' };
     }
     try {
+      debugger;
+
       const data = {
         UserEmail: `${email}`,
         Password: `${password}`,

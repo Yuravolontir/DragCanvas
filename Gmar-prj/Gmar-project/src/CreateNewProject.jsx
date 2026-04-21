@@ -9,7 +9,11 @@ import * as Landing from './Components/Landing';
 
 const theme = createTheme({
   typography: {
-    fontFamily: ['Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
+    fontFamily: ['Plus Jakarta Sans', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
+  },
+  palette: {
+    primary: { main: '#0060ac' },
+    secondary: { main: '#a93349' },
   },
 });
 

@@ -3,19 +3,20 @@ import { Tooltip } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
 
-import { ButtonToolbox, ContainerToolbox, TextToolbox, VideoToolbox , LinkToolbox,ImageToolbox,  CarouselIcon} from '../Icons';
 import { Button } from './Button';
 import { Container } from './Container';
 import { Text } from './Text';
 import { Video } from './Video';
-import {Link} from './Link';
-import {Image} from './Image';
-import {Carousel} from './Carousel';
+import { Link } from './Link';
+import { Image } from './Image';
+import { Carousel } from './Carousel';
 
 const ToolboxDiv = styled.div`
   transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
   ${(props) => (!props.$enabled ? `width: 0;` : '')}
   ${(props) => (!props.$enabled ? `opacity: 0;` : '')}
+  background: #f7f4ec;
+  border-right: 1px solid #e8e0eb;
 `;
 
 const Item = styled.a`
@@ -23,10 +24,30 @@ const Item = styled.a`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  svg {
-    width: 28px;
-    height: 28px;
-    fill: #707070;
+  border-radius: 10px;
+  padding: 8px;
+  transition: all 0.15s ease;
+  .material-symbols-outlined {
+    font-size: 22px;
+    color: #79747e;
+    transition: color 0.15s ease;
+  }
+  .icon-label {
+    font-size: 8px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    color: #9994a0;
+    margin-top: 2px;
+    letter-spacing: 0.02em;
+  }
+  &:hover {
+    background: #e3f2fd;
+    .material-symbols-outlined {
+      color: #0060ac;
+    }
+    .icon-label {
+      color: #0060ac;
+    }
   }
   ${(props) =>
     props.$move &&
@@ -46,9 +67,9 @@ export const Toolbox = () => {
   return (
     <ToolboxDiv
       $enabled={enabled && enabled}
-      className="toolbox transition w-12 h-full flex flex-col bg-white"
+      className="toolbox transition w-14 h-full flex flex-col"
     >
-      <div className="flex flex-1 flex-col items-center pt-3 gap-3">
+      <div className="flex flex-1 flex-col items-center pt-4 gap-2">
         <div
           ref={(ref) => {
             create(
@@ -66,7 +87,8 @@ export const Toolbox = () => {
         >
           <Tooltip title="Container" placement="right">
             <Item $move>
-              <ContainerToolbox viewBox="-3 -3 24 24" />
+              <span className="material-symbols-outlined">crop_square</span>
+              <span className="icon-label">Box</span>
             </Item>
           </Tooltip>
         </div>
@@ -77,7 +99,8 @@ export const Toolbox = () => {
         >
           <Tooltip title="Text" placement="right">
             <Item $move>
-              <TextToolbox viewBox="-3 -3 28 28" />
+              <span className="material-symbols-outlined">title</span>
+              <span className="icon-label">Text</span>
             </Item>
           </Tooltip>
         </div>
@@ -88,7 +111,8 @@ export const Toolbox = () => {
         >
           <Tooltip title="Button" placement="right">
             <Item $move>
-              <ButtonToolbox viewBox="-4 -3 24 24" />
+              <span className="material-symbols-outlined">radio_button_unchecked</span>
+              <span className="icon-label">Button</span>
             </Item>
           </Tooltip>
         </div>
@@ -99,7 +123,8 @@ export const Toolbox = () => {
         >
           <Tooltip title="Video" placement="right">
             <Item $move>
-              <VideoToolbox viewBox="-3 -3 28 28" />
+              <span className="material-symbols-outlined">play_circle</span>
+              <span className="icon-label">Video</span>
             </Item>
           </Tooltip>
         </div>
@@ -110,34 +135,36 @@ export const Toolbox = () => {
         >
           <Tooltip title="Link" placement="right">
             <Item $move>
-              <LinkToolbox viewBox="-3 -3 28 28" />
+              <span className="material-symbols-outlined">link</span>
+              <span className="icon-label">Link</span>
             </Item>
           </Tooltip>
         </div>
-         <div
+        <div
           ref={(ref) => {
             create(ref, <Image />);
           }}
         >
-                    <Tooltip title="Image" placement="right">
+          <Tooltip title="Image" placement="right">
             <Item $move>
-              <ImageToolbox viewBox="-3 -3 28 28" />
+              <span className="material-symbols-outlined">image</span>
+              <span className="icon-label">Image</span>
             </Item>
           </Tooltip>
-          
         </div>
- <div
-            ref={(ref) => {
-              create(ref, <Carousel />);
-            }}
-          >
-            <Tooltip title="Carousel" placement="right">
-              <Item $move>
-                <CarouselIcon viewBox="-3 -3 28 28" />
-              </Item>
-            </Tooltip>
-          </div>
+        <div
+          ref={(ref) => {
+            create(ref, <Carousel />);
+          }}
+        >
+          <Tooltip title="Carousel" placement="right">
+            <Item $move>
+              <span className="material-symbols-outlined">view_carousel</span>
+              <span className="icon-label">Slide</span>
+            </Item>
+          </Tooltip>
         </div>
-      </ToolboxDiv>
+      </div>
+    </ToolboxDiv>
   );
 };

@@ -66,6 +66,8 @@ export default function UserContextProvider(props) {
       return { success: false, error: 'Email and password are required' };
     }
     try {
+      debugger;
+
       const data = {
         UserEmail: `${email}`,
         Password: `${password}`,
@@ -82,17 +84,17 @@ export default function UserContextProvider(props) {
       });
 
       const data2 = await response.json();
-
+      
       if (!response.ok) {
         throw new Error(data2.error || 'Login failed');
       }
 
-      setCurrentUser(data2);
-      setIsAdmin(data2.IsAdmin);
-      setIsSuperAdmin(data2.IsSuperAdmin);
-      localStorage.setItem('currentUser',JSON.stringify(data2));
-      localStorage.setItem('isAdmin',JSON.stringify(data2.IsAdmin));
-      localStorage.setItem('isSuperAdmin',JSON.stringify(data2.IsSuperAdmin));
+      setCurrentUser(data);
+      setIsAdmin(data.IsAdmin);
+      setIsSuperAdmin(data.IsSuperAdmin);
+      localStorage.setItem('currentUser', JSON.stringify(data));
+      localStorage.setItem('isAdmin', JSON.stringify(data.IsAdmin));
+      localStorage.setItem('isSuperAdmin', JSON.stringify(data.IsSuperAdmin));
 
       return { success: true };
     } catch (err) {

@@ -22,7 +22,7 @@ export const ToolbarSection = ({ title, props, summary, children }) => {
         background: 'transparent',
         boxShadow: 'none',
         '&:before': {
-          backgroundColor: 'rgba(0, 0, 0, 0.05)',
+          backgroundColor: '#e8e0eb',
         },
         '&.Mui-expanded': {
           margin: '0 0',
@@ -41,18 +41,19 @@ export const ToolbarSection = ({ title, props, summary, children }) => {
           minHeight: '36px',
           padding: 0,
           outline: 'none!important',
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
         }}
       >
         <div className="px-6 w-full">
           <GridLegacy container direction="row" alignItems="center" spacing={3}>
             <GridLegacy item xs={4}>
-              <h5 className="text-sm text-light-gray-1 text-left font-medium text-dark-gray">
+              <h5 className="text-sm text-left font-medium" style={{ color: '#49454f' }}>
                 {title}
               </h5>
             </GridLegacy>
             {summary && props ? (
               <GridLegacy item xs={8}>
-                <h5 className="text-light-gray-2 text-sm text-right text-dark-blue">
+                <h5 className="text-sm text-right" style={{ color: '#79747e' }}>
                   {summary(
                     props.reduce((acc, key) => {
                       acc[key] = nodeProps[key];

@@ -115,8 +115,9 @@ body {
 
   .component-selected::after {
     content: ' ';
-    @apply border-primary border border-dashed absolute left-0 top-0 pointer-events-none
+    @apply border border-dashed absolute left-0 top-0 pointer-events-none
   block;
+    border-color: #0060ac;
     width: 100%;
     height: 100%;
     min-width: 100%;

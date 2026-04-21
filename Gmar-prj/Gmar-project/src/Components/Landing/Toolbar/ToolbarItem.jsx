@@ -46,7 +46,7 @@ export const ToolbarItem = ({
             ) : null}
  <Slider
     sx={{
-      color: '#3880ff',
+      color: '#0060ac',
       height: 2,
       padding: '5px 0',
       width: '100%',

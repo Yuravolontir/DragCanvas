@@ -281,30 +281,30 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
 
   return nextRun;
 }
-//-----------------------MOVED TO C#-------------------------------
-//  app.get('/api/users', async (req, res) => {
-//       try {
-//        const response = await fetch('https://localhost:7112/api/Users');
-//         const users = await response.json();
-//         res.json(users);
-//       } catch (err) {
-//         res.status(500).json({ error: err.message });
-//       }
-//     });
 
-//   // GET user by id
-//   app.get('/api/users/:id', async (req, res) => {
-//     try {
-//        const response = await fetch(`https://localhost:7112/api/Users/${req.params.id}`);
-//       const user = await response.json();
-//       if (user.length === 0) {
-//         return res.status(404).json({ error: 'User not found' });
-//       }
-//       res.json(user[0]);
-//     } catch (err) {
-//       res.status(500).json({ error: err.message });
-//     }
-//   });
+ app.get('/api/users', async (req, res) => {
+      try {
+       const response = await fetch('https://localhost:7112/api/Users');
+        const users = await response.json();
+        res.json(users);
+      } catch (err) {
+        res.status(500).json({ error: err.message });
+      }
+    });
+
+  // GET user by id
+  app.get('/api/users/:id', async (req, res) => {
+    try {
+       const response = await fetch(`https://localhost:7112/api/Users/${req.params.id}`);
+      const user = await response.json();
+      if (user.length === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      res.json(user[0]);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
 
   // POST create user
   app.post('/api/users', async (req, res) => {
@@ -918,45 +918,45 @@ app.delete('/api/templates/:id', async (req, res) => {
       }
     });
 
-//---------------------------------MOVED TO C#-------------------------------------
-  //    // Update template visibility
-  // app.put('/api/templates/:id/visibility', async (req, res) => {
-  //   try {
-  //     const { id } = req.params;
-  //     const { isActive, userId } = req.body;
 
-  //     if (!userId) {
-  //       return res.status(400).json({ error: 'userId required' });
-  //     }
+     // Update template visibility
+  app.put('/api/templates/:id/visibility', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { isActive, userId } = req.body;
 
-  //     // Check if user is admin or superadmin
-  //     const userResult = await pool.request()
-  //       .input('UserID', sql.Int, userId)
-  //       .query('SELECT IsAdmin, IsSuperAdmin FROM TBUsers WHERE User_ID = @UserID');
+      if (!userId) {
+        return res.status(400).json({ error: 'userId required' });
+      }
 
-  //     if (userResult.recordset.length === 0) {
-  //       return res.status(404).json({ error: 'User not found' });
-  //     }
+      // Check if user is admin or superadmin
+      const userResult = await pool.request()
+        .input('UserID', sql.Int, userId)
+        .query('SELECT IsAdmin, IsSuperAdmin FROM TBUsers WHERE User_ID = @UserID');
 
-  //     const user = userResult.recordset[0];
-  //     if (!user.IsAdmin && !user.IsSuperAdmin) {
-  //       return res.status(403).json({ error: 'Only admins can update templates' });
-  //     }
+      if (userResult.recordset.length === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
 
-  //     await pool.request()
-  //       .input('TemplateID', sql.Int, id)
-  //       .input('IsActive', sql.Bit, isActive)
-  //       .query('UPDATE TBTemplates SET IsActive = @IsActive WHERE Template_ID = @TemplateID');
+      const user = userResult.recordset[0];
+      if (!user.IsAdmin && !user.IsSuperAdmin) {
+        return res.status(403).json({ error: 'Only admins can update templates' });
+      }
 
-  //     console.log('✅ Template visibility updated:', id, 'isActive:',
-  // isActive);
-  //     res.json({ message: 'Template visibility updated' });
+      await pool.request()
+        .input('TemplateID', sql.Int, id)
+        .input('IsActive', sql.Bit, isActive)
+        .query('UPDATE TBTemplates SET IsActive = @IsActive WHERE Template_ID = @TemplateID');
 
-  //   } catch (err) {
-  //     console.error('❌ Update template visibility error:', err);
-  //     res.status(500).json({ error: err.message });
-  //   }
-  // });
+      console.log('✅ Template visibility updated:', id, 'isActive:',
+  isActive);
+      res.json({ message: 'Template visibility updated' });
+
+    } catch (err) {
+      console.error('❌ Update template visibility error:', err);
+      res.status(500).json({ error: err.message });
+    }
+  });
 
 
       // Get all notifications (for admin panel)
