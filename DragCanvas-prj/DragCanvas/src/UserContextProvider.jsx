@@ -1,3 +1,4 @@
+import API_URL from './api.js';
 import React, { createContext, useState, useEffect, useContext }
   from "react";
 import { v4 as uuidv4 } from 'uuid';
@@ -72,7 +73,7 @@ export default function UserContextProvider(props) {
         IPAddress: "uknown"
       }
 
-      const response = await fetch('https://localhost:7112/api/Users/login', {
+      const response = await fetch('https://yuravolontir.bsite.net/api/Users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json; charset=utf-8 ',
@@ -108,7 +109,7 @@ export default function UserContextProvider(props) {
     setError(null);
     try {
       const response = await
-        fetch('http://localhost:3001/api/register', {
+        fetch(`${API_URL}/api/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, email, password })

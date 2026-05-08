@@ -1,3 +1,4 @@
+import API_URL from './api.js';
 import { useState, useEffect } from 'react'
 import NavBar from './NavBar';
 import Container from 'react-bootstrap/Container';
@@ -38,8 +39,7 @@ export default function MyProject() {
         return;
       }
 
-      const response = await fetch(
-        `http://localhost:3001/api/projects/user/${currentUser.User_ID}`
+      const response = await fetch(`${API_URL}/api/projects/user/${currentUser.User_ID}`
       );
 
       if (!response.ok) {
@@ -77,8 +77,7 @@ export default function MyProject() {
     setShowDeleteModal(false);
 
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/projects/${projectToDelete}`, {
+      const response = await fetch(`${API_URL}/api/projects/${projectToDelete}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

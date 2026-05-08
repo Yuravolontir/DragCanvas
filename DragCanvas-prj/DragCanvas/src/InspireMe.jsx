@@ -1,3 +1,4 @@
+import API_URL from './api.js';
 import React, { useEffect, useState } from 'react';
 import NavBar from './NavBar';
 import Container from 'react-bootstrap/Container';
@@ -35,7 +36,7 @@ export default function InspireMe() {
 
   const fetchTemplates = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/templates');
+      const response = await fetch(`${API_URL}/api/templates');
       if (!response.ok) throw new Error('Failed to fetch templates');
       const data = await response.json();
       setTemplates(Array.isArray(data) ? data : []);
@@ -76,8 +77,7 @@ export default function InspireMe() {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/templates/${templateToDelete.Template_ID}?userId=${currentUser.User_ID}`,
+      const response = await fetch(`${API_URL}/api/templates/${templateToDelete.Template_ID}?userId=${currentUser.User_ID}`,
         { method: 'DELETE', headers: { 'Content-Type': 'application/json' } }
       );
 

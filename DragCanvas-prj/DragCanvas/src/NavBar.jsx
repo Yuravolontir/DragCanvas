@@ -1,3 +1,4 @@
+import API_URL from './api.js';
 import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -24,7 +25,7 @@ export default function NavBar() {
     const fetchNotifications = async () => {
       if (!currentUser?.User_ID) return;
       try {
-        const response = await fetch(`http://localhost:3001/api/notifications/user/${currentUser.User_ID}`);
+        const response = await fetch(`${API_URL}/api/notifications/user/${currentUser.User_ID}`);
         const data = await response.json();
         const viewedIds = JSON.parse(localStorage.getItem(`viewedNotifications_${currentUser.User_ID}`) || '[]');
         const unreadNotifications = data.filter(n => !viewedIds.includes(n.Notification_ID));

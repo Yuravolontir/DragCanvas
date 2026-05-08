@@ -1,3 +1,4 @@
+import API_URL from './api.js';
 import { useEffect } from 'react';
   import { useEditor } from '@craftjs/core';
   import { useLocation } from 'react-router-dom';
@@ -43,8 +44,7 @@ import { useEffect } from 'react';
         console.log('Loading project:', projectId);
 
         try {
-          const response = await fetch(
-            `http://localhost:3001/api/projects/${projectId}?userId=${currentUser.User_ID}`
+          const response = await fetch(`${API_URL}/api/projects/${projectId}?userId=${currentUser.User_ID}`
           );
 
           if (!response.ok) {
@@ -69,7 +69,7 @@ import { useEffect } from 'react';
       const loadTemplate = async (templateId) => {
         try {
           const response = await
-  fetch(`http://localhost:3001/api/templates/${templateId}`);
+  fetch(`${API_URL}/api/templates/${templateId}`);
 
           if (!response.ok) {
             throw new Error('Failed to load template');

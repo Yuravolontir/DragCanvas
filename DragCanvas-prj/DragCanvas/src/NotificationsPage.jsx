@@ -1,3 +1,4 @@
+import API_URL from './api.js';
 import React, { useEffect, useState } from 'react';
 import NavBar from './NavBar';
 import Container from 'react-bootstrap/Container';
@@ -28,7 +29,7 @@ export default function NotificationsPage() {
 
     const fetchNotifications = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/notifications/user/${currentUser.User_ID}`);
+        const response = await fetch(`${API_URL}/api/notifications/user/${currentUser.User_ID}`);
         const data = await response.json();
         setNotifications(Array.isArray(data) ? data : []);
 
@@ -36,7 +37,7 @@ export default function NotificationsPage() {
         localStorage.setItem(`viewedNotifications_${currentUser.User_ID}`, JSON.stringify(viewedIds));
 
         if (viewedIds.length > 0) {
-          fetch('http://localhost:3001/api/notifications/mark-viewed', {
+          fetch(`${API_URL}/api/notifications/mark-viewed`, {{
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId: currentUser.User_ID, notificationIds: viewedIds })
@@ -60,8 +61,7 @@ export default function NotificationsPage() {
   const confirmDelete = async () => {
     setShowDeleteModal(false);
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/notifications/${notificationToDelete}?userId=${currentUser.User_ID}`,
+      const response = await fetch(`${API_URL}/api/notifications/${notificationToDelete}?userId=${currentUser.User_ID}`,
         { method: 'DELETE' }
       );
       const data = await response.json();

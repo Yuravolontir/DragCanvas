@@ -1,3 +1,4 @@
+import API_URL from './api.js';
 import React, { useEffect, useState } from 'react';
 import NavBar from './NavBar';
 import Table from 'react-bootstrap/Table';
@@ -154,7 +155,7 @@ export default function AdminPanel() {
     }
 
     try {
-      const response = await fetch('https://localhost:7112/api/Users/delete-user', {
+      const response = await fetch('https://yuravolontir.bsite.net/api/Users/delete-user', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -186,7 +187,7 @@ export default function AdminPanel() {
 
       try {
         const response = await
-  fetch('http://localhost:3001/api/update-status', {
+  fetch(`${API_URL}/api/update-status`, {{
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -223,7 +224,7 @@ export default function AdminPanel() {
 
       try {
         const response = await
-  fetch('http://localhost:3001/api/reset-password', {
+  fetch(`${API_URL}/api/reset-password`, {{
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -260,7 +261,7 @@ const confirmRoleChange = async () => {
 
       try {
         const response = await
-  fetch('http://localhost:3001/api/update-role', {
+  fetch(`${API_URL}/api/update-role`, {{
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -289,7 +290,7 @@ const confirmRoleChange = async () => {
       setError(null);
       try {
         const response = await
-  fetch('https://localhost:7112/api/Users');    //C#
+  fetch('https://yuravolontir.bsite.net/api/Users');    //C#
         const data = await response.json();
         
         console.log(data)
@@ -314,7 +315,7 @@ const confirmRoleChange = async () => {
       // Fetch user statistics
       try {
         const response = await
-  fetch(`https://localhost:7112/api/Users/${user.User_ID}`);   //C#
+  fetch(`https://yuravolontir.bsite.net/api/Users/${user.User_ID}`);   //C#
         const data = await response.json();
         setUserStats(data);
       } catch (err) {
@@ -333,7 +334,7 @@ const confirmRoleChange = async () => {
 
           setLoadingTemplates(true);
           try {
-            const response = await fetch(`http://localhost:3001/api/templates/all?userId=${currentUser.User_ID}`);
+            const response = await fetch(`${API_URL}/api/templates/all?userId=${currentUser.User_ID}`);
 
             if (!response.ok) {
               throw new Error('Failed to fetch templates');
@@ -353,7 +354,7 @@ const confirmRoleChange = async () => {
    {
       try {
         const response = await
-          fetch(`https://localhost:7112/api/Users/templates/${templateId}/visibility`, {
+          fetch(`https://yuravolontir.bsite.net/api/Users/templates/${templateId}/visibility`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -384,7 +385,7 @@ const confirmRoleChange = async () => {
 
       setLoadingNotifications(true);
       try {
-        const response = await fetch(`http://localhost:3001/api/notifications/all?userId=${currentUser.User_ID}`);
+        const response = await fetch(`${API_URL}/api/notifications/all?userId=${currentUser.User_ID}`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch notifications');
@@ -417,7 +418,7 @@ const confirmRoleChange = async () => {
       setSending(true);
       try {
         const response = await
-  fetch('http://localhost:3001/api/notifications/send-newsletter',
+  fetch(`${API_URL}/api/notifications/send-newsletter`,
   {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -461,7 +462,7 @@ const confirmRoleChange = async () => {
 
     setLoadingSchedules(true);
     try {
-      const response = await fetch(`http://localhost:3001/api/schedules?userId=${currentUser.User_ID}`);
+      const response = await fetch(`${API_URL}/api/schedules?userId=${currentUser.User_ID}`);
       const data = await response.json();
       setSchedules(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -475,8 +476,8 @@ const confirmRoleChange = async () => {
   const handleSaveSchedule = async (scheduleData) => {
     try {
       const url = editingSchedule
-        ? `http://localhost:3001/api/schedules/${editingSchedule.Schedule_ID}`
-        : 'http://localhost:3001/api/schedules';
+        ? `/api/schedules/${editingSchedule.Schedule_ID}`
+        : '/api/schedules';
 
       const response = await fetch(url, {
         method: editingSchedule ? 'PUT' : 'POST',
@@ -501,7 +502,7 @@ const confirmRoleChange = async () => {
 
   const handleToggleSchedule = async (scheduleId, isActive) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/schedules/${scheduleId}/toggle`, {
+      const response = await fetch(`${API_URL}/api/schedules/${scheduleId}/toggle`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isActive })
@@ -518,7 +519,7 @@ const confirmRoleChange = async () => {
 
   const handleDeleteSchedule = async (scheduleId) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/schedules/${scheduleId}`, {
+      const response = await fetch(`${API_URL}/api/schedules/${scheduleId}`, {
         method: 'DELETE'
       });
 
@@ -537,7 +538,7 @@ const confirmRoleChange = async () => {
   const fetchNotificationTemplates = async () => {
     setLoadingTemplatesNotification(true);
     try {
-      const response = await fetch('http://localhost:3001/api/notification-templates');
+      const response = await fetch(`${API_URL}/api/notification-templates');
       const data = await response.json();
       setNotificationTemplates(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -551,8 +552,8 @@ const confirmRoleChange = async () => {
   const handleSaveNotificationTemplate = async (templateData) => {
     try {
       const url = editingTemplate
-        ? `http://localhost:3001/api/notification-templates/${editingTemplate.Template_ID}`
-        : 'http://localhost:3001/api/notification-templates';
+        ? `/api/notification-templates/${editingTemplate.Template_ID}`
+        : '/api/notification-templates';
 
       const response = await fetch(url, {
         method: editingTemplate ? 'PUT' : 'POST',
@@ -577,7 +578,7 @@ const confirmRoleChange = async () => {
 
   const handleToggleNotificationTemplate = async (templateId, isActive) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/notification-templates/${templateId}/toggle`, {
+      const response = await fetch(`${API_URL}/api/notification-templates/${templateId}/toggle`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isActive })
@@ -594,7 +595,7 @@ const confirmRoleChange = async () => {
 
   const handleDeleteNotificationTemplate = async (templateId) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/notification-templates/${templateId}`, {
+      const response = await fetch(`${API_URL}/api/notification-templates/${templateId}`, {
         method: 'DELETE'
       });
 
@@ -621,7 +622,7 @@ const confirmRoleChange = async () => {
         ...logFilters
       });
 
-      const response = await fetch(`http://localhost:3001/api/notification-logs?${params}`);
+      const response = await fetch(`${API_URL}/api/notification-logs?${params}`);
       const data = await response.json();
       setNotificationLogs(data.logs || []);
       setLogPage(data.page || 1);
@@ -635,7 +636,7 @@ const confirmRoleChange = async () => {
 
   const fetchLogStats = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/notification-logs/stats');
+      const response = await fetch(`${API_URL}/api/notification-logs/stats');
       const data = await response.json();
       setLogStats(data);
     } catch (err) {
@@ -648,7 +649,7 @@ const confirmRoleChange = async () => {
   // ============================================
   const fetchNotificationSettings = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/notification-settings');
+      const response = await fetch(`${API_URL}/api/notification-settings');
       const data = await response.json();
       setNotificationSettings(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -659,7 +660,7 @@ const confirmRoleChange = async () => {
 
   const handleSaveNotificationSettings = async (settings) => {
     try {
-      const response = await fetch('http://localhost:3001/api/notification-settings', {
+      const response = await fetch(`${API_URL}/api/notification-settings`, {{
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ settings, userId: currentUser.User_ID })
@@ -1285,7 +1286,7 @@ const confirmRoleChange = async () => {
                               onClick={async () => {
                                 const newEnabled = !setting.IsEnabled;
                                 try {
-                                  const response = await fetch('http://localhost:3001/api/notification-settings', {
+                                  const response = await fetch(`${API_URL}/api/notification-settings`, {{
                                     method: 'PUT',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({
