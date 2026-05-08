@@ -33,7 +33,7 @@ const config = {
   database: process.env.DB_DATABASE || 'DragCanvas',
   user: process.env.DB_USER || 'DragCanvasWebApp',
   password: process.env.DB_PASSWORD || '',
-  options: { encrypt: true, trustServerCertificate: true }
+  options: { encrypt: false, trustServerCertificate: true }
 };
 
 let pool;
