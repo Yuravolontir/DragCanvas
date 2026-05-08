@@ -187,7 +187,7 @@ export default function AdminPanel() {
 
       try {
         const response = await
-  fetch(`${API_URL}/fetch(`${API_URL}/api/update-status`, {,
+  fetch(`${API_URL}/api/update-status`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -224,7 +224,7 @@ export default function AdminPanel() {
 
       try {
         const response = await
-  fetch(`${API_URL}/fetch(`${API_URL}/api/reset-password`, {,
+  fetch(`${API_URL}/api/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -261,7 +261,7 @@ const confirmRoleChange = async () => {
 
       try {
         const response = await
-  fetch(`${API_URL}/fetch(`${API_URL}/api/update-role`, {,
+  fetch(`${API_URL}/api/update-role`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -538,7 +538,7 @@ const confirmRoleChange = async () => {
   const fetchNotificationTemplates = async () => {
     setLoadingTemplatesNotification(true);
     try {
-      const response = await fetch(`${API_URL}/api/notification-templates');
+      const response = await fetch(`${API_URL}/api/notification-templates`);
       const data = await response.json();
       setNotificationTemplates(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -636,7 +636,7 @@ const confirmRoleChange = async () => {
 
   const fetchLogStats = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/notification-logs/stats');
+      const response = await fetch(`${API_URL}/api/notification-logs/stats`);
       const data = await response.json();
       setLogStats(data);
     } catch (err) {
@@ -649,7 +649,7 @@ const confirmRoleChange = async () => {
   // ============================================
   const fetchNotificationSettings = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/notification-settings');
+      const response = await fetch(`${API_URL}/api/notification-settings`);
       const data = await response.json();
       setNotificationSettings(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -660,7 +660,7 @@ const confirmRoleChange = async () => {
 
   const handleSaveNotificationSettings = async (settings) => {
     try {
-      const response = await fetch(`${API_URL}/fetch(`${API_URL}/api/notification-settings`, {,
+      const response = await fetch(`${API_URL}/api/notification-settings`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ settings, userId: currentUser.User_ID })
@@ -1286,7 +1286,7 @@ const confirmRoleChange = async () => {
                               onClick={async () => {
                                 const newEnabled = !setting.IsEnabled;
                                 try {
-                                  const response = await fetch(`${API_URL}/fetch(`${API_URL}/api/notification-settings`, {,
+                                  const response = await fetch(`${API_URL}/api/notification-settings`, {
                                     method: 'PUT',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({
