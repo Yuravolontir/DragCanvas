@@ -37,7 +37,7 @@ export default function NotificationsPage() {
         localStorage.setItem(`viewedNotifications_${currentUser.User_ID}`, JSON.stringify(viewedIds));
 
         if (viewedIds.length > 0) {
-          fetch(`${API_URL}/api/notifications/mark-viewed`, {{
+          fetch(`${API_URL}/api/notifications/mark-viewed`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId: currentUser.User_ID, notificationIds: viewedIds })
