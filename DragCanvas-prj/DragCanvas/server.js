@@ -8,9 +8,16 @@ import cors from 'cors';
 import sql from 'mssql';
 import cron from 'node-cron';
 
+const PORT = process.env.PORT || 3001;
+
 const app = express();
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3001'],
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:3001',
+    process.env.FRONTEND_URL
+  ].filter(Boolean),
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -35,7 +42,7 @@ async function start() {
   try {
     pool = await sql.connect(config);
     console.log('Connected to SQL Server!');
-    app.listen(3001, () => console.log('Server running on port 3001'));
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
     // Start the scheduled notification processor
     startScheduleProcessor();

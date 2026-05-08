@@ -1,3 +1,4 @@
+import API_URL from './api.js';
   import { useEditor } from '@craftjs/core';
   import { Tooltip } from '@mui/material';
   import { Modal, Form, Alert, Button } from 'react-bootstrap';
@@ -148,7 +149,7 @@ export const Header = () => {
 
       // Save as project
       const response = await
-  fetch('http://localhost:3001/api/projects/save', {
+  fetch(`${API_URL}/api/projects/save`, {{
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -221,7 +222,7 @@ export const Header = () => {
 
         // Save template
         const response = await
-    fetch('http://localhost:3001/api/templates/save', {
+    fetch(`${API_URL}/api/templates/save`, {{
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -470,7 +471,7 @@ const handlePublish = async () => {
       const json = query.serialize();
       const html = exportToHtml(JSON.parse(json), projectName);
       const res = await
-  fetch('http://localhost:3001/api/publish-site', {
+  fetch(`${API_URL}/api/publish-site`, {{
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ projectId: null, html, domain:
