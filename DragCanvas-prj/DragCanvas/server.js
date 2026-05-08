@@ -5,8 +5,10 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import sql from 'mssql';
+import pg from 'pg';
 import cron from 'node-cron';
+
+const { Pool } = pg;
 
 const PORT = process.env.PORT || 3001;
 
@@ -27,21 +29,17 @@ app.use(cors({
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// ---------- SQL ----------
-const config = {
-  server: process.env.DB_SERVER || 'YURA\\SQLEXPRESS',
-  database: process.env.DB_DATABASE || 'DragCanvas',
-  user: process.env.DB_USER || 'DragCanvasWebApp',
-  password: process.env.DB_PASSWORD || '',
-  options: { encrypt: false, trustServerCertificate: true }
-};
-
-let pool;
+// ---------- PostgreSQL ----------
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
+});
 
 async function start() {
   try {
-    pool = await sql.connect(config);
-    console.log('Connected to SQL Server!');
+    const client = await pool.connect();
+    console.log('Connected to PostgreSQL!');
+    client.release();
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
     // Start the scheduled notification processor
@@ -63,24 +61,23 @@ function startScheduleProcessor() {
       const now = new Date();
 
       // Find schedules that are due to run
-      // Only fire if LastRunDate is NULL or before today (prevents duplicate spam)
-      const result = await pool.request().query(`
+      const result = await pool.query(`
         SELECT *
-        FROM TBNotificationSchedules
-        WHERE IsActive = 1
-          AND NextRunDate IS NOT NULL
-          AND NextRunDate <= GETDATE()
-          AND (LastRunDate IS NULL OR LastRunDate < DATEADD(day, -1, GETDATE()) OR Frequency != 'daily' OR DATEDIFF(minute, ISNULL(LastRunDate, '2000-01-01'), GETDATE()) >= 60)
+        FROM "TBNotificationSchedules"
+        WHERE "IsActive" = true
+          AND "NextRunDate" IS NOT NULL
+          AND "NextRunDate" <= NOW()
+          AND ("LastRunDate" IS NULL OR "LastRunDate" < NOW() - interval '1 day' OR "Frequency" != 'daily' OR EXTRACT(EPOCH FROM (NOW() - COALESCE("LastRunDate", '2000-01-01'::timestamp))) / 60 >= 60)
       `);
 
-      const schedulesToRun = result.recordset;
+      const schedulesToRun = result.rows;
 
       if (schedulesToRun.length > 0) {
         console.log(`🔔 Processing ${schedulesToRun.length} scheduled notification(s)...`);
         schedulesToRun.forEach(s => console.log(`  - ${s.ScheduleName} (NextRun was: ${s.NextRunDate ? new Date(s.NextRunDate).toLocaleString() : 'N/A'})`));
 
         for (const schedule of schedulesToRun) {
-          await processScheduledNotification(schedule, pool);
+          await processScheduledNotification(schedule);
         }
       }
     } catch (err) {
@@ -89,44 +86,23 @@ function startScheduleProcessor() {
   });
 }
 
-async function processScheduledNotification(schedule, pool) {
+async function processScheduledNotification(schedule) {
   try {
     console.log(`  → Executing schedule: ${schedule.ScheduleName} (ID: ${schedule.Schedule_ID}, Type: ${schedule.NotificationType})`);
 
     // Get the message content
-    // Priority: Message Override > Template
     let subject, message;
     if (schedule.MessageOverride) {
       subject = schedule.ScheduleName;
       message = schedule.MessageOverride;
     } else if (schedule.Template_ID) {
-      const templateResult = await pool.request()
-        .input('Template_ID', sql.Int, schedule.Template_ID)
-        .query('SELECT * FROM TBNotificationTemplates WHERE Template_ID = @Template_ID');
-
-      if (templateResult.recordset && templateResult.recordset.length > 0) {
-        const template = templateResult.recordset[0];
-        subject = template.Subject;
-        message = template.Message;
-
-        // Replace placeholders with actual values (except {username} - handled per-recipient)
-        const now = new Date();
-        const globalReplacements = {
-          event_name: schedule.ScheduleName || 'Upcoming Event',
-          event_date: now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
-          event_time: schedule.ScheduleTime || now.toLocaleTimeString(),
-          date: now.toLocaleDateString(),
-          time: now.toLocaleTimeString(),
-        };
-
-        for (const [placeholder, value] of Object.entries(globalReplacements)) {
-          const regex = new RegExp(`\\{${placeholder}\\}`, 'gi');
-          subject = subject.replace(regex, value);
-          message = message.replace(regex, value);
-        }
-      } else {
-        console.log(`  ⚠️ Template not found and no message override for schedule: ${schedule.ScheduleName}`);
-        return;
+      const tplResult = await pool.query(
+        'SELECT "Subject", "Message" FROM "TBNotificationTemplates" WHERE "Template_ID" = $1',
+        [schedule.Template_ID]
+      );
+      if (tplResult.rows.length > 0) {
+        subject = tplResult.rows[0].Subject;
+        message = tplResult.rows[0].Message;
       }
     } else {
       console.log(`  ⚠️ No message content for schedule: ${schedule.ScheduleName}`);
@@ -136,15 +112,15 @@ async function processScheduledNotification(schedule, pool) {
     // Get recipients
     let recipients;
     if (schedule.RecipientType === 'all') {
-      const usersResult = await pool.request()
-        .query('SELECT User_ID FROM TBUsers WHERE IsActive = 1');
-      recipients = usersResult.recordset || [];
+      const usersResult = await pool.query('SELECT "User_ID" FROM "TBUsers" WHERE "IsActive" = true');
+      recipients = usersResult.rows || [];
     } else if (schedule.RecipientType === 'selected' && schedule.RecipientIDs) {
       const recipientIds = JSON.parse(schedule.RecipientIDs);
-      const placeholders = recipientIds.map(() => '?').join(',');
-      const selectedResult = await pool.request()
-        .query(`SELECT User_ID FROM TBUsers WHERE User_ID IN (${recipientIds.join(',')})`);
-      recipients = selectedResult.recordset || [];
+      const selectedResult = await pool.query(
+        `SELECT "User_ID" FROM "TBUsers" WHERE "User_ID" = ANY($1::int[])`,
+        [recipientIds]
+      );
+      recipients = selectedResult.rows || [];
     } else {
       console.log(`  ⚠️ No recipients for schedule: ${schedule.ScheduleName}`);
       return;
@@ -158,44 +134,35 @@ async function processScheduledNotification(schedule, pool) {
     // Create a personalized notification for each recipient
     for (const recipient of recipients) {
       try {
-        const userResult = await pool.request()
-          .input('User_ID', sql.Int, recipient.User_ID)
-          .query('SELECT UserName, UserEmail FROM TBUsers WHERE User_ID = @User_ID');
+        const userResult = await pool.query(
+          'SELECT "UserName", "UserEmail" FROM "TBUsers" WHERE "User_ID" = $1',
+          [recipient.User_ID]
+        );
 
-        if (!userResult.recordset || userResult.recordset.length === 0) {
+        if (!userResult.rows || userResult.rows.length === 0) {
           console.log(`  ⚠️ User not found: ${recipient.User_ID}`);
           continue;
         }
 
-        const user = userResult.recordset[0];
+        const user = userResult.rows[0];
 
         // Replace {username} per recipient
         let personalSubject = subject.replace(/\{username\}/gi, user.UserName);
         let personalMessage = message.replace(/\{username\}/gi, user.UserName);
 
-        const notificationResult = await pool.request()
-          .input('Subject', sql.NVarChar(200), personalSubject)
-          .input('Message', sql.NVarChar(sql.MAX), personalMessage)
-          .input('NotificationType', sql.NVarChar(50), schedule.NotificationType)
-          .input('RecipientType', sql.NVarChar(50), schedule.RecipientType)
-          .input('RecipientIDs', sql.NVarChar(sql.MAX), JSON.stringify([recipient.User_ID]))
-          .input('SentCount', sql.Int, 1)
-          .input('CreatedBy', sql.Int, schedule.CreatedBy)
-          .input('User_ID', sql.Int, recipient.User_ID)
-          .input('UserName', sql.NVarChar, user.UserName)
-          .input('UserEmail', sql.NVarChar, user.UserEmail)
-          .query(`
-            DECLARE @NotificationID INT
-            INSERT INTO TBNotifications (Subject, Message, NotificationType, RecipientType, RecipientIDs, Status, SentCount, CreatedBy, CreatedDate, SentDate)
-            VALUES (@Subject, @Message, @NotificationType, @RecipientType, @RecipientIDs, 'sent', @SentCount, @CreatedBy, GETDATE(), GETDATE())
-
-            SET @NotificationID = SCOPE_IDENTITY()
-
-            INSERT INTO TBNotificationDeliveryLog (Notification_ID, User_ID, UserName, UserEmail, Status, DeliveredDate)
-            VALUES (@NotificationID, @User_ID, @UserName, @UserEmail, 'delivered', GETDATE())
-
-            SELECT @NotificationID as NotificationID
-          `);
+        const notificationResult = await pool.query(`
+          WITH ins_notif AS (
+            INSERT INTO "TBNotifications" ("Subject", "Message", "NotificationType", "RecipientType", "RecipientIDs", "Status", "SentCount", "CreatedBy", "CreatedDate", "SentDate")
+            VALUES ($1, $2, $3, $4, $5, 'sent', 1, $6, NOW(), NOW())
+            RETURNING "Notification_ID"
+          )
+          INSERT INTO "TBNotificationDeliveryLog" ("Notification_ID", "User_ID", "UserName", "UserEmail", "Status", "DeliveredDate")
+          SELECT "Notification_ID", $7, $8, $9, 'delivered', NOW()
+          FROM ins_notif
+          RETURNING "Notification_ID"
+        `, [personalSubject, personalMessage, schedule.NotificationType, schedule.RecipientType,
+            JSON.stringify([recipient.User_ID]), schedule.CreatedBy,
+            recipient.User_ID, user.UserName, user.UserEmail]);
 
       } catch (err) {
         console.error(`  ⚠️ Failed to create notification for user ${recipient.User_ID}:`, err.message);
@@ -205,124 +172,72 @@ async function processScheduledNotification(schedule, pool) {
     // Update schedule's LastRunDate and calculate NextRunDate
     const nextRunDate = calculateNextRunDate(schedule.Frequency, schedule.ScheduleTime, schedule.ScheduleDay);
 
-    await pool.request()
-      .input('Schedule_ID', sql.Int, schedule.Schedule_ID)
-      .input('LastRunDate', sql.DateTime, new Date())
-      .input('NextRunDate', sql.DateTime, nextRunDate)
-      .query(`
-        UPDATE TBNotificationSchedules
-        SET LastRunDate = @LastRunDate,
-            NextRunDate = @NextRunDate
-        WHERE Schedule_ID = @Schedule_ID
-      `);
+    await pool.query(
+      `UPDATE "TBNotificationSchedules" SET "LastRunDate" = NOW(), "NextRunDate" = $1 WHERE "Schedule_ID" = $2`,
+      [nextRunDate, schedule.Schedule_ID]
+    );
 
     console.log(`  ✅ Sent ${recipients.length} notification(s), next run: ${nextRunDate.toLocaleString()}`);
-
   } catch (err) {
-    console.error(`  ❌ Error processing schedule ${schedule.ScheduleName}:`, err.message);
-
-    // Still update NextRunDate to prevent infinite retry loop
-    try {
-      const nextRunDate = calculateNextRunDate(schedule.Frequency, schedule.ScheduleTime, schedule.ScheduleDay);
-      await pool.request()
-        .input('Schedule_ID', sql.Int, schedule.Schedule_ID)
-        .input('NextRunDate', sql.DateTime, nextRunDate)
-        .query('UPDATE TBNotificationSchedules SET NextRunDate = @NextRunDate WHERE Schedule_ID = @Schedule_ID');
-      console.log(`  🔄 Updated next run to: ${nextRunDate.toLocaleString()}`);
-    } catch (updateErr) {
-      console.error(`  ❌ Failed to update NextRunDate: ${updateErr.message}`);
-    }
+    console.error(`  ⚠️ Failed to process schedule ${schedule.ScheduleName}:`, err);
   }
 }
 
 function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
-  const now = new Date();
-  const [hours, minutes] = scheduleTime.split(':').map(Number);
-
-  // Start with today at the scheduled time
+  const [hours, minutes] = (scheduleTime || '09:00').split(':').map(Number);
   let nextRun = new Date();
   nextRun.setHours(hours, minutes, 0, 0);
 
-  // If the scheduled time has already passed today, move to tomorrow first
-  if (nextRun <= now) {
+  if (frequency === 'daily') {
     nextRun.setDate(nextRun.getDate() + 1);
-  }
-
-  // Then apply the frequency logic
-  switch (frequency) {
-    case 'daily':
-      // Already handled by the check above - next run is tomorrow
-      break;
-    case 'weekly':
-      const currentDay = nextRun.getDay();
-      const targetDay = scheduleDay || 1;
-      let daysUntilTarget = (targetDay + 7 - currentDay) % 7;
-      if (daysUntilTarget === 0) daysUntilTarget = 7; // If today is the target day, move to next week
-      nextRun.setDate(nextRun.getDate() + daysUntilTarget);
-      break;
-    case 'monthly':
-      const targetDayOfMonth = scheduleDay || 1;
-      nextRun.setDate(targetDayOfMonth);
-      // If we've gone past the target day this month, move to next month
-      if (nextRun.getDate() !== targetDayOfMonth) {
-        // This happens when the target day doesn't exist (e.g., Feb 31) or we've passed it
-        nextRun.setDate(1); // Reset to 1st of next month
-        nextRun.setMonth(nextRun.getMonth() + 1);
-        nextRun.setDate(targetDayOfMonth);
-      }
-      // Double-check - if still in past, move to next month
-      if (nextRun <= now) {
-        nextRun.setMonth(nextRun.getMonth() + 1);
-      }
-      break;
-    case 'yearly':
-      nextRun.setFullYear(nextRun.getFullYear() + 1);
-      break;
-  }
-
-  // Final safety check - ensure next run is in the future
-  if (nextRun <= now) {
-    // If still in past, add 1 day as fallback
-    nextRun.setDate(nextRun.getDate() + 1);
+  } else if (frequency === 'weekly') {
+    const dayOfWeek = parseInt(scheduleDay) || 1;
+    nextRun.setDate(nextRun.getDate() + ((dayOfWeek + 7 - nextRun.getDay()) % 7));
+    if (nextRun <= new Date()) nextRun.setDate(nextRun.getDate() + 7);
+  } else if (frequency === 'monthly') {
+    const dayOfMonth = parseInt(scheduleDay) || 1;
+    nextRun.setDate(dayOfMonth);
+    if (nextRun <= new Date()) nextRun.setMonth(nextRun.getMonth() + 1);
+    // Handle months where the day doesn't exist
+    if (nextRun.getDate() !== dayOfMonth) {
+      nextRun.setDate(0); // Last day of previous month
+    }
   }
 
   return nextRun;
 }
-//-----------------------MOVED TO C#-------------------------------
-//  app.get('/api/users', async (req, res) => {
-//       try {
-//        const response = await fetch('https://localhost:7112/api/Users');
-//         const users = await response.json();
-//         res.json(users);
-//       } catch (err) {
-//         res.status(500).json({ error: err.message });
-//       }
-//     });
 
-//   // GET user by id
+// ============================================
+// API ROUTES
+// ============================================
+
+//  app.get('/api/users', async (req, res) => {
+//     try {
+//       const result = await pool.query('SELECT * FROM TBUsers');
+//       res.json(result.recordset);
+//     } catch (err) {
+//       res.status(500).json({ error: err.message });
+//     }
+//  });
+
 //   app.get('/api/users/:id', async (req, res) => {
 //     try {
-//        const response = await fetch(`https://localhost:7112/api/Users/${req.params.id}`);
-//       const user = await response.json();
-//       if (user.length === 0) {
-//         return res.status(404).json({ error: 'User not found' });
-//       }
-//       res.json(user[0]);
+//       const result = await pool.query('SELECT * FROM TBUsers WHERE User_ID = $1', [req.params.id]);
+//       if (result.recordset.length === 0) return res.status(404).json({ error: 'User not found' });
+//       res.json(result.recordset[0]);
 //     } catch (err) {
 //       res.status(500).json({ error: err.message });
 //     }
 //   });
 
-  // POST create user
   app.post('/api/users', async (req, res) => {
     try {
       const { username, email, password } = req.body;
-      const result = await pool.request()
-        .input('username', sql.NVarChar(50), username)
-        .input('email', sql.NVarChar(100), email)
-        .input('password', sql.NVarChar(255), password)
-        .query('INSERT INTO TBUsers (UserName, UserEmail, UserPassword, IsActive, CreatedDate) OUTPUT INSERTED.* VALUES(@username, @email, @password, 1, GETDATE())');
-      res.json(result.recordset[0]);
+      const result = await pool.query(
+        'INSERT INTO "TBUsers" ("UserName", "UserEmail", "UserPassword", "IsActive", "CreatedDate") VALUES($1, $2, $3, true, NOW()) RETURNING *',
+        [username, email, password]
+      );
+      res.json(result.rows[0]);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -330,46 +245,30 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
 
 
 
-  // POST register - using Stored Procedure
+  // POST register - inline SQL (replaces SP_RegisterUser)
   app.post('/api/register', async (req, res) => {
     try {
       const { username, email, password } = req.body;
 
-      // Create request
-      const request = pool.request()
-        .input('UserName', sql.NVarChar(50), username)
-        .input('Email', sql.NVarChar(100), email)
-        .input('Password', sql.NVarChar(255), password);
+      const result = await pool.query(
+        'INSERT INTO "TBUsers" ("UserName", "UserEmail", "UserPassword", "IsActive", "CreatedDate") VALUES ($1, $2, $3, true, NOW()) RETURNING "User_ID", "UserName", "UserEmail"',
+        [username, email, password]
+      );
 
-      // Add OUTPUT parameters
-      const userID = { value: null, type: sql.Int };
-      const resultCode = { value: null, type: sql.Int };
-
-      request.output('UserID', sql.Int);
-      request.output('ResultCode', sql.Int);
-
-      // Execute stored procedure
-      await request.execute('dbo.SP_RegisterUser');
-
-      // Get output values
-      const result = await pool.request()
-        .input('UserName', sql.NVarChar(50), username)
-        .query('SELECT User_ID, UserName, UserEmail FROM TBUsers WHERE UserName = @UserName');
-
-      if (result.recordset.length === 0) {
+      if (result.rows.length === 0) {
         return res.status(400).json({ error: 'Registration failed' });
       }
 
-      res.json({ user: result.recordset[0], message: 'Registration successful' });
+      res.json({ user: result.rows[0], message: 'Registration successful' });
     } catch (err) {
-      if (err.message.includes('duplicate') || err.message.includes('UNIQUE')) {
+      if (err.message.includes('duplicate') || err.message.includes('unique') || err.code === '23505') {
         return res.status(400).json({ error: 'Username or email already exists' });
       }
       res.status(500).json({ error: err.message });
     }
   });
 
-  // POST logout - using Stored Procedure
+  // POST logout (replaces SP_UserLogout)
   app.post('/api/logout', async (req, res) => {
     try {
       const { userId, sessionDurationMinutes } = req.body;
@@ -378,11 +277,24 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
         return res.status(400).json({ error: 'User ID is required' });
       }
 
-      // Use stored procedure for logout
-      await pool.request()
-        .input('UserID', sql.Int, userId)
-        .input('SessionDurationMinutes', sql.Int, sessionDurationMinutes || null)
-        .execute('dbo.SP_UserLogout');
+      // Insert audit log
+      await pool.query(
+        'INSERT INTO "TBAuditLog" ("User_ID", "TableName", "ActionType", "ActionCategory", "ActionDescription", "ActionDate") VALUES ($1, $2, $3, $4, $5, NOW())',
+        [userId, 'TBUsers', 'LOGOUT', 'AUTH', 'User logged out']
+      );
+
+      // Update last activity duration if provided
+      if (sessionDurationMinutes) {
+        await pool.query(`
+          UPDATE "TBUserActivity"
+          SET "DurationMinutes" = $1
+          WHERE "Activity_ID" = (
+            SELECT "Activity_ID" FROM "TBUserActivity"
+            WHERE "User_ID" = $2 AND "ActivityType" = 'LOGIN' AND "DurationMinutes" IS NULL
+            ORDER BY "ActivityDate" DESC LIMIT 1
+          )
+        `, [sessionDurationMinutes, userId]);
+      }
 
       res.json({ message: 'Logout successful' });
     } catch (err) {
@@ -395,46 +307,13 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
 // app.delete('/api/delete-user', async (req, res) => {
 //     try {
 //       const { targetID, adminID, confirmDelete } = req.body;
-
-//       if (!targetID || !adminID) {
-//         return res.status(400).json({ error: 'targetID and adminID are required' });
-//       }
-
-//       if (confirmDelete !== true && confirmDelete !== 1) {
-//         return res.status(400).json({ error: 'confirmDelete must be true' });
-//       }
-//       // Create request
-//       const request = pool.request()
-//         .input('TargetUserID', sql.Int, targetID)
-//         .input('AdminID', sql.Int, adminID)
-//         .input('ConfirmDelete', sql.Bit, confirmDelete);
-
-//             // Add OUTPUT parameters
-//       request.output('ResultCode', sql.Int);
-//       request.output('ResultMessage', sql.NVarChar(500));
-
-//       const result = await
-//   request.execute('dbo.SP_DeleteUserPermanently');
-
-//       // Get output values
-//       const outputs = result.output;
-//       const resultCode = outputs.ResultCode;
-//       const resultMessage = outputs.ResultMessage;
-
-//       if (resultCode === 1) {
-//         return res.json({ message: resultMessage });
-//       } else {
-//         return res.status(400).json({ error: resultMessage });
-//       }
-
-//     } catch (err) {
-//       console.error('Delete user error:', err);
-//       res.status(500).json({ error: err.message });
+//       ...removed - handled by C# backend
 //     }
 //   });
 
 
 
+  // POST update-status (replaces SP_UpdateUserStatus)
   app.post('/api/update-status', async (req, res) => {
     try {
       const { targetID, adminID, newStatus } = req.body;
@@ -443,36 +322,37 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
         return res.status(400).json({ error: 'targetID and adminID are required' });
       }
 
-      // Create request
-      const request = pool.request()
-        .input('TargetUserID', sql.Int, targetID)
-        .input('AdminID', sql.Int, adminID)
-        .input('NewStatus', sql.Bit, newStatus);
-
-            // Add OUTPUT parameters
-      request.output('ResultCode', sql.Int);
-      request.output('ResultMessage', sql.NVarChar(500));
-
-      const result = await
-  request.execute('dbo.SP_UpdateUserStatus');
-
-      // Get output values
-      const outputs = result.output;
-      const resultCode = outputs.ResultCode;
-      const resultMessage = outputs.ResultMessage;
-
-      if (resultCode === 1) {
-        return res.json({ message: resultMessage });
-      } else {
-        return res.status(400).json({ error: resultMessage });
+      // Check admin
+      const adminResult = await pool.query(
+        'SELECT "IsAdmin", "IsSuperAdmin" FROM "TBUsers" WHERE "User_ID" = $1 AND "IsActive" = true',
+        [adminID]
+      );
+      if (adminResult.rows.length === 0 || (!adminResult.rows[0].IsAdmin && !adminResult.rows[0].IsSuperAdmin)) {
+        return res.status(400).json({ error: 'Not authorized' });
       }
 
+      // Check target user exists
+      const targetResult = await pool.query(
+        'SELECT "User_ID" FROM "TBUsers" WHERE "User_ID" = $1',
+        [targetID]
+      );
+      if (targetResult.rows.length === 0) {
+        return res.status(400).json({ error: 'Target user not found' });
+      }
+
+      await pool.query(
+        'UPDATE "TBUsers" SET "IsActive" = $1, "ModifiedDate" = NOW() WHERE "User_ID" = $2',
+        [newStatus, targetID]
+      );
+
+      return res.json({ message: `User status updated to ${newStatus ? 'active' : 'inactive'}` });
     } catch (err) {
       console.error('Update user status error:', err);
       res.status(500).json({ error: err.message });
     }
   });
 
+  // POST reset-password (replaces SP_ResetUserPassword)
   app.post('/api/reset-password', async (req, res) => {
     try {
       const { targetID, adminID, newPassword } = req.body;
@@ -481,36 +361,32 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
         return res.status(400).json({ error: 'targetID and adminID are required' });
       }
 
-      // Create request
-      const request = pool.request()
-        .input('TargetUserID', sql.Int, targetID)
-        .input('AdminID', sql.Int, adminID)
-        .input('NewPassword', sql.NVarChar(255), newPassword);
-
-            // Add OUTPUT parameters
-      request.output('ResultCode', sql.Int);
-      request.output('ResultMessage', sql.NVarChar(500));
-
-      const result = await
-  request.execute('dbo.SP_ResetUserPassword');
-
-      // Get output values
-      const outputs = result.output;
-      const resultCode = outputs.ResultCode;
-      const resultMessage = outputs.ResultMessage;
-
-      if (resultCode === 1) {
-        return res.json({ message: resultMessage });
-      } else {
-        return res.status(400).json({ error: resultMessage });
+      // Check admin
+      const adminResult = await pool.query(
+        'SELECT "IsAdmin", "IsSuperAdmin" FROM "TBUsers" WHERE "User_ID" = $1 AND "IsActive" = true',
+        [adminID]
+      );
+      if (adminResult.rows.length === 0 || (!adminResult.rows[0].IsAdmin && !adminResult.rows[0].IsSuperAdmin)) {
+        return res.status(400).json({ error: 'Not authorized' });
       }
 
+      const result = await pool.query(
+        'UPDATE "TBUsers" SET "UserPassword" = $1, "ModifiedDate" = NOW() WHERE "User_ID" = $2',
+        [newPassword, targetID]
+      );
+
+      if (result.rowCount === 0) {
+        return res.status(400).json({ error: 'User not found' });
+      }
+
+      return res.json({ message: 'Password reset successfully' });
     } catch (err) {
       console.error('Reset user password error:', err);
       res.status(500).json({ error: err.message });
     }
   });
 
+  // POST update-role (replaces SP_UpdateUserRole)
   app.post('/api/update-role', async (req, res) => {
     try {
       const { targetID, adminID, makeAdmin } = req.body;
@@ -519,27 +395,25 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
         return res.status(400).json({ error: 'targetID, adminID, and makeAdmin are required' });
       }
 
-      const request = pool.request()
-        .input('TargetUserID', sql.Int, targetID)
-        .input('AdminID', sql.Int, adminID)
-        .input('MakeAdmin', sql.Bit, makeAdmin);
-
-      request.output('ResultCode', sql.Int);
-      request.output('ResultMessage', sql.NVarChar(500));
-
-      const result = await
-  request.execute('dbo.SP_UpdateUserRole');
-
-      const outputs = result.output;
-      const resultCode = outputs.ResultCode;
-      const resultMessage = outputs.ResultMessage;
-
-      if (resultCode === 1) {
-        return res.json({ message: resultMessage });
-      } else {
-        return res.status(400).json({ error: resultMessage });
+      // Check admin
+      const adminResult = await pool.query(
+        'SELECT "IsAdmin", "IsSuperAdmin" FROM "TBUsers" WHERE "User_ID" = $1 AND "IsActive" = true',
+        [adminID]
+      );
+      if (adminResult.rows.length === 0 || (!adminResult.rows[0].IsAdmin && !adminResult.rows[0].IsSuperAdmin)) {
+        return res.status(400).json({ error: 'Not authorized' });
       }
 
+      const result = await pool.query(
+        'UPDATE "TBUsers" SET "IsAdmin" = $1, "ModifiedDate" = NOW() WHERE "User_ID" = $2',
+        [makeAdmin, targetID]
+      );
+
+      if (result.rowCount === 0) {
+        return res.status(400).json({ error: 'User not found' });
+      }
+
+      return res.json({ message: `User role updated to ${makeAdmin ? 'admin' : 'regular user'}` });
     } catch (err) {
       console.error('Update role error:', err);
       res.status(500).json({ error: err.message });
@@ -557,64 +431,70 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
           componentCount,
           projectSizeKB,
           projectData,
-          thumbnailUrl 
+          thumbnailUrl
         } = req.body;
 
-     
-
-        const request = pool.request()
-          .input('ProjectID', sql.Int, projectId || null)
-          .input('UserID', sql.Int, userId)
-          .input('ProjectName', sql.NVarChar(100), projectName)
-          .input('ProjectDescription', sql.NVarChar(500),projectDescription || null)
-          .input('ComponentCount', sql.Int, componentCount || 0)
-          .input('ProjectSizeKB', sql.Decimal(10,2), projectSizeKB || 0)
-          .input('ProjectData', sql.NVarChar(sql.MAX), projectData || null)
-          .input('ThumbnailURL', sql.NVarChar(sql.MAX), thumbnailUrl ||
-  null)
-          .output('ResultProjectID', sql.Int)
-          .output('ResultCode', sql.Int);
-
-        const result = await request.execute('dbo.SP_SaveProject');
-
-
-        const resultCode = result.output?.ResultCode;
-        const resultProjectId = result.output?.ResultProjectID;
-
-        if (resultCode === 1) {
-          console.log('✅ Project saved successfully, ID:', resultProjectId);
-          res.json({ projectId: resultProjectId, message: 'Project saved successfully' });
-        } else if (resultCode === 2) {
-          console.log('❌ Maximum projects limit reached');
-          res.status(400).json({ error: 'Maximum projects limit reached' });
-        } else {
-          console.log('❌ Failed to save project, ResultCode:', resultCode);
-          res.status(400).json({ error: 'Failed to save project'
-  });
+        // Check project limit for new projects
+        if (!projectId) {
+          const countResult = await pool.query(
+            'SELECT COUNT(*) as cnt FROM "TBProjects" WHERE "User_ID" = $1 AND "IsDeleted" = false',
+            [userId]
+          );
+          if (parseInt(countResult.rows[0].cnt) >= 20) {
+            return res.status(400).json({ error: 'Maximum projects limit reached' });
+          }
         }
+
+        let result;
+        if (projectId) {
+          // Update existing project
+          result = await pool.query(`
+            UPDATE "TBProjects"
+            SET "ProjectName" = $1, "ProjectDescription" = $2, "ComponentCount" = $3,
+                "ProjectSizeKB" = $4, "ProjectData" = $5, "ThumbnailURL" = $6, "ModifiedDate" = NOW()
+            WHERE "Project_ID" = $7 AND "User_ID" = $8 AND "IsDeleted" = false
+            RETURNING "Project_ID"
+          `, [projectName, projectDescription || null, componentCount || 0,
+              projectSizeKB || 0, projectData || null, thumbnailUrl || null,
+              projectId, userId]);
+        } else {
+          // Insert new project
+          result = await pool.query(`
+            INSERT INTO "TBProjects" ("User_ID", "ProjectName", "ProjectDescription", "ComponentCount", "ProjectSizeKB", "ProjectData", "ThumbnailURL", "CreatedDate", "ModifiedDate")
+            VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), NOW())
+            RETURNING "Project_ID"
+          `, [userId, projectName, projectDescription || null, componentCount || 0,
+              projectSizeKB || 0, projectData || null, thumbnailUrl || null]);
+        }
+
+        if (result.rows.length === 0) {
+          return res.status(400).json({ error: 'Failed to save project' });
+        }
+
+        const resultProjectId = result.rows[0].Project_ID;
+        console.log('✅ Project saved successfully, ID:', resultProjectId);
+        res.json({ projectId: resultProjectId, message: 'Project saved successfully' });
       } catch (err) {
         console.error('❌ Save project error:', err);
         res.status(500).json({ error: err.message });
       }
     });
-  
+
 
       app.get('/api/projects/user/:userId', async (req, res) => {
     try {
       const { userId } = req.params;
 
-      const result = await pool.request()
-        .input('UserID', sql.Int, userId)
-        .query(`
-            SELECT Project_ID, ProjectName, ProjectDescription,
-         ComponentCount, ProjectSizeKB, ThumbnailURL, IsPublished,
-         CreatedDate, ModifiedDate
-  FROM TBProjects
-        WHERE User_ID = @UserID AND IsDeleted = 0
-        ORDER BY ModifiedDate DESC
-        `);
+      const result = await pool.query(`
+        SELECT "Project_ID", "ProjectName", "ProjectDescription",
+               "ComponentCount", "ProjectSizeKB", "ThumbnailURL", "IsPublished",
+               "CreatedDate", "ModifiedDate"
+        FROM "TBProjects"
+        WHERE "User_ID" = $1 AND "IsDeleted" = false
+        ORDER BY "ModifiedDate" DESC
+      `, [userId]);
 
-      res.json(result.recordset);
+      res.json(result.rows);
     } catch (err) {
       console.error('Get projects error:', err);
       res.status(500).json({ error: err.message });
@@ -624,28 +504,24 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
    app.get('/api/projects/:projectId', async (req, res) => {
     try {
       const { projectId } = req.params;
-      const { userId } = req.query;  // pass userId in query string for security
+      const { userId } = req.query;
 
       if (!userId) {
         return res.status(400).json({ error: 'userId required' });
       }
 
-      console.log('Loading project:', projectId, 'for user:',
-  userId);
+      console.log('Loading project:', projectId, 'for user:', userId);
 
-      const request = pool.request()
-        .input('ProjectID', sql.Int, projectId)
-        .input('UserID', sql.Int, userId);
+      const result = await pool.query(
+        'SELECT * FROM "TBProjects" WHERE "Project_ID" = $1 AND "User_ID" = $2 AND "IsDeleted" = false',
+        [projectId, userId]
+      );
 
-      const result = await
-  request.execute('dbo.SP_GetProjectDetail');
-
-      if (result.recordset.length === 0) {
-        return res.status(404).json({ error: 'Project not found'
-  });
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: 'Project not found' });
       }
 
-      const project = result.recordset[0];
+      const project = result.rows[0];
       console.log('✅ Project loaded:', project.ProjectName);
       res.json(project);
 
@@ -655,7 +531,7 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
     }
   });
 
-  
+
   // Delete a project
   app.delete('/api/projects/:projectId', async (req, res) => {
     try {
@@ -666,18 +542,13 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
         return res.status(400).json({ error: 'userId required' });
       }
 
-      const result = await pool.request()
-        .input('ProjectID', sql.Int, projectId)
-        .input('UserID', sql.Int, userId)
-        .query(`
-          UPDATE TBProjects
-          SET IsDeleted = 1
-          WHERE Project_ID = @ProjectID AND User_ID = @UserID
-        `);
+      const result = await pool.query(
+        'UPDATE "TBProjects" SET "IsDeleted" = true WHERE "Project_ID" = $1 AND "User_ID" = $2',
+        [projectId, userId]
+      );
 
-      if (result.rowsAffected[0] === 0) {
-        return res.status(404).json({ error: 'Project not found'
-  });
+      if (result.rowCount === 0) {
+        return res.status(404).json({ error: 'Project not found' });
       }
 
       console.log('✅ Project deleted:', projectId);
@@ -697,28 +568,18 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
 
       console.log('Fetching stats for user:', id);
 
-      const result = await pool.request()
-        .input('UserID', sql.Int, id)
-        .query(`
-          SELECT
-            ISNULL((SELECT COUNT(*) FROM TBProjects WHERE User_ID =
-   @UserID AND IsDeleted = 0), 0) AS TotalProjects,
-            ISNULL((SELECT COUNT(*) FROM TBProjects WHERE User_ID =
-   @UserID AND IsDeleted = 0 AND IsPublished = 1), 0) AS
-  PublishedProjects,
-            ISNULL((SELECT SUM(ComponentCount) FROM TBProjects
-  WHERE User_ID = @UserID AND IsDeleted = 0), 0) AS
-  TotalComponents,
-            ISNULL((SELECT SUM(ExportCount) FROM TBProjects WHERE
-  User_ID = @UserID), 0) AS TotalExports,
-            ISNULL((SELECT COUNT(*) FROM TBUserActivity WHERE
-  User_ID = @UserID), 0) AS TotalActivities,
-            ISNULL((SELECT COUNT(*) FROM TBAuditLog WHERE User_ID =
-   @UserID), 0) AS TotalAuditEntries
-        `);
+      const result = await pool.query(`
+        SELECT
+          COALESCE((SELECT COUNT(*) FROM "TBProjects" WHERE "User_ID" = $1 AND "IsDeleted" = false), 0) AS "TotalProjects",
+          COALESCE((SELECT COUNT(*) FROM "TBProjects" WHERE "User_ID" = $1 AND "IsDeleted" = false AND "IsPublished" = true), 0) AS "PublishedProjects",
+          COALESCE((SELECT SUM("ComponentCount") FROM "TBProjects" WHERE "User_ID" = $1 AND "IsDeleted" = false), 0) AS "TotalComponents",
+          COALESCE((SELECT SUM("ExportCount") FROM "TBProjects" WHERE "User_ID" = $1), 0) AS "TotalExports",
+          COALESCE((SELECT COUNT(*) FROM "TBUserActivity" WHERE "User_ID" = $1), 0) AS "TotalActivities",
+          COALESCE((SELECT COUNT(*) FROM "TBAuditLog" WHERE "User_ID" = $1), 0) AS "TotalAuditEntries"
+      `, [id]);
 
-      console.log('Stats result:', result.recordset[0]);
-      res.json(result.recordset[0]);
+      console.log('Stats result:', result.rows[0]);
+      res.json(result.rows[0]);
     } catch (err) {
       console.error('Get user stats error:', err);
       res.status(500).json({ error: err.message });
@@ -729,27 +590,15 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
     // Save as Template
     app.post('/api/templates/save', async (req, res) => {
     try {
-      const { templateName, category, projectData, componentCount,
-  createdBy, thumbnailData } = req.body;
+      const { templateName, category, projectData, componentCount, createdBy, thumbnailData } = req.body;
 
-      const result = await pool.request()
-        .input('TemplateName', sql.NVarChar(100), templateName)
-        .input('Category', sql.NVarChar(50), category)
-        .input('ThumbnailURL', sql.NVarChar(sql.MAX), thumbnailData ||
-  null)  // Change to MAX
-        .input('TemplateData', sql.NVarChar(sql.MAX), projectData)
-        .input('ComponentCount', sql.Int, componentCount)
-        .input('CreatedBy', sql.Int, createdBy)
-        .input('IsActive', sql.Bit, 1)
-        .query(`
-          INSERT INTO TBTemplates (TemplateName, Category, ThumbnailURL,
-  TemplateData, ComponentCount, CreatedBy, IsActive)
-          VALUES (@TemplateName, @Category, @ThumbnailURL, @TemplateData,
-   @ComponentCount, @CreatedBy, @IsActive)
-          SELECT SCOPE_IDENTITY() AS TemplateID
-        `);
+      const result = await pool.query(`
+        INSERT INTO "TBTemplates" ("TemplateName", "Category", "ThumbnailURL", "TemplateData", "ComponentCount", "CreatedBy", "IsActive")
+        VALUES ($1, $2, $3, $4, $5, $6, true)
+        RETURNING "Template_ID"
+      `, [templateName, category, thumbnailData || null, projectData, componentCount, createdBy]);
 
-      const templateId = result.recordset[0].TemplateID;
+      const templateId = result.rows[0].Template_ID;
       res.json({ templateId, message: 'Template saved successfully' });
     } catch (err) {
       console.error('Save template error:', err);
@@ -761,19 +610,16 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
   // Get all templates (for Inspire Me page)
   app.get('/api/templates', async (req, res) => {
     try {
-      const result = await pool.request()
-        .query(`
-          SELECT t.Template_ID, t.TemplateName, t.Category,
-  t.ThumbnailURL,
-                 t.ComponentCount, t.CreatedDate, u.UserName AS
-  CreatedByName
-          FROM TBTemplates t
-          INNER JOIN TBUsers u ON t.CreatedBy = u.User_ID
-          WHERE t.IsActive = 1
-          ORDER BY t.CreatedDate DESC
-        `);
+      const result = await pool.query(`
+        SELECT t."Template_ID", t."TemplateName", t."Category", t."ThumbnailURL",
+               t."ComponentCount", t."CreatedDate", u."UserName" AS "CreatedByName"
+        FROM "TBTemplates" t
+        INNER JOIN "TBUsers" u ON t."CreatedBy" = u."User_ID"
+        WHERE t."IsActive" = true
+        ORDER BY t."CreatedDate" DESC
+      `);
 
-      res.json(result.recordset);
+      res.json(result.rows);
     } catch (err) {
       console.error('Get templates error:', err);
       res.status(500).json({ error: err.message });
@@ -790,29 +636,29 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
       }
 
       // Check if user is admin or superadmin
-      const userResult = await pool.request()
-        .input('UserID', sql.Int, userId)
-        .query('SELECT IsAdmin, IsSuperAdmin FROM TBUsers WHERE User_ID = @UserID');
+      const userResult = await pool.query(
+        'SELECT "IsAdmin", "IsSuperAdmin" FROM "TBUsers" WHERE "User_ID" = $1',
+        [userId]
+      );
 
-      if (userResult.recordset.length === 0) {
+      if (userResult.rows.length === 0) {
         return res.status(404).json({ error: 'User not found' });
       }
 
-      const user = userResult.recordset[0];
+      const user = userResult.rows[0];
       if (!user.IsAdmin && !user.IsSuperAdmin) {
         return res.status(403).json({ error: 'Only admins can view all templates' });
       }
 
-      const result = await pool.request()
-        .query(`
-          SELECT t.Template_ID, t.TemplateName, t.Category, t.ThumbnailURL,
-                 t.ComponentCount, t.CreatedDate, t.IsActive, u.UserName AS CreatedByName
-          FROM TBTemplates t
-          INNER JOIN TBUsers u ON t.CreatedBy = u.User_ID
-          ORDER BY t.CreatedDate DESC
-        `);
+      const result = await pool.query(`
+        SELECT t."Template_ID", t."TemplateName", t."Category", t."ThumbnailURL",
+               t."ComponentCount", t."CreatedDate", t."IsActive", u."UserName" AS "CreatedByName"
+        FROM "TBTemplates" t
+        INNER JOIN "TBUsers" u ON t."CreatedBy" = u."User_ID"
+        ORDER BY t."CreatedDate" DESC
+      `);
 
-      res.json(result.recordset);
+      res.json(result.rows);
     } catch (err) {
       console.error('Get all templates error:', err);
       res.status(500).json({ error: err.message });
@@ -824,21 +670,16 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
     try {
       const { id } = req.params;
 
-      const result = await pool.request()
-        .input('TemplateID', sql.Int, id)
-        .query(`
-          SELECT Template_ID, TemplateName, Category, TemplateData,
-   ThumbnailURL, ComponentCount
-          FROM TBTemplates
-          WHERE Template_ID = @TemplateID AND IsActive = 1
-        `);
+      const result = await pool.query(
+        'SELECT "Template_ID", "TemplateName", "Category", "TemplateData", "ThumbnailURL", "ComponentCount" FROM "TBTemplates" WHERE "Template_ID" = $1 AND "IsActive" = true',
+        [id]
+      );
 
-      if (result.recordset.length === 0) {
-        return res.status(404).json({ error: 'Template not found'
-  });
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: 'Template not found' });
       }
 
-      res.json(result.recordset[0]);
+      res.json(result.rows[0]);
     } catch (err) {
       console.error('Get template error:', err);
       res.status(500).json({ error: err.message });
@@ -846,51 +687,11 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
   });
 
 
-   
-      // Delete template (admin/superadmin only)
+      // Delete template (admin/superadmin only) - sets IsActive = false
     app.delete('/api/templates/:id', async (req, res) => {
       try {
         const { id } = req.params;
-        const { userId } = req.query; // Use query instead of body
-
-        console.log('Delete template request:', id, 'by user:', userId);
-
-        if (!userId) {
-          return res.status(400).json({ error: 'userId required' });
-        }
-
-        // Check if user is admin or superadmin
-        const userResult = await pool.request()
-          .input('UserID', sql.Int, userId)
-          .query('SELECT IsAdmin, IsSuperAdmin FROM TBUsers WHERE User_ID = @UserID');
-
-        if (userResult.recordset.length === 0) {
-          return res.status(404).json({ error: 'User not found' });
-        }
-
-        const user = userResult.recordset[0];
-        if (!user.IsAdmin && !user.IsSuperAdmin) {
-          return res.status(403).json({ error: 'Only admins can delete templates' });
-        }
-
-        await pool.request()
-          .input('TemplateID', sql.Int, id)
-          .query('UPDATE TBTemplates SET IsActive = 0 WHERE Template_ID = @TemplateID');
-
-        console.log('✅ Template deleted:', id);
-        res.json({ message: 'Template deleted successfully' });
-
-      } catch (err) {
-        console.error('❌ Delete template error:', err);
-        res.status(500).json({ error: err.message });
-      }
-    });
-
-
-app.delete('/api/templates/:id', async (req, res) => {
-      try {
-        const { id } = req.params;
-        const { userId } = req.query; // Use query instead of body
+        const { userId } = req.query;
 
         console.log('Update status template request:', id, 'by user:', userId);
 
@@ -899,22 +700,24 @@ app.delete('/api/templates/:id', async (req, res) => {
         }
 
         // Check if user is admin or superadmin
-        const userResult = await pool.request()
-          .input('UserID', sql.Int, userId)
-          .query('SELECT IsAdmin, IsSuperAdmin FROM TBUsers WHERE User_ID = @UserID');
+        const userResult = await pool.query(
+          'SELECT "IsAdmin", "IsSuperAdmin" FROM "TBUsers" WHERE "User_ID" = $1',
+          [userId]
+        );
 
-        if (userResult.recordset.length === 0) {
+        if (userResult.rows.length === 0) {
           return res.status(404).json({ error: 'User not found' });
         }
 
-        const user = userResult.recordset[0];
+        const user = userResult.rows[0];
         if (!user.IsAdmin && !user.IsSuperAdmin) {
           return res.status(403).json({ error: 'Only admins can update templates' });
         }
 
-        await pool.request()
-          .input('TemplateID', sql.Int, id)
-          .query('UPDATE TBTemplates SET IsActive = 0 WHERE Template_ID = @TemplateID');
+        await pool.query(
+          'UPDATE "TBTemplates" SET "IsActive" = false WHERE "Template_ID" = $1',
+          [id]
+        );
 
         console.log('✅ Template deleted:', id);
         res.json({ message: 'Template deleted successfully' });
@@ -928,45 +731,11 @@ app.delete('/api/templates/:id', async (req, res) => {
 //---------------------------------MOVED TO C#-------------------------------------
   //    // Update template visibility
   // app.put('/api/templates/:id/visibility', async (req, res) => {
-  //   try {
-  //     const { id } = req.params;
-  //     const { isActive, userId } = req.body;
-
-  //     if (!userId) {
-  //       return res.status(400).json({ error: 'userId required' });
-  //     }
-
-  //     // Check if user is admin or superadmin
-  //     const userResult = await pool.request()
-  //       .input('UserID', sql.Int, userId)
-  //       .query('SELECT IsAdmin, IsSuperAdmin FROM TBUsers WHERE User_ID = @UserID');
-
-  //     if (userResult.recordset.length === 0) {
-  //       return res.status(404).json({ error: 'User not found' });
-  //     }
-
-  //     const user = userResult.recordset[0];
-  //     if (!user.IsAdmin && !user.IsSuperAdmin) {
-  //       return res.status(403).json({ error: 'Only admins can update templates' });
-  //     }
-
-  //     await pool.request()
-  //       .input('TemplateID', sql.Int, id)
-  //       .input('IsActive', sql.Bit, isActive)
-  //       .query('UPDATE TBTemplates SET IsActive = @IsActive WHERE Template_ID = @TemplateID');
-
-  //     console.log('✅ Template visibility updated:', id, 'isActive:',
-  // isActive);
-  //     res.json({ message: 'Template visibility updated' });
-
-  //   } catch (err) {
-  //     console.error('❌ Update template visibility error:', err);
-  //     res.status(500).json({ error: err.message });
-  //   }
+  //   ...removed - handled by C# backend
   // });
 
 
-      // Get all notifications (for admin panel)
+      // Get all notifications (for admin panel) - replaces SP_GetAllNotifications
     app.get('/api/notifications/all', async (req, res) => {
     try {
       const { userId } = req.query;
@@ -975,26 +744,36 @@ app.delete('/api/templates/:id', async (req, res) => {
         return res.status(400).json({ error: 'userId required' });
       }
 
-      const request = pool.request()
-        .input('AdminID', sql.Int, userId);
+      // Check superadmin
+      const adminResult = await pool.query(
+        'SELECT "IsSuperAdmin" FROM "TBUsers" WHERE "User_ID" = $1',
+        [userId]
+      );
+      if (adminResult.rows.length === 0 || !adminResult.rows[0].IsSuperAdmin) {
+        return res.status(403).json({ error: 'Only superadmins can view notifications' });
+      }
 
-      const result = await
-  request.execute('dbo.SP_GetAllNotifications');
+      const result = await pool.query(`
+        SELECT n.*, u."UserName" as "CreatedByName"
+        FROM "TBNotifications" n
+        LEFT JOIN "TBUsers" u ON n."CreatedBy" = u."User_ID"
+        ORDER BY n."CreatedDate" DESC
+      `);
 
       // Add OpenedCount from delivery log for each notification
-      const notifications = result.recordset;
+      const notifications = result.rows;
       if (notifications.length > 0) {
-        const ids = notifications.map(n => n.Notification_ID).join(',');
-        const statsResult = await pool.request().query(`
-          SELECT Notification_ID,
-            SUM(CASE WHEN Status = 'viewed' THEN 1 ELSE 0 END) as OpenedCount,
-            SUM(CASE WHEN Status = 'failed' THEN 1 ELSE 0 END) as FailedCount
-          FROM TBNotificationDeliveryLog
-          WHERE Notification_ID IN (${ids})
-          GROUP BY Notification_ID
-        `);
+        const ids = notifications.map(n => n.Notification_ID);
+        const statsResult = await pool.query(`
+          SELECT "Notification_ID",
+            SUM(CASE WHEN "Status" = 'viewed' THEN 1 ELSE 0 END) as "OpenedCount",
+            SUM(CASE WHEN "Status" = 'failed' THEN 1 ELSE 0 END) as "FailedCount"
+          FROM "TBNotificationDeliveryLog"
+          WHERE "Notification_ID" = ANY($1::int[])
+          GROUP BY "Notification_ID"
+        `, [ids]);
         const statsMap = {};
-        statsResult.recordset.forEach(s => statsMap[s.Notification_ID] = s);
+        statsResult.rows.forEach(s => statsMap[s.Notification_ID] = s);
 
         notifications.forEach(n => {
           const stats = statsMap[n.Notification_ID];
@@ -1006,62 +785,69 @@ app.delete('/api/templates/:id', async (req, res) => {
       res.json(notifications);
     } catch (err) {
       console.error('Get all notifications error:', err);
-
-      if (err.message.includes('Not authorized')) {
-        return res.status(403).json({ error: 'Only superadmins can view notifications' });
-      }
-
       res.status(500).json({ error: err.message });
     }
   });
-  
-    // Send newsletter endpoint
-    
+
+  // Send newsletter endpoint - replaces SP_SendNewsletter
   app.post('/api/notifications/send-newsletter', async (req, res) => {
     try {
-      const { subject, message, recipientType, recipientIds, userId
-   } = req.body;
+      const { subject, message, recipientType, recipientIds, userId } = req.body;
 
       if (!subject || !message || !recipientType || !userId) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
-      // Convert recipientIds array to JSON string
-      const recipientIdsString = (recipientType === 'selected' &&
-  recipientIds)
-        ? JSON.stringify(recipientIds)
-        : null;
-
-      const request = pool.request()
-        .input('Subject', sql.NVarChar(200), subject)
-        .input('Message', sql.NVarChar(sql.MAX), message)
-        .input('RecipientType', sql.NVarChar(50), recipientType)
-        .input('RecipientIDs', sql.NVarChar(sql.MAX),
-  recipientIdsString)
-        .input('AdminID', sql.Int, userId)
-        .output('NotificationID', sql.Int)
-        .output('SentCount', sql.Int)
-        .output('ResultCode', sql.Int);
-
-      const result = await
-  request.execute('dbo.SP_SendNewsletter');
-
-      const resultCode = result.output.ResultCode;
-      const notificationId = result.output.NotificationID;
-      const sentCount = result.output.SentCount;
-
-      if (resultCode === 0) {
+      // Check superadmin
+      const adminResult = await pool.query(
+        'SELECT "IsSuperAdmin" FROM "TBUsers" WHERE "User_ID" = $1',
+        [userId]
+      );
+      if (adminResult.rows.length === 0 || !adminResult.rows[0].IsSuperAdmin) {
         return res.status(403).json({ error: 'Not authorized - only superadmins can send newsletters' });
       }
 
-      console.log(`✅ Newsletter sent: ID=${notificationId},
-  Recipients=${sentCount}`);
+      // Get recipients
+      let recipients;
+      if (recipientType === 'all') {
+        const usersResult = await pool.query('SELECT "User_ID", "UserName", "UserEmail" FROM "TBUsers" WHERE "IsActive" = true');
+        recipients = usersResult.rows;
+      } else if (recipientType === 'selected' && recipientIds && recipientIds.length > 0) {
+        const usersResult = await pool.query(
+          'SELECT "User_ID", "UserName", "UserEmail" FROM "TBUsers" WHERE "User_ID" = ANY($1::int[])',
+          [recipientIds]
+        );
+        recipients = usersResult.rows;
+      } else {
+        return res.status(400).json({ error: 'No recipients specified' });
+      }
+
+      const recipientIdsString = (recipientType === 'selected' && recipientIds) ? JSON.stringify(recipientIds) : null;
+
+      // Insert notification
+      const notifResult = await pool.query(`
+        INSERT INTO "TBNotifications" ("Subject", "Message", "NotificationType", "RecipientType", "RecipientIDs", "Status", "SentCount", "CreatedBy", "CreatedDate", "SentDate")
+        VALUES ($1, $2, 'newsletter', $3, $4, 'sent', $5, $6, NOW(), NOW())
+        RETURNING "Notification_ID"
+      `, [subject, message, recipientType, recipientIdsString, recipients.length, userId]);
+
+      const notificationId = notifResult.rows[0].Notification_ID;
+
+      // Insert delivery log for each recipient
+      for (const r of recipients) {
+        await pool.query(`
+          INSERT INTO "TBNotificationDeliveryLog" ("Notification_ID", "User_ID", "UserName", "UserEmail", "Status", "DeliveredDate")
+          VALUES ($1, $2, $3, $4, 'delivered', NOW())
+        `, [notificationId, r.User_ID, r.UserName, r.UserEmail]);
+      }
+
+      console.log(`✅ Newsletter sent: ID=${notificationId}, Recipients=${recipients.length}`);
 
       res.json({
         success: true,
         notificationId: notificationId,
-        sentCount: sentCount,
-        message: `Newsletter sent to ${sentCount} recipients`
+        sentCount: recipients.length,
+        message: `Newsletter sent to ${recipients.length} recipients`
       });
 
     } catch (err) {
@@ -1070,15 +856,20 @@ app.delete('/api/templates/:id', async (req, res) => {
     }
   });
 
+  // Get user notifications - replaces SP_GetUserNotifications
   app.get('/api/notifications/user/:userId', async (req, res) => {
     try {
       const { userId } = req.params;
 
-      const request = pool.request()
-        .input('UserID', sql.Int, userId);
+      const result = await pool.query(`
+        SELECT n.*, dl."Status" as "DeliveryStatus", dl."DeliveredDate", dl."ViewedDate"
+        FROM "TBNotificationDeliveryLog" dl
+        JOIN "TBNotifications" n ON dl."Notification_ID" = n."Notification_ID"
+        WHERE dl."User_ID" = $1
+        ORDER BY dl."DeliveredDate" DESC
+      `, [userId]);
 
-      const result = await request.execute('dbo.SP_GetUserNotifications');
-      res.json(result.recordset);
+      res.json(result.rows);
     } catch (err) {
       console.error('Get user notifications error:', err);
       res.status(500).json({ error: err.message });
@@ -1094,16 +885,13 @@ app.delete('/api/templates/:id', async (req, res) => {
         return res.status(400).json({ error: 'userId and notificationIds required' });
       }
 
-      const idList = notificationIds.join(',');
-      await pool.request()
-        .input('UserID', sql.Int, userId)
-        .query(`
-          UPDATE TBNotificationDeliveryLog
-          SET Status = 'viewed', ViewedDate = GETDATE()
-          WHERE User_ID = @UserID
-            AND Notification_ID IN (${idList})
-            AND Status = 'delivered'
-        `);
+      await pool.query(`
+        UPDATE "TBNotificationDeliveryLog"
+        SET "Status" = 'viewed', "ViewedDate" = NOW()
+        WHERE "User_ID" = $1
+          AND "Notification_ID" = ANY($2::int[])
+          AND "Status" = 'delivered'
+      `, [userId, notificationIds]);
 
       res.json({ success: true });
     } catch (err) {
@@ -1112,8 +900,8 @@ app.delete('/api/templates/:id', async (req, res) => {
     }
   });
 
-  
-  // Delete notification
+
+  // Delete notification - replaces SP_DeleteNotification
   app.delete('/api/notifications/:notificationId', async (req, res) => {
     try {
       const { notificationId } = req.params;
@@ -1123,19 +911,22 @@ app.delete('/api/templates/:id', async (req, res) => {
         return res.status(400).json({ error: 'User ID required' });
       }
 
-      const request = pool.request()
-        .input('NotificationID', sql.Int, notificationId)
-        .input('UserID', sql.Int, userId)
-        .output('ResultCode', sql.Int);
+      // Check admin/superadmin
+      const adminResult = await pool.query(
+        'SELECT "IsAdmin", "IsSuperAdmin" FROM "TBUsers" WHERE "User_ID" = $1',
+        [userId]
+      );
+      if (adminResult.rows.length === 0 || (!adminResult.rows[0].IsAdmin && !adminResult.rows[0].IsSuperAdmin)) {
+        return res.status(403).json({ error: 'Not authorized' });
+      }
 
-      const result = await
-  request.execute('dbo.SP_DeleteNotification');
+      const result = await pool.query(
+        'DELETE FROM "TBNotifications" WHERE "Notification_ID" = $1',
+        [notificationId]
+      );
 
-      const resultCode = result.output.ResultCode;
-
-      if (resultCode === 1) {
-        res.json({ success: true, message: 'Notification deleted'
-  });
+      if (result.rowCount > 0) {
+        res.json({ success: true, message: 'Notification deleted' });
       } else {
         res.status(404).json({ error: 'Notification not found' });
       }
@@ -1157,16 +948,14 @@ app.delete('/api/templates/:id', async (req, res) => {
         return res.status(400).json({ error: 'User ID required' });
       }
 
-      const result = await pool.request()
-        .input('UserID', sql.Int, userId)
-        .query(`
-          SELECT s.*, u.UserName as CreatedByName,
-                 (SELECT TemplateName FROM TBTemplates WHERE Template_ID = s.Template_ID) as TemplateName
-          FROM TBNotificationSchedules s
-          LEFT JOIN TBUsers u ON s.CreatedBy = u.User_ID
-          ORDER BY s.CreatedDate DESC
-        `);
-      res.json(result.recordset);
+      const result = await pool.query(`
+        SELECT s.*, u."UserName" as "CreatedByName",
+               (SELECT "TemplateName" FROM "TBTemplates" WHERE "Template_ID" = s."Template_ID") as "TemplateName"
+        FROM "TBNotificationSchedules" s
+        LEFT JOIN "TBUsers" u ON s."CreatedBy" = u."User_ID"
+        ORDER BY s."CreatedDate" DESC
+      `);
+      res.json(result.rows);
     } catch (err) {
       console.error('Get schedules error:', err);
       res.status(500).json({ error: err.message });
@@ -1201,30 +990,17 @@ app.delete('/api/templates/:id', async (req, res) => {
         if (nextRun <= now) nextRun.setMonth(nextRun.getMonth() + 1);
       }
 
-      const result = await pool.request()
-        .input('ScheduleName', sql.NVarChar, scheduleName)
-        .input('NotificationType', sql.NVarChar, notificationType)
-        .input('Frequency', sql.NVarChar, frequency)
-        .input('ScheduleTime', sql.NVarChar, scheduleTime)
-        .input('ScheduleDay', sql.Int, scheduleDay || null)
-        .input('Template_ID', sql.Int, templateId || null)
-        .input('RecipientType', sql.NVarChar, recipientType)
-        .input('RecipientIDs', sql.NVarChar(sql.MAX), JSON.stringify(recipientIds || []))
-        .input('MessageOverride', sql.NVarChar(sql.MAX), messageOverride || null)
-        .input('CreatedBy', sql.Int, userId)
-        .input('NextRunDate', sql.DateTime, nextRun)
-        .query(`
-          INSERT INTO TBNotificationSchedules
-          (ScheduleName, NotificationType, Frequency, ScheduleTime, ScheduleDay,
-           Template_ID, RecipientType, RecipientIDs, MessageOverride, CreatedBy, NextRunDate)
-          VALUES
-          (@ScheduleName, @NotificationType, @Frequency, @ScheduleTime, @ScheduleDay,
-           @Template_ID, @RecipientType, @RecipientIDs, @MessageOverride, @CreatedBy, @NextRunDate)
+      const result = await pool.query(`
+        INSERT INTO "TBNotificationSchedules"
+        ("ScheduleName", "NotificationType", "Frequency", "ScheduleTime", "ScheduleDay",
+         "Template_ID", "RecipientType", "RecipientIDs", "MessageOverride", "CreatedBy", "NextRunDate")
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        RETURNING "Schedule_ID"
+      `, [scheduleName, notificationType, frequency, scheduleTime, scheduleDay || null,
+          templateId || null, recipientType, JSON.stringify(recipientIds || []),
+          messageOverride || null, userId, nextRun]);
 
-          SELECT SCOPE_IDENTITY() as ScheduleID
-        `);
-
-      res.json({ success: true, scheduleId: result.recordset[0].ScheduleID, nextRun });
+      res.json({ success: true, scheduleId: result.rows[0].Schedule_ID, nextRun });
     } catch (err) {
       console.error('Create schedule error:', err);
       res.status(500).json({ error: err.message });
@@ -1256,32 +1032,16 @@ app.delete('/api/templates/:id', async (req, res) => {
         if (nextRun <= now) nextRun.setMonth(nextRun.getMonth() + 1);
       }
 
-      await pool.request()
-        .input('Schedule_ID', sql.Int, id)
-        .input('ScheduleName', sql.NVarChar, scheduleName)
-        .input('NotificationType', sql.NVarChar, notificationType)
-        .input('Frequency', sql.NVarChar, frequency)
-        .input('ScheduleTime', sql.NVarChar, scheduleTime)
-        .input('ScheduleDay', sql.Int, scheduleDay || null)
-        .input('Template_ID', sql.Int, templateId || null)
-        .input('RecipientType', sql.NVarChar, recipientType)
-        .input('RecipientIDs', sql.NVarChar(sql.MAX), JSON.stringify(recipientIds || []))
-        .input('MessageOverride', sql.NVarChar(sql.MAX), messageOverride || null)
-        .input('NextRunDate', sql.DateTime, nextRun)
-        .query(`
-          UPDATE TBNotificationSchedules
-          SET ScheduleName = @ScheduleName,
-              NotificationType = @NotificationType,
-              Frequency = @Frequency,
-              ScheduleTime = @ScheduleTime,
-              ScheduleDay = @ScheduleDay,
-              Template_ID = @Template_ID,
-              RecipientType = @RecipientType,
-              RecipientIDs = @RecipientIDs,
-              MessageOverride = @MessageOverride,
-              NextRunDate = @NextRunDate
-          WHERE Schedule_ID = @Schedule_ID
-        `);
+      await pool.query(`
+        UPDATE "TBNotificationSchedules"
+        SET "ScheduleName" = $1, "NotificationType" = $2, "Frequency" = $3,
+            "ScheduleTime" = $4, "ScheduleDay" = $5, "Template_ID" = $6,
+            "RecipientType" = $7, "RecipientIDs" = $8, "MessageOverride" = $9,
+            "NextRunDate" = $10
+        WHERE "Schedule_ID" = $11
+      `, [scheduleName, notificationType, frequency, scheduleTime, scheduleDay || null,
+          templateId || null, recipientType, JSON.stringify(recipientIds || []),
+          messageOverride || null, nextRun, id]);
 
       res.json({ success: true, nextRun });
     } catch (err) {
@@ -1293,9 +1053,10 @@ app.delete('/api/templates/:id', async (req, res) => {
   // Delete schedule
   app.delete('/api/schedules/:id', async (req, res) => {
     try {
-      await pool.request()
-        .input('Schedule_ID', sql.Int, req.params.id)
-        .query('DELETE FROM TBNotificationSchedules WHERE Schedule_ID = @Schedule_ID');
+      await pool.query(
+        'DELETE FROM "TBNotificationSchedules" WHERE "Schedule_ID" = $1',
+        [req.params.id]
+      );
 
       res.json({ success: true });
     } catch (err) {
@@ -1308,10 +1069,10 @@ app.delete('/api/templates/:id', async (req, res) => {
   app.put('/api/schedules/:id/toggle', async (req, res) => {
     try {
       const { isActive } = req.body;
-      await pool.request()
-        .input('Schedule_ID', sql.Int, req.params.id)
-        .input('IsActive', sql.Bit, isActive)
-        .query('UPDATE TBNotificationSchedules SET IsActive = @IsActive WHERE Schedule_ID = @Schedule_ID');
+      await pool.query(
+        'UPDATE "TBNotificationSchedules" SET "IsActive" = $1 WHERE "Schedule_ID" = $2',
+        [isActive, req.params.id]
+      );
 
       res.json({ success: true, isActive });
     } catch (err) {
@@ -1327,14 +1088,13 @@ app.delete('/api/templates/:id', async (req, res) => {
   // Get all notification templates
   app.get('/api/notification-templates', async (req, res) => {
     try {
-      const result = await pool.request()
-        .query(`
-          SELECT t.*, u.UserName as CreatedByName
-          FROM TBNotificationTemplates t
-          LEFT JOIN TBUsers u ON t.CreatedBy = u.User_ID
-          ORDER BY t.CreatedDate DESC
-        `);
-      res.json(result.recordset);
+      const result = await pool.query(`
+        SELECT t.*, u."UserName" as "CreatedByName"
+        FROM "TBNotificationTemplates" t
+        LEFT JOIN "TBUsers" u ON t."CreatedBy" = u."User_ID"
+        ORDER BY t."CreatedDate" DESC
+      `);
+      res.json(result.rows);
     } catch (err) {
       console.error('Get notification templates error:', err);
       res.status(500).json({ error: err.message });
@@ -1350,21 +1110,13 @@ app.delete('/api/templates/:id', async (req, res) => {
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
-      const result = await pool.request()
-        .input('TemplateName', sql.NVarChar, templateName)
-        .input('TemplateType', sql.NVarChar, templateType)
-        .input('Subject', sql.NVarChar, subject)
-        .input('Message', sql.NVarChar, message)
-        .input('Variables', sql.NVarChar, JSON.stringify(variables || []))
-        .input('CreatedBy', sql.Int, userId)
-        .query(`
-          INSERT INTO TBNotificationTemplates (TemplateName, TemplateType, Subject, Message, Variables, CreatedBy)
-          VALUES (@TemplateName, @TemplateType, @Subject, @Message, @Variables, @CreatedBy)
+      const result = await pool.query(`
+        INSERT INTO "TBNotificationTemplates" ("TemplateName", "TemplateType", "Subject", "Message", "Variables", "CreatedBy")
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING "Template_ID"
+      `, [templateName, templateType, subject, message, JSON.stringify(variables || []), userId]);
 
-          SELECT SCOPE_IDENTITY() as TemplateID
-        `);
-
-      res.json({ success: true, templateId: result.recordset[0].TemplateID });
+      res.json({ success: true, templateId: result.rows[0].Template_ID });
     } catch (err) {
       console.error('Create notification template error:', err);
       res.status(500).json({ error: err.message });
@@ -1376,23 +1128,12 @@ app.delete('/api/templates/:id', async (req, res) => {
     try {
       const { templateName, templateType, subject, message, variables } = req.body;
 
-      await pool.request()
-        .input('Template_ID', sql.Int, req.params.id)
-        .input('TemplateName', sql.NVarChar, templateName)
-        .input('TemplateType', sql.NVarChar, templateType)
-        .input('Subject', sql.NVarChar, subject)
-        .input('Message', sql.NVarChar, message)
-        .input('Variables', sql.NVarChar, JSON.stringify(variables || []))
-        .query(`
-          UPDATE TBNotificationTemplates
-          SET TemplateName = @TemplateName,
-              TemplateType = @TemplateType,
-              Subject = @Subject,
-              Message = @Message,
-              Variables = @Variables,
-              ModifiedDate = GETDATE()
-          WHERE Template_ID = @Template_ID
-        `);
+      await pool.query(`
+        UPDATE "TBNotificationTemplates"
+        SET "TemplateName" = $1, "TemplateType" = $2, "Subject" = $3,
+            "Message" = $4, "Variables" = $5, "ModifiedDate" = NOW()
+        WHERE "Template_ID" = $6
+      `, [templateName, templateType, subject, message, JSON.stringify(variables || []), req.params.id]);
 
       res.json({ success: true });
     } catch (err) {
@@ -1404,9 +1145,10 @@ app.delete('/api/templates/:id', async (req, res) => {
   // Delete notification template
   app.delete('/api/notification-templates/:id', async (req, res) => {
     try {
-      await pool.request()
-        .input('Template_ID', sql.Int, req.params.id)
-        .query('DELETE FROM TBNotificationTemplates WHERE Template_ID = @Template_ID');
+      await pool.query(
+        'DELETE FROM "TBNotificationTemplates" WHERE "Template_ID" = $1',
+        [req.params.id]
+      );
 
       res.json({ success: true });
     } catch (err) {
@@ -1419,10 +1161,10 @@ app.delete('/api/templates/:id', async (req, res) => {
   app.put('/api/notification-templates/:id/toggle', async (req, res) => {
     try {
       const { isActive } = req.body;
-      await pool.request()
-        .input('Template_ID', sql.Int, req.params.id)
-        .input('IsActive', sql.Bit, isActive)
-        .query('UPDATE TBNotificationTemplates SET IsActive = @IsActive WHERE Template_ID = @Template_ID');
+      await pool.query(
+        'UPDATE "TBNotificationTemplates" SET "IsActive" = $1 WHERE "Template_ID" = $2',
+        [isActive, req.params.id]
+      );
 
       res.json({ success: true, isActive });
     } catch (err) {
@@ -1443,49 +1185,49 @@ app.delete('/api/templates/:id', async (req, res) => {
 
       let whereClause = 'WHERE 1=1';
       const params = [];
+      let paramIdx = 1;
 
       if (status) {
-        whereClause += ' AND dl.Status = @Status';
-        params.push({ name: 'Status', type: sql.NVarChar, value: status });
+        whereClause += ` AND dl."Status" = $${paramIdx++}`;
+        params.push(status);
       }
       if (startDate) {
-        whereClause += ' AND dl.DeliveredDate >= @StartDate';
-        params.push({ name: 'StartDate', type: sql.DateTime, value: new Date(startDate) });
+        whereClause += ` AND dl."DeliveredDate" >= $${paramIdx++}`;
+        params.push(new Date(startDate));
       }
       if (endDate) {
-        whereClause += ' AND dl.DeliveredDate <= @EndDate';
-        params.push({ name: 'EndDate', type: sql.DateTime, value: new Date(endDate) });
+        whereClause += ` AND dl."DeliveredDate" <= $${paramIdx++}`;
+        params.push(new Date(endDate));
       }
       if (search) {
-        whereClause += ' AND (dl.UserName LIKE @Search OR dl.UserEmail LIKE @Search)';
-        params.push({ name: 'Search', type: sql.NVarChar, value: `%${search}%` });
+        whereClause += ` AND (dl."UserName" ILIKE $${paramIdx} OR dl."UserEmail" ILIKE $${paramIdx})`;
+        params.push(`%${search}%`);
+        paramIdx++;
       }
 
-      const request = pool.request();
-      params.forEach(p => request.input(p.name, p.type, p.value));
-      request.input('Limit', sql.Int, limit);
-      request.input('Offset', sql.Int, offset);
+      params.push(parseInt(limit));
+      const limitIdx = paramIdx++;
+      params.push(parseInt(offset));
+      const offsetIdx = paramIdx;
 
-      const result = await request.query(`
-        SELECT dl.*, n.Subject
-        FROM TBNotificationDeliveryLog dl
-        LEFT JOIN TBNotifications n ON dl.Notification_ID = n.Notification_ID
+      const result = await pool.query(`
+        SELECT dl.*, n."Subject"
+        FROM "TBNotificationDeliveryLog" dl
+        LEFT JOIN "TBNotifications" n ON dl."Notification_ID" = n."Notification_ID"
         ${whereClause}
-        ORDER BY dl.DeliveredDate DESC
-        OFFSET @Offset ROWS
-        FETCH NEXT @Limit ROWS ONLY
-      `);
+        ORDER BY dl."DeliveredDate" DESC
+        LIMIT $${limitIdx} OFFSET $${offsetIdx}
+      `, params);
 
       // Get total count
-      const countRequest = pool.request();
-      params.forEach(p => countRequest.input(p.name, p.type, p.value));
-      const countResult = await countRequest.query(`
-        SELECT COUNT(*) as Total FROM TBNotificationDeliveryLog dl ${whereClause}
-      `);
+      const countParams = params.slice(0, -2); // Remove limit and offset
+      const countResult = await pool.query(`
+        SELECT COUNT(*) as "Total" FROM "TBNotificationDeliveryLog" dl ${whereClause}
+      `, countParams);
 
       res.json({
-        logs: result.recordset,
-        total: countResult.recordset[0].Total,
+        logs: result.rows,
+        total: parseInt(countResult.rows[0].Total),
         page: parseInt(page),
         limit: parseInt(limit)
       });
@@ -1498,18 +1240,17 @@ app.delete('/api/templates/:id', async (req, res) => {
   // Get notification log statistics
   app.get('/api/notification-logs/stats', async (req, res) => {
     try {
-      const result = await pool.request()
-        .query(`
-          SELECT
-            COUNT(*) as Total,
-            SUM(CASE WHEN Status = 'delivered' THEN 1 ELSE 0 END) as Delivered,
-            SUM(CASE WHEN Status = 'viewed' THEN 1 ELSE 0 END) as Viewed,
-            SUM(CASE WHEN Status = 'failed' THEN 1 ELSE 0 END) as Failed
-          FROM TBNotificationDeliveryLog
-          WHERE DeliveredDate >= DATEADD(day, -30, GETDATE())
-        `);
+      const result = await pool.query(`
+        SELECT
+          COUNT(*) as "Total",
+          SUM(CASE WHEN "Status" = 'delivered' THEN 1 ELSE 0 END) as "Delivered",
+          SUM(CASE WHEN "Status" = 'viewed' THEN 1 ELSE 0 END) as "Viewed",
+          SUM(CASE WHEN "Status" = 'failed' THEN 1 ELSE 0 END) as "Failed"
+        FROM "TBNotificationDeliveryLog"
+        WHERE "DeliveredDate" >= NOW() - interval '30 days'
+      `);
 
-      res.json(result.recordset[0]);
+      res.json(result.rows[0]);
     } catch (err) {
       console.error('Get notification log stats error:', err);
       res.status(500).json({ error: err.message });
@@ -1519,16 +1260,12 @@ app.delete('/api/templates/:id', async (req, res) => {
   // Get logs for specific notification
   app.get('/api/notification-logs/:notificationId', async (req, res) => {
     try {
-      const result = await pool.request()
-        .input('Notification_ID', sql.Int, req.params.notificationId)
-        .query(`
-          SELECT *
-          FROM TBNotificationDeliveryLog
-          WHERE Notification_ID = @Notification_ID
-          ORDER BY DeliveredDate DESC
-        `);
+      const result = await pool.query(
+        'SELECT * FROM "TBNotificationDeliveryLog" WHERE "Notification_ID" = $1 ORDER BY "DeliveredDate" DESC',
+        [req.params.notificationId]
+      );
 
-      res.json(result.recordset);
+      res.json(result.rows);
     } catch (err) {
       console.error('Get notification logs by ID error:', err);
       res.status(500).json({ error: err.message });
@@ -1542,10 +1279,8 @@ app.delete('/api/templates/:id', async (req, res) => {
   // Get notification settings
   app.get('/api/notification-settings', async (req, res) => {
     try {
-      const result = await pool.request()
-        .query('SELECT * FROM TBNotificationSettings ORDER BY NotificationType');
-
-      res.json(result.recordset);
+      const result = await pool.query('SELECT * FROM "TBNotificationSettings" ORDER BY "NotificationType"');
+      res.json(result.rows);
     } catch (err) {
       console.error('Get notification settings error:', err);
       res.status(500).json({ error: err.message });
@@ -1562,29 +1297,19 @@ app.delete('/api/templates/:id', async (req, res) => {
       }
 
       for (const setting of settings) {
-        const isEnabled = setting.isEnabled ? 1 : 0;
-        const result = await pool.request()
-          .input('NotificationType', sql.NVarChar, setting.notificationType)
-          .input('IsEnabled', sql.Bit, isEnabled)
-          .input('ModifiedBy', sql.Int, userId || null)
-          .query(`
-            UPDATE TBNotificationSettings
-            SET IsEnabled = @IsEnabled,
-                ModifiedBy = @ModifiedBy,
-                ModifiedDate = GETDATE()
-            WHERE NotificationType = @NotificationType
-          `);
+        const isEnabled = setting.isEnabled ? true : false;
+        const result = await pool.query(`
+          UPDATE "TBNotificationSettings"
+          SET "IsEnabled" = $1, "ModifiedBy" = $2, "ModifiedDate" = NOW()
+          WHERE "NotificationType" = $3
+        `, [isEnabled, userId || null, setting.notificationType]);
 
         // If no row was updated, insert it
-        if (result.rowsAffected[0] === 0) {
-          await pool.request()
-            .input('NotificationType', sql.NVarChar, setting.notificationType)
-            .input('IsEnabled', sql.Bit, isEnabled)
-            .input('ModifiedBy', sql.Int, userId || null)
-            .query(`
-              INSERT INTO TBNotificationSettings (NotificationType, IsEnabled, ModifiedBy, ModifiedDate)
-              VALUES (@NotificationType, @IsEnabled, @ModifiedBy, GETDATE())
-            `);
+        if (result.rowCount === 0) {
+          await pool.query(`
+            INSERT INTO "TBNotificationSettings" ("NotificationType", "IsEnabled", "ModifiedBy", "ModifiedDate")
+            VALUES ($1, $2, $3, NOW())
+          `, [setting.notificationType, isEnabled, userId || null]);
         }
       }
 
@@ -1599,36 +1324,29 @@ app.delete('/api/templates/:id', async (req, res) => {
   app.post('/api/publish-site', async (req, res) => {
     try {
       const { projectId, html, domain } = req.body;
-      if (!projectId || !html) return res.status(400).json({ error:
-   'Missing data' });
+      if (!projectId || !html) return res.status(400).json({ error: 'Missing data' });
 
       // Check if domain already taken by another project
       if (domain) {
-        const pool = await poolPromise;
-        const check = await pool.request()
-          .input('DOMAIN', sql.NVarChar(255), domain)
-          .input('PID', sql.Int, projectId)
-          .query(`SELECT Project_ID FROM TBProjects WHERE CustomDomain = @DOMAIN AND Project_ID != @PID`);
-        if (check.recordset.length > 0) {
+        const check = await pool.query(
+          'SELECT "Project_ID" FROM "TBProjects" WHERE "CustomDomain" = $1 AND "Project_ID" != $2',
+          [domain, projectId]
+        );
+        if (check.rows.length > 0) {
           return res.status(400).json({ error: 'Domain already connected to another project' });
         }
       }
 
-      const pool = await poolPromise;
-      await pool.request()
-        .input('HTML', sql.NVarChar(sql.MAX), html)
-        .input('DOMAIN', sql.NVarChar(255), domain || null)
-        .input('PID', sql.Int, projectId)
-        .query(`UPDATE TBProjects SET PublishedHtml = @HTML,
-  CustomDomain = @DOMAIN, IsPublished = 1 WHERE Project_ID =
-  @PID`);
+      await pool.query(
+        'UPDATE "TBProjects" SET "PublishedHtml" = $1, "CustomDomain" = $2, "IsPublished" = true WHERE "Project_ID" = $3',
+        [html, domain || null, projectId]
+      );
 
       res.json({
         success: true,
         domain,
         message: domain
-          ? `Site published. Point your domain DNS to this server's
-   IP with an A record: @ → your-server-ip`
+          ? `Site published. Point your domain DNS to this server's IP with an A record: @ → your-server-ip`
           : 'Site published'
       });
     } catch (e) {
@@ -1639,17 +1357,16 @@ app.delete('/api/templates/:id', async (req, res) => {
   // ---------- Serve published sites by domain ----------
   app.get('/site-by-domain/:domain', async (req, res) => {
     try {
-      const pool = await poolPromise;
-      const result = await pool.request()
-        .input('DOMAIN', sql.NVarChar(255), req.params.domain)
-        .query('SELECT PublishedHtml FROM TBProjects WHERE CustomDomain = @DOMAIN AND IsPublished = 1');
+      const result = await pool.query(
+        'SELECT "PublishedHtml" FROM "TBProjects" WHERE "CustomDomain" = $1 AND "IsPublished" = true',
+        [req.params.domain]
+      );
 
-      if (!result.recordset.length ||
-  !result.recordset[0].PublishedHtml) {
+      if (!result.rows.length || !result.rows[0].PublishedHtml) {
         return res.status(404).send('Site not found');
       }
       res.setHeader('Content-Type', 'text/html');
-      res.send(result.recordset[0].PublishedHtml);
+      res.send(result.rows[0].PublishedHtml);
     } catch (e) {
       res.status(500).send('Server error');
     }
@@ -1704,7 +1421,7 @@ function safeParseAIJson(rawText) {
     .trim();
 
   // normalize smart quotes
-  s = s.replace(/[“”]/g, '"').replace(/[‘’]/g, "'");
+  s = s.replace(/[\u201c\u201d]/g, '"').replace(/[\u2018\u2019]/g, "'");
 
   // keep only first balanced JSON object (ignore trailing text)
   s = extractBalancedJsonObject(s);

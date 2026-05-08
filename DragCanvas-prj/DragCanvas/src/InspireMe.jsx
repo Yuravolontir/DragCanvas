@@ -36,7 +36,7 @@ export default function InspireMe() {
 
   const fetchTemplates = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/templates');
+      const response = await fetch(`${API_URL}/api/templates`);
       if (!response.ok) throw new Error('Failed to fetch templates');
       const data = await response.json();
       setTemplates(Array.isArray(data) ? data : []);
