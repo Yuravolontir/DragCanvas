@@ -1,9 +1,9 @@
 import { useNode, useEditor } from '@craftjs/core';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Resizer } from './Resizer';
 import { MapSettings } from './MapSettings';
 import L from 'leaflet';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 // Fix broken default marker icons in Leaflet + bundlers
@@ -14,10 +14,20 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
+// Updates map view when props change
+function MapViewUpdater({ lat, lng, zoom }) {
+  const map = useMap();
+  useEffect(() => {
+    map.setView([lat, lng], zoom);
+  }, [lat, lng, zoom, map]);
+  return null;
+}
+
 export const Map = ({ lat, lng, zoom, height, label }) => {
   const { enabled } = useEditor((state) => ({
     enabled: state.options.enabled,
   }));
+  const mapKey = useRef(0);
 
   return (
     <Resizer
@@ -37,12 +47,14 @@ export const Map = ({ lat, lng, zoom, height, label }) => {
         position: 'relative',
       }}>
         <MapContainer
+          key={mapKey.current}
           center={[lat, lng]}
           zoom={zoom}
           scrollWheelZoom={!enabled}
           dragging={!enabled}
           style={{ height: '100%', width: '100%' }}
         >
+          <MapViewUpdater lat={lat} lng={lng} zoom={zoom} />
           <TileLayer
             attribution='&copy; OpenStreetMap'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
