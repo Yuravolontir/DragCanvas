@@ -24,3 +24,5 @@ export { Carousel } from './Carousel';
 export { CarouselSettings } from './CarouselSettings';
 export { Map } from './Map';
 export { MapSettings } from './MapSettings';
+export { NavbarElement } from './NavbarElement';
+export { NavbarSettings } from './NavbarSettings';

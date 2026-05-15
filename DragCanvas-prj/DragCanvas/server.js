@@ -4,7 +4,10 @@ import express from 'express';
 import cors from 'cors';
 import pg from 'pg';
 import cron from 'node-cron';
-
+import userRoutes from './features/users/user.routes.js';
+import { setPool as setUserPool } from './features/users/user.model.js';
+import projectRoutes from './features/projects/project.routes.js';
+import { setPool as setProjectPool } from './features/projects/project.model.js';
 const { Pool } = pg;
 
 const PORT = process.env.PORT || 3001;
@@ -26,12 +29,19 @@ app.use(cors({
 }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
-
+app.use('/api/users', userRoutes);
+app.use('/api/projects', projectRoutes);
 // ---------- PostgreSQL ----------
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
 });
+
+setUserPool(pool);
+setProjectPool(pool);
+
+
+
 
 async function start() {
   try {

@@ -196,6 +196,7 @@ export const Resizer = ({ propKey, children, ...props }) => {
           flex: true,
         },
       ])}
+      id={id}
       ref={(ref) => {
         if (ref) {
           resizable.current = ref;

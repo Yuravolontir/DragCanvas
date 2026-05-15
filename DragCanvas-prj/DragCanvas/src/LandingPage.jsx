@@ -35,7 +35,7 @@ export default function LandingPage(props) {
     videoContainer.innerHTML = '';
     videoContainer.appendChild(wrapper);
 
-    const maxFrames = 200;
+    const maxFrames = 160;
     const framesToLoad = [];
 
     for (let i = 1; i <= maxFrames; i++) {

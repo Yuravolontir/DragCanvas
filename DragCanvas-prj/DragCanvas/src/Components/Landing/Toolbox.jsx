@@ -11,6 +11,7 @@ import { Link } from './Link';
 import { Image } from './Image';
 import { Carousel } from './Carousel';
 import { Map } from './Map';
+import { NavbarElement } from './NavbarElement';
 
 const ToolboxDiv = styled.div`
   transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
@@ -174,6 +175,18 @@ export const Toolbox = () => {
             <Item $move>
               <span className="material-symbols-outlined">map</span>
               <span className="icon-label">Map</span>
+            </Item>
+          </Tooltip>
+        </div>
+        <div
+          ref={(ref) => {
+            create(ref, <NavbarElement />);
+          }}
+        >
+          <Tooltip title="Navbar" placement="right">
+            <Item $move>
+              <span className="material-symbols-outlined">menu</span>
+              <span className="icon-label">Navbar</span>
             </Item>
           </Tooltip>
         </div>

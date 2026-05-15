@@ -42,6 +42,7 @@ function CreateNewProject() {
             Image: Landing.Image,
             Carousel: Landing.Carousel,
             Map: Landing.Map,
+            NavbarElement: Landing.NavbarElement,
           }}
           enabled={false}
           onRender={Landing.RenderNode}
