@@ -3,3 +3,8 @@ node_modules
 dist
 .env
 .env.local
+.history/
+seed.sql
+seed-export*.js
+dragcanvas-project-code.txt
+
