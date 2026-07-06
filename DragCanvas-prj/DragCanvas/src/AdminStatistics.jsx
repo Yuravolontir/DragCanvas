@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Row, Col, Card, Table, Spinner, Alert, Button } from 'react-bootstrap';
 
-const PY_API = 'http://localhost:8000';
+ const PY_API = import.meta.env.VITE_PY_API_URL || 'http://localhost:8000';
 
 const CHARTS = [
 { title: 'Registrations by Month', url: '/api/charts/registrations' },
