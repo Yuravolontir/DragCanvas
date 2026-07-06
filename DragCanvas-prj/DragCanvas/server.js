@@ -32,8 +32,9 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use('/api/users', userRoutes);
 app.use('/api/projects', projectRoutes);
 // ---------- PostgreSQL ----------
+const dbUrl = process.env.DATABASE_URL || process.env.DATABASEURL;
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: dbUrl,
   ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
 });
 

@@ -4,6 +4,7 @@ import NavBar from './NavBar';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import { Badge, Form, InputGroup, Button, Modal, Alert } from 'react-bootstrap';
+import AdminStatistics from './AdminStatistics';
 
 export default function AdminPanel() {
   const [users, setUsers] = useState([]);
@@ -735,9 +736,16 @@ const confirmRoleChange = async () => {
                 >
                   🔔 Notifications
                 </Button>
+                <Button
+              variant={activeTab === 'statistics' ? 'primary' : 'outline-primary'}
+              onClick={() => setActiveTab('statistics')}
+              className="ms-2"
+            >
+              📊 Statistics
+            </Button>  
             </div>
           </div>
-
+            {activeTab === 'statistics' && <AdminStatistics />}
           {/* USERS TAB */}
           {activeTab === 'users' && (
             <>
