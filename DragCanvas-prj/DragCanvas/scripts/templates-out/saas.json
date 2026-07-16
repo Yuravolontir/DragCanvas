@@ -1,0 +1,2613 @@
+{
+  "ROOT": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 2,
+        "g": 6,
+        "b": 23,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "800px",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "App"
+    },
+    "hidden": false,
+    "nodes": [
+      "cont01",
+      "cont10",
+      "cont20",
+      "cont23",
+      "cont25",
+      "cont41",
+      "cont51",
+      "cont55",
+      "cont61"
+    ],
+    "linkedNodes": {}
+  },
+  "cont01": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "40",
+        "24",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 2,
+        "g": 6,
+        "b": 23,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Navbar"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text02",
+      "cont03"
+    ],
+    "linkedNodes": {}
+  },
+  "text02": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "20",
+      "textAlign": "left",
+      "fontWeight": "800",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "NovaFlow"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont01",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont03": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 2,
+        "g": 6,
+        "b": 23,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NavLinks"
+    },
+    "parent": "cont01",
+    "hidden": false,
+    "nodes": [
+      "cont04",
+      "cont06",
+      "cont08"
+    ],
+    "linkedNodes": {}
+  },
+  "cont04": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "24"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NavItem"
+    },
+    "parent": "cont03",
+    "hidden": false,
+    "nodes": [
+      "link05"
+    ],
+    "linkedNodes": {}
+  },
+  "link05": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "#",
+      "text": "Features",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont04",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont06": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "24"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NavItem"
+    },
+    "parent": "cont03",
+    "hidden": false,
+    "nodes": [
+      "link07"
+    ],
+    "linkedNodes": {}
+  },
+  "link07": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "#",
+      "text": "Pricing",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont06",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont08": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "24"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NavItem"
+    },
+    "parent": "cont03",
+    "hidden": false,
+    "nodes": [
+      "link09"
+    ],
+    "linkedNodes": {}
+  },
+  "link09": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "#",
+      "text": "Docs",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont08",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont10": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "70",
+        "60",
+        "50",
+        "60"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 2,
+        "g": 6,
+        "b": 23,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Hero"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont11",
+      "text13",
+      "text14",
+      "cont15"
+    ],
+    "linkedNodes": {}
+  },
+  "cont11": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "6",
+        "16",
+        "6",
+        "16"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 99,
+        "g": 102,
+        "b": 241,
+        "a": 0.15
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 20,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Badge"
+    },
+    "parent": "cont10",
+    "hidden": false,
+    "nodes": [
+      "text12"
+    ],
+    "linkedNodes": {}
+  },
+  "text12": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "center",
+      "fontWeight": "600",
+      "color": {
+        "r": 99,
+        "g": 102,
+        "b": 241,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "NEW — AI-powered automations"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont11",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text13": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "44",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "24",
+        "0",
+        "14",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Ship products **ten times faster**"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Headline"
+    },
+    "parent": "cont10",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text14": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "18",
+      "textAlign": "center",
+      "fontWeight": "400",
+      "color": {
+        "r": 203,
+        "g": 213,
+        "b": 225,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "NovaFlow unifies your roadmap, tasks and releases in one calm workspace — so your team ships, not juggles tools."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Subtitle"
+    },
+    "parent": "cont10",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont15": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "30",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 2,
+        "g": 6,
+        "b": 23,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "CTARow"
+    },
+    "parent": "cont10",
+    "hidden": false,
+    "nodes": [
+      "cont16",
+      "cont18"
+    ],
+    "linkedNodes": {}
+  },
+  "cont16": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "10",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 2,
+        "g": 6,
+        "b": 23,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "200px",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "BtnBox"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [
+      "butt17"
+    ],
+    "linkedNodes": {}
+  },
+  "butt17": {
+    "type": {
+      "resolvedName": "Button"
+    },
+    "isCanvas": false,
+    "props": {
+      "background": {
+        "r": 99,
+        "g": 102,
+        "b": 241,
+        "a": 1
+      },
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "buttonStyle": "full",
+      "text": "Start free trial",
+      "margin": [
+        "5",
+        "0",
+        "5",
+        "0"
+      ],
+      "textComponent": {
+        "fontSize": "15",
+        "textAlign": "center",
+        "fontWeight": "600",
+        "color": {
+          "r": 92,
+          "g": 90,
+          "b": 90,
+          "a": 1
+        },
+        "margin": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "shadow": 0,
+        "text": "Start free trial"
+      }
+    },
+    "displayName": "Button",
+    "custom": {
+      "displayName": "Button"
+    },
+    "parent": "cont16",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont18": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "10"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 2,
+        "g": 6,
+        "b": 23,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "180px",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "BtnBox"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [
+      "butt19"
+    ],
+    "linkedNodes": {}
+  },
+  "butt19": {
+    "type": {
+      "resolvedName": "Button"
+    },
+    "isCanvas": false,
+    "props": {
+      "background": {
+        "r": 99,
+        "g": 102,
+        "b": 241,
+        "a": 1
+      },
+      "color": {
+        "r": 226,
+        "g": 232,
+        "b": 240,
+        "a": 1
+      },
+      "buttonStyle": "outline",
+      "text": "Watch demo",
+      "margin": [
+        "5",
+        "0",
+        "5",
+        "0"
+      ],
+      "textComponent": {
+        "fontSize": "15",
+        "textAlign": "center",
+        "fontWeight": "600",
+        "color": {
+          "r": 92,
+          "g": 90,
+          "b": 90,
+          "a": 1
+        },
+        "margin": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "shadow": 0,
+        "text": "Watch demo"
+      }
+    },
+    "displayName": "Button",
+    "custom": {
+      "displayName": "Button"
+    },
+    "parent": "cont18",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont20": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "10",
+        "40",
+        "40",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 2,
+        "g": 6,
+        "b": 23,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Logos"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text21",
+      "text22"
+    ],
+    "linkedNodes": {}
+  },
+  "text21": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "12",
+      "textAlign": "center",
+      "fontWeight": "700",
+      "color": {
+        "r": 100,
+        "g": 116,
+        "b": 139,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "TRUSTED BY TEAMS AT"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont20",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text22": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "16",
+      "textAlign": "center",
+      "fontWeight": "700",
+      "color": {
+        "r": 148,
+        "g": 163,
+        "b": 184,
+        "a": 1
+      },
+      "margin": [
+        "10",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "ACME · GLOBEX · INITECH · HOOLI · STARK"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont20",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont23": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "60",
+        "40",
+        "60"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 2,
+        "g": 6,
+        "b": 23,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "ProductVideo"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "vide24"
+    ],
+    "linkedNodes": {}
+  },
+  "vide24": {
+    "type": {
+      "resolvedName": "Video"
+    },
+    "isCanvas": false,
+    "props": {
+      "sourceType": "file",
+      "videoId": "",
+      "videoUrl": "https://videos.pexels.com/video-files/3129957/3129957-hd_1280_720_25fps.mp4",
+      "text": "See NovaFlow in action"
+    },
+    "displayName": "Video",
+    "custom": {
+      "displayName": "Video"
+    },
+    "parent": "cont23",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont25": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "60",
+        "20",
+        "60"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 2,
+        "g": 6,
+        "b": 23,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Features"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text26",
+      "text27",
+      "cont28"
+    ],
+    "linkedNodes": {}
+  },
+  "text26": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "32",
+      "textAlign": "center",
+      "fontWeight": "700",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Everything your team needs"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont25",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text27": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "16",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 148,
+        "g": 163,
+        "b": 184,
+        "a": 1
+      },
+      "margin": [
+        "8",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Powerful alone. Unstoppable together."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont25",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont28": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "flex-start",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "30",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 2,
+        "g": 6,
+        "b": 23,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "FeatureRow"
+    },
+    "parent": "cont25",
+    "hidden": false,
+    "nodes": [
+      "cont29",
+      "cont33",
+      "cont37"
+    ],
+    "linkedNodes": {}
+  },
+  "cont29": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "26",
+        "22",
+        "26",
+        "22"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 30,
+        "g": 41,
+        "b": 59,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 16,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "FeatureCard"
+    },
+    "parent": "cont28",
+    "hidden": false,
+    "nodes": [
+      "text30",
+      "text31",
+      "text32"
+    ],
+    "linkedNodes": {}
+  },
+  "text30": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "30",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "⚡"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont29",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text31": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "18",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "8",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Lightning fast"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont29",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text32": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 148,
+        "g": 163,
+        "b": 184,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Instant search, optimistic UI and sub-second sync across your whole workspace."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont29",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont33": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "26",
+        "22",
+        "26",
+        "22"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 30,
+        "g": 41,
+        "b": 59,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 16,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "FeatureCard"
+    },
+    "parent": "cont28",
+    "hidden": false,
+    "nodes": [
+      "text34",
+      "text35",
+      "text36"
+    ],
+    "linkedNodes": {}
+  },
+  "text34": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "30",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "🔒"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont33",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text35": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "18",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "8",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Secure by default"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont33",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text36": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 148,
+        "g": 163,
+        "b": 184,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "SOC 2 Type II, SSO/SAML and granular permissions on every plan."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont33",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont37": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "26",
+        "22",
+        "26",
+        "22"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 30,
+        "g": 41,
+        "b": 59,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 16,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "FeatureCard"
+    },
+    "parent": "cont28",
+    "hidden": false,
+    "nodes": [
+      "text38",
+      "text39",
+      "text40"
+    ],
+    "linkedNodes": {}
+  },
+  "text38": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "30",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "📊"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont37",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text39": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "18",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "8",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Real-time analytics"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont37",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text40": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 148,
+        "g": 163,
+        "b": 184,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Live dashboards that turn shipping data into decisions your team trusts."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont37",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont41": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "flex-start",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "60",
+        "40",
+        "60"
+      ],
+      "margin": [
+        "40",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 99,
+        "g": 102,
+        "b": 241,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Stats"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont42",
+      "cont45",
+      "cont48"
+    ],
+    "linkedNodes": {}
+  },
+  "cont42": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 99,
+        "g": 102,
+        "b": 241,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Stat"
+    },
+    "parent": "cont41",
+    "hidden": false,
+    "nodes": [
+      "text43",
+      "text44"
+    ],
+    "linkedNodes": {}
+  },
+  "text43": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "38",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "99.9%"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont42",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text44": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 224,
+        "g": 231,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "6",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Uptime SLA"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont42",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont45": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 99,
+        "g": 102,
+        "b": 241,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Stat"
+    },
+    "parent": "cont41",
+    "hidden": false,
+    "nodes": [
+      "text46",
+      "text47"
+    ],
+    "linkedNodes": {}
+  },
+  "text46": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "38",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "12,000+"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont45",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text47": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 224,
+        "g": 231,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "6",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Teams onboard"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont45",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont48": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 99,
+        "g": 102,
+        "b": 241,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Stat"
+    },
+    "parent": "cont41",
+    "hidden": false,
+    "nodes": [
+      "text49",
+      "text50"
+    ],
+    "linkedNodes": {}
+  },
+  "text49": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "38",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "4.9 / 5"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont48",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text50": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 224,
+        "g": 231,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "6",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Average rating"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont48",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont51": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "54",
+        "80",
+        "36",
+        "80"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 2,
+        "g": 6,
+        "b": 23,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Testimonial"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "imag52",
+      "text53",
+      "text54"
+    ],
+    "linkedNodes": {}
+  },
+  "imag52": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "radius": 50,
+      "width": "84px",
+      "height": "84px",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont51",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text53": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "20",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 226,
+        "g": 232,
+        "b": 240,
+        "a": 1
+      },
+      "margin": [
+        "20",
+        "0",
+        "12",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "\"NovaFlow cut our release cycle from weeks to days. It is the first tool the whole company actually loves.\""
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont51",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text54": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "center",
+      "fontWeight": "600",
+      "color": {
+        "r": 99,
+        "g": 102,
+        "b": 241,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Sarah Mitchell — VP Engineering, Acme"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont51",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont55": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "10",
+        "60",
+        "44",
+        "60"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 2,
+        "g": 6,
+        "b": 23,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "CTASection"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont56"
+    ],
+    "linkedNodes": {}
+  },
+  "cont56": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "44",
+        "40",
+        "44",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 99,
+        "g": 102,
+        "b": 241,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 20,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "CTABanner"
+    },
+    "parent": "cont55",
+    "hidden": false,
+    "nodes": [
+      "text57",
+      "text58",
+      "cont59"
+    ],
+    "linkedNodes": {}
+  },
+  "text57": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "30",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Ready to ship faster?"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont56",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text58": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 224,
+        "g": 231,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "8",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Free for teams up to 10. No credit card required."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont56",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont59": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "20",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 99,
+        "g": 102,
+        "b": 241,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "240px",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "BtnBox"
+    },
+    "parent": "cont56",
+    "hidden": false,
+    "nodes": [
+      "butt60"
+    ],
+    "linkedNodes": {}
+  },
+  "butt60": {
+    "type": {
+      "resolvedName": "Button"
+    },
+    "isCanvas": false,
+    "props": {
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 49,
+        "g": 46,
+        "b": 129,
+        "a": 1
+      },
+      "buttonStyle": "full",
+      "text": "Get started — free",
+      "margin": [
+        "5",
+        "0",
+        "5",
+        "0"
+      ],
+      "textComponent": {
+        "fontSize": "15",
+        "textAlign": "center",
+        "fontWeight": "600",
+        "color": {
+          "r": 92,
+          "g": 90,
+          "b": 90,
+          "a": 1
+        },
+        "margin": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "shadow": 0,
+        "text": "Get started — free"
+      }
+    },
+    "displayName": "Button",
+    "custom": {
+      "displayName": "Button"
+    },
+    "parent": "cont59",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont61": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "26",
+        "40",
+        "26",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 15,
+        "g": 23,
+        "b": 42,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text62",
+      "text63"
+    ],
+    "linkedNodes": {}
+  },
+  "text62": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "NovaFlow"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont61",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text63": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 148,
+        "g": 163,
+        "b": 184,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "© 2026 NovaFlow Inc. All rights reserved."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont61",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  }
+}

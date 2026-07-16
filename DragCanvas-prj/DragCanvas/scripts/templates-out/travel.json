@@ -1,0 +1,1773 @@
+{
+  "ROOT": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "800px",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "App"
+    },
+    "hidden": false,
+    "nodes": [
+      "cont01",
+      "cont10",
+      "cont12",
+      "cont15",
+      "cont19",
+      "cont22",
+      "cont38",
+      "cont44"
+    ],
+    "linkedNodes": {}
+  },
+  "cont01": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "40",
+        "20",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Navbar"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text02",
+      "cont03"
+    ],
+    "linkedNodes": {}
+  },
+  "text02": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "20",
+      "textAlign": "left",
+      "fontWeight": "800",
+      "color": {
+        "r": 14,
+        "g": 165,
+        "b": 233,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Wanderlog"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont01",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont03": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NavLinks"
+    },
+    "parent": "cont01",
+    "hidden": false,
+    "nodes": [
+      "cont04",
+      "cont06",
+      "cont08"
+    ],
+    "linkedNodes": {}
+  },
+  "cont04": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "24"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NavItem"
+    },
+    "parent": "cont03",
+    "hidden": false,
+    "nodes": [
+      "link05"
+    ],
+    "linkedNodes": {}
+  },
+  "link05": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "#",
+      "text": "Stories",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont04",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont06": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "24"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NavItem"
+    },
+    "parent": "cont03",
+    "hidden": false,
+    "nodes": [
+      "link07"
+    ],
+    "linkedNodes": {}
+  },
+  "link07": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "#",
+      "text": "Destinations",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont06",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont08": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "24"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NavItem"
+    },
+    "parent": "cont03",
+    "hidden": false,
+    "nodes": [
+      "link09"
+    ],
+    "linkedNodes": {}
+  },
+  "link09": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "#",
+      "text": "About",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont08",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont10": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "8",
+        "40",
+        "0",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "HeroImage"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "imag11"
+    ],
+    "linkedNodes": {}
+  },
+  "imag11": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": "https://images.pexels.com/photos/1271619/pexels-photo-1271619.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "radius": 18,
+      "width": "100%",
+      "height": "400px",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont10",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont12": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "28",
+        "60",
+        "6",
+        "60"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Hero"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text13",
+      "text14"
+    ],
+    "linkedNodes": {}
+  },
+  "text13": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "42",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 15,
+        "g": 23,
+        "b": 42,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Stories from the road"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont12",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text14": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 100,
+        "g": 116,
+        "b": 139,
+        "a": 1
+      },
+      "margin": [
+        "10",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Field notes, itineraries and photo essays from 47 countries — written slowly, traveled slower."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont12",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont15": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "30",
+        "40",
+        "6",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Destinations"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text16",
+      "text17",
+      "caro18"
+    ],
+    "linkedNodes": {}
+  },
+  "text16": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "center",
+      "fontWeight": "700",
+      "color": {
+        "r": 14,
+        "g": 165,
+        "b": 233,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "DESTINATION OF THE MONTH"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text17": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "28",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 15,
+        "g": 23,
+        "b": 42,
+        "a": 1
+      },
+      "margin": [
+        "8",
+        "0",
+        "20",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Where to next?"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "caro18": {
+    "type": {
+      "resolvedName": "Carousel"
+    },
+    "isCanvas": false,
+    "props": {
+      "width": "720px",
+      "height": "400px",
+      "src1": "https://images.pexels.com/photos/2325446/pexels-photo-2325446.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "src2": "https://images.pexels.com/photos/1450353/pexels-photo-1450353.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "src3": "https://images.pexels.com/photos/3155666/pexels-photo-3155666.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "heading1": "Iceland — Ring Road",
+      "heading2": "Cappadocia, Türkiye",
+      "heading3": "Santorini, Greece",
+      "label1": "Wild",
+      "label2": "Ballooning",
+      "label3": "Islands",
+      "p1": "Ten days of waterfalls, black beaches and zero regrets.",
+      "p2": "Sunrise at 400 meters — the flight that ruins all other flights.",
+      "p3": "Blue domes, slow ferries and the best tomatoes of your life."
+    },
+    "displayName": "Carousel",
+    "custom": {
+      "displayName": "Carousel"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont19": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "40",
+        "4",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "PostsHeading"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text20",
+      "link21"
+    ],
+    "linkedNodes": {}
+  },
+  "text20": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "26",
+      "textAlign": "left",
+      "fontWeight": "800",
+      "color": {
+        "r": 15,
+        "g": 23,
+        "b": 42,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Latest stories"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont19",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "link21": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "#",
+      "text": "All stories →",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont19",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont22": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "flex-start",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "14",
+        "40",
+        "0",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "PostsRow"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont23",
+      "cont28",
+      "cont33"
+    ],
+    "linkedNodes": {}
+  },
+  "cont23": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "PostCard"
+    },
+    "parent": "cont22",
+    "hidden": false,
+    "nodes": [
+      "imag24",
+      "text25",
+      "text26",
+      "link27"
+    ],
+    "linkedNodes": {}
+  },
+  "imag24": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "radius": 12,
+      "width": "100%",
+      "height": "150px",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont23",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text25": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 15,
+        "g": 23,
+        "b": 42,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "6",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "48 hours in the Alps"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont23",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text26": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 100,
+        "g": 116,
+        "b": 139,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "8",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "A whirlwind weekend of cable cars, rösti and ridge walks above the clouds."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont23",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "link27": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "#",
+      "text": "Read more →",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont23",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont28": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "PostCard"
+    },
+    "parent": "cont22",
+    "hidden": false,
+    "nodes": [
+      "imag29",
+      "text30",
+      "text31",
+      "link32"
+    ],
+    "linkedNodes": {}
+  },
+  "imag29": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": "https://images.pexels.com/photos/338504/pexels-photo-338504.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "radius": 12,
+      "width": "100%",
+      "height": "150px",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont28",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text30": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 15,
+        "g": 23,
+        "b": 42,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "6",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Bali on a budget"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont28",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text31": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 100,
+        "g": 116,
+        "b": 139,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "8",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "How we spent three weeks in paradise for less than a month of rent."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont28",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "link32": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "#",
+      "text": "Read more →",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont28",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont33": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "PostCard"
+    },
+    "parent": "cont22",
+    "hidden": false,
+    "nodes": [
+      "imag34",
+      "text35",
+      "text36",
+      "link37"
+    ],
+    "linkedNodes": {}
+  },
+  "imag34": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": "https://images.pexels.com/photos/358457/pexels-photo-358457.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "radius": 12,
+      "width": "100%",
+      "height": "150px",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont33",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text35": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 15,
+        "g": 23,
+        "b": 42,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "6",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Window seat diaries"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont33",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text36": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 100,
+        "g": 116,
+        "b": 139,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "8",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Everything I have learned from 300,000 km of looking out of airplane windows."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont33",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "link37": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "#",
+      "text": "Read more →",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont33",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont38": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "40",
+        "20",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NewsletterSection"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont39"
+    ],
+    "linkedNodes": {}
+  },
+  "cont39": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "38",
+        "48",
+        "38",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 224,
+        "g": 242,
+        "b": 254,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 18,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Newsletter"
+    },
+    "parent": "cont38",
+    "hidden": false,
+    "nodes": [
+      "text40",
+      "text41",
+      "cont42"
+    ],
+    "linkedNodes": {}
+  },
+  "text40": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "26",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 15,
+        "g": 23,
+        "b": 42,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Join 12,000 slow travelers"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont39",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text41": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 100,
+        "g": 116,
+        "b": 139,
+        "a": 1
+      },
+      "margin": [
+        "8",
+        "0",
+        "18",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "One thoughtful email per month. No spam, just stories."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont39",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont42": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 224,
+        "g": 242,
+        "b": 254,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "220px",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "BtnBox"
+    },
+    "parent": "cont39",
+    "hidden": false,
+    "nodes": [
+      "butt43"
+    ],
+    "linkedNodes": {}
+  },
+  "butt43": {
+    "type": {
+      "resolvedName": "Button"
+    },
+    "isCanvas": false,
+    "props": {
+      "background": {
+        "r": 14,
+        "g": 165,
+        "b": 233,
+        "a": 1
+      },
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "buttonStyle": "full",
+      "text": "Subscribe free",
+      "margin": [
+        "5",
+        "0",
+        "5",
+        "0"
+      ],
+      "textComponent": {
+        "fontSize": "15",
+        "textAlign": "center",
+        "fontWeight": "600",
+        "color": {
+          "r": 92,
+          "g": 90,
+          "b": 90,
+          "a": 1
+        },
+        "margin": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "shadow": 0,
+        "text": "Subscribe free"
+      }
+    },
+    "displayName": "Button",
+    "custom": {
+      "displayName": "Button"
+    },
+    "parent": "cont42",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont44": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "26",
+        "40",
+        "26",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 15,
+        "g": 23,
+        "b": 42,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text45",
+      "text46"
+    ],
+    "linkedNodes": {}
+  },
+  "text45": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Wanderlog"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont44",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text46": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 148,
+        "g": 163,
+        "b": 184,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "© 2026 Wanderlog. Made with wanderlust."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont44",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  }
+}

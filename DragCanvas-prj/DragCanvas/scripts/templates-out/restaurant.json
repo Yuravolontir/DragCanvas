@@ -1,0 +1,2204 @@
+{
+  "ROOT": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 248,
+        "b": 240,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "800px",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "App"
+    },
+    "hidden": false,
+    "nodes": [
+      "cont01",
+      "cont10",
+      "cont12",
+      "cont17",
+      "cont23",
+      "cont42",
+      "cont46",
+      "cont55"
+    ],
+    "linkedNodes": {}
+  },
+  "cont01": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "40",
+        "20",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 248,
+        "b": 240,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Navbar"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text02",
+      "cont03"
+    ],
+    "linkedNodes": {}
+  },
+  "text02": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "22",
+      "textAlign": "left",
+      "fontWeight": "800",
+      "color": {
+        "r": 127,
+        "g": 29,
+        "b": 29,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Casa Oliva"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont01",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont03": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 248,
+        "b": 240,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NavLinks"
+    },
+    "parent": "cont01",
+    "hidden": false,
+    "nodes": [
+      "cont04",
+      "cont06",
+      "cont08"
+    ],
+    "linkedNodes": {}
+  },
+  "cont04": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "24"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NavItem"
+    },
+    "parent": "cont03",
+    "hidden": false,
+    "nodes": [
+      "link05"
+    ],
+    "linkedNodes": {}
+  },
+  "link05": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "#",
+      "text": "Menu",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont04",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont06": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "24"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NavItem"
+    },
+    "parent": "cont03",
+    "hidden": false,
+    "nodes": [
+      "link07"
+    ],
+    "linkedNodes": {}
+  },
+  "link07": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "#",
+      "text": "Story",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont06",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont08": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "24"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NavItem"
+    },
+    "parent": "cont03",
+    "hidden": false,
+    "nodes": [
+      "link09"
+    ],
+    "linkedNodes": {}
+  },
+  "link09": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "#",
+      "text": "Visit",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont08",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont10": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "8",
+        "40",
+        "0",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 248,
+        "b": 240,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "HeroImage"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "imag11"
+    ],
+    "linkedNodes": {}
+  },
+  "imag11": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "radius": 18,
+      "width": "100%",
+      "height": "360px",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont10",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont12": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "30",
+        "60",
+        "20",
+        "60"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 248,
+        "b": 240,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Hero"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text13",
+      "text14",
+      "cont15"
+    ],
+    "linkedNodes": {}
+  },
+  "text13": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "40",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 127,
+        "g": 29,
+        "b": 29,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Fine Italian dining, family style"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont12",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text14": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 68,
+        "g": 64,
+        "b": 60,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "20",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Handmade pasta, wood-fired pizza and natural wines — in the heart of the old town since 1987."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont12",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont15": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 248,
+        "b": 240,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "220px",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "BtnBox"
+    },
+    "parent": "cont12",
+    "hidden": false,
+    "nodes": [
+      "butt16"
+    ],
+    "linkedNodes": {}
+  },
+  "butt16": {
+    "type": {
+      "resolvedName": "Button"
+    },
+    "isCanvas": false,
+    "props": {
+      "background": {
+        "r": 127,
+        "g": 29,
+        "b": 29,
+        "a": 1
+      },
+      "color": {
+        "r": 255,
+        "g": 248,
+        "b": 240,
+        "a": 1
+      },
+      "buttonStyle": "full",
+      "text": "Reserve a table",
+      "margin": [
+        "5",
+        "0",
+        "5",
+        "0"
+      ],
+      "textComponent": {
+        "fontSize": "15",
+        "textAlign": "center",
+        "fontWeight": "600",
+        "color": {
+          "r": 92,
+          "g": 90,
+          "b": 90,
+          "a": 1
+        },
+        "margin": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "shadow": 0,
+        "text": "Reserve a table"
+      }
+    },
+    "displayName": "Button",
+    "custom": {
+      "displayName": "Button"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont17": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "44",
+        "40",
+        "22",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 248,
+        "b": 240,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Story"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont18",
+      "imag22"
+    ],
+    "linkedNodes": {}
+  },
+  "cont18": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "28",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 248,
+        "b": 240,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "52%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "StoryText"
+    },
+    "parent": "cont17",
+    "hidden": false,
+    "nodes": [
+      "text19",
+      "text20",
+      "text21"
+    ],
+    "linkedNodes": {}
+  },
+  "text19": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 180,
+        "g": 83,
+        "b": 9,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "OUR STORY"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont18",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text20": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "28",
+      "textAlign": "left",
+      "fontWeight": "800",
+      "color": {
+        "r": 127,
+        "g": 29,
+        "b": 29,
+        "a": 1
+      },
+      "margin": [
+        "10",
+        "0",
+        "12",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Three generations at one stove"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont18",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text21": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 68,
+        "g": 64,
+        "b": 60,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Nonna Lucia opened Casa Oliva with one table and six chairs. Today her grandchildren roll the same tagliatelle by hand every morning, with flour from the same mill in Tuscany."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont18",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "imag22": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "radius": 16,
+      "width": "320px",
+      "height": "300px",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont17",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont23": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "36",
+        "40",
+        "10",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 248,
+        "b": 240,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Menu"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text24",
+      "text25",
+      "cont26"
+    ],
+    "linkedNodes": {}
+  },
+  "text24": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "center",
+      "fontWeight": "700",
+      "color": {
+        "r": 180,
+        "g": 83,
+        "b": 9,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "FROM THE MENU"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont23",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text25": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "30",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 127,
+        "g": 29,
+        "b": 29,
+        "a": 1
+      },
+      "margin": [
+        "8",
+        "0",
+        "24",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Signature dishes"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont23",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont26": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "flex-start",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 248,
+        "b": 240,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "MenuRow"
+    },
+    "parent": "cont23",
+    "hidden": false,
+    "nodes": [
+      "cont27",
+      "cont32",
+      "cont37"
+    ],
+    "linkedNodes": {}
+  },
+  "cont27": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "18",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 10,
+      "radius": 16,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "DishCard"
+    },
+    "parent": "cont26",
+    "hidden": false,
+    "nodes": [
+      "imag28",
+      "text29",
+      "text30",
+      "text31"
+    ],
+    "linkedNodes": {}
+  },
+  "imag28": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "radius": 12,
+      "width": "100%",
+      "height": "150px",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont27",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text29": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 28,
+        "g": 25,
+        "b": 23,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "16",
+        "4",
+        "16"
+      ],
+      "shadow": 0,
+      "text": "Tagliatelle al Tartufo"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont27",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text30": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "800",
+      "color": {
+        "r": 180,
+        "g": 83,
+        "b": 9,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "16",
+        "6",
+        "16"
+      ],
+      "shadow": 0,
+      "text": "€18"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont27",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text31": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 87,
+        "g": 83,
+        "b": 78,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "16",
+        "0",
+        "16"
+      ],
+      "shadow": 0,
+      "text": "Hand-rolled pasta, black truffle, aged parmigiano."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont27",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont32": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "18",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 10,
+      "radius": 16,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "DishCard"
+    },
+    "parent": "cont26",
+    "hidden": false,
+    "nodes": [
+      "imag33",
+      "text34",
+      "text35",
+      "text36"
+    ],
+    "linkedNodes": {}
+  },
+  "imag33": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": "https://images.pexels.com/photos/1099680/pexels-photo-1099680.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "radius": 12,
+      "width": "100%",
+      "height": "150px",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont32",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text34": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 28,
+        "g": 25,
+        "b": 23,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "16",
+        "4",
+        "16"
+      ],
+      "shadow": 0,
+      "text": "Pizza Margherita DOP"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont32",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text35": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "800",
+      "color": {
+        "r": 180,
+        "g": 83,
+        "b": 9,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "16",
+        "6",
+        "16"
+      ],
+      "shadow": 0,
+      "text": "€14"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont32",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text36": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 87,
+        "g": 83,
+        "b": 78,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "16",
+        "0",
+        "16"
+      ],
+      "shadow": 0,
+      "text": "San Marzano tomatoes, buffalo mozzarella, basil."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont32",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont37": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "18",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 10,
+      "radius": 16,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "DishCard"
+    },
+    "parent": "cont26",
+    "hidden": false,
+    "nodes": [
+      "imag38",
+      "text39",
+      "text40",
+      "text41"
+    ],
+    "linkedNodes": {}
+  },
+  "imag38": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "radius": 12,
+      "width": "100%",
+      "height": "150px",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont37",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text39": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 28,
+        "g": 25,
+        "b": 23,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "16",
+        "4",
+        "16"
+      ],
+      "shadow": 0,
+      "text": "Panna Cotta al Miele"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont37",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text40": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "800",
+      "color": {
+        "r": 180,
+        "g": 83,
+        "b": 9,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "16",
+        "6",
+        "16"
+      ],
+      "shadow": 0,
+      "text": "€9"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont37",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text41": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 87,
+        "g": 83,
+        "b": 78,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "16",
+        "0",
+        "16"
+      ],
+      "shadow": 0,
+      "text": "Wildflower honey, roasted figs, almond crumble."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont37",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont42": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "36",
+        "40",
+        "22",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 248,
+        "b": 240,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "QuoteSection"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont43"
+    ],
+    "linkedNodes": {}
+  },
+  "cont43": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "48",
+        "40",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 127,
+        "g": 29,
+        "b": 29,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 18,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "ChefQuote"
+    },
+    "parent": "cont42",
+    "hidden": false,
+    "nodes": [
+      "text44",
+      "text45"
+    ],
+    "linkedNodes": {}
+  },
+  "text44": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "21",
+      "textAlign": "center",
+      "fontWeight": "600",
+      "color": {
+        "r": 255,
+        "g": 248,
+        "b": 240,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "\"Simple ingredients, treated with respect — that is the whole secret.\""
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont43",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text45": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "center",
+      "fontWeight": "700",
+      "color": {
+        "r": 253,
+        "g": 230,
+        "b": 138,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "— Nonna Lucia, Head Chef"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont43",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont46": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "flex-start",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "22",
+        "40",
+        "30",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 248,
+        "b": 240,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Visit"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont47",
+      "cont51"
+    ],
+    "linkedNodes": {}
+  },
+  "cont47": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "26",
+        "26",
+        "26",
+        "26"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 16,
+      "width": "48%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Hours"
+    },
+    "parent": "cont46",
+    "hidden": false,
+    "nodes": [
+      "text48",
+      "text49",
+      "text50"
+    ],
+    "linkedNodes": {}
+  },
+  "text48": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 180,
+        "g": 83,
+        "b": 9,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "HOURS"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont47",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text49": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "18",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 28,
+        "g": 25,
+        "b": 23,
+        "a": 1
+      },
+      "margin": [
+        "10",
+        "0",
+        "6",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Tuesday — Sunday"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont47",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text50": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 68,
+        "g": 64,
+        "b": 60,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Lunch 12:00 – 15:00 · Dinner 18:00 – 23:00"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont47",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont51": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "26",
+        "26",
+        "26",
+        "26"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 16,
+      "width": "48%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Location"
+    },
+    "parent": "cont46",
+    "hidden": false,
+    "nodes": [
+      "text52",
+      "text53",
+      "link54"
+    ],
+    "linkedNodes": {}
+  },
+  "text52": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 180,
+        "g": 83,
+        "b": 9,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "FIND US"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont51",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text53": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "18",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 28,
+        "g": 25,
+        "b": 23,
+        "a": 1
+      },
+      "margin": [
+        "10",
+        "0",
+        "6",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Via delle Rose 12, Firenze"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont51",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "link54": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "https://maps.google.com",
+      "text": "Get directions →",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont51",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont55": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "22",
+        "40",
+        "22",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 127,
+        "g": 29,
+        "b": 29,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text56"
+    ],
+    "linkedNodes": {}
+  },
+  "text56": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 255,
+        "g": 248,
+        "b": 240,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Casa Oliva · Est. 1987 · Firenze, Italia"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont55",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  }
+}

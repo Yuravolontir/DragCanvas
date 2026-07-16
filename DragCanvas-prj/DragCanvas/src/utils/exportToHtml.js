@@ -127,6 +127,8 @@ const converters = {
 
     const styles = {
       background: isOutline ? 'transparent' : rgbaToString(props.background),
+      color: rgbaToString(props.color),
+      fontWeight: '600',
       border: isOutline
         ? `2px solid ${rgbaToString(props.background)}`
         : '2px solid transparent',
@@ -213,6 +215,67 @@ const converters = {
     cssRules.push(`.${className} {\n${stylesToCss(styles)}\n}`);
 
     return `    <img class="${className}" src="${resolveImageSrc(props.src)}" alt="" />\n`;
+  },
+
+  Carousel: (node) => {
+    const props = node.props || {};
+    const className = generateClass('carousel');
+
+    const height = props.height || '400px';
+
+    // CSS-only carousel: horizontal scroll-snap strip (swipeable on mobile)
+    cssRules.push(`.${className} {
+  display: flex;
+  width: 100%;
+  height: ${height};
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  border-radius: 12px;
+}
+.${className}::-webkit-scrollbar { display: none; }
+.${className} .slide {
+  position: relative;
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  background-size: cover;
+  background-position: center;
+}
+.${className} .caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24px 32px;
+  color: #fff;
+  background: linear-gradient(transparent, rgba(0,0,0,0.65));
+}
+.${className} .caption h3 { margin: 0 0 4px; }
+.${className} .caption p { margin: 0; font-size: 14px; }
+.${className} .badge {
+  display: inline-block;
+  padding: 2px 10px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+  background: #0d6efd;
+}`);
+
+    let slides = '';
+    for (const i of [1, 2, 3]) {
+      const src = props[`src${i}`];
+      if (!src) continue;
+      const label = props[`label${i}`];
+      slides += `      <div class="slide" style="background-image: url('${resolveImageSrc(src)}')">
+        <div class="caption">
+          ${label ? `<span class="badge">${label}</span>` : ''}
+          <h3>${props[`heading${i}`] || ''}</h3>
+          <p>${props[`p${i}`] || ''}</p>
+        </div>
+      </div>\n`;
+    }
+
+    return `    <div class="${className}">\n${slides}    </div>\n`;
   },
 
   Link: (node) => {

@@ -1,0 +1,2835 @@
+{
+  "ROOT": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "800px",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "App"
+    },
+    "hidden": false,
+    "nodes": [
+      "cont01",
+      "cont10",
+      "cont12",
+      "cont17",
+      "cont33",
+      "cont40",
+      "cont62",
+      "cont66"
+    ],
+    "linkedNodes": {}
+  },
+  "cont01": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "40",
+        "24",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Navbar"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text02",
+      "cont03"
+    ],
+    "linkedNodes": {}
+  },
+  "text02": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "22",
+      "textAlign": "left",
+      "fontWeight": "800",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "FORGE"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont01",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont03": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NavLinks"
+    },
+    "parent": "cont01",
+    "hidden": false,
+    "nodes": [
+      "cont04",
+      "cont06",
+      "cont08"
+    ],
+    "linkedNodes": {}
+  },
+  "cont04": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "24"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NavItem"
+    },
+    "parent": "cont03",
+    "hidden": false,
+    "nodes": [
+      "link05"
+    ],
+    "linkedNodes": {}
+  },
+  "link05": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "#",
+      "text": "Programs",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont04",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont06": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "24"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NavItem"
+    },
+    "parent": "cont03",
+    "hidden": false,
+    "nodes": [
+      "link07"
+    ],
+    "linkedNodes": {}
+  },
+  "link07": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "#",
+      "text": "Coach",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont06",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont08": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "24"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "NavItem"
+    },
+    "parent": "cont03",
+    "hidden": false,
+    "nodes": [
+      "link09"
+    ],
+    "linkedNodes": {}
+  },
+  "link09": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "#",
+      "text": "Pricing",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont08",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont10": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "HeroVideo"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "vide11"
+    ],
+    "linkedNodes": {}
+  },
+  "vide11": {
+    "type": {
+      "resolvedName": "Video"
+    },
+    "isCanvas": false,
+    "props": {
+      "sourceType": "file",
+      "videoId": "",
+      "videoUrl": "https://videos.pexels.com/video-files/852421/852421-hd_1920_1080_30fps.mp4",
+      "text": "TRAIN HARD. RECOVER SMART."
+    },
+    "displayName": "Video",
+    "custom": {
+      "displayName": "Video"
+    },
+    "parent": "cont10",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont12": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "34",
+        "60",
+        "18",
+        "60"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Hero"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text13",
+      "text14",
+      "cont15"
+    ],
+    "linkedNodes": {}
+  },
+  "text13": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "44",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "STRONGER EVERY DAY"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont12",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text14": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 161,
+        "g": 161,
+        "b": 170,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "22",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Personal coaching and science-based programs for real people with real schedules."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont12",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont15": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "260px",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "BtnBox"
+    },
+    "parent": "cont12",
+    "hidden": false,
+    "nodes": [
+      "butt16"
+    ],
+    "linkedNodes": {}
+  },
+  "butt16": {
+    "type": {
+      "resolvedName": "Button"
+    },
+    "isCanvas": false,
+    "props": {
+      "background": {
+        "r": 249,
+        "g": 115,
+        "b": 22,
+        "a": 1
+      },
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "buttonStyle": "full",
+      "text": "Start 7-day free trial",
+      "margin": [
+        "5",
+        "0",
+        "5",
+        "0"
+      ],
+      "textComponent": {
+        "fontSize": "15",
+        "textAlign": "center",
+        "fontWeight": "600",
+        "color": {
+          "r": 92,
+          "g": 90,
+          "b": 90,
+          "a": 1
+        },
+        "margin": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "shadow": 0,
+        "text": "Start 7-day free trial"
+      }
+    },
+    "displayName": "Button",
+    "custom": {
+      "displayName": "Button"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont17": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "34",
+        "40",
+        "8",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Programs"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text18",
+      "text19",
+      "cont20"
+    ],
+    "linkedNodes": {}
+  },
+  "text18": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "center",
+      "fontWeight": "700",
+      "color": {
+        "r": 249,
+        "g": 115,
+        "b": 22,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "PROGRAMS"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont17",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text19": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "30",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "8",
+        "0",
+        "24",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Built for your goals"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont17",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont20": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "flex-start",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "ProgramRow"
+    },
+    "parent": "cont17",
+    "hidden": false,
+    "nodes": [
+      "cont21",
+      "cont25",
+      "cont29"
+    ],
+    "linkedNodes": {}
+  },
+  "cont21": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "20",
+        "24",
+        "20"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 39,
+        "g": 39,
+        "b": 42,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 16,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "ProgramCard"
+    },
+    "parent": "cont20",
+    "hidden": false,
+    "nodes": [
+      "text22",
+      "text23",
+      "text24"
+    ],
+    "linkedNodes": {}
+  },
+  "text22": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "30",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "🏋️"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont21",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text23": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "19",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "10",
+        "0",
+        "8",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Strength"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont21",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text24": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 161,
+        "g": 161,
+        "b": 170,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Progressive overload done right — squat, hinge, push, pull, carry."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont21",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont25": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "20",
+        "24",
+        "20"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 39,
+        "g": 39,
+        "b": 42,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 16,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "ProgramCard"
+    },
+    "parent": "cont20",
+    "hidden": false,
+    "nodes": [
+      "text26",
+      "text27",
+      "text28"
+    ],
+    "linkedNodes": {}
+  },
+  "text26": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "30",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "🔥"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont25",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text27": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "19",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "10",
+        "0",
+        "8",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "HIIT & Conditioning"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont25",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text28": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 161,
+        "g": 161,
+        "b": 170,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Short, brutal, effective. Burn fat and build an engine in 30 minutes."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont25",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont29": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "20",
+        "24",
+        "20"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 39,
+        "g": 39,
+        "b": 42,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 16,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "ProgramCard"
+    },
+    "parent": "cont20",
+    "hidden": false,
+    "nodes": [
+      "text30",
+      "text31",
+      "text32"
+    ],
+    "linkedNodes": {}
+  },
+  "text30": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "30",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "🧘"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont29",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text31": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "19",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "10",
+        "0",
+        "8",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Mobility & Recovery"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont29",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text32": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 161,
+        "g": 161,
+        "b": 170,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Move better, sleep deeper, stay injury-free for the long run."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont29",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont33": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "44",
+        "40",
+        "22",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Coach"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "imag34",
+      "cont35"
+    ],
+    "linkedNodes": {}
+  },
+  "imag34": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": "https://images.pexels.com/photos/3837781/pexels-photo-3837781.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "radius": 16,
+      "width": "300px",
+      "height": "340px",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont33",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont35": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "32"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "55%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "CoachBio"
+    },
+    "parent": "cont33",
+    "hidden": false,
+    "nodes": [
+      "text36",
+      "text37",
+      "text38",
+      "text39"
+    ],
+    "linkedNodes": {}
+  },
+  "text36": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 249,
+        "g": 115,
+        "b": 22,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "HEAD COACH"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont35",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text37": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "30",
+      "textAlign": "left",
+      "fontWeight": "800",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "8",
+        "0",
+        "12",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Alex Torres"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont35",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text38": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 161,
+        "g": 161,
+        "b": 170,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Former national-level sprinter turned strength coach. Alex has spent 12 years helping desk workers, parents and athletes get strong without living in the gym."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont35",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text39": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "left",
+      "fontWeight": "600",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "CSCS certified · 12 years coaching · 500+ athletes"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont35",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont40": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "34",
+        "40",
+        "10",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Pricing"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text41",
+      "text42",
+      "cont43"
+    ],
+    "linkedNodes": {}
+  },
+  "text41": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "center",
+      "fontWeight": "700",
+      "color": {
+        "r": 249,
+        "g": 115,
+        "b": 22,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "PRICING"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont40",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text42": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "30",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "8",
+        "0",
+        "24",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Simple plans, no contracts"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont40",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont43": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "flex-start",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "PricingRow"
+    },
+    "parent": "cont40",
+    "hidden": false,
+    "nodes": [
+      "cont44",
+      "cont50",
+      "cont56"
+    ],
+    "linkedNodes": {}
+  },
+  "cont44": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "28",
+        "18",
+        "28",
+        "18"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 39,
+        "g": 39,
+        "b": 42,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 16,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "PlanCard"
+    },
+    "parent": "cont43",
+    "hidden": false,
+    "nodes": [
+      "text45",
+      "text46",
+      "text47",
+      "text48",
+      "butt49"
+    ],
+    "linkedNodes": {}
+  },
+  "text45": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "center",
+      "fontWeight": "700",
+      "color": {
+        "r": 249,
+        "g": 115,
+        "b": 22,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "BASIC"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont44",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text46": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "38",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "8",
+        "0",
+        "2",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "$29"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont44",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text47": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "12",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 161,
+        "g": 161,
+        "b": 170,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "per month"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont44",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text48": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 161,
+        "g": 161,
+        "b": 170,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "14",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Gym access · group classes"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont44",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "butt49": {
+    "type": {
+      "resolvedName": "Button"
+    },
+    "isCanvas": false,
+    "props": {
+      "background": {
+        "r": 249,
+        "g": 115,
+        "b": 22,
+        "a": 1
+      },
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "buttonStyle": "outline",
+      "text": "Choose plan",
+      "margin": [
+        "5",
+        "0",
+        "5",
+        "0"
+      ],
+      "textComponent": {
+        "fontSize": "15",
+        "textAlign": "center",
+        "fontWeight": "600",
+        "color": {
+          "r": 92,
+          "g": 90,
+          "b": 90,
+          "a": 1
+        },
+        "margin": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "shadow": 0,
+        "text": "Choose plan"
+      }
+    },
+    "displayName": "Button",
+    "custom": {
+      "displayName": "Button"
+    },
+    "parent": "cont44",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont50": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "28",
+        "18",
+        "28",
+        "18"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 249,
+        "g": 115,
+        "b": 22,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 16,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "PlanCard"
+    },
+    "parent": "cont43",
+    "hidden": false,
+    "nodes": [
+      "text51",
+      "text52",
+      "text53",
+      "text54",
+      "butt55"
+    ],
+    "linkedNodes": {}
+  },
+  "text51": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "center",
+      "fontWeight": "700",
+      "color": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "PRO"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont50",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text52": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "38",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "margin": [
+        "8",
+        "0",
+        "2",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "$59"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont50",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text53": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "12",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 69,
+        "g": 26,
+        "b": 3,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "per month"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont50",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text54": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 69,
+        "g": 26,
+        "b": 3,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "14",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Everything in Basic + 2 PT sessions"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont50",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "butt55": {
+    "type": {
+      "resolvedName": "Button"
+    },
+    "isCanvas": false,
+    "props": {
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "color": {
+        "r": 249,
+        "g": 115,
+        "b": 22,
+        "a": 1
+      },
+      "buttonStyle": "full",
+      "text": "Most popular",
+      "margin": [
+        "5",
+        "0",
+        "5",
+        "0"
+      ],
+      "textComponent": {
+        "fontSize": "15",
+        "textAlign": "center",
+        "fontWeight": "600",
+        "color": {
+          "r": 92,
+          "g": 90,
+          "b": 90,
+          "a": 1
+        },
+        "margin": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "shadow": 0,
+        "text": "Most popular"
+      }
+    },
+    "displayName": "Button",
+    "custom": {
+      "displayName": "Button"
+    },
+    "parent": "cont50",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont56": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "28",
+        "18",
+        "28",
+        "18"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 39,
+        "g": 39,
+        "b": 42,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 16,
+      "width": "31%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "PlanCard"
+    },
+    "parent": "cont43",
+    "hidden": false,
+    "nodes": [
+      "text57",
+      "text58",
+      "text59",
+      "text60",
+      "butt61"
+    ],
+    "linkedNodes": {}
+  },
+  "text57": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "center",
+      "fontWeight": "700",
+      "color": {
+        "r": 249,
+        "g": 115,
+        "b": 22,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "ELITE"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont56",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text58": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "38",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "8",
+        "0",
+        "2",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "$99"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont56",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text59": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "12",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 161,
+        "g": 161,
+        "b": 170,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "per month"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont56",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text60": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 161,
+        "g": 161,
+        "b": 170,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "14",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Unlimited PT · nutrition coaching"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont56",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "butt61": {
+    "type": {
+      "resolvedName": "Button"
+    },
+    "isCanvas": false,
+    "props": {
+      "background": {
+        "r": 249,
+        "g": 115,
+        "b": 22,
+        "a": 1
+      },
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "buttonStyle": "outline",
+      "text": "Choose plan",
+      "margin": [
+        "5",
+        "0",
+        "5",
+        "0"
+      ],
+      "textComponent": {
+        "fontSize": "15",
+        "textAlign": "center",
+        "fontWeight": "600",
+        "color": {
+          "r": 92,
+          "g": 90,
+          "b": 90,
+          "a": 1
+        },
+        "margin": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "shadow": 0,
+        "text": "Choose plan"
+      }
+    },
+    "displayName": "Button",
+    "custom": {
+      "displayName": "Button"
+    },
+    "parent": "cont56",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont62": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "44",
+        "80",
+        "30",
+        "80"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Testimonial"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "imag63",
+      "text64",
+      "text65"
+    ],
+    "linkedNodes": {}
+  },
+  "imag63": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "radius": 50,
+      "width": "80px",
+      "height": "80px",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont62",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text64": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "20",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 228,
+        "g": 228,
+        "b": 231,
+        "a": 1
+      },
+      "margin": [
+        "18",
+        "0",
+        "10",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "\"Down 14 kg and deadlifting double bodyweight. FORGE changed how I train — and how I live.\""
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont62",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text65": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "14",
+      "textAlign": "center",
+      "fontWeight": "600",
+      "color": {
+        "r": 249,
+        "g": 115,
+        "b": 22,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Marcus J. — member since 2024"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont62",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont66": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "46",
+        "40",
+        "40",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 249,
+        "g": 115,
+        "b": 22,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "CTAFooter"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "text67",
+      "cont68",
+      "text70"
+    ],
+    "linkedNodes": {}
+  },
+  "text67": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "32",
+      "textAlign": "center",
+      "fontWeight": "800",
+      "color": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "YOUR FIRST WEEK IS FREE"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont66",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont68": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "18",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 249,
+        "g": 115,
+        "b": 22,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "240px",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "BtnBox"
+    },
+    "parent": "cont66",
+    "hidden": false,
+    "nodes": [
+      "butt69"
+    ],
+    "linkedNodes": {}
+  },
+  "butt69": {
+    "type": {
+      "resolvedName": "Button"
+    },
+    "isCanvas": false,
+    "props": {
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 1
+      },
+      "color": {
+        "r": 249,
+        "g": 115,
+        "b": 22,
+        "a": 1
+      },
+      "buttonStyle": "full",
+      "text": "Claim your pass",
+      "margin": [
+        "5",
+        "0",
+        "5",
+        "0"
+      ],
+      "textComponent": {
+        "fontSize": "15",
+        "textAlign": "center",
+        "fontWeight": "600",
+        "color": {
+          "r": 92,
+          "g": 90,
+          "b": 90,
+          "a": 1
+        },
+        "margin": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "shadow": 0,
+        "text": "Claim your pass"
+      }
+    },
+    "displayName": "Button",
+    "custom": {
+      "displayName": "Button"
+    },
+    "parent": "cont68",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text70": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "12",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 24,
+        "g": 24,
+        "b": 27,
+        "a": 0.7
+      },
+      "margin": [
+        "18",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "© 2026 FORGE Athletics"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont66",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  }
+}
