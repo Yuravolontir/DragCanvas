@@ -9,10 +9,35 @@ const rgbaToString = (color) => {
   return `rgba(${color.r || 0}, ${color.g || 0}, ${color.b || 0}, ${color.a !== undefined ? color.a : 1})`;
 };
 
-// Helper: Convert padding/margin array to CSS string
+// Helper: Convert padding/margin array to CSS string.
+// The editor writes `${p[0]}px ${p[1]}px ...` — if the array is malformed
+// (e.g. AI-generated [20202020]), that CSS is invalid and the browser ignores it.
+// Mirror that behaviour: all 4 values must be valid numbers, otherwise 0.
 const spacingToCss = (spacing) => {
-  if (!spacing || !Array.isArray(spacing)) return '0';
-  return `${spacing[0] || 0}px ${spacing[1] || 0}px ${spacing[2] || 0}px ${spacing[3] || 0}px`;
+  if (!Array.isArray(spacing) || spacing.length !== 4) return '0';
+  if (spacing.some((v) => v === undefined || v === null || v === '' || isNaN(Number(v)))) return '0';
+  return `${spacing[0]}px ${spacing[1]}px ${spacing[2]}px ${spacing[3]}px`;
+};
+
+// Helper: { flexDirection: 'row' } → "  flex-direction: row;" (valid CSS, not React camelCase)
+const stylesToCss = (styles) => {
+  return Object.entries(styles)
+    .filter(([_, value]) => value !== undefined && value !== null)
+    .map(([key, value]) => `  ${key.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase())}: ${value};`)
+    .join('\n');
+};
+
+// Helper: published sites can't use the dev server's image proxy — restore the original URL
+const resolveImageSrc = (src) => {
+  if (!src) return '';
+  const marker = '/api/image-proxy?url=';
+  const idx = src.indexOf(marker);
+  if (idx === -1) return src;
+  try {
+    return decodeURIComponent(src.slice(idx + marker.length));
+  } catch {
+    return src;
+  }
 };
 
 // Helper: Generate unique ID for CSS rules
@@ -24,9 +49,18 @@ const generateClass = (prefix) => {
 // Store all CSS rules
 const cssRules = [];
 
+// Helper: collect all child node ids (regular children + linked <Element id=...> children)
+const getChildIds = (node) => {
+  const ids = Array.isArray(node.nodes) ? [...node.nodes] : [];
+  if (node.linkedNodes && typeof node.linkedNodes === 'object') {
+    ids.push(...Object.values(node.linkedNodes));
+  }
+  return ids;
+};
+
 // Component converters
 const converters = {
-  Container: (node, depth = 0) => {
+  Container: (node, data, depth = 0) => {
     const props = node.props || {};
     const className = generateClass('container');
 
@@ -49,19 +83,11 @@ const converters = {
       boxSizing: 'border-box',
     };
 
-    // Filter out undefined/null values
-    const cssString = Object.entries(styles)
-      .filter(([_, value]) => value !== undefined && value !== null)
-      .map(([key, value]) => `  ${key}: ${value};`)
-      .join('\n');
-
-    cssRules.push(`.${className} {\n${cssString}\n}`);
+    cssRules.push(`.${className} {\n${stylesToCss(styles)}\n}`);
 
     let childrenHtml = '';
-    if (node.nodes && Array.isArray(node.nodes)) {
-      for (const childNodeId of node.nodes) {
-        childrenHtml += convertNode(childNodeId, depth + 1);
-      }
+    for (const childNodeId of getChildIds(node)) {
+      childrenHtml += convertNode(childNodeId, data, depth + 1);
     }
 
     return `  <div class="${className}">\n${childrenHtml}  </div>\n`;
@@ -83,12 +109,7 @@ const converters = {
         : 'none',
     };
 
-    const cssString = Object.entries(styles)
-      .filter(([_, value]) => value !== undefined && value !== null)
-      .map(([key, value]) => `  ${key}: ${value};`)
-      .join('\n');
-
-    cssRules.push(`.${className} {\n${cssString}\n}`);
+    cssRules.push(`.${className} {\n${stylesToCss(styles)}\n}`);
 
     // Process text content - handle bold/italic markdown
     let text = props.text || 'Text';
@@ -120,12 +141,7 @@ const converters = {
       textAlign: 'center',
     };
 
-    const cssString = Object.entries(styles)
-      .filter(([_, value]) => value !== undefined && value !== null)
-      .map(([key, value]) => `  ${key}: ${value};`)
-      .join('\n');
-
-    cssRules.push(`.${className} {\n${cssString}\n}`);
+    cssRules.push(`.${className} {\n${stylesToCss(styles)}\n}`);
 
     // Hover effect
     cssRules.push(`.${className}:hover {\n  transform: translateY(-2px);\n  box-shadow: 0 6px 12px rgba(0,0,0,0.15);\n}\n`);
@@ -144,7 +160,7 @@ const converters = {
       position: 'relative',
     };
 
-    cssRules.push(`.${wrapperClass} {\n${Object.entries(wrapperStyles).map(([k, v]) => `  ${k}: ${v};`).join('\n')}\n}`);
+    cssRules.push(`.${wrapperClass} {\n${stylesToCss(wrapperStyles)}\n}`);
 
     if (props.videoId) {
       // YouTube embed
@@ -168,6 +184,7 @@ const converters = {
         autoplay
         loop
         muted
+        playsinline
         controls
         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
         <source src="${props.videoUrl}" type="video/mp4">
@@ -193,14 +210,9 @@ const converters = {
       objectFit: 'cover',
     };
 
-    const cssString = Object.entries(styles)
-      .filter(([_, value]) => value !== undefined && value !== null)
-      .map(([key, value]) => `  ${key}: ${value};`)
-      .join('\n');
+    cssRules.push(`.${className} {\n${stylesToCss(styles)}\n}`);
 
-    cssRules.push(`.${className} {\n${cssString}\n}`);
-
-    return `    <img class="${className}" src="${props.src || ''}" alt="" />\n`;
+    return `    <img class="${className}" src="${resolveImageSrc(props.src)}" alt="" />\n`;
   },
 
   Link: (node) => {
@@ -215,12 +227,7 @@ const converters = {
       transition: 'color 0.2s ease',
     };
 
-    const cssString = Object.entries(styles)
-      .filter(([_, value]) => value !== undefined && value !== null)
-      .map(([key, value]) => `  ${key}: ${value};`)
-      .join('\n');
-
-    cssRules.push(`.${className} {\n${cssString}\n}`);
+    cssRules.push(`.${className} {\n${stylesToCss(styles)}\n}`);
     cssRules.push(`.${className}:hover {\n  color: #0052a3;\n  text-decoration: underline;\n}\n`);
 
     return `    <a class="${className}" href="${props.href || '#'}">${props.text || 'Link'}</a>\n`;
@@ -228,19 +235,31 @@ const converters = {
 };
 
 // Convert a single node to HTML
+// `data` is the flat node map from Craft.js query.serialize(): { ROOT: {...}, nodeId: {...}, ... }
 const convertNode = (nodeId, data, depth = 0) => {
-  const node = data.nodes[nodeId];
+  const node = data[nodeId];
   if (!node) return '';
 
   const typeName = node.type?.resolvedName || node.type;
   const converter = converters[typeName];
 
-  if (!converter) {
-    console.warn(`No converter for type: ${typeName}`);
-    return '';
+  if (converter) {
+    return converter(node, data, depth);
   }
 
-  return converter(node, depth);
+  // Fallback for custom/unknown components (Custom1-3, Carousel, Map, ...):
+  // render their children so content is not silently dropped
+  const childIds = getChildIds(node);
+  if (childIds.length > 0) {
+    let childrenHtml = '';
+    for (const childNodeId of childIds) {
+      childrenHtml += convertNode(childNodeId, data, depth + 1);
+    }
+    return `  <div>\n${childrenHtml}  </div>\n`;
+  }
+
+  console.warn(`No converter for type: ${typeName}`);
+  return '';
 };
 
 // Main export function
@@ -275,16 +294,13 @@ button {
   font-family: inherit;
 }`);
 
-  // Find ROOT node and convert children
+  // serializedData is the flat node map from query.serialize(): ROOT is a top-level key
   let htmlContent = '';
 
-  if (serializedData.nodes) {
-    const rootNode = serializedData.nodes.ROOT;
-    if (rootNode && rootNode.nodes) {
-      for (const childNodeId of rootNode.nodes) {
-        htmlContent += convertNode(childNodeId, serializedData);
-      }
-    }
+  const rootNode = serializedData.ROOT;
+  if (rootNode) {
+    // ROOT itself is the canvas Container — convert it so its background/layout is kept
+    htmlContent = convertNode('ROOT', serializedData);
   }
 
   // Combine everything

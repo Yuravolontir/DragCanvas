@@ -4,6 +4,7 @@ from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 import reports
 import charts
+import qr
 
 app = FastAPI(title="DragCanvas Admin Reports")
 
@@ -69,3 +70,10 @@ def chart_actions():
 @app.get("/api/charts/project-sizes")
 def chart_project_sizes():
     return StreamingResponse(charts.project_sizes_chart(), media_type="image/png")
+
+
+# ---------- QR code ----------
+
+@app.get("/api/qr")
+def get_qr(url: str):
+    return StreamingResponse(qr.generate_qr(url), media_type="image/png")

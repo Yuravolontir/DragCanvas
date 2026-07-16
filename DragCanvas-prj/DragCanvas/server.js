@@ -4,6 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import pg from 'pg';
 import cron from 'node-cron';
+import crypto from 'crypto';
 import userRoutes from './features/users/user.routes.js';
 import { setPool as setUserPool } from './features/users/user.model.js';
 import projectRoutes from './features/projects/project.routes.js';
@@ -1330,9 +1331,86 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
   });
 
 // ---------- Publish site ----------
+
+  // Turn "My Cool Site!" into "my-cool-site"
+  function slugify(text) {
+    return String(text).toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 40);
+  }
+
+  // Deploy a single-page HTML to Netlify. Creates the site on first publish,
+  // re-deploys to the same site (same URL) on later publishes.
+  async function deployToNetlify(html, siteName, existingSiteId) {
+    const token = process.env.NETLIFY_TOKEN;
+    if (!token) throw new Error('NETLIFY_TOKEN is not configured on the server');
+    const jsonHeaders = { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
+
+    const createSite = async () => {
+      let name = siteName;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        const resp = await fetch('https://api.netlify.com/api/v1/sites', {
+          method: 'POST', headers: jsonHeaders, body: JSON.stringify({ name }),
+        });
+        if (resp.ok) return resp.json();
+        if (resp.status === 422) {
+          // Site name taken — retry with a random suffix
+          name = `${siteName}-${Math.random().toString(36).slice(2, 6)}`;
+          continue;
+        }
+        throw new Error(`Netlify create site failed (${resp.status}): ${await resp.text()}`);
+      }
+      throw new Error('Could not find a free Netlify site name');
+    };
+
+    // 1. Create the site if this project was never published before
+    let siteId = existingSiteId;
+    let siteUrl = null;
+    if (!siteId) {
+      const site = await createSite();
+      siteId = site.id;
+      siteUrl = site.ssl_url || site.url;
+    }
+
+    // 2. Create a deploy: tell Netlify which files we have (SHA1 digest method)
+    const sha1 = crypto.createHash('sha1').update(html).digest('hex');
+    const createDeploy = () => fetch(`https://api.netlify.com/api/v1/sites/${siteId}/deploys`, {
+      method: 'POST', headers: jsonHeaders,
+      body: JSON.stringify({ files: { '/index.html': sha1 } }),
+    });
+    let deployResp = await createDeploy();
+
+    // Stored site was deleted on Netlify — create a fresh one and retry
+    if (deployResp.status === 404 && existingSiteId) {
+      const site = await createSite();
+      siteId = site.id;
+      siteUrl = site.ssl_url || site.url;
+      deployResp = await createDeploy();
+    }
+    if (!deployResp.ok) {
+      throw new Error(`Netlify create deploy failed (${deployResp.status}): ${await deployResp.text()}`);
+    }
+    const deploy = await deployResp.json();
+
+    // 3. Upload the file content if Netlify does not have it yet
+    if ((deploy.required || []).includes(sha1)) {
+      const uploadResp = await fetch(`https://api.netlify.com/api/v1/deploys/${deploy.id}/files/index.html`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/octet-stream' },
+        body: html,
+      });
+      if (!uploadResp.ok) {
+        throw new Error(`Netlify file upload failed (${uploadResp.status}): ${await uploadResp.text()}`);
+      }
+    }
+
+    return { siteId, url: siteUrl || deploy.ssl_url || deploy.url };
+  }
+
   app.post('/api/publish-site', async (req, res) => {
     try {
-      const { projectId, html, domain } = req.body;
+      const { projectId, html, domain, target } = req.body;
       if (!projectId || !html) return res.status(400).json({ error: 'Missing data' });
 
       // Check if domain already taken by another project
@@ -1346,17 +1424,49 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
         }
       }
 
+      // Save HTML first — even if Netlify fails, publish can be retried
       await pool.query(
         'UPDATE "TBProjects" SET "PublishedHtml" = $1, "CustomDomain" = $2, "IsPublished" = true WHERE "Project_ID" = $3',
         [html, domain || null, projectId]
       );
 
+      // Custom domain target: just save HTML + domain, no Netlify deploy
+      if (target === 'custom') {
+        return res.json({ success: true, domain, message: 'Site published' });
+      }
+
+      // Look up project/user info for the Netlify site name
+      const info = await pool.query(`
+        SELECT p."ProjectName", p."NetlifySiteID", u."UserName"
+        FROM "TBProjects" p
+        JOIN "TBUsers" u ON u."User_ID" = p."User_ID"
+        WHERE p."Project_ID" = $1
+      `, [projectId]);
+      if (!info.rows.length) return res.status(404).json({ error: 'Project not found' });
+      const { ProjectName, NetlifySiteID, UserName } = info.rows[0];
+
+      let deployment;
+      try {
+        const siteName = slugify(`dragcanvas-${UserName}-${ProjectName}`);
+        deployment = await deployToNetlify(html, siteName, NetlifySiteID);
+      } catch (netlifyErr) {
+        console.error('Netlify deploy error:', netlifyErr);
+        return res.status(502).json({ error: `Deploy failed: ${netlifyErr.message}` });
+      }
+
+      // Remember the Netlify site so future publishes update the same URL
+      if (deployment.siteId !== NetlifySiteID) {
+        await pool.query(
+          'UPDATE "TBProjects" SET "NetlifySiteID" = $1 WHERE "Project_ID" = $2',
+          [deployment.siteId, projectId]
+        );
+      }
+
       res.json({
         success: true,
+        publishedUrl: deployment.url,
         domain,
-        message: domain
-          ? `Site published. Point your domain DNS to this server's IP with an A record: @ → your-server-ip`
-          : 'Site published'
+        message: 'Site published'
       });
     } catch (e) {
       res.status(500).json({ error: e.message });

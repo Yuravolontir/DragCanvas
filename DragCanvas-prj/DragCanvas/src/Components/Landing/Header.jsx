@@ -6,8 +6,11 @@ import API_URL from '../../api.js';
   import React, { useEffect, useState } from 'react';
   import styled from 'styled-components';
   import { useUserContext } from '../../UserContextProvider';
+  import { useLocation } from 'react-router-dom';
   import html2canvas from 'html2canvas';
   import { exportToHtml } from '../../utils/exportToHtml';
+
+const PY_API = import.meta.env.VITE_PY_API_URL || 'http://localhost:8000';
 
 
 const HeaderDiv = styled.div`
@@ -78,7 +81,6 @@ export const Header = () => {
 
   const [projectName, setProjectName] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
-  const [accessToken, setAccessToken] = useState('');
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -94,6 +96,12 @@ export const Header = () => {
   const [publishModal, setPublishModal] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [customDomain, setCustomDomain] = useState('');
+  const [publishTarget, setPublishTarget] = useState('netlify');
+  const [publishedUrl, setPublishedUrl] = useState(null);
+  const [savedProjectId, setSavedProjectId] = useState(null);
+
+  const location = useLocation();
+  const projectId = location.state?.projectId || savedProjectId;
 
   const { enabled, canUndo, canRedo, actions , query } = useEditor((state, query) => ({
     enabled: state.options.enabled,
@@ -172,6 +180,7 @@ export const Header = () => {
           await saveAsTemplateFunc(jsonString, componentCount);
         }
 
+        setSavedProjectId(data.projectId);
         showAlertModal(`Project saved successfully! ID:
   ${data.projectId}`, 'success');
         setShowSaveModal(false);
@@ -293,179 +302,17 @@ ${clone.outerHTML}
 
   URL.revokeObjectURL(url);
   }
-  
-  const deploy = async () => {
-  const content = document.querySelector('.craftjs-renderer > .relative > .m-auto');
-
-  if (!content) {
-    alert('No content to deploy!');
-    return;
-  }
-
-  if (!accessToken) {
-    alert('Please enter your Netlify Personal Access Token');
-    return;
-  }
-
-  localStorage.setItem('netlify_token', accessToken);
-
-  const clone = content.cloneNode(true);
-
-  // Remove editor-only attributes
-  clone.querySelectorAll('[contenteditable]').forEach(el =>
-    el.removeAttribute('contenteditable')
-  );
-
-  clone.querySelectorAll('[data-craft-node-id]').forEach(el =>
-    el.removeAttribute('data-craft-node-id')
-  );
-
-  const html = `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>${escapeHtml(projectName || 'My Website')}</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body>
-${clone.outerHTML}
-</body>
-</html>`;
-
-  await deployToNetlify(html, accessToken);
-};
-
-// optional but nice: avoid breaking <title> if user types <>
-function escapeHtml(str) {
-  return String(str)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
-}
-
-   
-
-
-async function deployToNetlify(htmlString, token) {
-  try {
-    // 0️⃣ PREPARE CONTENT ACCURATELY
-    // Convert string to UTF-8 Blob immediately. This ensures consistency.
-    const encoder = new TextEncoder();
-    const data = encoder.encode(htmlString);
-    const blob = new Blob([data], { type: 'text/html' }); // We will upload this Blob
-    
-    // Calculate SHA1 of the exact data we will upload
-    const hashBuffer = await crypto.subtle.digest('SHA-1', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const sha1 = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    
-    console.log('Prepared index.html SHA1:', sha1);
-
-    // 1️⃣ Validate token (Optional but good)
-    const userResponse = await fetch('https://api.netlify.com/api/v1/user', {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    if (!userResponse.ok) throw new Error('Invalid Netlify token.');
-    
-    // 2️⃣ Get or Create Site
-    // For testing, we create a new site. For prod, use a stored siteId.
-    const siteResponse = await fetch('https://api.netlify.com/api/v1/sites', {
-      method: 'POST',
-      headers: { 
-        Authorization: `Bearer ${token}`, 
-        'Content-Type': 'application/json' 
-      },
-      body: JSON.stringify({}) // Creates a random site name
-    });
-    if (!siteResponse.ok) throw new Error('Failed to create site');
-    const site = await siteResponse.json();
-    console.log('Site created:', site.id);
-
-    // 3️⃣ Create Deploy with known SHA1
-    const deployResponse = await fetch(`https://api.netlify.com/api/v1/sites/${site.id}/deploys`, {
-      method: 'POST',
-      headers: { 
-        Authorization: `Bearer ${token}`, 
-        'Content-Type': 'application/json' 
-      },
-      body: JSON.stringify({
-        files: {
-          '/index.html': sha1  // Note the leading slash usually helps, though 'index.html' works too
-        }
-      })
-    });
-
-    if (!deployResponse.ok) throw new Error('Failed to create deploy');
-    const deploy = await deployResponse.json();
-
-    // 4️⃣ Check required files
-    // If SHA1 matches what Netlify already has (rare for new sites), required might be empty.
-    const requiredFiles = deploy.required || [];
-    
-    if (requiredFiles.length > 0) {
-      console.log('Uploading required files:', requiredFiles);
-      
-      // We expect only one file (the sha1 we sent). 
-      // If it asks for a different SHA, something is very wrong.
-      const requiredHash = requiredFiles[0]; // This is the SHA1 Netlify is asking for
-      
-      if (requiredHash !== sha1) {
-        console.warn(`Mismatch! Netlify wants ${requiredHash} but we prepared ${sha1}`);
-        // In rare cases (e.g. empty file), logic might differ, but for HTML it should match.
-      }
-
-      // 5️⃣ Upload the Blob
-      const uploadUrl = `https://api.netlify.com/api/v1/deploys/${deploy.id}/files/index.html`; // Endpoint is /files/{path}
-
-      const uploadResponse = await fetch(uploadUrl, {
-        method: 'PUT',
-        headers: { 
-          Authorization: `Bearer ${token}`, 
-          'Content-Type': 'text/html' 
-        },
-        body: blob // Upload the exact binary data we hashed
-      });
-
-      if (!uploadResponse.ok) {
-        const errText = await uploadResponse.text();
-        throw new Error('Upload failed: ' + errText);
-      }
-      console.log('Upload successful');
-    } else {
-      console.log('Netlify already had this file content (deduplication). No upload needed.');
-    }
-
-    // 6️⃣ Poll for readiness
-    let state = deploy.state;
-    let attempts = 0;
-    while (state !== 'ready' && attempts < 20) {
-      if (state === 'error') throw new Error('Deploy state is "error"');
-      
-      await new Promise(r => setTimeout(r, 1000));
-      
-      const checkResp = await fetch(`https://api.netlify.com/api/v1/sites/${site.id}/deploys/${deploy.id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const checkData = await checkResp.json();
-      state = checkData.state;
-      console.log('Deploy state:', state);
-      attempts++;
-    }
-
-    const liveUrl = site.ssl_url || site.url;
-    alert(`✅ Deployed! ${liveUrl}`);
-    window.open(liveUrl, '_blank');
-
-  } catch (err) {
-    console.error(err);
-    alert('❌ ' + err.message);
-  }
-}
 
 const handlePublish = async () => {
+    if (!projectId) {
+      setPublishModal(false);
+      showAlertModal('Please save your project first, then publish.', 'error');
+      return;
+    }
+    if (publishTarget === 'custom' && !customDomain.trim()) {
+      alert('Please enter your domain');
+      return;
+    }
     setPublishing(true);
     try {
       const json = query.serialize();
@@ -474,17 +321,21 @@ const handlePublish = async () => {
   fetch(`${API_URL}/api/publish-site`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ projectId: null, html, domain:
-  customDomain || null })
+        body: JSON.stringify({
+          projectId,
+          html,
+          target: publishTarget,
+          domain: publishTarget === 'custom' ? customDomain.trim() : null
+        })
       });
       const data = await res.json();
       if (data.success) {
-        alert(customDomain
-          ? `Published! Go to your domain registrar and add:\n\nA
-  record: @ → your-server-ip\nCNAME: www → your-server-ip\n\nThen
-  ${customDomain} will show your site.`
-          : 'Site published!');
-        setPublishModal(false);
+        if (publishTarget === 'custom') {
+          setPublishModal(false);
+          showAlertModal(`Published! Go to your domain registrar and add:\nA record: @ → your-server-ip\nCNAME: www → your-server-ip\nThen ${customDomain} will show your site.`, 'success');
+        } else {
+          setPublishedUrl(data.publishedUrl);
+        }
       } else {
         alert('Error: ' + (data.error || 'Unknown'));
       }
@@ -548,19 +399,6 @@ const handlePublish = async () => {
             <span className="material-symbols-outlined">rocket_launch</span>
             Publish
           </Btn>
-
-          <Btn style={{ background: '#7e57c2', cursor: accessToken ? 'pointer' : 'not-allowed', opacity: accessToken ? 1 : 0.5 }} onClick={deploy}>
-            <span className="material-symbols-outlined">cloud_upload</span>
-            Netlify
-            <input
-              type="text"
-              placeholder="Token"
-              value={accessToken}
-              onChange={(e) => setAccessToken(e.target.value)}
-              style={{ width: '90px', padding: '3px 8px', borderRadius: '9999px', border: 'none', background: 'rgba(255,255,255,0.25)', color: '#fff', fontSize: '11px', outline: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            />
-          </Btn>
-
 
         </div>
       </div>
@@ -667,18 +505,71 @@ const handlePublish = async () => {
   justifyContent: 'center', zIndex: 99999 }}>
       <div style={{ background: 'white', padding: '32px',
   borderRadius: '20px', width: '420px', color: '#1c1b1f', boxShadow: '0 16px 48px rgba(0,0,0,0.12)' }}>
-        <h3 style={{ marginBottom: '20px', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>Publish Your Site</h3>
-        <label style={{ fontSize: '0.85rem', color: '#79747e' }}>Your
-  Domain (optional)</label>
-        <input
-          placeholder="mysite.com"
-          value={customDomain}
-          onChange={(e) => setCustomDomain(e.target.value)}
-          style={{ width: '100%', padding: '10px', margin: '8px 0', background: '#f7f4ec', border: '1px solid #e8e0eb', borderRadius: '12px', color: '#1c1b1f', fontSize: '0.95rem', outline: 'none' }}
+        {publishedUrl ? (
+        <>
+        <h3 style={{ marginBottom: '20px', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>🎉 Your Site is Live!</h3>
+        <a href={publishedUrl} target="_blank" rel="noreferrer"
+          style={{ display: 'block', textAlign: 'center', color: '#0060ac', fontWeight: 600, wordBreak: 'break-all', marginBottom: '16px' }}>
+          {publishedUrl}
+        </a>
+        <img
+          src={`${PY_API}/api/qr?url=${encodeURIComponent(publishedUrl)}`}
+          alt="QR code"
+          style={{ display: 'block', margin: '0 auto 12px', width: '180px', height: '180px' }}
         />
-        <p style={{ fontSize: '0.8rem', color: '#9994a0', marginBottom: '20px' }}>
-          Buy a domain on <a href='https://www.namecheap.com/'>Namecheap</a> or <a href='https://www.godaddy.com/en'>GoDaddy</a>, then enter it here
+        <p style={{ fontSize: '0.8rem', color: '#9994a0', textAlign: 'center', marginBottom: '20px' }}>
+          Scan the QR code to open your site on a phone
         </p>
+        <button
+          onClick={() => { setPublishModal(false); setPublishedUrl(null); }}
+          style={{ width: '100%', padding: '10px', background: '#0060ac', color: 'white', border: 'none', borderRadius: '9999px', cursor: 'pointer', fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+        >
+          Close
+        </button>
+        </>
+        ) : (
+        <>
+        <h3 style={{ marginBottom: '20px', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>Publish Your Site</h3>
+
+        <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '12px', marginBottom: '10px', background: publishTarget === 'netlify' ? '#eef4fb' : '#f7f4ec', border: `1px solid ${publishTarget === 'netlify' ? '#0060ac' : '#e8e0eb'}`, borderRadius: '12px', cursor: 'pointer' }}>
+          <input
+            type="radio"
+            name="publishTarget"
+            checked={publishTarget === 'netlify'}
+            onChange={() => setPublishTarget('netlify')}
+            style={{ marginTop: '3px' }}
+          />
+          <span>
+            <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>Netlify subdomain</span>
+            <span style={{ display: 'block', fontSize: '0.8rem', color: '#9994a0' }}>Free instant URL (*.netlify.app) + QR code</span>
+          </span>
+        </label>
+
+        <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '12px', marginBottom: '10px', background: publishTarget === 'custom' ? '#eef4fb' : '#f7f4ec', border: `1px solid ${publishTarget === 'custom' ? '#0060ac' : '#e8e0eb'}`, borderRadius: '12px', cursor: 'pointer' }}>
+          <input
+            type="radio"
+            name="publishTarget"
+            checked={publishTarget === 'custom'}
+            onChange={() => setPublishTarget('custom')}
+            style={{ marginTop: '3px' }}
+          />
+          <span style={{ flex: 1 }}>
+            <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>My own domain</span>
+            <span style={{ display: 'block', fontSize: '0.8rem', color: '#9994a0' }}>
+              Buy a domain on <a href='https://www.namecheap.com/'>Namecheap</a> or <a href='https://www.godaddy.com/en'>GoDaddy</a>, then enter it here
+            </span>
+            {publishTarget === 'custom' && (
+              <input
+                placeholder="mysite.com"
+                value={customDomain}
+                onChange={(e) => setCustomDomain(e.target.value)}
+                style={{ width: '100%', padding: '10px', margin: '8px 0 0', background: 'white', border: '1px solid #e8e0eb', borderRadius: '12px', color: '#1c1b1f', fontSize: '0.95rem', outline: 'none' }}
+              />
+            )}
+          </span>
+        </label>
+
+        <div style={{ marginBottom: '10px' }} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <button
             onClick={handlePublish}
@@ -694,6 +585,8 @@ const handlePublish = async () => {
             Cancel
           </button>
         </div>
+        </>
+        )}
       </div>
     </div>
   )}
