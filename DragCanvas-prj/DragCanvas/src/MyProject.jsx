@@ -26,7 +26,7 @@ export default function MyProject() {
     if (storedUser) {
       setCurrentUser(JSON.parse(storedUser));
     } else {
-      navigate('/login');
+      navigate('/login', { replace: true });
     }
   }, [navigate]);
 

@@ -247,6 +247,20 @@ export default function Login() {
             Create one
           </span>
         </p>
+
+        <p
+          onClick={() => navigate('/')}
+          style={{
+            textAlign: 'center',
+            marginTop: '12px',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontSize: '0.85rem',
+            color: 'var(--muted)',
+            cursor: 'pointer',
+          }}
+        >
+          &larr; Back to home
+        </p>
       </div>
     </div>
   );

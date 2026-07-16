@@ -22,7 +22,7 @@ export default function NotificationsPage() {
 
   useEffect(() => {
     if (!currentUser && !loading) {
-      navigate('/login');
+      navigate('/login', { replace: true });
       return;
     }
     if (!currentUser?.User_ID) return;

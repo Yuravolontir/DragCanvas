@@ -42,7 +42,7 @@ import { useEffect } from 'react';
         // Get user from localStorage
         const storedUser = localStorage.getItem('currentUser');
         if (!storedUser) {
-          navigate('/login');
+          navigate('/login', { replace: true });
           return;
         }
 
