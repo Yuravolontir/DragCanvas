@@ -154,11 +154,11 @@ export default function LandingPage(props) {
         <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap', marginTop: '20px', position: 'relative', zIndex: 10 }}>
           <Button
             as={Link}
-            to="/register"
+            to="/create-new-project"
             size="lg"
             className="cta-button-primary"
           >
-            Get Started Free
+            Start Building Free
           </Button>
           <Button
             as={Link}

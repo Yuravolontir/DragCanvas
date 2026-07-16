@@ -44,14 +44,6 @@ export default function NavBar() {
     return 'Good evening';
   };
 
-  const redirect = () => {
-    if (!currentUser) {
-      navigate("/login");
-    } else {
-      navigate("/create-new-project");
-    }
-  };
-
   return (
     <Navbar
       expand="lg"
@@ -91,7 +83,7 @@ export default function NavBar() {
         <Navbar.Collapse id="main-nav">
           <Nav className="me-auto" style={{ gap: '4px', marginLeft: '24px' }}>
             {[
-              { label: 'Create', onClick: redirect },
+              { label: 'Create', onClick: () => navigate("/create-new-project") },
               { label: 'My Projects', onClick: () => navigate("/my-projects") },
               { label: 'Templates', onClick: () => navigate("/inspire-me") },
             ].map((item, i) => (
