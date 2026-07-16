@@ -53,8 +53,20 @@ const cssRules = [];
 // emitted as a single @media block after the base rules
 const mobileRules = [];
 
-// Component types considered "large" for the row-stacking heuristic
-const LARGE_CHILD_TYPES = new Set(['Container', 'Image', 'Video', 'Carousel', 'Custom1', 'Custom2', 'Custom3', 'Map']);
+// A node is "large" (forces its parent row to stack on mobile) when it is
+// media/custom content, or a Container that is a real column: declared
+// px/% width, or large content inside. width:auto wrappers around a few
+// links/buttons (nav pills) stay "small" so nav bars wrap instead of stacking.
+const isLargeChild = (id, data) => {
+  const node = data[id];
+  if (!node) return false;
+  const typeName = node.type?.resolvedName || node.type;
+  if (typeName === 'Text' || typeName === 'Link' || typeName === 'Button') return false;
+  if (typeName !== 'Container') return true; // media, custom, unknown
+  const width = String(node.props?.width || '').trim();
+  if (/^\d+(\.\d+)?(px|%)$/.test(width) && width !== '100%') return true;
+  return getChildIds(node).some((childId) => isLargeChild(childId, data));
+};
 
 // Cap a px value, return null when no override is needed
 const capPx = (value, cap) => {
@@ -111,11 +123,7 @@ const converters = {
     const mobile = {};
 
     if ((props.flexDirection || 'column') === 'row') {
-      const largeChildren = childIds.filter((id) => {
-        const child = data[id];
-        const typeName = child?.type?.resolvedName || child?.type;
-        return !converters[typeName] || LARGE_CHILD_TYPES.has(typeName);
-      });
+      const largeChildren = childIds.filter((id) => isLargeChild(id, data));
       if (largeChildren.length >= 2) {
         // "column + column" sections stack vertically on phones
         mobile.flexDirection = 'column';
@@ -126,8 +134,11 @@ const converters = {
       }
     }
 
-    // Fixed px widths overflow a 375px screen
-    if (!isRoot && /^\d+(\.\d+)?px$/.test(String(props.width || '').trim())) {
+    // Fixed px widths overflow a 375px screen; percentage columns
+    // (width: 30% etc.) stay too narrow once their parent stacks
+    const width = String(props.width || '').trim();
+    const pctMatch = width.match(/^(\d+(?:\.\d+)?)%$/);
+    if (!isRoot && (/^\d+(\.\d+)?px$/.test(width) || (pctMatch && Number(pctMatch[1]) < 100))) {
       mobile.width = '100%';
     }
 
@@ -281,6 +292,11 @@ const converters = {
     };
 
     cssRules.push(`.${className} {\n${stylesToCss(styles)}\n}`);
+
+    // Fixed-width images leave ragged edges in stacked mobile layouts
+    if (/^\d+(\.\d+)?px$/.test(String(props.width || '').trim())) {
+      mobileRules.push(`  .${className} {\n  width: 100%;\n  }`);
+    }
 
     return `    <img class="${className}" src="${resolveImageSrc(props.src)}" alt="" />\n`;
   },
