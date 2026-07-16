@@ -49,6 +49,20 @@ const generateClass = (prefix) => {
 // Store all CSS rules
 const cssRules = [];
 
+// Mobile (<=768px) overrides collected during conversion,
+// emitted as a single @media block after the base rules
+const mobileRules = [];
+
+// Component types considered "large" for the row-stacking heuristic
+const LARGE_CHILD_TYPES = new Set(['Container', 'Image', 'Video', 'Carousel', 'Custom1', 'Custom2', 'Custom3', 'Map']);
+
+// Cap a px value, return null when no override is needed
+const capPx = (value, cap) => {
+  const n = Number(value);
+  if (isNaN(n) || n <= cap) return null;
+  return cap;
+};
+
 // Helper: collect all child node ids (regular children + linked <Element id=...> children)
 const getChildIds = (node) => {
   const ids = Array.isArray(node.nodes) ? [...node.nodes] : [];
@@ -60,8 +74,9 @@ const getChildIds = (node) => {
 
 // Component converters
 const converters = {
-  Container: (node, data, depth = 0) => {
+  Container: (node, data, depth = 0, nodeId) => {
     const props = node.props || {};
+    const isRoot = nodeId === 'ROOT';
     const className = generateClass('container');
 
     const styles = {
@@ -69,10 +84,10 @@ const converters = {
       flexDirection: props.flexDirection || 'column',
       alignItems: props.alignItems || 'flex-start',
       justifyContent: props.justifyContent || 'flex-start',
-      width: props.width || '100%',
+      width: isRoot ? '100%' : (props.width || '100%'),
       height: props.height || 'auto',
       padding: spacingToCss(props.padding),
-      margin: spacingToCss(props.margin),
+      margin: isRoot ? '0 auto' : spacingToCss(props.margin),
       background: rgbaToString(props.background),
       color: rgbaToString(props.color),
       borderRadius: `${props.radius || 0}px`,
@@ -83,10 +98,56 @@ const converters = {
       boxSizing: 'border-box',
     };
 
+    if (isRoot) {
+      // Designs are authored on a fixed-width canvas (800px default):
+      // keep that as max-width and center the page on wide screens
+      styles.maxWidth = props.width || '800px';
+    }
+
     cssRules.push(`.${className} {\n${stylesToCss(styles)}\n}`);
 
+    // --- Mobile overrides ---
+    const childIds = getChildIds(node);
+    const mobile = {};
+
+    if ((props.flexDirection || 'column') === 'row') {
+      const largeChildren = childIds.filter((id) => {
+        const child = data[id];
+        const typeName = child?.type?.resolvedName || child?.type;
+        return !converters[typeName] || LARGE_CHILD_TYPES.has(typeName);
+      });
+      if (largeChildren.length >= 2) {
+        // "column + column" sections stack vertically on phones
+        mobile.flexDirection = 'column';
+        mobile.alignItems = 'stretch';
+      } else {
+        // small inline groups (links, buttons) just wrap
+        mobile.flexWrap = 'wrap';
+      }
+    }
+
+    // Fixed px widths overflow a 375px screen
+    if (!isRoot && /^\d+(\.\d+)?px$/.test(String(props.width || '').trim())) {
+      mobile.width = '100%';
+    }
+
+    // Cap oversized paddings (vertical <=24px, horizontal <=16px)
+    if (Array.isArray(props.padding) && props.padding.length === 4) {
+      const caps = [24, 16, 24, 16];
+      const capped = props.padding.map((v, i) => capPx(v, caps[i]));
+      if (capped.some((v) => v !== null)) {
+        mobile.padding = capped
+          .map((v, i) => `${v !== null ? v : (Number(props.padding[i]) || 0)}px`)
+          .join(' ');
+      }
+    }
+
+    if (Object.keys(mobile).length > 0) {
+      mobileRules.push(`  .${className} {\n${stylesToCss(mobile)}\n  }`);
+    }
+
     let childrenHtml = '';
-    for (const childNodeId of getChildIds(node)) {
+    for (const childNodeId of childIds) {
       childrenHtml += convertNode(childNodeId, data, depth + 1);
     }
 
@@ -97,11 +158,18 @@ const converters = {
     const props = node.props || {};
     const className = generateClass('text');
 
+    // Fluid typography: headings shrink smoothly on narrow screens.
+    // f/8 vw equals f px at the 800px design width; floor at 60%.
+    const f = Number(props.fontSize) || 15;
+    const fontSize = f > 18
+      ? `clamp(${Math.round(f * 0.6)}px, ${(f / 8).toFixed(2)}vw, ${f}px)`
+      : `${f}px`;
+
     const styles = {
       width: '100%',
       margin: spacingToCss(props.margin),
       color: rgbaToString(props.color),
-      fontSize: `${props.fontSize || 15}px`,
+      fontSize,
       fontWeight: props.fontWeight || '500',
       textAlign: props.textAlign || 'left',
       textShadow: props.shadow > 0
@@ -307,7 +375,7 @@ const convertNode = (nodeId, data, depth = 0) => {
   const converter = converters[typeName];
 
   if (converter) {
-    return converter(node, data, depth);
+    return converter(node, data, depth, nodeId);
   }
 
   // Fallback for custom/unknown components (Custom1-3, Carousel, Map, ...):
@@ -330,6 +398,7 @@ export const exportToHtml = (serializedData, title = 'My Website') => {
   // Reset state
   ruleCounter = 0;
   cssRules.length = 0;
+  mobileRules.length = 0;
 
   // Add base CSS
   cssRules.push(`* {
@@ -342,6 +411,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   line-height: 1.6;
   color: #333;
+  background: ${rgbaToString(serializedData.ROOT?.props?.background)};
 }
 
 img {
@@ -366,8 +436,11 @@ button {
     htmlContent = convertNode('ROOT', serializedData);
   }
 
-  // Combine everything
-  const css = cssRules.join('\n\n');
+  // Combine everything; mobile overrides go last so they win the cascade
+  let css = cssRules.join('\n\n');
+  if (mobileRules.length > 0) {
+    css += `\n\n@media (max-width: 768px) {\n${mobileRules.join('\n\n')}\n}`;
+  }
 
   return `<!DOCTYPE html>
 <html lang="en">
