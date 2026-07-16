@@ -9,6 +9,7 @@ import API_URL from '../../api.js';
   import { useLocation } from 'react-router-dom';
   import html2canvas from 'html2canvas';
   import { exportToHtml } from '../../utils/exportToHtml';
+  import PublishInfoModal from '../PublishInfoModal';
 
 const PY_API = import.meta.env.VITE_PY_API_URL || 'http://localhost:8000';
 
@@ -98,6 +99,7 @@ export const Header = () => {
   const [customDomain, setCustomDomain] = useState('');
   const [publishTarget, setPublishTarget] = useState('netlify');
   const [publishedUrl, setPublishedUrl] = useState(null);
+  const [publishInfoOpen, setPublishInfoOpen] = useState(false);
   const [savedProjectId, setSavedProjectId] = useState(null);
 
   const location = useLocation();
@@ -118,6 +120,17 @@ export const Header = () => {
        setCurrentUser(JSON.parse(storedUser));
      }
    }, []);
+
+   // If the loaded project was published before, restore its live URL (for the Published chip)
+   useEffect(() => {
+     if (!projectId || !currentUser) return;
+     fetch(`${API_URL}/api/projects/${projectId}?userId=${currentUser.User_ID}`)
+       .then((res) => (res.ok ? res.json() : null))
+       .then((project) => {
+         if (project?.PublishedUrl) setPublishedUrl(project.PublishedUrl);
+       })
+       .catch(() => {});
+   }, [projectId, currentUser]);
 
    
  const openSaveModal = () => {
@@ -335,6 +348,8 @@ const handlePublish = async () => {
           showAlertModal(`Published! Go to your domain registrar and add:\nA record: @ → your-server-ip\nCNAME: www → your-server-ip\nThen ${customDomain} will show your site.`, 'success');
         } else {
           setPublishedUrl(data.publishedUrl);
+          setPublishModal(false);
+          setPublishInfoOpen(true);
         }
       } else {
         alert('Error: ' + (data.error || 'Unknown'));
@@ -399,6 +414,15 @@ const handlePublish = async () => {
             <span className="material-symbols-outlined">rocket_launch</span>
             Publish
           </Btn>
+
+          {publishedUrl && (
+            <Tooltip title="Your site is live — link & QR" placement="bottom">
+              <Btn style={{ background: '#0060ac', cursor: 'pointer', marginLeft: '6px' }} onClick={() => setPublishInfoOpen(true)}>
+                <span className="material-symbols-outlined">qr_code_2</span>
+                Live
+              </Btn>
+            </Tooltip>
+          )}
 
         </div>
       </div>
@@ -505,30 +529,6 @@ const handlePublish = async () => {
   justifyContent: 'center', zIndex: 99999 }}>
       <div style={{ background: 'white', padding: '32px',
   borderRadius: '20px', width: '420px', color: '#1c1b1f', boxShadow: '0 16px 48px rgba(0,0,0,0.12)' }}>
-        {publishedUrl ? (
-        <>
-        <h3 style={{ marginBottom: '20px', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>🎉 Your Site is Live!</h3>
-        <a href={publishedUrl} target="_blank" rel="noreferrer"
-          style={{ display: 'block', textAlign: 'center', color: '#0060ac', fontWeight: 600, wordBreak: 'break-all', marginBottom: '16px' }}>
-          {publishedUrl}
-        </a>
-        <img
-          src={`${PY_API}/api/qr?url=${encodeURIComponent(publishedUrl)}`}
-          alt="QR code"
-          style={{ display: 'block', margin: '0 auto 12px', width: '180px', height: '180px' }}
-        />
-        <p style={{ fontSize: '0.8rem', color: '#9994a0', textAlign: 'center', marginBottom: '20px' }}>
-          Scan the QR code to open your site on a phone
-        </p>
-        <button
-          onClick={() => { setPublishModal(false); setPublishedUrl(null); }}
-          style={{ width: '100%', padding: '10px', background: '#0060ac', color: 'white', border: 'none', borderRadius: '9999px', cursor: 'pointer', fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-        >
-          Close
-        </button>
-        </>
-        ) : (
-        <>
         <h3 style={{ marginBottom: '20px', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>Publish Your Site</h3>
 
         <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '12px', marginBottom: '10px', background: publishTarget === 'netlify' ? '#eef4fb' : '#f7f4ec', border: `1px solid ${publishTarget === 'netlify' ? '#0060ac' : '#e8e0eb'}`, borderRadius: '12px', cursor: 'pointer' }}>
@@ -585,13 +585,16 @@ const handlePublish = async () => {
             Cancel
           </button>
         </div>
-        </>
-        )}
       </div>
     </div>
   )}
 
-              
+  <PublishInfoModal
+    show={publishInfoOpen}
+    url={publishedUrl}
+    onClose={() => setPublishInfoOpen(false)}
+  />
+
     </HeaderDiv>
   );
 };

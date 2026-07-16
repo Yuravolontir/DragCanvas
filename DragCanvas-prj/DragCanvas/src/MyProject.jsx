@@ -6,6 +6,7 @@ import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import PublishInfoModal from './Components/PublishInfoModal';
 
 export default function MyProject() {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ export default function MyProject() {
   const [alertType, setAlertType] = useState('success');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
+  const [shareUrl, setShareUrl] = useState(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('currentUser');
@@ -321,6 +323,18 @@ export default function MyProject() {
                       {project.ProjectName || 'Untitled Project'}
                     </h3>
 
+                    {project.IsPublished && project.PublishedUrl && (
+                      <span style={{
+                        display: 'inline-flex', alignItems: 'center', gap: '4px',
+                        padding: '2px 10px', background: 'rgba(76,175,106,0.12)',
+                        color: '#2e7d46', borderRadius: '9999px', fontSize: '0.7rem',
+                        fontWeight: 700, marginBottom: '8px',
+                      }}>
+                        <span style={{ width: '6px', height: '6px', background: '#4caf6a', borderRadius: '50%' }} />
+                        Live
+                      </span>
+                    )}
+
                     {project.ProjectDescription && (
                       <p style={{
                         fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -383,6 +397,34 @@ export default function MyProject() {
                         <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>edit</span>
                         Open
                       </button>
+                      {project.PublishedUrl && (
+                        <button
+                          onClick={() => setShareUrl(project.PublishedUrl)}
+                          title="Link & QR code"
+                          style={{
+                            padding: '10px',
+                            background: 'transparent',
+                            color: '#0060ac',
+                            border: '1px solid #b3d4f0',
+                            borderRadius: '12px',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = '#eef4fb';
+                            e.currentTarget.style.borderColor = '#0060ac';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent';
+                            e.currentTarget.style.borderColor = '#b3d4f0';
+                          }}
+                        >
+                          <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>qr_code_2</span>
+                        </button>
+                      )}
                       <button
                         onClick={() => handleDeleteClick(project.Project_ID)}
                         style={{
@@ -447,6 +489,12 @@ export default function MyProject() {
           <Button variant="danger" onClick={confirmDelete}>Delete</Button>
         </Modal.Footer>
       </Modal>
+
+      <PublishInfoModal
+        show={!!shareUrl}
+        url={shareUrl}
+        onClose={() => setShareUrl(null)}
+      />
     </div>
   );
 }

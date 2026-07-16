@@ -498,7 +498,7 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
       const result = await pool.query(`
         SELECT "Project_ID", "ProjectName", "ProjectDescription",
                "ComponentCount", "ProjectSizeKB", "ThumbnailURL", "IsPublished",
-               "CreatedDate", "ModifiedDate"
+               "PublishedUrl", "CreatedDate", "ModifiedDate"
         FROM "TBProjects"
         WHERE "User_ID" = $1 AND "IsDeleted" = false
         ORDER BY "ModifiedDate" DESC
@@ -1454,13 +1454,11 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
         return res.status(502).json({ error: `Deploy failed: ${netlifyErr.message}` });
       }
 
-      // Remember the Netlify site so future publishes update the same URL
-      if (deployment.siteId !== NetlifySiteID) {
-        await pool.query(
-          'UPDATE "TBProjects" SET "NetlifySiteID" = $1 WHERE "Project_ID" = $2',
-          [deployment.siteId, projectId]
-        );
-      }
+      // Remember the Netlify site + live URL so the link/QR stay reusable
+      await pool.query(
+        'UPDATE "TBProjects" SET "NetlifySiteID" = $1, "PublishedUrl" = $2 WHERE "Project_ID" = $3',
+        [deployment.siteId, deployment.url, projectId]
+      );
 
       res.json({
         success: true,
