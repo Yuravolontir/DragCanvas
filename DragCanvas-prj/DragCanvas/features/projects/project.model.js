@@ -8,7 +8,7 @@ export async function getProjectsByUserId(userId) {
   const result = await pool.query(`
     SELECT "Project_ID", "ProjectName", "ProjectDescription",
            "ComponentCount", "ProjectSizeKB", "ThumbnailURL", "IsPublished",
-           "CreatedDate", "ModifiedDate"
+           "PublishedUrl", "CreatedDate", "ModifiedDate"
     FROM "TBProjects"
     WHERE "User_ID" = $1 AND "IsDeleted" = false
     ORDER BY "ModifiedDate" DESC
