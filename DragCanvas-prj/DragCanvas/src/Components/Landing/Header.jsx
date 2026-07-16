@@ -10,6 +10,7 @@ import API_URL from '../../api.js';
   import html2canvas from 'html2canvas';
   import { exportToHtml } from '../../utils/exportToHtml';
   import PublishInfoModal from '../PublishInfoModal';
+  import AuthPromptModal from '../AuthPromptModal';
 
 const PY_API = import.meta.env.VITE_PY_API_URL || 'http://localhost:8000';
 
@@ -101,6 +102,7 @@ export const Header = () => {
   const [publishedUrl, setPublishedUrl] = useState(null);
   const [publishInfoOpen, setPublishInfoOpen] = useState(false);
   const [savedProjectId, setSavedProjectId] = useState(null);
+  const [showAuthPrompt, setShowAuthPrompt] = useState(false);
 
   const location = useLocation();
   const projectId = location.state?.projectId || savedProjectId;
@@ -133,7 +135,22 @@ export const Header = () => {
    }, [projectId, currentUser]);
 
    
+ // Anonymous user hit a registered-only action: keep their canvas as a
+ // draft (restored by LoadProjectOnMount after signup) and show the prompt.
+ const promptSignup = () => {
+    try {
+      localStorage.setItem('dragcanvas_draft', query.serialize());
+    } catch {
+      // canvas not serializable — still show the prompt
+    }
+    setShowAuthPrompt(true);
+  }
+
  const openSaveModal = () => {
+    if (!currentUser) {
+      promptSignup();
+      return;
+    }
     setShowSaveModal(true);
   }
 
@@ -400,7 +417,7 @@ const handlePublish = async () => {
             {enabled ? 'Finish' : 'Edit'}
           </Btn>
 
-            <Btn style={{ background: '#8b6f47',cursor: 'pointer' }} onClick={downloadHTML}>
+            <Btn style={{ background: '#8b6f47',cursor: 'pointer' }} onClick={() => (currentUser ? downloadHTML() : promptSignup())}>
               <span className="material-symbols-outlined">code</span>
               HTML
             </Btn>
@@ -410,7 +427,7 @@ const handlePublish = async () => {
             Save
           </Btn>
 
-          <Btn style={{ background: '#4caf6a' ,cursor: 'pointer' }} onClick={() => setPublishModal(true)}>
+          <Btn style={{ background: '#4caf6a' ,cursor: 'pointer' }} onClick={() => (currentUser ? setPublishModal(true) : promptSignup())}>
             <span className="material-symbols-outlined">rocket_launch</span>
             Publish
           </Btn>
@@ -593,6 +610,11 @@ const handlePublish = async () => {
     show={publishInfoOpen}
     url={publishedUrl}
     onClose={() => setPublishInfoOpen(false)}
+  />
+
+  <AuthPromptModal
+    show={showAuthPrompt}
+    onClose={() => setShowAuthPrompt(false)}
   />
 
     </HeaderDiv>

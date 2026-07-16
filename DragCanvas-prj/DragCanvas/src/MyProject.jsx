@@ -25,8 +25,10 @@ export default function MyProject() {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
       setCurrentUser(JSON.parse(storedUser));
+    } else {
+      navigate('/login');
     }
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     if (currentUser?.User_ID) {

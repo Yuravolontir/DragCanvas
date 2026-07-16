@@ -67,19 +67,10 @@ export default function UserContextProvider(props) {
       return { success: false, error: 'Email and password are required' };
     }
     try {
-      const data = {
-        UserEmail: `${email}`,
-        Password: `${password}`,
-        IPAddress: "uknown"
-      }
-
-      const response = await fetch('https://yuravolontir.bsite.net/api/Users/login', {
+      const response = await fetch(`${API_URL}/api/login`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8 ',
-          'Accept': 'application/json; charset=utf-8 '
-        },
-        body: JSON.stringify(data)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
       });
 
       const data2 = await response.json();
@@ -122,8 +113,12 @@ export default function UserContextProvider(props) {
       }
 
       setCurrentUser(data.user);
+      setIsAdmin(data.user.IsAdmin);
+      setIsSuperAdmin(data.user.IsSuperAdmin);
       localStorage.setItem('currentUser',
         JSON.stringify(data.user));
+      localStorage.setItem('isAdmin', JSON.stringify(data.user.IsAdmin));
+      localStorage.setItem('isSuperAdmin', JSON.stringify(data.user.IsSuperAdmin));
       return { success: true };
     } catch (err) {
       setError(err.message);

@@ -56,12 +56,8 @@ export default function InspireMe() {
   };
 
   const useTemplate = (templateId) => {
-    const storedUser = localStorage.getItem('currentUser');
-    if (!storedUser) {
-      showAlertModal('Please register or login to use templates', 'error');
-      setTimeout(() => navigate('/register'), 1500);
-      return;
-    }
+    // Templates are open to everyone — anonymous users can try them
+    // in the editor; signup is only required to save/publish.
     navigate('/create-new-project', { state: { templateId } });
   };
 

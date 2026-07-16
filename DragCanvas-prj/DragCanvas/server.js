@@ -5,6 +5,7 @@ import cors from 'cors';
 import pg from 'pg';
 import cron from 'node-cron';
 import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 import userRoutes from './features/users/user.routes.js';
 import { setPool as setUserPool } from './features/users/user.model.js';
 import projectRoutes from './features/projects/project.routes.js';
@@ -240,29 +241,20 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
 //     }
 //   });
 
-  app.post('/api/users', async (req, res) => {
-    try {
-      const { username, email, password } = req.body;
-      const result = await pool.query(
-        'INSERT INTO "TBUsers" ("UserName", "UserEmail", "UserPassword", "IsActive", "CreatedDate") VALUES($1, $2, $3, true, NOW()) RETURNING *',
-        [username, email, password]
-      );
-      res.json(result.rows[0]);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
-
-
-
   // POST register - inline SQL (replaces SP_RegisterUser)
   app.post('/api/register', async (req, res) => {
     try {
       const { username, email, password } = req.body;
 
+      if (!username || !email || !password) {
+        return res.status(400).json({ error: 'Username, email and password are required' });
+      }
+
+      const passwordHash = await bcrypt.hash(password, 10);
+
       const result = await pool.query(
-        'INSERT INTO "TBUsers" ("UserName", "UserEmail", "UserPassword", "IsActive", "CreatedDate") VALUES ($1, $2, $3, true, NOW()) RETURNING "User_ID", "UserName", "UserEmail"',
-        [username, email, password]
+        'INSERT INTO "TBUsers" ("UserName", "UserEmail", "UserPassword", "IsActive", "CreatedDate") VALUES ($1, $2, $3, true, NOW()) RETURNING "User_ID", "UserName", "UserEmail", "IsAdmin", "IsSuperAdmin"',
+        [username, email, passwordHash]
       );
 
       if (result.rows.length === 0) {
@@ -274,6 +266,64 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
       if (err.message.includes('duplicate') || err.message.includes('unique') || err.code === '23505') {
         return res.status(400).json({ error: 'Username or email already exists' });
       }
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // POST login - replaces the legacy C# backend (SP_UserLogin)
+  app.post('/api/login', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+
+      if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password are required' });
+      }
+
+      const result = await pool.query(
+        'SELECT "User_ID", "UserName", "UserEmail", "UserPassword", "IsAdmin", "IsSuperAdmin" FROM "TBUsers" WHERE "UserEmail" = $1 AND "IsActive" = true',
+        [email]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+
+      const user = result.rows[0];
+      const isBcryptHash = /^\$2[aby]\$/.test(user.UserPassword || '');
+
+      let passwordOk;
+      if (isBcryptHash) {
+        passwordOk = await bcrypt.compare(password, user.UserPassword);
+      } else {
+        // Legacy plaintext row: compare directly, then self-heal by re-hashing
+        passwordOk = password === user.UserPassword;
+        if (passwordOk) {
+          const newHash = await bcrypt.hash(password, 10);
+          await pool.query(
+            'UPDATE "TBUsers" SET "UserPassword" = $1, "ModifiedDate" = NOW() WHERE "User_ID" = $2',
+            [newHash, user.User_ID]
+          );
+        }
+      }
+
+      if (!passwordOk) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+
+      // Activity + audit logging (kept compatible with /api/logout and admin statistics)
+      await pool.query(
+        'INSERT INTO "TBUserActivity" ("User_ID", "ActivityType", "ActivityDescription", "ActivityDate") VALUES ($1, $2, $3, NOW())',
+        [user.User_ID, 'LOGIN', 'User logged in']
+      );
+      await pool.query(
+        'INSERT INTO "TBAuditLog" ("User_ID", "TableName", "ActionType", "ActionCategory", "ActionDescription", "ActionDate") VALUES ($1, $2, $3, $4, $5, NOW())',
+        [user.User_ID, 'TBUsers', 'LOGIN', 'AUTH', 'User logged in']
+      );
+
+      const { UserPassword, ...safeUser } = user;
+      res.json(safeUser);
+    } catch (err) {
+      console.error('Login error:', err);
       res.status(500).json({ error: err.message });
     }
   });
@@ -380,9 +430,10 @@ function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
         return res.status(400).json({ error: 'Not authorized' });
       }
 
+      const newPasswordHash = await bcrypt.hash(newPassword, 10);
       const result = await pool.query(
         'UPDATE "TBUsers" SET "UserPassword" = $1, "ModifiedDate" = NOW() WHERE "User_ID" = $2',
-        [newPassword, targetID]
+        [newPasswordHash, targetID]
       );
 
       if (result.rowCount === 0) {

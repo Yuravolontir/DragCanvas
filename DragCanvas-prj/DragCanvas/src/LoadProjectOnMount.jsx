@@ -1,25 +1,18 @@
 import API_URL from './api.js';
 import { useEffect } from 'react';
   import { useEditor } from '@craftjs/core';
-  import { useLocation } from 'react-router-dom';
+  import { useLocation, useNavigate } from 'react-router-dom';
  export default function LoadProjectOnMount() {
     const { actions } = useEditor();
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
        const loadProject = async () => {
-        // Check for templateId first
+        // Check for templateId first (templates are public — no login required)
         const templateId = location.state?.templateId;
 
         if (templateId) {
-          // Check authentication
-          const storedUser = localStorage.getItem('currentUser');
-          if (!storedUser) {
-            alert('Please login to use templates');
-            navigate('/login');
-            return;
-          }
-
           console.log('Loading template:', templateId);
           await loadTemplate(templateId);
           return;
@@ -29,6 +22,19 @@ import { useEffect } from 'react';
         const projectId = location.state?.projectId;
 
         if (!projectId) {
+          // Blank editor: restore an anonymous draft if one was saved
+          // before a signup redirect (see Header promptSignup)
+          const draft = localStorage.getItem('dragcanvas_draft');
+          if (draft) {
+            try {
+              actions.deserialize(draft);
+              console.log('✅ Draft restored into editor');
+            } catch (err) {
+              console.error('❌ Corrupt draft dropped:', err);
+            }
+            localStorage.removeItem('dragcanvas_draft');
+            return;
+          }
           console.log('No templateId or projectId, loading blank editor');
           return;
         }
@@ -36,7 +42,7 @@ import { useEffect } from 'react';
         // Get user from localStorage
         const storedUser = localStorage.getItem('currentUser');
         if (!storedUser) {
-          console.error('No user logged in');
+          navigate('/login');
           return;
         }
 
