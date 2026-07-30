@@ -1,7 +1,8 @@
 {
   "info": {
+    "_postman_id": "bf8a3ddb-7293-4f19-972e-42d9f94a7f86",
     "name": "DragCanvas API",
-    "description": "Express server for the DragCanvas website builder.\n\nHow to use:\n1. Pick the environment: the {{baseUrl}} variable is set to http://localhost:3001. Change it to https://dragcanvas.onrender.com to hit production.\n2. Run 'Auth > Login' first - it stores the JWT into {{token}} automatically.\n3. Every other request sends 'Authorization: Bearer {{token}}' inherited from the collection.",
+    "description": "Express server for the DragCanvas website builder.\n\n1. Run 'Auth > Login' first - it stores the JWT into the {{token}} variable.\n2. Every other request inherits 'Bearer {{token}}' from the collection.\n3. Switch {{baseUrl}} between localhost and production in the Variables tab.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -17,13 +18,11 @@
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:3001",
-      "type": "string"
+      "value": "http://localhost:3001"
     },
     {
       "key": "token",
-      "value": "",
-      "type": "string"
+      "value": ""
     }
   ],
   "item": [
@@ -40,23 +39,22 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/register",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "register"
-              ]
-            },
+            "url": "{{baseUrl}}/api/auth/register",
             "description": "Password is hashed with bcrypt before it reaches the database.",
+            "auth": {
+              "type": "noauth"
+            },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"Test1234\"\n}"
+              "raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"Test1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Login (saves token automatically)",
@@ -68,23 +66,19 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/login",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "login"
-              ]
-            },
-            "description": "On success the test script stores data.token into the {{token}} collection variable, so every other request is authenticated automatically.",
+            "url": "{{baseUrl}}/api/auth/login",
+            "description": "The test script stores data.token into the {{token}} variable, so every other request is authenticated automatically.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"yuravolontir@gmail.com\",\n  \"password\": \"123456\"\n}"
+              "raw": "{\n  \"email\": \"yuravolontir@gmail.com\",\n  \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
           },
+          "response": [],
           "event": [
             {
               "listen": "test",
@@ -92,14 +86,10 @@
                 "type": "text/javascript",
                 "exec": [
                   "const body = pm.response.json();",
-                  "",
-                  "pm.test('login succeeded', () => pm.response.to.have.status(200));",
-                  "",
+                  "pm.test('login succeeded', function () { pm.response.to.have.status(200); });",
                   "if (body.success && body.data && body.data.token) {",
                   "    pm.collectionVariables.set('token', body.data.token);",
-                  "    console.log('token saved:', body.data.token.length, 'chars');",
-                  "} else {",
-                  "    console.log('no token in response');",
+                  "    console.log('token saved: ' + body.data.token.length + ' chars');",
                   "}"
                 ]
               }
@@ -116,23 +106,21 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/login",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "login"
-              ]
+            "url": "{{baseUrl}}/api/auth/login",
+            "auth": {
+              "type": "noauth"
             },
-            "description": "",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"yuravolontir@gmail.com\",\n  \"password\": \"wrong-password\"\n}"
+              "raw": "{\n  \"email\": \"yuravolontir@gmail.com\",\n  \"password\": \"wrong-password\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Logout",
@@ -144,23 +132,19 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/logout",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "logout"
-              ]
-            },
+            "url": "{{baseUrl}}/api/auth/logout",
             "description": "Protected: the user id comes from the token, not from the body.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"sessionDurationMinutes\": 12\n}"
+              "raw": "{\n  \"sessionDurationMinutes\": 12\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -172,57 +156,28 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/users",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "users"
-              ]
-            },
+            "url": "{{baseUrl}}/api/users",
             "description": "Requires verifyToken + requireAdmin."
-          }
+          },
+          "response": []
         },
         {
           "name": "One user",
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/users/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "users",
-                "1"
-              ]
-            },
-            "description": ""
-          }
+            "url": "{{baseUrl}}/api/users/1"
+          },
+          "response": []
         },
         {
           "name": "User statistics",
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/users/1/stats",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "users",
-                "1",
-                "stats"
-              ]
-            },
-            "description": ""
-          }
+            "url": "{{baseUrl}}/api/users/1/stats"
+          },
+          "response": []
         },
         {
           "name": "Activate / deactivate",
@@ -234,23 +189,18 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/api/users/update-status",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "users",
-                "update-status"
-              ]
-            },
-            "description": "",
+            "url": "{{baseUrl}}/api/users/update-status",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"targetID\": 3,\n  \"newStatus\": true\n}"
+              "raw": "{\n  \"targetID\": 3,\n  \"newStatus\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Grant / revoke admin",
@@ -262,23 +212,18 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/api/users/update-role",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "users",
-                "update-role"
-              ]
-            },
-            "description": "",
+            "url": "{{baseUrl}}/api/users/update-role",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"targetID\": 3,\n  \"makeAdmin\": false\n}"
+              "raw": "{\n  \"targetID\": 3,\n  \"makeAdmin\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Reset a password",
@@ -290,23 +235,18 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/api/users/reset-password",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "users",
-                "reset-password"
-              ]
-            },
-            "description": "",
+            "url": "{{baseUrl}}/api/users/reset-password",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"targetID\": 3,\n  \"newPassword\": \"Temp123!\"\n}"
+              "raw": "{\n  \"targetID\": 3,\n  \"newPassword\": \"Temp123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -318,38 +258,19 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/projects/user",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "projects",
-                "user"
-              ]
-            },
+            "url": "{{baseUrl}}/api/projects/user",
             "description": "The owner is taken from the token."
-          }
+          },
+          "response": []
         },
         {
           "name": "One project",
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/projects/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "projects",
-                "1"
-              ]
-            },
-            "description": ""
-          }
+            "url": "{{baseUrl}}/api/projects/1"
+          },
+          "response": []
         },
         {
           "name": "Save a project",
@@ -361,42 +282,27 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/api/projects/save",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "projects",
-                "save"
-              ]
-            },
-            "description": "",
+            "url": "{{baseUrl}}/api/projects/save",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"projectName\": \"Postman test project\",\n  \"projectDescription\": \"created from Postman\",\n  \"componentCount\": 3,\n  \"projectSizeKB\": 2,\n  \"projectData\": \"{\\\"ROOT\\\":{}}\"\n}"
+              "raw": "{\n  \"projectName\": \"Postman test project\",\n  \"componentCount\": 3,\n  \"projectSizeKB\": 2,\n  \"projectData\": \"{\\\"ROOT\\\":{}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Delete a project",
           "request": {
             "method": "DELETE",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/projects/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "projects",
-                "1"
-              ]
-            },
-            "description": ""
-          }
+            "url": "{{baseUrl}}/api/projects/1"
+          },
+          "response": []
         }
       ]
     },
@@ -408,68 +314,39 @@
           "request": {
             "method": "POST",
             "header": [],
+            "url": "{{baseUrl}}/api/assets/upload",
+            "description": "In the Body tab the key 'file' is already set to type File - click Select Files and pick an image.\n\nmulter keeps it in memory, it becomes a data URI, goes to Cloudinary, and only the URL is stored in TBAssets.",
             "body": {
               "mode": "formdata",
               "formdata": [
                 {
                   "key": "file",
                   "type": "file",
-                  "src": [],
-                  "description": "Pick any image from your computer"
+                  "src": ""
                 }
               ]
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/assets/upload",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "assets",
-                "upload"
-              ]
-            },
-            "description": "multer keeps the file in memory, it is converted to a data URI and uploaded to Cloudinary; only the returned URL is stored in TBAssets.\n\nIn the Body tab choose form-data, key 'file', type File, then select an image."
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "My uploads",
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/assets/user",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "assets",
-                "user"
-              ]
-            },
-            "description": ""
-          }
+            "url": "{{baseUrl}}/api/assets/user"
+          },
+          "response": []
         },
         {
           "name": "Delete an upload",
           "request": {
             "method": "DELETE",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/assets/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "assets",
-                "1"
-              ]
-            },
-            "description": "Removes it from Cloudinary as well as from the database."
-          }
+            "url": "{{baseUrl}}/api/assets/1",
+            "description": "Removes it from Cloudinary as well as the database."
+          },
+          "response": []
         }
       ]
     },
@@ -486,23 +363,19 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/api/ai/generate",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "ai",
-                "generate"
-              ]
-            },
-            "description": "Sends the prompt to the model, repairs and normalises the JSON it returns, then swaps the placeholders for real Pexels media.",
+            "url": "{{baseUrl}}/api/ai/generate",
+            "description": "Sends the prompt to the model, repairs and normalises the returned JSON, then swaps placeholders for real Pexels media.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"prompt\": \"a coffee shop in Tel Aviv\"\n}"
+              "raw": "{\n  \"prompt\": \"a coffee shop in Tel Aviv\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Missing prompt (expect 400)",
@@ -514,23 +387,18 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/api/ai/generate",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "ai",
-                "generate"
-              ]
-            },
-            "description": "",
+            "url": "{{baseUrl}}/api/ai/generate",
             "body": {
               "mode": "raw",
-              "raw": "{}"
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          }
+          },
+          "response": []
         }
       ]
     },
@@ -542,56 +410,34 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/templates",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "templates"
-              ]
-            },
-            "description": "Public - no token needed."
-          }
+            "url": "{{baseUrl}}/api/templates",
+            "description": "Public - no token needed.",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
         },
         {
           "name": "All templates incl. hidden (admin)",
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/templates/all",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "templates",
-                "all"
-              ]
-            },
-            "description": ""
-          }
+            "url": "{{baseUrl}}/api/templates/all"
+          },
+          "response": []
         },
         {
           "name": "One template",
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/templates/12",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "templates",
-                "12"
-              ]
-            },
-            "description": ""
-          }
+            "url": "{{baseUrl}}/api/templates/12",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -603,19 +449,9 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/notifications/all",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "notifications",
-                "all"
-              ]
-            },
-            "description": ""
-          }
+            "url": "{{baseUrl}}/api/notifications/all"
+          },
+          "response": []
         },
         {
           "name": "Send a newsletter",
@@ -627,138 +463,72 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/api/notifications/send-newsletter",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "notifications",
-                "send-newsletter"
-              ]
-            },
-            "description": "",
+            "url": "{{baseUrl}}/api/notifications/send-newsletter",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"subject\": \"Hello {username}\",\n  \"message\": \"Sent from Postman\",\n  \"recipientType\": \"all\"\n}"
+              "raw": "{\n  \"subject\": \"Hello {username}\",\n  \"message\": \"Sent from Postman\",\n  \"recipientType\": \"all\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "My notifications",
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/notifications/user",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "notifications",
-                "user"
-              ]
-            },
-            "description": ""
-          }
+            "url": "{{baseUrl}}/api/notifications/user"
+          },
+          "response": []
         },
         {
           "name": "Schedules",
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/notifications/schedules",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "notifications",
-                "schedules"
-              ]
-            },
-            "description": ""
-          }
+            "url": "{{baseUrl}}/api/notifications/schedules"
+          },
+          "response": []
         },
         {
           "name": "Message templates",
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/notifications/templates",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "notifications",
-                "templates"
-              ]
-            },
-            "description": ""
-          }
+            "url": "{{baseUrl}}/api/notifications/templates"
+          },
+          "response": []
         },
         {
           "name": "Delivery log",
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/notifications/logs",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "notifications",
-                "logs"
-              ]
-            },
-            "description": ""
-          }
+            "url": "{{baseUrl}}/api/notifications/logs"
+          },
+          "response": []
         },
         {
           "name": "Delivery log statistics",
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/notifications/logs/stats",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "notifications",
-                "logs",
-                "stats"
-              ]
-            },
-            "description": ""
-          }
+            "url": "{{baseUrl}}/api/notifications/logs/stats"
+          },
+          "response": []
         },
         {
           "name": "Settings",
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/notifications/settings",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "notifications",
-                "settings"
-              ]
-            },
-            "description": ""
-          }
+            "url": "{{baseUrl}}/api/notifications/settings"
+          },
+          "response": []
         }
       ]
     },
@@ -769,27 +539,22 @@
           "name": "No token (expect 401)",
           "request": {
             "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/users",
+            "description": "verifyToken rejects the request before the controller runs.",
             "auth": {
               "type": "noauth"
-            },
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/users",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "users"
-              ]
-            },
-            "description": "verifyToken rejects the request before the controller runs."
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Invalid token (expect 401)",
           "request": {
             "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/users",
+            "description": "The signature does not match, so jwt.verify throws.",
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -799,38 +564,22 @@
                   "type": "string"
                 }
               ]
-            },
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/users",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "users"
-              ]
-            },
-            "description": "The signature does not match, so jwt.verify throws."
-          }
+            }
+          },
+          "response": []
         },
         {
           "name": "Unknown route (expect 404)",
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/nope",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "nope"
-              ]
-            },
-            "description": "Handled by notFoundHandler."
-          }
+            "url": "{{baseUrl}}/api/nope",
+            "description": "Handled by notFoundHandler.",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
         }
       ]
     }
