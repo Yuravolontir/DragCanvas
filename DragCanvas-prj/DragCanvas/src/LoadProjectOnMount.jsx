@@ -1,4 +1,4 @@
-import API_URL from './api.js';
+import { apiFetch } from './api.js';
 import { useEffect } from 'react';
   import { useEditor } from '@craftjs/core';
   import { useLocation, useNavigate } from 'react-router-dom';
@@ -50,14 +50,7 @@ import { useEffect } from 'react';
         console.log('Loading project:', projectId);
 
         try {
-          const response = await fetch(`${API_URL}/api/projects/${projectId}?userId=${currentUser.User_ID}`
-          );
-
-          if (!response.ok) {
-            throw new Error('Failed to load project');
-          }
-
-          const project = await response.json();
+          const project = await apiFetch(`/api/projects/${projectId}`);
           console.log('✅ Project data received:', project.ProjectName);
 
           const projectData = JSON.parse(project.ProjectData);
@@ -74,14 +67,7 @@ import { useEffect } from 'react';
       // New: Load template function
       const loadTemplate = async (templateId) => {
         try {
-          const response = await
-  fetch(`${API_URL}/api/templates/${templateId}`);
-
-          if (!response.ok) {
-            throw new Error('Failed to load template');
-          }
-
-          const template = await response.json();
+          const template = await apiFetch(`/api/templates/${templateId}`);
           console.log('✅ Template loaded:', template.TemplateName);
 
           const templateData = JSON.parse(template.TemplateData);

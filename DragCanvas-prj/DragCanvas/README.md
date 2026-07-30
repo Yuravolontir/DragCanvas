@@ -1,16 +1,154 @@
-# React + Vite
+# DragCanvas — Node.js / Express Server
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Final project for **Fullstack Server Development with Node.js** (Ruppin).
 
-Currently, two official plugins are available:
+## 1. What the system does
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+DragCanvas is a drag-and-drop website builder. A user registers, builds a page by
+dragging components onto a canvas, can ask an **AI** to generate a whole layout from a
+text description, uploads their own images, and finally **publishes** the result as a
+real live website.
 
-## React Compiler
+This repository contains the Express server behind it plus the React client.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Main flows:
 
-## Expanding the ESLint configuration
+| Flow | What happens |
+|---|---|
+| Register / login | Password is hashed with bcrypt, login returns a **JWT** |
+| Build & save | The canvas is serialised to JSON and stored against the user's project |
+| Upload media | File → server memory → **Cloudinary** → public URL saved in the database |
+| AI generation | A prompt is sent to an LLM, which returns a full page layout that is then filled with real stock media |
+| Publish | The page is exported to static HTML and deployed to **Netlify** through their API |
+| Admin area | User management, newsletters, scheduled notifications, delivery logs, statistics |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 2. Technologies
+
+**Server**
+- Node.js + Express 5 (ES Modules)
+- PostgreSQL through the `pg` driver, wrapped in a **Singleton** connection-pool service
+- `jsonwebtoken` — authentication; `bcryptjs` — password hashing
+- `multer` + `cloudinary` — file upload to the cloud
+- `node-cron` — background job for scheduled notifications
+- External APIs: ZhipuAI GLM (layout generation), Pexels (stock media), Netlify (deployment)
+
+**Client**
+- React 19 + Vite, Craft.js (drag-and-drop editor), MUI + React-Bootstrap
+
+**Related services** (separate microservices, not in this folder)
+- Python FastAPI reports service — admin charts and QR codes
+
+## 3. Architecture
+
+```
+server.js            express app: middlewares -> routes -> error handling -> listen
+routes.js            central router, mounts every feature under /api
+features/<name>/
+   <name>.router.js  the endpoints of this feature
+   <name>.ctrl.js    request handling and responses
+   <name>.mdl.js     SQL / data access
+utils/
+   db.sql.services.js   Singleton PostgreSQL service (pool + executeQuery)
+   response.builder.js  uniform { success, data, timestamp } envelope
+   ai.helpers.js        parsing and normalising the AI answer
+middlewares/
+   auth.js           verifyToken, requireAdmin, requireSuperAdmin
+   files.js          multer (memory storage) + Cloudinary configuration
+   error.js          404 handler + global error handler
+jobs/
+   schedule.processor.js   node-cron job that sends scheduled notifications
+tests/*.http         ready-made requests for a REST client / Postman
+```
+
+Every response follows the same shape:
+
+```json
+{ "success": true,  "data": { }, "timestamp": "..." }
+{ "success": false, "error": "message", "timestamp": "..." }
+```
+
+### Data model (two related entities with full CRUD)
+
+```
+TBUsers ──1:N──> TBProjects     (a user owns projects)
+   │
+   └────1:N──> TBAssets         (a user owns uploaded images; the row stores the Cloudinary URL)
+```
+
+## 4. Main API endpoints
+
+Protected endpoints require the header `Authorization: Bearer <token>`.
+
+### Authentication — `/api/auth`
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| POST | `/api/auth/register` | – | Create an account (password hashed with bcrypt) |
+| POST | `/api/auth/login` | – | Verify the password and return a JWT |
+| POST | `/api/auth/logout` | token | Close the session and write the audit log |
+
+### Users — `/api/users`
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| GET | `/api/users` | admin | List all users |
+| GET | `/api/users/:id` | token | One user |
+| GET | `/api/users/:id/stats` | token | Projects / exports / activity counters |
+| POST | `/api/users/update-status` | admin | Activate or deactivate a user |
+| POST | `/api/users/update-role` | admin | Grant or revoke admin rights |
+| POST | `/api/users/reset-password` | admin | Set a new password for a user |
+
+### Projects — `/api/projects`
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| GET | `/api/projects/user` | token | Projects of the signed-in user |
+| GET | `/api/projects/:projectId` | token | One project with its canvas data |
+| POST | `/api/projects/save` | token | Create or update a project |
+| DELETE | `/api/projects/:projectId` | token | Soft-delete a project |
+
+### Assets (Cloudinary) — `/api/assets`
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| POST | `/api/assets/upload` | token | Upload a file, store it in Cloudinary, save the URL |
+| GET | `/api/assets/user` | token | List the user's uploads |
+| DELETE | `/api/assets/:assetId` | token | Delete from the database and from Cloudinary |
+
+### AI — `/api/ai`
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| POST | `/api/ai/generate` | token | Turn a text prompt into a full page layout |
+
+### Publishing — `/api/publish`
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| POST | `/api/publish/site` | token | Deploy the exported HTML to Netlify |
+| GET | `/site-by-domain/:domain` | – | Serve a published site by its custom domain |
+
+### Templates, notifications and admin tools
+`/api/templates`, `/api/notifications`, `/api/schedules`,
+`/api/notification-templates`, `/api/notification-logs`, `/api/notification-settings`
+— see `tests/*.http` for ready-made requests of each one.
+
+## 5. How to run
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Configure the environment
+cp .env.example .env      # then fill in the values
+
+# 3. Start the server (http://localhost:3001)
+npm start
+
+# 4. Start the React client in another terminal (http://localhost:5173)
+npm run dev
+```
+
+Required variables are listed in `.env.example`. The minimum to boot the server is
+`DATABASE_URL` and `JWT_SECRET`; Cloudinary, AI and Netlify keys are needed for
+those specific features.
+
+### Testing the API
+
+Open any file in `tests/` with the VS Code **REST Client** extension (or import the
+requests into Postman). Start with `tests/auth.http`: run *Login*, copy the token from
+the response, and paste it into the `@token` variable of the other files.

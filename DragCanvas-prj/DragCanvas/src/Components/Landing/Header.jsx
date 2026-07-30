@@ -1,4 +1,4 @@
-import API_URL from '../../api.js';
+import { apiFetch } from '../../api.js';
   import { useEditor } from '@craftjs/core';
   import { Tooltip } from '@mui/material';
   import { Modal, Form, Alert, Button } from 'react-bootstrap';
@@ -126,8 +126,7 @@ export const Header = () => {
    // If the loaded project was published before, restore its live URL (for the Published chip)
    useEffect(() => {
      if (!projectId || !currentUser) return;
-     fetch(`${API_URL}/api/projects/${projectId}?userId=${currentUser.User_ID}`)
-       .then((res) => (res.ok ? res.json() : null))
+     apiFetch(`/api/projects/${projectId}`)
        .then((project) => {
          if (project?.PublishedUrl) setPublishedUrl(project.PublishedUrl);
        })
@@ -186,42 +185,31 @@ export const Header = () => {
       }
 
       // Save as project
-      const response = await
-  fetch(`${API_URL}/api/projects/save`, {
+      const data = await apiFetch('/api/projects/save', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+        body: {
           projectId: null,
-          userId: currentUser.User_ID,
           projectName: projectName,
           projectDescription: projectDescription || null,
           componentCount: componentCount,
           projectSizeKB: projectSizeKB,
           projectData: jsonString,
-          thumbnailUrl: thumbnailData  // ADD THIS
-        })
+          thumbnailUrl: thumbnailData
+        }
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        // If save as template is checked
-        if (saveAsTemplate && templateName) {
-          await saveAsTemplateFunc(jsonString, componentCount);
-        }
-
-        setSavedProjectId(data.projectId);
-        showAlertModal(`Project saved successfully! ID:
-  ${data.projectId}`, 'success');
-        setShowSaveModal(false);
-        setProjectName('');
-        setProjectDescription('');
-        setSaveAsTemplate(false);
-        setTemplateName('');
-      } else {
-        showAlertModal(data.error || 'Failed to save project',
-  'error');
+      // If "save as template" is checked, store it as a template too
+      if (saveAsTemplate && templateName) {
+        await saveAsTemplateFunc(jsonString, componentCount);
       }
+
+      setSavedProjectId(data.projectId);
+      showAlertModal(`Project saved successfully! ID: ${data.projectId}`, 'success');
+      setShowSaveModal(false);
+      setProjectName('');
+      setProjectDescription('');
+      setSaveAsTemplate(false);
+      setTemplateName('');
     } catch (err) {
       showAlertModal(err.message, 'error');
     }
@@ -260,23 +248,18 @@ export const Header = () => {
         console.log('Thumbnail generated, size:', thumbnailData.length);
 
         // Save template
-        const response = await
-    fetch(`${API_URL}/api/templates/save`, {
+        await apiFetch('/api/templates/save', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
+          body: {
             templateName: templateName,
             category: templateCategory,
             projectData: projectData,
             componentCount: componentCount,
-            createdBy: currentUser.User_ID,
             thumbnailData: thumbnailData
-          })
+          }
         });
 
-        if (response.ok) {
-          showAlertModal('Template saved successfully!', 'success');
-        }
+        showAlertModal('Template saved successfully!', 'success');
       } catch (err) {
         console.error('Save template error:', err);
         showAlertModal('Failed to save template: ' + err.message,
@@ -347,29 +330,23 @@ const handlePublish = async () => {
     try {
       const json = query.serialize();
       const html = exportToHtml(JSON.parse(json), projectName);
-      const res = await
-  fetch(`${API_URL}/api/publish-site`, {
+      const data = await apiFetch('/api/publish/site', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+        body: {
           projectId,
           html,
           target: publishTarget,
           domain: publishTarget === 'custom' ? customDomain.trim() : null
-        })
-      });
-      const data = await res.json();
-      if (data.success) {
-        if (publishTarget === 'custom') {
-          setPublishModal(false);
-          showAlertModal(`Published! Go to your domain registrar and add:\nA record: @ → your-server-ip\nCNAME: www → your-server-ip\nThen ${customDomain} will show your site.`, 'success');
-        } else {
-          setPublishedUrl(data.publishedUrl);
-          setPublishModal(false);
-          setPublishInfoOpen(true);
         }
+      });
+
+      if (publishTarget === 'custom') {
+        setPublishModal(false);
+        showAlertModal(`Published! Go to your domain registrar and add:\nA record: @ → your-server-ip\nCNAME: www → your-server-ip\nThen ${customDomain} will show your site.`, 'success');
       } else {
-        alert('Error: ' + (data.error || 'Unknown'));
+        setPublishedUrl(data.publishedUrl);
+        setPublishModal(false);
+        setPublishInfoOpen(true);
       }
     } catch (e) {
       alert('Error: ' + e.message);

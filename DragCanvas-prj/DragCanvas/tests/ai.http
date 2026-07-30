@@ -1,0 +1,15 @@
+@token = PASTE_TOKEN_HERE
+
+### Generate a website layout with AI (protected - costs money at the provider)
+POST http://localhost:3001/api/ai/generate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "prompt": "a coffee shop in Tel Aviv" }
+
+### Missing prompt -> 400
+POST http://localhost:3001/api/ai/generate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ }

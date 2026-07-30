@@ -1,4 +1,4 @@
-import API_URL from './api.js';
+import { apiFetch } from './api.js';
 import React, { useEffect, useState } from 'react';
 import NavBar from './NavBar';
 import Table from 'react-bootstrap/Table';
@@ -187,25 +187,13 @@ export default function AdminPanel() {
       }
 
       try {
-        const response = await
-  fetch(`${API_URL}/api/update-status`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          targetID: user.User_ID,
-          adminID: currentUser.User_ID,
-          newStatus: newStatus
-        })
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
+        // adminID is no longer sent - the server takes it from the token
+        await apiFetch('/api/users/update-status', {
+          method: 'POST',
+          body: { targetID: user.User_ID, newStatus }
+        });
         showAlertModal(`User ${newStatus ? 'activated' : 'deactivated'} successfully`);
         fetchUsers();
-      } else {
-        showAlertModal(data.error || 'Update failed', 'error');
-      }
     } catch (err) {
       showAlertModal(err.message, 'error');
     }
@@ -224,25 +212,12 @@ export default function AdminPanel() {
       }
 
       try {
-        const response = await
-  fetch(`${API_URL}/api/reset-password`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          targetID: userToReset.User_ID,
-          adminID: currentUser.User_ID,
-          newPassword: tempPassword
-        })
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
+        const data = await apiFetch('/api/users/reset-password', {
+          method: 'POST',
+          body: { targetID: userToReset.User_ID, newPassword: tempPassword }
+        });
         setShowResetModal(false);
         showAlertModal(data.message);
-      } else {
-        showAlertModal(data.error || 'Reset failed', 'error');
-      }
     } catch (err) {
       showAlertModal(err.message, 'error');
     }
@@ -261,26 +236,13 @@ const confirmRoleChange = async () => {
       }
 
       try {
-        const response = await
-  fetch(`${API_URL}/api/update-role`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          targetID: userToChangeRole.User_ID,
-          adminID: currentUser.User_ID,
-          makeAdmin: makeAdmin
-        })
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
+        const data = await apiFetch('/api/users/update-role', {
+          method: 'POST',
+          body: { targetID: userToChangeRole.User_ID, makeAdmin }
+        });
         setShowRoleModal(false);
         showAlertModal(data.message);
         fetchUsers();
-      } else {
-        showAlertModal(data.error || 'Role change failed', 'error');
-      }
     } catch (err) {
       showAlertModal(err.message, 'error');
     }
@@ -335,13 +297,7 @@ const confirmRoleChange = async () => {
 
           setLoadingTemplates(true);
           try {
-            const response = await fetch(`${API_URL}/api/templates/all?userId=${currentUser.User_ID}`);
-
-            if (!response.ok) {
-              throw new Error('Failed to fetch templates');
-            }
-
-            const data = await response.json();
+            const data = await apiFetch('/api/templates/all');
             setTemplates(Array.isArray(data) ? data : []);
           } catch (err) {
             console.error('Failed to fetch templates:', err);
@@ -386,13 +342,7 @@ const confirmRoleChange = async () => {
 
       setLoadingNotifications(true);
       try {
-        const response = await fetch(`${API_URL}/api/notifications/all?userId=${currentUser.User_ID}`);
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch notifications');
-        }
-
-        const data = await response.json();
+        const data = await apiFetch('/api/notifications/all');
         setNotifications(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error('Failed to fetch notifications:', err);
@@ -418,36 +368,23 @@ const confirmRoleChange = async () => {
 
       setSending(true);
       try {
-        const response = await
-  fetch(`${API_URL}/api/notifications/send-newsletter`,
-  {
+        const data = await apiFetch('/api/notifications/send-newsletter', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
+          body: {
             subject: newsletterSubject,
             message: newsletterMessage,
-            recipientType: recipientType,
-            recipientIds: recipientType === 'selected' ?
-  selectedRecipients : null,
-            userId: currentUser.User_ID
-          })
+            recipientType,
+            recipientIds: recipientType === 'selected' ? selectedRecipients : null
+          }
         });
 
-        const data = await response.json();
-
-        if (response.ok) {
-          showAlertModal(`Newsletter sent to ${data.sentCount}
-  recipients!`, 'success');
-          setShowNewsletterModal(false);
-          setNewsletterSubject('');
-          setNewsletterMessage('');
-          setRecipientType('all');
-          setSelectedRecipients([]);
-          fetchNotifications();
-        } else {
-          showAlertModal(data.error || 'Failed to send newsletter',
-   'error');
-        }
+        showAlertModal(`Newsletter sent to ${data.sentCount} recipients!`, 'success');
+        setShowNewsletterModal(false);
+        setNewsletterSubject('');
+        setNewsletterMessage('');
+        setRecipientType('all');
+        setSelectedRecipients([]);
+        fetchNotifications();
       } catch (err) {
         showAlertModal(err.message, 'error');
       } finally {
@@ -463,8 +400,7 @@ const confirmRoleChange = async () => {
 
     setLoadingSchedules(true);
     try {
-      const response = await fetch(`${API_URL}/api/schedules?userId=${currentUser.User_ID}`);
-      const data = await response.json();
+      const data = await apiFetch('/api/notifications/schedules');
       setSchedules(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Failed to fetch schedules:', err);
@@ -477,25 +413,18 @@ const confirmRoleChange = async () => {
   const handleSaveSchedule = async (scheduleData) => {
     try {
       const url = editingSchedule
-        ? `/api/schedules/${editingSchedule.Schedule_ID}`
-        : '/api/schedules';
+        ? `/api/notifications/schedules/${editingSchedule.Schedule_ID}`
+        : '/api/notifications/schedules';
 
-      const response = await fetch(url, {
+      await apiFetch(url, {
         method: editingSchedule ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...scheduleData, userId: currentUser.User_ID })
+        body: scheduleData
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        showAlertModal(editingSchedule ? 'Schedule updated!' : 'Schedule created!', 'success');
-        setShowScheduleModal(false);
-        setEditingSchedule(null);
-        fetchSchedules();
-      } else {
-        showAlertModal(data.error || 'Failed to save schedule', 'error');
-      }
+      showAlertModal(editingSchedule ? 'Schedule updated!' : 'Schedule created!', 'success');
+      setShowScheduleModal(false);
+      setEditingSchedule(null);
+      fetchSchedules();
     } catch (err) {
       showAlertModal(err.message, 'error');
     }
@@ -503,16 +432,12 @@ const confirmRoleChange = async () => {
 
   const handleToggleSchedule = async (scheduleId, isActive) => {
     try {
-      const response = await fetch(`${API_URL}/api/schedules/${scheduleId}/toggle`, {
+      await apiFetch(`/api/notifications/schedules/${scheduleId}/toggle`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ isActive })
+        body: { isActive }
       });
-
-      if (response.ok) {
-        showAlertModal('Schedule updated!', 'success');
-        fetchSchedules();
-      }
+      showAlertModal('Schedule updated!', 'success');
+      fetchSchedules();
     } catch (err) {
       showAlertModal(err.message, 'error');
     }
@@ -520,14 +445,9 @@ const confirmRoleChange = async () => {
 
   const handleDeleteSchedule = async (scheduleId) => {
     try {
-      const response = await fetch(`${API_URL}/api/schedules/${scheduleId}`, {
-        method: 'DELETE'
-      });
-
-      if (response.ok) {
-        showAlertModal('Schedule deleted!', 'success');
-        fetchSchedules();
-      }
+      await apiFetch(`/api/notifications/schedules/${scheduleId}`, { method: 'DELETE' });
+      showAlertModal('Schedule deleted!', 'success');
+      fetchSchedules();
     } catch (err) {
       showAlertModal(err.message, 'error');
     }
@@ -539,8 +459,7 @@ const confirmRoleChange = async () => {
   const fetchNotificationTemplates = async () => {
     setLoadingTemplatesNotification(true);
     try {
-      const response = await fetch(`${API_URL}/api/notification-templates`);
-      const data = await response.json();
+      const data = await apiFetch('/api/notifications/templates');
       setNotificationTemplates(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Failed to fetch notification templates:', err);
@@ -553,25 +472,18 @@ const confirmRoleChange = async () => {
   const handleSaveNotificationTemplate = async (templateData) => {
     try {
       const url = editingTemplate
-        ? `/api/notification-templates/${editingTemplate.Template_ID}`
-        : '/api/notification-templates';
+        ? `/api/notifications/templates/${editingTemplate.Template_ID}`
+        : '/api/notifications/templates';
 
-      const response = await fetch(url, {
+      await apiFetch(url, {
         method: editingTemplate ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...templateData, userId: currentUser.User_ID })
+        body: templateData
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        showAlertModal(editingTemplate ? 'Template updated!' : 'Template created!', 'success');
-        setShowTemplateModal(false);
-        setEditingTemplate(null);
-        fetchNotificationTemplates();
-      } else {
-        showAlertModal(data.error || 'Failed to save template', 'error');
-      }
+      showAlertModal(editingTemplate ? 'Template updated!' : 'Template created!', 'success');
+      setShowTemplateModal(false);
+      setEditingTemplate(null);
+      fetchNotificationTemplates();
     } catch (err) {
       showAlertModal(err.message, 'error');
     }
@@ -579,16 +491,12 @@ const confirmRoleChange = async () => {
 
   const handleToggleNotificationTemplate = async (templateId, isActive) => {
     try {
-      const response = await fetch(`${API_URL}/api/notification-templates/${templateId}/toggle`, {
+      await apiFetch(`/api/notifications/templates/${templateId}/toggle`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ isActive })
+        body: { isActive }
       });
-
-      if (response.ok) {
-        showAlertModal('Template updated!', 'success');
-        fetchNotificationTemplates();
-      }
+      showAlertModal('Template updated!', 'success');
+      fetchNotificationTemplates();
     } catch (err) {
       showAlertModal(err.message, 'error');
     }
@@ -596,14 +504,9 @@ const confirmRoleChange = async () => {
 
   const handleDeleteNotificationTemplate = async (templateId) => {
     try {
-      const response = await fetch(`${API_URL}/api/notification-templates/${templateId}`, {
-        method: 'DELETE'
-      });
-
-      if (response.ok) {
-        showAlertModal('Template deleted!', 'success');
-        fetchNotificationTemplates();
-      }
+      await apiFetch(`/api/notifications/templates/${templateId}`, { method: 'DELETE' });
+      showAlertModal('Template deleted!', 'success');
+      fetchNotificationTemplates();
     } catch (err) {
       showAlertModal(err.message, 'error');
     }
@@ -623,8 +526,7 @@ const confirmRoleChange = async () => {
         ...logFilters
       });
 
-      const response = await fetch(`${API_URL}/api/notification-logs?${params}`);
-      const data = await response.json();
+      const data = await apiFetch(`/api/notifications/logs?${params}`);
       setNotificationLogs(data.logs || []);
       setLogPage(data.page || 1);
     } catch (err) {
@@ -637,8 +539,7 @@ const confirmRoleChange = async () => {
 
   const fetchLogStats = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/notification-logs/stats`);
-      const data = await response.json();
+      const data = await apiFetch('/api/notifications/logs/stats');
       setLogStats(data);
     } catch (err) {
       console.error('Failed to fetch log stats:', err);
@@ -650,8 +551,7 @@ const confirmRoleChange = async () => {
   // ============================================
   const fetchNotificationSettings = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/notification-settings`);
-      const data = await response.json();
+      const data = await apiFetch('/api/notifications/settings');
       setNotificationSettings(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Failed to fetch notification settings:', err);
@@ -661,16 +561,12 @@ const confirmRoleChange = async () => {
 
   const handleSaveNotificationSettings = async (settings) => {
     try {
-      const response = await fetch(`${API_URL}/api/notification-settings`, {
+      await apiFetch('/api/notifications/settings', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ settings, userId: currentUser.User_ID })
+        body: { settings }
       });
-
-      if (response.ok) {
-        showAlertModal('Settings saved!', 'success');
-        fetchNotificationSettings();
-      }
+      showAlertModal('Settings saved!', 'success');
+      fetchNotificationSettings();
     } catch (err) {
       showAlertModal(err.message, 'error');
     }
@@ -1294,23 +1190,16 @@ const confirmRoleChange = async () => {
                               onClick={async () => {
                                 const newEnabled = !setting.IsEnabled;
                                 try {
-                                  const response = await fetch(`${API_URL}/api/notification-settings`, {
+                                  await apiFetch('/api/notifications/settings', {
                                     method: 'PUT',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({
-                                      settings: [{ notificationType: setting.NotificationType, isEnabled: newEnabled }],
-                                      userId: currentUser.User_ID
-                                    })
+                                    body: {
+                                      settings: [{ notificationType: setting.NotificationType, isEnabled: newEnabled }]
+                                    }
                                   });
-                                  if (response.ok) {
-                                    setNotificationSettings(prev => prev.map(s =>
-                                      s.Setting_ID === setting.Setting_ID ? { ...s, IsEnabled: newEnabled } : s
-                                    ));
-                                    showAlertModal(`${setting.NotificationType} ${newEnabled ? 'enabled' : 'disabled'}!`, 'success');
-                                  } else {
-                                    const data = await response.json();
-                                    showAlertModal(data.error || 'Failed to update', 'error');
-                                  }
+                                  setNotificationSettings(prev => prev.map(s =>
+                                    s.Setting_ID === setting.Setting_ID ? { ...s, IsEnabled: newEnabled } : s
+                                  ));
+                                  showAlertModal(`${setting.NotificationType} ${newEnabled ? 'enabled' : 'disabled'}!`, 'success');
                                 } catch (err) {
                                   showAlertModal(err.message, 'error');
                                 }

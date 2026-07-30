@@ -1,4 +1,4 @@
-import API_URL from './api.js';
+import { apiFetch, setToken, clearToken } from './api.js';
 import React, { createContext, useState, useEffect, useContext }
   from "react";
 import { v4 as uuidv4 } from 'uuid';
@@ -67,17 +67,13 @@ export default function UserContextProvider(props) {
       return { success: false, error: 'Email and password are required' };
     }
     try {
-      const response = await fetch(`${API_URL}/api/login`, {
+      const data2 = await apiFetch('/api/auth/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: { email, password }
       });
 
-      const data2 = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data2.error || 'Login failed');
-      }
+      // The token proves our identity on every later request
+      setToken(data2.token);
 
       setCurrentUser(data2);
       setIsAdmin(data2.IsAdmin);
@@ -99,18 +95,17 @@ export default function UserContextProvider(props) {
     setLoading(true);
     setError(null);
     try {
-      const response = await
-        fetch(`${API_URL}/api/register`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, email, password })
-        });
+      const data = await apiFetch('/api/auth/register', {
+        method: 'POST',
+        body: { username, email, password }
+      });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Registration failed');
-      }
+      // Registration does not issue a token, so log the new user in right away
+      const session = await apiFetch('/api/auth/login', {
+        method: 'POST',
+        body: { email, password }
+      });
+      setToken(session.token);
 
       setCurrentUser(data.user);
       setIsAdmin(data.user.IsAdmin);
@@ -129,6 +124,7 @@ export default function UserContextProvider(props) {
   };
 
   const logout = () => {
+    clearToken();
     setCurrentUser(null);
     setIsAdmin(null);
     setIsSuperAdmin(null);

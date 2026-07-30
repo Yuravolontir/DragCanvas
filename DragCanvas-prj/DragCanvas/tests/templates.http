@@ -1,0 +1,15 @@
+@token = PASTE_TOKEN_HERE
+
+### Public template gallery (no token needed)
+GET http://localhost:3001/api/templates
+
+### All templates including hidden ones (admin only)
+GET http://localhost:3001/api/templates/all
+Authorization: Bearer {{token}}
+
+### One template with its data
+GET http://localhost:3001/api/templates/12
+
+### Hide a template (admin only)
+DELETE http://localhost:3001/api/templates/12
+Authorization: Bearer {{token}}

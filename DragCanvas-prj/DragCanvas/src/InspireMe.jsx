@@ -1,4 +1,4 @@
-import API_URL from './api.js';
+import { apiFetch } from './api.js';
 import React, { useEffect, useState } from 'react';
 import NavBar from './NavBar';
 import Container from 'react-bootstrap/Container';
@@ -36,9 +36,7 @@ export default function InspireMe() {
 
   const fetchTemplates = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/templates`);
-      if (!response.ok) throw new Error('Failed to fetch templates');
-      const data = await response.json();
+      const data = await apiFetch('/api/templates');
       setTemplates(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Failed to fetch templates:', err);
@@ -73,23 +71,9 @@ export default function InspireMe() {
     }
 
     try {
-      const response = await fetch(`${API_URL}/api/templates/${templateToDelete.Template_ID}?userId=${currentUser.User_ID}`,
-        { method: 'DELETE', headers: { 'Content-Type': 'application/json' } }
-      );
-
-      const rawText = await response.text();
-
-      if (response.ok) {
-        try {
-          JSON.parse(rawText);
-          showAlertModal('Template deleted successfully', 'success');
-          fetchTemplates();
-        } catch (e) {
-          showAlertModal('Server returned invalid response', 'error');
-        }
-      } else {
-        showAlertModal('Failed to delete template', 'error');
-      }
+      await apiFetch(`/api/templates/${templateToDelete.Template_ID}`, { method: 'DELETE' });
+      showAlertModal('Template deleted successfully', 'success');
+      fetchTemplates();
     } catch (err) {
       showAlertModal('Error deleting template: ' + err.message, 'error');
     }

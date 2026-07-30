@@ -1,0 +1,31 @@
+@token = PASTE_TOKEN_HERE
+
+### All newsletters (superadmin only)
+GET http://localhost:3001/api/notifications/all
+Authorization: Bearer {{token}}
+
+### Send a newsletter (superadmin only)
+POST http://localhost:3001/api/notifications/send-newsletter
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "subject": "Hello {username}",
+  "message": "This newsletter was sent from notifications.http",
+  "recipientType": "all"
+}
+
+### My notifications
+GET http://localhost:3001/api/notifications/user
+Authorization: Bearer {{token}}
+
+### Mark as viewed
+PUT http://localhost:3001/api/notifications/mark-viewed
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "notificationIds": [1, 2] }
+
+### Notification delivery log statistics (admin)
+GET http://localhost:3001/api/notification-logs/stats
+Authorization: Bearer {{token}}

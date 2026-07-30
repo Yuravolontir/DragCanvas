@@ -1,0 +1,34 @@
+@token = PASTE_TOKEN_HERE
+
+### List all users (admin only)
+GET http://localhost:3001/api/users
+Authorization: Bearer {{token}}
+
+### Without a token -> 401
+GET http://localhost:3001/api/users
+
+### With an invalid token -> 401
+GET http://localhost:3001/api/users
+Authorization: Bearer not-a-real-token
+
+### One user
+GET http://localhost:3001/api/users/1
+Authorization: Bearer {{token}}
+
+### User statistics
+GET http://localhost:3001/api/users/1/stats
+Authorization: Bearer {{token}}
+
+### Activate / deactivate a user (admin only)
+POST http://localhost:3001/api/users/update-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "targetID": 2, "newStatus": true }
+
+### Reset another user's password (admin only)
+POST http://localhost:3001/api/users/reset-password
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "targetID": 2, "newPassword": "Temp123!" }

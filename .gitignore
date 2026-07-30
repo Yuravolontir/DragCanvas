@@ -8,3 +8,7 @@ seed.sql
 seed-export*.js
 dragcanvas-project-code.txt
 
+
+# Tool caches
+.serena/
+openspec/

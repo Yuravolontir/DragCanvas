@@ -1,0 +1,37 @@
+### Register a new user
+POST http://localhost:3001/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "testuser@example.com",
+  "password": "Test1234"
+}
+
+### Login - copy the returned token into the @token variable below
+# @name login
+POST http://localhost:3001/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "testuser@example.com",
+  "password": "Test1234"
+}
+
+@token = {{login.response.body.data.token}}
+
+### Logout (protected)
+POST http://localhost:3001/api/auth/logout
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "sessionDurationMinutes": 12 }
+
+### Login with a wrong password -> 401
+POST http://localhost:3001/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "testuser@example.com",
+  "password": "wrong-password"
+}

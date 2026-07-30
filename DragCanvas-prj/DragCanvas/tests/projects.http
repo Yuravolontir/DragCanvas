@@ -1,0 +1,26 @@
+@token = PASTE_TOKEN_HERE
+
+### My projects (owner comes from the token)
+GET http://localhost:3001/api/projects/user
+Authorization: Bearer {{token}}
+
+### Create a project
+POST http://localhost:3001/api/projects/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "projectName": "REST client test project",
+  "projectDescription": "created from projects.http",
+  "componentCount": 3,
+  "projectSizeKB": 2,
+  "projectData": "{\"ROOT\":{}}"
+}
+
+### One project
+GET http://localhost:3001/api/projects/1
+Authorization: Bearer {{token}}
+
+### Delete a project (soft delete)
+DELETE http://localhost:3001/api/projects/1
+Authorization: Bearer {{token}}

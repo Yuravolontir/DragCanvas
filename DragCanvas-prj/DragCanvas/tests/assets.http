@@ -1,0 +1,22 @@
+@token = PASTE_TOKEN_HERE
+
+### Upload an image -> Cloudinary -> URL saved in TBAssets
+# Replace the file path with a real image on your machine
+POST http://localhost:3001/api/assets/upload
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=----Boundary
+
+------Boundary
+Content-Disposition: form-data; name="file"; filename="test.png"
+Content-Type: image/png
+
+< ./test.png
+------Boundary--
+
+### My uploaded assets
+GET http://localhost:3001/api/assets/user
+Authorization: Bearer {{token}}
+
+### Delete an asset (removes it from Cloudinary too)
+DELETE http://localhost:3001/api/assets/1
+Authorization: Bearer {{token}}

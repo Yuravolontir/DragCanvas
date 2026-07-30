@@ -1,6 +1,6 @@
 """Database module - connection to Supabase PostgreSQL."""
 import os
-import psycopg2
+import psycopg2  # Postgres driver
 from dotenv import load_dotenv
 
 load_dotenv()

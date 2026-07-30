@@ -1,4 +1,4 @@
-import API_URL from './api.js';
+import { apiFetch } from './api.js';
 import { useState, useEffect } from 'react'
 import NavBar from './NavBar';
 import Container from 'react-bootstrap/Container';
@@ -43,14 +43,8 @@ export default function MyProject() {
         return;
       }
 
-      const response = await fetch(`${API_URL}/api/projects/user/${currentUser.User_ID}`
-      );
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch projects');
-      }
-
-      const data = await response.json();
+      // The server reads the owner from the token, so no userId in the URL
+      const data = await apiFetch('/api/projects/user');
       setProjects(data);
     } catch (err) {
       console.error('Error fetching projects:', err);
@@ -81,20 +75,9 @@ export default function MyProject() {
     setShowDeleteModal(false);
 
     try {
-      const response = await fetch(`${API_URL}/api/projects/${projectToDelete}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: currentUser.User_ID
-        })
-      });
-
-      if (response.ok) {
-        fetchProjects();
-        showAlertModal('Project deleted successfully', 'success');
-      } else {
-        throw new Error('Failed to delete project');
-      }
+      await apiFetch(`/api/projects/${projectToDelete}`, { method: 'DELETE' });
+      fetchProjects();
+      showAlertModal('Project deleted successfully', 'success');
     } catch (err) {
       console.error('Delete error:', err);
       showAlertModal('Error deleting project: ' + err.message, 'error');
