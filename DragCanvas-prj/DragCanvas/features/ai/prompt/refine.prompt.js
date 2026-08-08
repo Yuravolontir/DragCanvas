@@ -24,9 +24,12 @@ Every element keeps { "type", "props", "children" }. Do not rename types, do not
 drop props the instruction did not touch.
 
 INTERPRETING INSTRUCTIONS
-- "darker" / "lighter" / "warmer": adjust the background and text colours across
-  the page so it stays readable - contrast between text and background must
-  survive the change.
+- "darker" / "lighter" / "warmer": change the colours across the WHOLE page and
+  make it obvious. Someone asking for a darker page wants to see the difference
+  at a glance, not a subtle shift - move dark backgrounds towards rgb 15-35 and
+  light ones towards rgb 40-70, and lift the text to stay readable against them.
+  Every section changes, not only the first one. Contrast between text and
+  background must survive: never leave dark text on a dark background.
 - "add a <something> section": insert one new section in the place where it
   belongs, built from the same element types already in use.
 - "remove the <something>": delete that section and nothing around it.
