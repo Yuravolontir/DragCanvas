@@ -1,73 +1,115 @@
-    /** External API calls used by the AI website generator. */
+import { buildSystemPrompt } from './prompt/build.prompt.js';
+import { buildRefinePrompt, buildRefineMessage } from './prompt/refine.prompt.js';
 
-const GLM_API = 'https://open.bigmodel.cn/api/paas/v4/chat/completions';
-const GLM_MODEL = 'glm-4-plus';
+/** External API calls used by the AI website generator. */
+
+const OPENROUTER_API = 'https://openrouter.ai/api/v1/chat/completions';
+const DEFAULT_MODEL = 'google/gemini-2.5-flash';
+
+// A full page is a lot of JSON. Left to the provider default the answer gets
+// truncated mid-structure, which is exactly what made one generation in five
+// fail with "Unexpected end of JSON input" before this moved to the server.
+const MAX_OUTPUT_TOKENS = 32000;
 
 // Images are served through our own proxy so the editor canvas is not tainted
 const PUBLIC_API_URL = process.env.PUBLIC_API_URL || 'http://localhost:3001';
 
-const SYSTEM_PROMPT = `You are a web designer. Output ONLY valid JSON — no markdown, no code blocks, no commentary. Schema: {"sections":[{"type":"container","props":{},"children":[]}]}
+/** "creativity" from the client maps to the model's temperature. */
+const TEMPERATURES = { low: 0.4, balanced: 0.8, bold: 1.1 };
 
-ELEMENT TYPES: Container, Text, Button, Video, Image, Link.
+export function temperatureFor(creativity) {
+    return TEMPERATURES[creativity] ?? TEMPERATURES.balanced;
+}
 
-Container props: width,height,padding[top,right,bottom,left],margin[t,r,b,l],background{"r","g","b","a"},color{"r","g","b","a"},radius,shadow,flexDirection,alignItems,justifyContent,gap
-Text props: text,fontSize,fontWeight,textAlign,color{"r","g","b","a"},margin[t,r,b,l],shadow
-Button props: text,buttonStyle,background{"r","g","b","a"},color{"r","g","b","a"},margin[t,r,b,l],radius
-Video props: videoId,videoUrl,text
-Image props: src,radius,width,height
-Link props: href,text,fontSize
+async function callModel(messages, { temperature = 0.8, jsonOnly = true, maxTokens = MAX_OUTPUT_TOKENS } = {}) {
+    const apiKey = process.env.OPENROUTER_API_KEY;
+    if (!apiKey) {
+        const error = new Error('Missing OPENROUTER_API_KEY on the server');
+        error.status = 500;
+        throw error;
+    }
 
-IMAGES: Use IMAGE_PLACEHOLDER_1..8 as src. They auto-replace with real photos.
-VIDEO: Use VIDEO_PLACEHOLDER_1 as videoUrl in hero.
-
-Create exactly 5 sections:
-1. HERO — dark bg, 500px, VIDEO_PLACEHOLDER_1, heading + button
-2. ABOUT — light bg, row: IMAGE_PLACEHOLDER_1 + text
-3. SERVICES — 3 cards row, each with IMAGE + title + short desc
-4. GALLERY — row of 3 images
-5. FOOTER — dark, short text
-
-RULES:
-- Alternate dark/light backgrounds
-- Headings: 36-48px, bold. Body: 16-18px
-- Short realistic text (3-8 word headings, 8-15 word descriptions)
-- Every prop MUST be present
-- Output ONLY the JSON object starting with { and ending with }`;
-
-async function callGlm(messages, maxTokens = 16000, temperature = 0.7) {
-    const response = await fetch(GLM_API, {
+    const response = await fetch(OPENROUTER_API, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.GLM_API_KEY}`,
+            'Authorization': `Bearer ${apiKey}`,
+            'HTTP-Referer': process.env.FRONTEND_URL || 'http://localhost:5173',
+            'X-Title': 'DragCanvas',
         },
-        body: JSON.stringify({ model: GLM_MODEL, messages, max_tokens: maxTokens, temperature }),
+        body: JSON.stringify({
+            model: process.env.AI_MODEL || DEFAULT_MODEL,
+            messages,
+            temperature,
+            max_tokens: maxTokens,
+            ...(jsonOnly ? { response_format: { type: 'json_object' } } : {}),
+        }),
     });
 
     const data = await response.json();
+
     if (!response.ok) {
-        const error = new Error(`GLM API error (${response.status})`);
+        const error = new Error(data?.error?.message || `AI provider error (${response.status})`);
         error.status = response.status;
-        error.body = data;
+        error.retryable = response.status === 429 || response.status >= 500;
         throw error;
     }
-    return data?.choices?.[0]?.message?.content ?? null;
+
+    const choice = data?.choices?.[0];
+    const content = choice?.message?.content ?? null;
+
+    // The provider sometimes gives up mid-answer: finish_reason "error" with an
+    // empty or partial body. There is nothing to repair in that case - the only
+    // cure is asking again, so mark it retryable.
+    if (choice?.finish_reason === 'error' || !content) {
+        const error = new Error(`AI provider stopped early (finish_reason: ${choice?.finish_reason})`);
+        error.retryable = true;
+        throw error;
+    }
+
+    return content;
 }
 
 /** Ask the model to design a website layout for the given prompt. */
-export function generateLayout(prompt) {
-    const userMessage = `Create a website for "${prompt}". Use IMAGE_PLACEHOLDER_1..8 for images, VIDEO_PLACEHOLDER_1 for hero video. 5 sections. Output ONLY raw JSON, no markdown.`;
-    return callGlm([
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user', content: userMessage },
-    ]);
+export async function generateLayout(prompt, creativity) {
+    const { kind, brief, systemPrompt } = await buildSystemPrompt(prompt);
+    console.log(`[AI] kind=${kind.key} palette=${brief.palette} type=${brief.type} density=${brief.density} | prompt ${systemPrompt.length} chars`);
+
+    return callModel(
+        [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: prompt },
+        ],
+        { temperature: temperatureFor(creativity) }
+    );
+}
+
+/**
+ * Edit an existing layout according to one instruction.
+ *
+ * Deliberately colder than generation: refinement should change what was asked
+ * and leave the rest alone, which is the opposite of creative freedom.
+ */
+export function refineLayout(layout, instruction) {
+    return callModel(
+        [
+            { role: 'system', content: buildRefinePrompt() },
+            { role: 'user', content: buildRefineMessage(layout, instruction) },
+        ],
+        { temperature: 0.3 }
+    );
 }
 
 /** Second chance: ask the model to fix its own broken JSON. */
 export function repairLayoutJson(raw) {
-    return callGlm([
-        { role: 'user', content: `Fix this broken JSON and return ONLY valid JSON matching this schema: {"sections":[{type,props,children}]}\n\n${raw}` },
-    ]);
+    return callModel(
+        [{
+            role: 'user',
+            content: 'Fix this broken JSON and return ONLY valid JSON matching this schema: '
+                + '{"sections":[{type,props,children}]}\n\n' + raw,
+        }],
+        { temperature: 0 }
+    );
 }
 
 export async function fetchPexelsImages(query, count = 10) {

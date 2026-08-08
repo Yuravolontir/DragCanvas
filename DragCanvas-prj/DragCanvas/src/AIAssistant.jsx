@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
+import { apiFetch } from './api.js';
   import { useEditor } from '@craftjs/core';
 
   export default function AIAssistant() {
     const [prompt, setPrompt] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    // low / balanced / bold -> temperature on the server
+    const [creativity, setCreativity] = useState('balanced');
+    // The layout the generator produced, kept so it can be refined afterwards
+    const [layout, setLayout] = useState(null);
+    const [refinement, setRefinement] = useState('');
+    const [history, setHistory] = useState([]);
 
     const { actions } = useEditor();
 
@@ -150,6 +157,43 @@ import React, { useState } from 'react';
       });
     };
 
+    /** Put a layout on the canvas and remember it for the next refinement. */
+    const applyLayout = async (nextLayout) => {
+      await replaceImages(nextLayout.sections);
+      actions.deserialize(buildCraftTree(nextLayout.sections));
+      setLayout(nextLayout);
+    };
+
+    /**
+     * Keep talking to the page that was just generated: "same but darker",
+     * "add a pricing section". The server edits the layout we hold in state.
+     */
+    const refineWebsite = async () => {
+      if (!refinement.trim() || !layout) return;
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const refined = await apiFetch('/api/ai/refine', {
+          method: 'POST',
+          body: { layout, instruction: refinement }
+        });
+
+        if (!refined?.sections?.length) {
+          throw new Error('AI did not return a valid layout');
+        }
+
+        await applyLayout(refined);
+        setHistory(prev => [...prev, refinement]);
+        setRefinement('');
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     const generateWebsite = async () => {
       if (!prompt.trim()) return;
 
@@ -157,127 +201,19 @@ import React, { useState } from 'react';
       setError(null);
 
       try {
-        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        // Generation runs on our server: the provider key stays there, and the
+        // response goes through parse -> repair -> normalise before we get it
+        const parsed = await apiFetch('/api/ai/generate', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
-            'HTTP-Referer': window.location.origin,
-          },
-          body: JSON.stringify({
-            model: 'google/gemini-2.5-flash',
-            messages: [
-              {
-                role: 'system',
-                content: `You are a creative website builder AI. Given a user description, generate a visually stunning website as JSON. Be CREATIVE and use ALL available elements generously. Return ONLY valid JSON: { "sections": [...] }.
-
-STRUCTURE:
-- "sections" is an array of top-level section containers
-- Each section: { "props": { ...containerProps }, "children": [ ...elements ] }
-- Children can nest: { "type": "Container", "props": { ... }, "children": [ ... ] }
-- Leaf elements have "type" and "props" but NO "children"
-
-AVAILABLE ELEMENTS (use these EXACT type names, use ALL of them when appropriate):
-
-1. Container (layout wrapper, can have children):
-   Props: { "width": "100%", "height": "auto", "flexDirection": "row"|"column", "alignItems": "flex-start"|"center"|"flex-end", "justifyContent": "flex-start"|"center"|"flex-end"|"space-between", "background": {"r":255,"g":255,"b":255,"a":1}, "color": {"r":0,"g":0,"b":0,"a":1}, "padding": ["0","0","0","0"], "margin": ["0","0","0","0"], "shadow": 0, "radius": 0, "fillSpace": "no"|"yes" }
-
-2. Text (inline text, editable):
-   Props: { "text": "Hello World", "fontSize": "15", "fontWeight": "400"|"500"|"600"|"700", "textAlign": "left"|"center"|"right", "color": {"r":92,"g":90,"b":90,"a":1}, "shadow": 0, "margin": [0,0,0,0] }
-
-3. Button (clickable button):
-   Props: { "text": "Click Me", "background": {"r":0,"g":96,"b":172,"a":1}, "color": {"r":255,"g":255,"b":255,"a":1}, "buttonStyle": "full"|"outline", "margin": ["5","0","5","0"] }
-
-4. Image (image with optional border radius):
-   Props: { "src": "https://picsum.photos/800/400", "radius": 0, "width": "auto", "height": "auto" }
-
-5. Video (YouTube embed OR background video with text overlay):
-   Props: { "sourceType": "youtube"|"url", "videoId": "dQw4w9WgXcQ", "videoUrl": "", "text": "" }
-   For YouTube: set sourceType:"youtube" and videoId.
-   For background video with text overlay: set sourceType:"url", videoUrl to a direct .mp4 URL, and set "text" to display overlaid on the video (e.g. "Welcome to Our Company").
-   Reliable stock video URLs: https://cdn.pixabay.com/video/2020/02/04/31877-389674498_large.mp4, https://cdn.pixabay.com/video/2021/08/20/86076-588504506_large.mp4, https://cdn.pixabay.com/video/2024/01/25/198165-906549789_large.mp4
-
-6. Link (hyperlink):
-   Props: { "href": "https://example.com", "text": "Click here", "fontSize": "16", "fontWeight": "500", "width": "auto", "height": "auto" }
-
-7. Carousel (3-slide image carousel with captions):
-   Props: { "src1": "url", "src2": "url", "src3": "url", "heading1": "Title", "heading2": "Title", "heading3": "Title", "label1": "Badge", "label2": "", "label3": "", "p1": "Description", "p2": "Description", "p3": "Description", "width": "600px", "height": "400px" }
-   Use ONLY these exact working image URLs for carousel slides. Pick from these:
-   https://picsum.photos/seed/hero1/800/400, https://picsum.photos/seed/hero2/800/400, https://picsum.photos/seed/hero3/800/400, https://picsum.photos/seed/card1/400/300, https://picsum.photos/seed/card2/400/300, https://picsum.photos/seed/card3/400/300, https://picsum.photos/seed/gallery1/600/400, https://picsum.photos/seed/gallery2/600/400, https://picsum.photos/seed/gallery3/600/400
-
-8. Map (Leaflet map with marker):
-   Props: { "lat": 32.3215, "lng": 34.8532, "zoom": 13, "height": "300px", "width": "100%", "label": "Location Name" }
-
-9. NavbarElement (navigation bar - ALWAYS include as the first section):
-   Props: { "variant": "dark"|"primary"|"light", "brand": "My Brand", "links": [{"text":"Home","href":"#"},{"text":"About","href":"#"},{"text":"Contact","href":"#"}], "textColor": {"r":255,"g":255,"b":255,"a":1}, "height": "56px", "width": "100%", "sticky": false }
-   Always add a NavbarElement as the FIRST section. Make brand name relevant to the website topic. Use 3-5 links.
-
-CREATIVE DESIGN PATTERNS YOU MUST USE:
-
-- HERO SECTION: Full-width dark Container with a Video (sourceType:"url" with text overlay) or large Text (fontSize:"48", fontWeight:"700") + subtitle Text + Button. Add dramatic shadow.
-
-- NAVBAR: Always first section. Use "dark" or "primary" variant. Make it sticky: true for single-page sites.
-
-- GALLERY/SHOWCASE: Row Container with 3 card Containers, each with Image + Text + Button. Use radius:12 and shadow:30 for card effect.
-
-- VIDEO HERO: Use Video with sourceType:"url", a stock video URL, and text overlay for a cinematic hero section.
-
-- CAROUSEL SECTION: Full-width Carousel with high-quality images, headings, and descriptions. Great for portfolios or product showcases.
-
-- SPLIT SECTIONS: Row Container with Image on one side (width:"50%") and Text content on the other (width:"50%"). Alternate left/right.
-
-- CTA SECTIONS: Colored background Container with centered Text + Button(s). Use contrasting background colors.
-
-- MAP SECTION: For business/contact pages, add a Map with the location pin.
-
-- FEATURE CARDS: Row Container with 3-4 card Containers (background white, shadow:25, radius:12) each containing Image + Text + Text description.
-
-- FOOTER: Dark Container with row of Text/Link elements for contact info, social links, etc.
-
-DESIGN RULES:
-- ALWAYS start with a NavbarElement
-- Use AT LEAST 5-6 sections for a rich page
-- MUST use at least 3 different element types (Navbar + Text + Button is minimum, aim for 6+)
-- MUST include at least one Video or Carousel in every design
-- Use varied backgrounds: alternate dark (r:30-50,g:30-50,b:30-50) and light sections
-- Use rich padding: ["40","40","40","40"] for sections, ["20","20","20","20"] for inner containers
-- Use shadow (20-50) on cards for depth
-- Use radius:12 for rounded cards and images
-- Create visual hierarchy: large headings (fontSize:"32"-"48"), medium subtext (fontSize:"18"-"22"), small body (fontSize:"14"-"16")
-- For images use https://picsum.photos/seed/DESCRIPTIVE_NAME/WIDTH/HEIGHT (e.g. https://picsum.photos/seed/modern-office/800/400). The seed name describes the image content so it can be replaced with AI-generated images later. Use descriptive seeds like "team-meeting", "city-skyline", "product-showcase".
-- Be bold with colors — use vibrant backgrounds, gradients via rgba, and high contrast
-- Make every page look like a premium, professional website`
-              },
-              {
-                role: 'user',
-                content: prompt
-              }
-            ],
-            response_format: { type: 'json_object' }
-          })
+          body: { prompt, creativity }
         });
 
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data?.error?.message || 'OpenRouter request failed');
-        }
-
-        const content = data.choices?.[0]?.message?.content;
-        if (!content) throw new Error('No response from AI');
-
-        const parsed = JSON.parse(content);
         if (!parsed?.sections || !Array.isArray(parsed.sections)) {
           throw new Error('AI did not return valid sections');
         }
 
-        console.log('AI Generated Sections:', JSON.stringify(parsed.sections, null, 2));
-
-        await replaceImages(parsed.sections);
-
-        const craftTree = buildCraftTree(parsed.sections);
-        actions.deserialize(craftTree);
-
+        await applyLayout(parsed);
+        setHistory([`Generated: ${prompt}`]);
         setPrompt('');
       } catch (err) {
         console.error('AI Generate Error:', err);
@@ -344,6 +280,97 @@ DESIGN RULES:
             {loading ? 'Wait...' : 'Generate'}
           </button>
         </div>
+
+        {/* How far the model may stray from the safe, conventional answer */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '8px' }}>
+          <span style={{ fontSize: 11, color: '#79747e', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Style:</span>
+          {[
+            { key: 'low', label: 'Safe' },
+            { key: 'balanced', label: 'Balanced' },
+            { key: 'bold', label: 'Bold' },
+          ].map(option => (
+            <button
+              key={option.key}
+              onClick={() => setCreativity(option.key)}
+              disabled={loading}
+              style={{
+                padding: '3px 10px',
+                fontSize: 11,
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontWeight: creativity === option.key ? 700 : 500,
+                color: creativity === option.key ? '#fff' : '#79747e',
+                background: creativity === option.key ? '#7e57c2' : 'transparent',
+                border: `1px solid ${creativity === option.key ? '#7e57c2' : '#e8e0eb'}`,
+                borderRadius: '9999px',
+                cursor: loading ? 'not-allowed' : 'pointer',
+              }}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Once a page exists, the user can keep asking for changes to it */}
+        {layout && (
+          <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid #f0ecf2' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '16px', color: '#7e57c2' }}>tune</span>
+              <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '12px', fontWeight: 700, color: '#49454f' }}>
+                Refine this page
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+              <input
+                value={refinement}
+                onChange={(e) => setRefinement(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter' && !loading) refineWebsite(); }}
+                placeholder="Make it darker · Add a pricing section · Remove the map"
+                style={{
+                  flex: 1,
+                  padding: '8px 12px',
+                  border: '1px solid #e8e0eb',
+                  borderRadius: '10px',
+                  fontSize: '13px',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  outline: 'none',
+                  background: '#f7f4ec',
+                  color: '#1c1b1f',
+                }}
+              />
+              <button
+                onClick={refineWebsite}
+                disabled={loading || !refinement.trim()}
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: (loading || !refinement.trim()) ? '#cac4d0' : '#49454f',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '9999px',
+                  cursor: (loading || !refinement.trim()) ? 'not-allowed' : 'pointer',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {loading ? 'Wait...' : 'Apply'}
+              </button>
+            </div>
+
+            {history.length > 1 && (
+              <div style={{ marginTop: 8, fontSize: 11, color: '#79747e', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                {history.slice(1).map((item, i) => (
+                  <div key={i} style={{ padding: '2px 0' }}>· {item}</div>
+                ))}
+              </div>
+            )}
+
+            <p style={{ marginTop: 8, marginBottom: 0, fontSize: 11, color: '#a09aa8', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              Refines the generated page. Changes you make by hand in the editor are not included.
+            </p>
+          </div>
+        )}
 
         {error && (
           <p style={{ color: 'red', marginTop: 5, fontSize: 12 }}>

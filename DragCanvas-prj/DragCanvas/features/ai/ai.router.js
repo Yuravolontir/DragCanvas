@@ -5,6 +5,8 @@ import { verifyToken } from '../../middlewares/auth.js';
 const aiRouter = Router();
 
 // Generating costs money on the AI provider - only signed-in users may call it
-aiRouter.post('/generate', verifyToken, ctrl.generateWebsite);
+aiRouter
+    .post('/generate', verifyToken, ctrl.generateWebsite)
+    .post('/refine', verifyToken, ctrl.refineWebsite)
 
 export default aiRouter;
