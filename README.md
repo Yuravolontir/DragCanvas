@@ -17,10 +17,9 @@ endpoints and how to run everything — is in
 
 ## Branches
 
-| Branch | Contents |
-|---|---|
-| `feature/microservices-refactor` | **current code**: Express server split into feature modules, JWT authentication, Cloudinary uploads |
-| `main` | previous version, kept because the deployed site runs from it |
+`main` holds the current code and is what the deployed site runs from. The
+`feature/microservices-refactor` branch was merged into it and is kept only as
+history.
 
 ## Quick start
 

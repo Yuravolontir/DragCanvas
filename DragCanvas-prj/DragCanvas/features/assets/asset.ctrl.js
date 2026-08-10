@@ -72,25 +72,72 @@ const ALLOWED_HOSTS = ['images.pexels.com', 'images.unsplash.com', 'player.vimeo
  * it without tainting the canvas. Returns raw bytes, not the JSON envelope.
  * The host allowlist keeps this from becoming an open proxy (SSRF).
  */
+/** Exactly this host, or a real subdomain of it - never a lookalike. */
+function isAllowedHost(hostname) {
+    return ALLOWED_HOSTS.some(allowed => hostname === allowed || hostname.endsWith('.' + allowed));
+}
+
+const PROXY_TIMEOUT_MS = 10_000;
+const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
+
+/**
+ * Streams an external image through our own domain, so html2canvas can read it
+ * without tainting the canvas.
+ *
+ * This is the one handler that fetches a URL a caller chose, which makes every
+ * check below load-bearing. The host filter used to be `hostname.endsWith(host)`,
+ * and 'evilpexels.com'.endsWith('pexels.com') is true - anyone who registered
+ * such a domain could stream arbitrary content through our origin.
+ */
 export async function imageProxy(req, res) {
     try {
         const imageUrl = req.query.url;
         if (!imageUrl) return res.status(400).send('Missing url parameter');
 
-        const urlObj = new URL(imageUrl);
-        if (!ALLOWED_HOSTS.some(host => urlObj.hostname.endsWith(host))) {
-            return res.status(403).send('Domain not allowed');
+        let urlObj;
+        try {
+            urlObj = new URL(imageUrl);
+        } catch {
+            return res.status(400).send('Malformed url');
         }
 
-        const response = await fetch(imageUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+        if (urlObj.protocol !== 'https:') return res.status(403).send('Only https is allowed');
+        if (!isAllowedHost(urlObj.hostname)) return res.status(403).send('Domain not allowed');
+
+        const response = await fetch(urlObj.href, {
+            headers: { 'User-Agent': 'Mozilla/5.0' },
+            signal: AbortSignal.timeout(PROXY_TIMEOUT_MS),
+            // A redirect can leave the allowlist, and following it would defeat
+            // the check above. The providers we allow serve images directly.
+            redirect: 'manual',
+        });
+
+        if (response.status >= 300 && response.status < 400) {
+            return res.status(403).send('Redirects are not followed');
+        }
         if (!response.ok) return res.status(response.status).send('Upstream error');
 
-        res.set('Content-Type', response.headers.get('content-type') || 'image/jpeg');
+        const contentType = response.headers.get('content-type') || '';
+        if (!contentType.startsWith('image/')) {
+            return res.status(415).send('Not an image');
+        }
+
+        const declaredLength = Number(response.headers.get('content-length') || 0);
+        if (declaredLength > MAX_IMAGE_BYTES) {
+            return res.status(413).send('Image too large');
+        }
+
+        const buffer = Buffer.from(await response.arrayBuffer());
+        if (buffer.length > MAX_IMAGE_BYTES) {
+            return res.status(413).send('Image too large');
+        }
+
+        res.set('Content-Type', contentType);
         res.set('Cache-Control', 'public, max-age=86400');
         res.set('Access-Control-Allow-Origin', '*');
-
-        return res.send(Buffer.from(await response.arrayBuffer()));
+        return res.send(buffer);
     } catch (error) {
-        return res.status(500).send('Proxy error: ' + error.message);
+        if (error.name === 'TimeoutError') return res.status(504).send('Upstream timed out');
+        return res.status(500).send('Proxy error');
     }
 }

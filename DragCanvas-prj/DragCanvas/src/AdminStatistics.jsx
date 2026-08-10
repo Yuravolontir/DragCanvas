@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Row, Col, Card, Table, Spinner, Alert, Button } from 'react-bootstrap';
+import { getToken } from './api.js';
 
  const PY_API = import.meta.env.VITE_PY_API_URL || 'http://localhost:8000';
 
@@ -18,15 +19,38 @@ const [error, setError] = useState(null);
 const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
+    /**
+     * The reports service verifies the same JWT the Node API issues, so the
+     * token travels with every request. It used to answer anyone who knew the
+     * address, with CORS wide open.
+     */
     async function loadStats() {
-      try {
-        const summaryRes = await fetch(`${PY_API}/api/stats/summary`);
-        const summaryData = await summaryRes.json();
-        setSummary(summaryData);
+      const token = getToken();
+      if (!token) {
+        setError('You need to be signed in to see the statistics.');
+        return;
+      }
 
-        const projectsRes = await fetch(`${PY_API}/api/stats/projects-per-user`);
-        const projectsData = await projectsRes.json();
-        setProjectsPerUser(projectsData);
+      const headers = { Authorization: `Bearer ${token}` };
+
+      try {
+        const [summaryRes, projectsRes] = await Promise.all([
+          fetch(`${PY_API}/api/stats/summary`, { headers }),
+          fetch(`${PY_API}/api/stats/projects-per-user`, { headers }),
+        ]);
+
+        if (summaryRes.status === 401 || summaryRes.status === 403) {
+          setError('The statistics are available to administrators only.');
+          return;
+        }
+        if (!summaryRes.ok || !projectsRes.ok) {
+          setError('The statistics service answered with an error.');
+          return;
+        }
+
+        setSummary(await summaryRes.json());
+        setProjectsPerUser(await projectsRes.json());
+        setError(null);
       } catch {
         setError('Statistics service is not running (start it with: uvicorn main:app --port 8000)');
       }
@@ -68,7 +92,11 @@ return (
             <Card className="shadow-sm">
             <Card.Header>{chart.title}</Card.Header>
             <Card.Body className="text-center">
-                <img src={`${PY_API}${chart.url}?t=${refreshKey}`} alt={chart.title} style={{
+                {/* An <img> cannot carry an Authorization header, so the token goes in
+                    the query string. Deliberately weaker - query strings land in
+                    server logs - and accepted only because the alternative is
+                    leaving the charts open to everyone. */}
+                <img src={`${PY_API}${chart.url}?token=${encodeURIComponent(getToken() || '')}&t=${refreshKey}`} alt={chart.title} style={{
 maxWidth: '100%' }} />
             </Card.Body>
             </Card>

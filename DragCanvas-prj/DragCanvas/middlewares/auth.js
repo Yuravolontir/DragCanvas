@@ -51,3 +51,25 @@ export function requireSuperAdmin(req, res, next) {
     }
     next();
 }
+
+/**
+ * Middleware: the caller may only reach this record if it is their own, or if
+ * they are an admin. Must run after verifyToken.
+ *
+ * Projects and assets have always taken the owner from the token; the user
+ * routes drifted from that because they were ported straight from the old
+ * monolith, which left "/api/users/:id" readable by anyone with an account.
+ *
+ * Answers 403 rather than 404 here. Elsewhere a foreign resource returns 404 so
+ * ids cannot be probed, but user ids are sequential and already guessable, so
+ * hiding existence buys nothing and 403 is the honest answer.
+ */
+export function requireSelfOrAdmin(req, res, next) {
+    const requestedId = Number(req.params.id);
+    const callerId = Number(req.user?.userId);
+
+    if (Number.isFinite(requestedId) && requestedId === callerId) return next();
+    if (req.user?.isAdmin || req.user?.isSuperAdmin) return next();
+
+    return res.status(403).json(buildErrorResponse('You can only access your own account'));
+}

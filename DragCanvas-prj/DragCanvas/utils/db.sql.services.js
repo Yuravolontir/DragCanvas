@@ -67,6 +67,43 @@ class SQLServices {
     }
 }
 
+/**
+ * Runs `work` only if no other process is already running it.
+ *
+ * Background jobs live inside the API process, so every instance of the server
+ * wakes up on the same schedule. The birthday job checks the delivery log
+ * before sending, which survives a restart - but two instances checking at the
+ * same moment would both find nothing and both send. A PostgreSQL advisory
+ * lock closes that window: it is held on a connection and costs nothing.
+ *
+ * An instance that cannot take the lock skips this tick rather than waiting -
+ * the work is on a schedule and will come round again.
+ *
+ * @returns {Promise<{ran: boolean, result?: any}>}
+ */
+export async function withAdvisoryLock(key, work) {
+    const pool = await sqlServices.connect();
+    const client = await pool.connect();
+
+    try {
+        const { rows } = await client.query('SELECT pg_try_advisory_lock($1) AS acquired', [key]);
+        if (!rows[0].acquired) {
+            console.log(`[LOCK ${key}] another instance is already running this - skipping`);
+            return { ran: false };
+        }
+
+        try {
+            return { ran: true, result: await work() };
+        } finally {
+            // Released even if the work threw; the lock would also die with the
+            // connection, but leaving it held until then would skip a tick.
+            await client.query('SELECT pg_advisory_unlock($1)', [key]);
+        }
+    } finally {
+        client.release();
+    }
+}
+
 // Create the single instance and export it
 const sqlServices = new SQLServices();
 

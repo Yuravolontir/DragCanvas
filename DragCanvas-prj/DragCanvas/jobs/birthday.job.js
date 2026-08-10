@@ -1,5 +1,5 @@
 import cron from 'node-cron';
-import db from '../utils/db.sql.services.js';
+import db, { withAdvisoryLock } from '../utils/db.sql.services.js';
 import mailService from '../services/mail.service.js';
 import { renderTemplate, wrapInLayout } from '../services/notification.sender.js';
 
@@ -17,10 +17,14 @@ import { renderTemplate, wrapInLayout } from '../services/notification.sender.js
  */
 
 const DAILY_AT_9AM = '0 9 * * *';
+/** Constant key, so a second instance skips instead of double-greeting. */
+const LOCK_KEY = 811002;
 
 export function startBirthdayJob() {
     console.log('🎂 Birthday job started - checking once a day at 09:00');
-    cron.schedule(DAILY_AT_9AM, () => { runBirthdayCheck().catch(logCrash); });
+    cron.schedule(DAILY_AT_9AM, () => {
+        withAdvisoryLock(LOCK_KEY, runBirthdayCheck).catch(logCrash);
+    });
 }
 
 function logCrash(error) {

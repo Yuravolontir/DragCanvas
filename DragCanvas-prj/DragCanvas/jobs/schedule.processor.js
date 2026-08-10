@@ -1,5 +1,5 @@
 import cron from 'node-cron';
-import db from '../utils/db.sql.services.js';
+import db, { withAdvisoryLock } from '../utils/db.sql.services.js';
 import { deliverQueued } from '../services/notification.sender.js';
 
 /**
@@ -10,7 +10,11 @@ import { deliverQueued } from '../services/notification.sender.js';
 export function startScheduleProcessor() {
     console.log('📅 Schedule processor started - checking every minute');
 
+    // Constant key: any instance running this job competes for the same lock
+    const LOCK_KEY = 811001;
+
     cron.schedule('* * * * *', async () => {
+      await withAdvisoryLock(LOCK_KEY, async () => {
         try {
             const schedulesToRun = await db.executeQuery(`
                 SELECT *
@@ -30,6 +34,7 @@ export function startScheduleProcessor() {
         } catch (error) {
             console.error('Schedule processor error:', error);
         }
+      });
     });
 }
 

@@ -11,6 +11,19 @@ export async function getAllUsers(req, res) {
     }
 }
 
+/** The caller's own account - the ordinary case, with no id in the URL. */
+export async function getMe(req, res) {
+    try {
+        const user = await UserMdl.getUserByIdFromDB(req.user.userId);
+        if (!user) {
+            return res.status(404).json(buildErrorResponse('User not found'));
+        }
+        return res.status(200).json(buildSuccessResponse(user));
+    } catch (error) {
+        return res.status(500).json(buildErrorResponse(error.message));
+    }
+}
+
 export async function getUserById(req, res) {
     try {
         const user = await UserMdl.getUserByIdFromDB(req.params.id);

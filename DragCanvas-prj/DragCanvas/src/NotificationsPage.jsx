@@ -6,6 +6,21 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from './UserContextProvider';
+import DOMPurify from 'dompurify';
+
+/**
+ * Notification bodies are written by admins and rendered as HTML, so they are
+ * cleaned before they reach the DOM.
+ *
+ * Note on the actual risk: innerHTML does not execute <script> tags, so the
+ * real vector is an event handler - <img src=x onerror="...">. The allowlist
+ * below drops both, along with anything else not needed for a short message.
+ */
+const ALLOWED_TAGS = ['b', 'i', 'em', 'strong', 'u', 'p', 'br', 'ul', 'ol', 'li', 'a', 'span', 'h1', 'h2', 'h3'];
+const ALLOWED_ATTR = ['href', 'title', 'target', 'rel'];
+
+const cleanHtml = (html) =>
+  DOMPurify.sanitize(String(html ?? ''), { ALLOWED_TAGS, ALLOWED_ATTR });
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
@@ -191,11 +206,19 @@ export default function NotificationsPage() {
                           {expandedNotificationId === notif.Notification_ID && (
                             <div style={{ marginTop: '12px', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--outline-light)', background: 'var(--surface-dim)' }}>
                               {notif.Message.includes('<html') || notif.Message.includes('<!DOCTYPE') ? (
-                                <iframe srcDoc={notif.Message} style={{ width: '100%', minHeight: '400px', border: 'none' }} title="Notification content" sandbox="allow-same-origin" />
+                                <iframe
+                                  srcDoc={notif.Message}
+                                  style={{ width: '100%', minHeight: '400px', border: 'none' }}
+                                  title="Notification content"
+                                  /* No allow-same-origin and no allow-scripts: the frame gets an
+                                     opaque origin, so even if the content tries, it cannot reach
+                                     our storage or the token. */
+                                  sandbox=""
+                                />
                               ) : (
                                 <div style={{ padding: '14px', fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.85rem', color: 'var(--on-surface-variant)' }}>
                                   {/* eslint-disable-next-line react/no-danger */}
-                                  <div dangerouslySetInnerHTML={{ __html: notif.Message }} />
+                                  <div dangerouslySetInnerHTML={{ __html: cleanHtml(notif.Message) }} />
                                 </div>
                               )}
                             </div>
