@@ -20,6 +20,8 @@ Main flows:
 | Upload media | File → server memory → **Cloudinary** → public URL saved in the database |
 | AI generation | A prompt is sent to an LLM, which returns a full page layout that is then filled with real stock media |
 | Publish | The page is exported to static HTML and deployed to **Netlify** through their API |
+| Contact form | A visitor fills in the form on a published site; the submission is stored and emailed to the site owner |
+| Notifications | Newsletters, scheduled sends and birthday greetings go out as real email over SMTP |
 | Admin area | User management, newsletters, scheduled notifications, delivery logs, statistics |
 
 ## 2. Technologies
@@ -29,7 +31,9 @@ Main flows:
 - PostgreSQL through the `pg` driver, wrapped in a **Singleton** connection-pool service
 - `jsonwebtoken` — authentication; `bcryptjs` — password hashing
 - `multer` + `cloudinary` — file upload to the cloud
-- `node-cron` — background job for scheduled notifications
+- `node-cron` — background jobs: scheduled notifications and daily birthday greetings
+- `nodemailer` — real email delivery over SMTP
+- `express-rate-limit` — protects the public form endpoint and the paid AI calls
 - External APIs: ZhipuAI GLM (layout generation), Pexels (stock media), Netlify (deployment)
 
 **Client**
@@ -111,6 +115,13 @@ Protected endpoints require the header `Authorization: Bearer <token>`.
 | GET | `/api/assets/user` | token | List the user's uploads |
 | DELETE | `/api/assets/:assetId` | token | Delete from the database and from Cloudinary |
 
+### Forms — `/api/forms`
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| POST | `/api/forms/submit` | **public** | A visitor submits a form on a published site. Open to any origin because published pages live on their own domains; protected by a honeypot field, a rate limit and strict validation |
+| GET | `/api/forms/project/:projectId` | token | The owner reads submissions |
+| PUT | `/api/forms/project/:projectId/:submissionId/read` | token | Mark one as read |
+
 ### AI — `/api/ai`
 | Method | Path | Auth | Description |
 |---|---|---|---|
@@ -144,8 +155,28 @@ npm run dev
 ```
 
 Required variables are listed in `.env.example`. The minimum to boot the server is
-`DATABASE_URL` and `JWT_SECRET`; Cloudinary, AI and Netlify keys are needed for
-those specific features.
+`DATABASE_URL` and `JWT_SECRET`; Cloudinary, AI, Netlify and SMTP settings are
+needed for those specific features.
+
+### Email
+
+Delivery uses plain SMTP (`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`,
+`MAIL_FROM`). With Gmail you need an **App Password**, not the account password,
+and two-factor authentication switched on.
+
+Two limits worth knowing:
+
+- Gmail accepts roughly **500 messages a day** and throttles bursts, so batches
+  are sent one at a time with a short delay. A real product would use SendGrid
+  or Resend — the mail service sits behind one small interface, so that is a
+  change to `.env` rather than to code.
+- A `delivered` status means the mail server **accepted** the message, not that
+  it arrived. A wrong-but-well-formed address is accepted and bounces later,
+  out of our sight; catching that needs inbound webhooks from a transactional
+  provider.
+
+Without SMTP configured the server still runs — sending is skipped with a
+warning instead of crashing.
 
 ### Testing the API
 

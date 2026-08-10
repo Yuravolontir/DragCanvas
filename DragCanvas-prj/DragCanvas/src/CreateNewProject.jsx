@@ -39,6 +39,7 @@ function CreateNewProject() {
             Button: Landing.Button,
             Video: Landing.Video,
             Link: Landing.Link,
+            Form: Landing.Form,
             Image: Landing.Image,
             Carousel: Landing.Carousel,
             Map: Landing.Map,

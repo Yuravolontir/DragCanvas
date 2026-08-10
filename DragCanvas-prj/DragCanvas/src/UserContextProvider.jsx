@@ -91,13 +91,13 @@ export default function UserContextProvider(props) {
     }
   };
 
-  const register = async (username, email, password) => {
+  const register = async (username, email, password, birthDate = null) => {
     setLoading(true);
     setError(null);
     try {
       const data = await apiFetch('/api/auth/register', {
         method: 'POST',
-        body: { username, email, password }
+        body: { username, email, password, birthDate }
       });
 
       // Registration does not issue a token, so log the new user in right away

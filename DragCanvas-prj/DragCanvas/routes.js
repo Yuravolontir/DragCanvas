@@ -8,6 +8,7 @@ import notificationRouter from './features/notifications/notification.router.js'
 import publishRouter from './features/publish/publish.router.js';
 import aiRouter from './features/ai/ai.router.js';
 import assetRouter from './features/assets/asset.router.js';
+import formRouter from './features/forms/form.router.js';
 
 const router = Router();
 
@@ -19,6 +20,7 @@ router.use('/templates', templateRouter);          // /api/templates/...
 router.use('/notifications', notificationRouter);  // /api/notifications/... (newsletters, schedules, templates, logs, settings)
 router.use('/publish', publishRouter);             // /api/publish/...
 router.use('/ai', aiRouter);                       // /api/ai/...
-router.use('/assets', assetRouter);                // /api/assets/... + /api/assets/image-proxy
+router.use('/assets', assetRouter);                // /api/assets/...
+router.use('/forms', formRouter);                  // /api/forms/... (submit is public)
 
 export default router;

@@ -3,12 +3,13 @@ import db from '../../utils/db.sql.services.js';
 /** Data access for registration / login / logout. */
 export default class AuthMdl {
 
-    static async createUser(username, email, passwordHash) {
+    /** birthDate is optional - it exists only so we can send a greeting. */
+    static async createUser(username, email, passwordHash, birthDate = null) {
         const rows = await db.executeQuery(`
-            INSERT INTO "TBUsers" ("UserName", "UserEmail", "UserPassword", "IsActive", "CreatedDate")
-            VALUES ($1, $2, $3, true, NOW())
+            INSERT INTO "TBUsers" ("UserName", "UserEmail", "UserPassword", "BirthDate", "IsActive", "CreatedDate")
+            VALUES ($1, $2, $3, $4, true, NOW())
             RETURNING "User_ID", "UserName", "UserEmail", "IsAdmin", "IsSuperAdmin"
-        `, [username, email, passwordHash]);
+        `, [username, email, passwordHash, birthDate || null]);
         return rows[0] ?? null;
     }
 

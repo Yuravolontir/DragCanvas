@@ -1,0 +1,20 @@
+import { Router } from 'express';
+import * as ctrl from './form.ctrl.js';
+import { verifyToken } from '../../middlewares/auth.js';
+import { formSubmitLimiter } from '../../middlewares/rateLimit.js';
+
+const formRouter = Router();
+
+/**
+ * Public: a visitor on a published site submits a form.
+ * CORS for this path is opened in server.js, before the origin whitelist.
+ * Rate limited here, and validated in the controller.
+ */
+formRouter.post('/submit', formSubmitLimiter, ctrl.submitForm);
+
+// Protected: only the project owner reads what came in
+formRouter
+    .get('/project/:projectId', verifyToken, ctrl.getSubmissions)
+    .put('/project/:projectId/:submissionId/read', verifyToken, ctrl.markSubmissionRead)
+
+export default formRouter;

@@ -55,21 +55,66 @@ export default class NotificationMdl {
         return [];
     }
 
+    /**
+     * Note: no RecipientIDs column here. The table never had one - who received
+     * a notification is recorded per person in TBNotificationDeliveryLog, which
+     * is more precise than a JSON list because it also carries the outcome.
+     */
     static async addNotificationToDB(notification) {
-        const { subject, message, recipientType, recipientIdsString, sentCount, createdBy } = notification;
+        const { subject, message, recipientType, sentCount, createdBy, notificationType = 'newsletter' } = notification;
         const rows = await db.executeQuery(`
-            INSERT INTO "TBNotifications" ("Subject", "Message", "NotificationType", "RecipientType", "RecipientIDs", "Status", "SentCount", "CreatedBy", "CreatedDate", "SentDate")
-            VALUES ($1, $2, 'newsletter', $3, $4, 'sent', $5, $6, NOW(), NOW())
+            INSERT INTO "TBNotifications" ("Subject", "Message", "NotificationType", "RecipientType", "Status", "SentCount", "CreatedBy", "CreatedDate", "SentDate")
+            VALUES ($1, $2, $3, $4, 'sent', $5, $6, NOW(), NOW())
             RETURNING "Notification_ID"
-        `, [subject, message, recipientType, recipientIdsString, sentCount, createdBy]);
+        `, [subject, message, notificationType, recipientType, sentCount, createdBy]);
         return rows[0]?.Notification_ID ?? null;
     }
 
+    /**
+     * Queues a recipient as 'pending'. The status only becomes 'delivered' once
+     * the mail server has actually accepted the message - see markDeliveredInDB
+     * and markFailedInDB. Before this change every row was written as
+     * 'delivered' at insert time, which is why the admin panel reported
+     * deliveries that never happened.
+     */
     static async addDeliveryLogToDB(notificationId, recipient) {
-        await db.executeQuery(`
-            INSERT INTO "TBNotificationDeliveryLog" ("Notification_ID", "User_ID", "UserName", "UserEmail", "Status", "DeliveredDate")
-            VALUES ($1, $2, $3, $4, 'delivered', NOW())
+        const rows = await db.executeQuery(`
+            INSERT INTO "TBNotificationDeliveryLog" ("Notification_ID", "User_ID", "UserName", "UserEmail", "Status")
+            VALUES ($1, $2, $3, $4, 'pending')
+            RETURNING "Log_ID"
         `, [notificationId, recipient.User_ID, recipient.UserName, recipient.UserEmail]);
+        return rows[0]?.Log_ID ?? null;
+    }
+
+    static async markDeliveredInDB(logId) {
+        await db.executeQuery(`
+            UPDATE "TBNotificationDeliveryLog"
+            SET "Status" = 'delivered', "DeliveredDate" = NOW(), "FailedReason" = NULL
+            WHERE "Log_ID" = $1
+        `, [logId]);
+    }
+
+    static async markFailedInDB(logId, reason) {
+        await db.executeQuery(`
+            UPDATE "TBNotificationDeliveryLog"
+            SET "Status" = 'failed', "FailedReason" = $2
+            WHERE "Log_ID" = $1
+        `, [logId, String(reason).slice(0, 500)]);
+    }
+
+    /** Has this user already been sent a message of this type today? */
+    static async wasSentTodayFromDB(userId, notificationType) {
+        const rows = await db.executeQuery(`
+            SELECT 1
+            FROM "TBNotificationDeliveryLog" dl
+            JOIN "TBNotifications" n ON n."Notification_ID" = dl."Notification_ID"
+            WHERE dl."User_ID" = $1
+              AND n."NotificationType" = $2
+              AND dl."Status" IN ('delivered', 'pending')
+              AND n."CreatedDate"::date = CURRENT_DATE
+            LIMIT 1
+        `, [userId, notificationType]);
+        return rows.length > 0;
     }
 
     static async getUserNotificationsFromDB(userId) {

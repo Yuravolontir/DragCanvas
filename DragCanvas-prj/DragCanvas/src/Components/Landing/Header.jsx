@@ -329,7 +329,7 @@ const handlePublish = async () => {
     setPublishing(true);
     try {
       const json = query.serialize();
-      const html = exportToHtml(JSON.parse(json), projectName);
+      const html = exportToHtml(JSON.parse(json), projectName, { projectId });
       const data = await apiFetch('/api/publish/site', {
         method: 'POST',
         body: {

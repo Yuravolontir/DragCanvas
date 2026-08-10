@@ -1,5 +1,6 @@
 import NotificationMdl from './notification.mdl.js';
 import { calculateNextRunDate } from '../../jobs/schedule.processor.js';
+import { deliverQueued } from '../../services/notification.sender.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
 
 // ===================== NEWSLETTERS =====================
@@ -30,20 +31,27 @@ export async function sendNewsletter(req, res) {
             subject,
             message,
             recipientType,
-            recipientIdsString: recipientType === 'selected' && recipientIds ? JSON.stringify(recipientIds) : null,
             sentCount: recipients.length,
             createdBy: req.user.userId,
         });
 
-        // One delivery-log row per recipient, so we can track opens later
+        // Queue one row per recipient as 'pending'
+        const queued = [];
         for (const recipient of recipients) {
-            await NotificationMdl.addDeliveryLogToDB(notificationId, recipient);
+            const logId = await NotificationMdl.addDeliveryLogToDB(notificationId, recipient);
+            queued.push({ ...recipient, Log_ID: logId });
         }
+
+        // Sending is sequential and slow by design, so it runs in the background:
+        // the admin gets an immediate answer and watches progress in the log,
+        // which the panel already polls.
+        deliverQueued(queued, { subject, message })
+            .catch(error => console.error('[MAIL] batch crashed:', error.message));
 
         return res.status(200).json(buildSuccessResponse({
             notificationId,
             sentCount: recipients.length,
-            message: `Newsletter sent to ${recipients.length} recipients`,
+            message: `Sending to ${recipients.length} recipients - watch the delivery log for progress`,
         }));
     } catch (error) {
         return res.status(500).json(buildErrorResponse(error.message));

@@ -17,6 +17,7 @@ export { Sidebar } from './Sidebar';
 export { Toolbar } from './Toolbar';
 export { Resizer } from './Resizer';
 export { Link } from './Link';
+export { Form } from './Form';
 export { LinkSettings } from './LinkSettings';
 export { Image } from './Image';
 export { ImageSettings } from './ImageSettings';

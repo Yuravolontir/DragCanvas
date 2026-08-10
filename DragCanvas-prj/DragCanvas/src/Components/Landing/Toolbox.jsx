@@ -12,6 +12,7 @@ import { Image } from './Image';
 import { Carousel } from './Carousel';
 import { Map } from './Map';
 import { NavbarElement } from './NavbarElement';
+import { Form } from './Form';
 
 const ToolboxDiv = styled.div`
   transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
@@ -139,6 +140,19 @@ export const Toolbox = () => {
             <Item $move>
               <span className="material-symbols-outlined">link</span>
               <span className="icon-label">Link</span>
+            </Item>
+          </Tooltip>
+        </div>
+
+        <div
+          ref={(ref) => {
+            create(ref, <Form />);
+          }}
+        >
+          <Tooltip title="Contact form" placement="right">
+            <Item $move>
+              <span className="material-symbols-outlined">edit_note</span>
+              <span className="icon-label">Form</span>
             </Item>
           </Tooltip>
         </div>

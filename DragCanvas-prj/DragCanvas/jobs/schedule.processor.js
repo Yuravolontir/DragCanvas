@@ -1,5 +1,6 @@
 import cron from 'node-cron';
 import db from '../utils/db.sql.services.js';
+import { deliverQueued } from '../services/notification.sender.js';
 
 /**
  * Background job: every minute it looks for notification schedules that are
@@ -72,7 +73,10 @@ async function processScheduledNotification(schedule) {
             return;
         }
 
-        // 3. One personalised notification per recipient
+        // 3. Queue one row per recipient, then hand the batch to the sender.
+        //    Personalisation lives in the sender now, so scheduled mail and
+        //    newsletters render {username} the same way.
+        const queued = [];
         for (const recipient of recipients) {
             try {
                 const userRows = await db.executeQuery(
@@ -80,28 +84,29 @@ async function processScheduledNotification(schedule) {
                     [recipient.User_ID]
                 );
                 if (userRows.length === 0) continue;
-
                 const user = userRows[0];
-                const personalSubject = subject.replace(/\{username\}/gi, user.UserName);
-                const personalMessage = message.replace(/\{username\}/gi, user.UserName);
 
-                await db.executeQuery(`
+                const rows = await db.executeQuery(`
                     WITH ins_notif AS (
-                        INSERT INTO "TBNotifications" ("Subject", "Message", "NotificationType", "RecipientType", "RecipientIDs", "Status", "SentCount", "CreatedBy", "CreatedDate", "SentDate")
-                        VALUES ($1, $2, $3, $4, $5, 'sent', 1, $6, NOW(), NOW())
+                        INSERT INTO "TBNotifications" ("Subject", "Message", "NotificationType", "RecipientType", "Status", "SentCount", "CreatedBy", "CreatedDate", "SentDate")
+                        VALUES ($1, $2, $3, $4, 'sent', 1, $5, NOW(), NOW())
                         RETURNING "Notification_ID"
                     )
-                    INSERT INTO "TBNotificationDeliveryLog" ("Notification_ID", "User_ID", "UserName", "UserEmail", "Status", "DeliveredDate")
-                    SELECT "Notification_ID", $7, $8, $9, 'delivered', NOW()
+                    INSERT INTO "TBNotificationDeliveryLog" ("Notification_ID", "User_ID", "UserName", "UserEmail", "Status")
+                    SELECT "Notification_ID", $7, $8, $9, 'pending'
                     FROM ins_notif
-                    RETURNING "Notification_ID"
-                `, [personalSubject, personalMessage, schedule.NotificationType, schedule.RecipientType,
-                    JSON.stringify([recipient.User_ID]), schedule.CreatedBy,
+                    RETURNING "Log_ID"
+                `, [subject, message, schedule.NotificationType, schedule.RecipientType,
+                    schedule.CreatedBy,
                     recipient.User_ID, user.UserName, user.UserEmail]);
+
+                queued.push({ ...user, User_ID: recipient.User_ID, Log_ID: rows[0]?.Log_ID });
             } catch (error) {
-                console.error(`  ⚠️ Failed to notify user ${recipient.User_ID}:`, error.message);
+                console.error(`  ⚠️ Failed to queue user ${recipient.User_ID}:`, error.message);
             }
         }
+
+        await deliverQueued(queued, { subject, message });
 
         // 4. Remember when it ran and when it should run next
         const nextRunDate = calculateNextRunDate(schedule.Frequency, schedule.ScheduleTime, schedule.ScheduleDay);

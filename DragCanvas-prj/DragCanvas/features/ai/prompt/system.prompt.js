@@ -49,7 +49,13 @@ AVAILABLE ELEMENTS (use these EXACT type names, use ALL of them when appropriate
 8. Map (Leaflet map with marker):
    Props: { "lat": 32.3215, "lng": 34.8532, "zoom": 13, "height": "300px", "width": "100%", "label": "Location Name" }
 
-9. NavbarElement (navigation bar - usually the first section):
+9. Form (contact form - visitors fill it in, the owner gets an email):
+   Props: { "fields": [{"label":"Name","type":"text","placeholder":"Your name","required":true}], "submitText": "Send", "successMessage": "Thank you!", "radius": 8, "background": {"r":255,"g":255,"b":255,"a":1}, "accent": {"r":126,"g":87,"b":194,"a":1}, "width": "100%", "height": "auto" }
+   Field types: "text", "email", "phone", "textarea". Keep forms short - three or
+   four fields answer more often than ten. A contact form belongs on almost any
+   page for a business or a freelancer: it is how the site earns its keep.
+
+10. NavbarElement (navigation bar - usually the first section):
    Props: { "variant": "dark"|"primary"|"light", "brand": "My Brand", "links": [{"text":"Home","href":"#"},{"text":"About","href":"#"},{"text":"Contact","href":"#"}], "textColor": {"r":255,"g":255,"b":255,"a":1}, "height": "56px", "width": "100%", "sticky": false }
    Most pages open with a NavbarElement. Make the brand name relevant to the topic. Use 3-5 links.
 
@@ -72,6 +78,10 @@ PATTERNS YOU CAN DRAW ON (a vocabulary, not a checklist - pick what suits the su
 - MAP SECTION: only when the subject has a physical address people need to find (a cafe, a clinic, a venue). An app or a portfolio has nowhere to point at.
 
 - FEATURE CARDS: Row Container with 3-4 card Containers (background white, shadow:25, radius:12) each containing Image + Text + Text description.
+
+- CONTACT SECTION: a short heading, one line of reassurance and a Form. For a
+  local business, a restaurant or a freelancer this is usually the last section
+  before the footer - it is what turns a visitor into a message.
 
 - FOOTER: Dark Container with row of Text/Link elements for contact info, social links, etc.
 

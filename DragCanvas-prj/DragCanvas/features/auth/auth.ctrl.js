@@ -7,7 +7,7 @@ const SALT_ROUNDS = 10;
 
 export async function register(req, res) {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, birthDate } = req.body;
 
         if (!username || !email || !password) {
             return res.status(400).json(buildErrorResponse('Username, email and password are required'));
@@ -15,7 +15,7 @@ export async function register(req, res) {
 
         // Never store the raw password - only its bcrypt hash
         const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
-        const user = await AuthMdl.createUser(username, email, passwordHash);
+        const user = await AuthMdl.createUser(username, email, passwordHash, birthDate);
 
         if (!user) {
             return res.status(400).json(buildErrorResponse('Registration failed'));

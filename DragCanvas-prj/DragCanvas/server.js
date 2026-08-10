@@ -8,12 +8,18 @@ import { getSiteByDomain } from './features/publish/publish.ctrl.js';
 import { imageProxy } from './features/assets/asset.ctrl.js';
 import { notFoundHandler, errorHandler } from './middlewares/error.js';
 import { startScheduleProcessor } from './jobs/schedule.processor.js';
+import { startBirthdayJob } from './jobs/birthday.job.js';
 
 const PORT = process.env.PORT || 3001;
 
 const server = express();
 
 // ---------- Middlewares ----------
+// Published sites live on domains we do not control, so the one route they call
+// is opened to everyone - before the whitelist below, which would otherwise
+// answer the preflight first and refuse them.
+server.use('/api/forms/submit', cors({ origin: '*', methods: ['POST', 'OPTIONS'] }));
+
 server.use(cors({
     origin: [
         'http://localhost:5173',
@@ -45,6 +51,7 @@ async function start() {
         await db.connect();
         server.listen(PORT, () => console.log(`[SERVER] running at http://localhost:${PORT}`));
         startScheduleProcessor();
+        startBirthdayJob();
     } catch (error) {
         console.error('Database connection failed:', error.message);
     }

@@ -84,6 +84,20 @@ const getChildIds = (node) => {
   return ids;
 };
 
+/**
+ * Per-export context: which project this is and where its forms should post.
+ * Kept alongside cssRules as module state and reset on every export, because
+ * converters are plain functions called deep inside the recursion.
+ */
+let exportContext = {};
+
+/** Values that came from user input must not be able to break out of the HTML. */
+const escapeHtmlText = (text) =>
+  String(text ?? '').replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+
+const escapeAttribute = (text) =>
+  String(text ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
 // Component converters
 const converters = {
   Container: (node, data, depth = 0, nodeId) => {
@@ -362,6 +376,170 @@ const converters = {
     return `    <div class="${className}">\n${slides}    </div>\n`;
   },
 
+  /**
+   * A real, working form on the published page.
+   *
+   * The editor renders an inert preview; this is what visitors actually use.
+   * It posts to our API from whatever domain the site ended up on, so the
+   * project id has to be baked in at export time - the page has no other way
+   * to know which site it belongs to.
+   */
+  Form: (node) => {
+    const context = exportContext;
+    const props = node.props || {};
+    const className = generateClass('form');
+    const fields = Array.isArray(props.fields) ? props.fields : [];
+    const radius = props.radius ?? 8;
+    const accent = rgbaToString(props.accent) || '#7e57c2';
+
+    cssRules.push(`.${className} {
+  background: ${rgbaToString(props.background) || '#ffffff'};
+  padding: 24px;
+  border-radius: ${radius}px;
+  box-sizing: border-box;
+  width: 100%;
+}
+.${className} label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: #49454f;
+}
+.${className} input,
+.${className} textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: ${radius}px;
+  font-size: 14px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+.${className} button {
+  background: ${accent};
+  color: #fff;
+  border: none;
+  border-radius: ${radius}px;
+  padding: 11px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.${className} button[disabled] { opacity: 0.6; cursor: default; }
+.${className} .form-done { font-size: 15px; color: #2e7d32; }
+.${className} .hp { position: absolute; left: -9999px; }`);
+
+    const inputs = fields.map((field, index) => {
+      const name = (field.label || `field_${index + 1}`).trim();
+      const required = field.required ? ' required' : '';
+      const placeholder = escapeAttribute(field.placeholder || '');
+      const label = escapeHtmlText(name) + (field.required ? ' *' : '');
+
+      if (field.type === 'textarea') {
+        return `      <label>${label}</label>\n      <textarea name="${escapeAttribute(name)}" rows="4" placeholder="${placeholder}"${required}></textarea>`;
+      }
+      const inputType = field.type === 'email' ? 'email' : field.type === 'phone' ? 'tel' : 'text';
+      return `      <label>${label}</label>\n      <input type="${inputType}" name="${escapeAttribute(name)}" placeholder="${placeholder}"${required}>`;
+    }).join('\n');
+
+    const formId = `${className}-el`;
+    const apiUrl = context.apiUrl || '';
+    const projectId = context.projectId ?? '';
+    const successMessage = escapeHtmlText(props.successMessage || 'Thank you!');
+
+    return `    <div class="${className}">
+      <form id="${formId}">
+${inputs}
+        <input type="text" name="_hp" class="hp" tabindex="-1" autocomplete="off">
+        <button type="submit">${escapeHtmlText(props.submitText || 'Send')}</button>
+      </form>
+      <script>
+      (function () {
+        var form = document.getElementById('${formId}');
+        if (!form) return;
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+          var button = form.querySelector('button');
+          button.disabled = true;
+          var payload = { projectId: ${JSON.stringify(projectId)} };
+          new FormData(form).forEach(function (value, key) { payload[key] = value; });
+          fetch('${apiUrl}/api/forms/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          }).then(function (response) {
+            if (!response.ok) throw new Error('failed');
+            form.outerHTML = '<p class="form-done">${successMessage}</p>';
+          }).catch(function () {
+            button.disabled = false;
+            alert('Could not send. Please try again.');
+          });
+        });
+      })();
+      </script>
+    </div>\n`;
+  },
+
+  /**
+   * The navigation bar. Without this converter every published page lost its
+   * navbar silently, because the component keeps brand and links in props
+   * rather than children, and the fallback branch only renders children.
+   */
+  NavbarElement: (node) => {
+    const props = node.props || {};
+    const className = generateClass('navbar');
+    const variant = props.variant || 'dark';
+
+    const palette = {
+      dark: { background: '#212529', color: '#ffffff' },
+      light: { background: '#f8f9fa', color: '#212529' },
+      primary: { background: '#0d6efd', color: '#ffffff' },
+    }[variant] || { background: '#212529', color: '#ffffff' };
+
+    const textColor = rgbaToString(props.textColor) || palette.color;
+
+    cssRules.push(`.${className} {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  width: ${props.width || '100%'};
+  min-height: ${props.height || '56px'};
+  padding: 12px 24px;
+  background: ${palette.background};
+  box-sizing: border-box;
+  ${props.sticky ? 'position: sticky; top: 0; z-index: 100;' : ''}
+}
+.${className} .brand {
+  font-size: 20px;
+  font-weight: 700;
+  color: ${textColor};
+  text-decoration: none;
+}
+.${className} .links { display: flex; gap: 20px; flex-wrap: wrap; }
+.${className} .links a {
+  color: ${textColor};
+  text-decoration: none;
+  font-size: 15px;
+  opacity: 0.9;
+}
+.${className} .links a:hover { opacity: 1; text-decoration: underline; }`);
+
+    const links = (Array.isArray(props.links) ? props.links : [])
+      .map(link => `        <a href="${escapeAttribute(link.href || '#')}">${escapeHtmlText(link.text || '')}</a>`)
+      .join('\n');
+
+    return `    <nav class="${className}">
+      <a class="brand" href="#">${escapeHtmlText(props.brand || '')}</a>
+      <div class="links">
+${links}
+      </div>
+    </nav>\n`;
+  },
+
   Link: (node) => {
     const props = node.props || {};
     const className = generateClass('link');
@@ -410,11 +588,18 @@ const convertNode = (nodeId, data, depth = 0) => {
 };
 
 // Main export function
-export const exportToHtml = (serializedData, title = 'My Website') => {
+export const exportToHtml = (serializedData, title = 'My Website', options = {}) => {
   // Reset state
   ruleCounter = 0;
   cssRules.length = 0;
   mobileRules.length = 0;
+
+  // A published page has no way of knowing which project it came from, so the
+  // id is baked in here; the API address is the one this build points at.
+  exportContext = {
+    projectId: options.projectId ?? null,
+    apiUrl: options.apiUrl || import.meta.env?.VITE_API_URL || 'http://localhost:3001',
+  };
 
   // Add base CSS
   cssRules.push(`* {

@@ -12,6 +12,9 @@ export default function MyProject() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(null);
   const [projects, setProjects] = useState([]);
+  // Form submissions that arrived from published sites, keyed by project id
+  const [inbox, setInbox] = useState({});
+  const [openInbox, setOpenInbox] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const [showAlert, setShowAlert] = useState(false);
@@ -46,11 +49,48 @@ export default function MyProject() {
       // The server reads the owner from the token, so no userId in the URL
       const data = await apiFetch('/api/projects/user');
       setProjects(data);
+      loadInboxCounts(data);
     } catch (err) {
       console.error('Error fetching projects:', err);
       showAlertModal('Failed to load projects: ' + err.message, 'error');
     } finally {
       setLoading(false);
+    }
+  };
+
+  /**
+   * How many messages each published project has received. Only published ones
+   * are asked about - an unpublished site has no visitors.
+   */
+  const loadInboxCounts = async (list) => {
+    const published = list.filter((p) => p.IsPublished);
+    const results = await Promise.all(
+      published.map((p) =>
+        apiFetch(`/api/forms/project/${p.Project_ID}`)
+          .then((r) => [p.Project_ID, r])
+          .catch(() => null)
+      )
+    );
+    const next = {};
+    results.filter(Boolean).forEach(([id, r]) => { next[id] = r; });
+    setInbox(next);
+  };
+
+  const markRead = async (projectId, submissionId) => {
+    try {
+      await apiFetch(`/api/forms/project/${projectId}/${submissionId}/read`, { method: 'PUT' });
+      setInbox((prev) => ({
+        ...prev,
+        [projectId]: {
+          ...prev[projectId],
+          unread: Math.max(0, (prev[projectId]?.unread || 1) - 1),
+          submissions: prev[projectId].submissions.map((x) =>
+            x.Submission_ID === submissionId ? { ...x, IsRead: true } : x
+          ),
+        },
+      }));
+    } catch (err) {
+      showAlertModal(err.message, 'error');
     }
   };
 
@@ -382,6 +422,31 @@ export default function MyProject() {
                         <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>edit</span>
                         Open
                       </button>
+                      {inbox[project.Project_ID]?.submissions?.length > 0 && (
+                        <button
+                          onClick={() => setOpenInbox(project.Project_ID)}
+                          title="Messages from your site"
+                          style={{
+                            padding: '10px 12px',
+                            background: inbox[project.Project_ID].unread > 0 ? '#7e57c2' : 'transparent',
+                            color: inbox[project.Project_ID].unread > 0 ? '#fff' : '#7e57c2',
+                            border: '1px solid #7e57c2',
+                            borderRadius: '12px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '5px',
+                            fontFamily: "'Plus Jakarta Sans', sans-serif",
+                            fontSize: '0.8rem',
+                            fontWeight: 600,
+                          }}
+                        >
+                          <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>mail</span>
+                          {inbox[project.Project_ID].unread > 0
+                            ? inbox[project.Project_ID].unread
+                            : inbox[project.Project_ID].submissions.length}
+                        </button>
+                      )}
                       {project.PublishedUrl && (
                         <button
                           onClick={() => setShareUrl(project.PublishedUrl)}
@@ -480,6 +545,47 @@ export default function MyProject() {
         url={shareUrl}
         onClose={() => setShareUrl(null)}
       />
+
+      {/* What visitors wrote through the form on a published site */}
+      <Modal show={!!openInbox} onHide={() => setOpenInbox(null)} centered size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title style={{ fontSize: '1.05rem', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            Messages from your site
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ maxHeight: '60vh', overflowY: 'auto' }}>
+          {(inbox[openInbox]?.submissions || []).length === 0 ? (
+            <p style={{ color: 'var(--muted)', margin: 0 }}>No messages yet.</p>
+          ) : (
+            (inbox[openInbox]?.submissions || []).map((item) => (
+              <div
+                key={item.Submission_ID}
+                onClick={() => !item.IsRead && markRead(openInbox, item.Submission_ID)}
+                style={{
+                  border: '1px solid #eee',
+                  borderLeft: item.IsRead ? '1px solid #eee' : '3px solid #7e57c2',
+                  borderRadius: 10,
+                  padding: '12px 14px',
+                  marginBottom: 10,
+                  cursor: item.IsRead ? 'default' : 'pointer',
+                  background: item.IsRead ? '#fff' : '#faf8ff',
+                }}
+              >
+                <div style={{ fontSize: 11, color: '#a09aa8', marginBottom: 6 }}>
+                  {new Date(item.CreatedDate).toLocaleString()}
+                  {!item.IsRead && <span style={{ color: '#7e57c2', marginLeft: 8 }}>• new</span>}
+                </div>
+                {Object.entries(item.Data || {}).map(([key, value]) => (
+                  <div key={key} style={{ display: 'flex', gap: 10, fontSize: 14, marginBottom: 3 }}>
+                    <span style={{ color: '#79747e', minWidth: 90 }}>{key}</span>
+                    <span style={{ whiteSpace: 'pre-wrap' }}>{value}</span>
+                  </div>
+                ))}
+              </div>
+            ))
+          )}
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

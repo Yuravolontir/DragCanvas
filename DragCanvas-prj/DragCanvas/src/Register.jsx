@@ -9,6 +9,8 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [registerError, setRegisterError] = useState('');
   const [email, setEmail] = useState('');
+  // Optional: only used to send a birthday greeting
+  const [birthDate, setBirthDate] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = async (e) => {
@@ -17,7 +19,7 @@ export default function Register() {
       setRegisterError('Passwords do not match');
       return;
     }
-    const result = await register(username, email, password);
+    const result = await register(username, email, password, birthDate || null);
     if (result.success) {
       navigate('/create-new-project');
     } else {
@@ -168,6 +170,21 @@ export default function Register() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              style={inputStyle}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+            />
+          </div>
+
+          <div>
+            <label style={labelStyle}>
+              Date of birth <span style={{ fontWeight: 400, opacity: 0.6 }}>— optional, for a birthday greeting</span>
+            </label>
+            <input
+              type="date"
+              value={birthDate}
+              onChange={(e) => setBirthDate(e.target.value)}
+              max={new Date().toISOString().slice(0, 10)}
               style={inputStyle}
               onFocus={handleFocus}
               onBlur={handleBlur}
