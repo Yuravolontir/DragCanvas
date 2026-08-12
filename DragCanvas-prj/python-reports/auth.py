@@ -13,7 +13,7 @@ import os
 
 import jwt
 from dotenv import load_dotenv
-from fastapi import Header, HTTPException, Query
+from fastapi import Header, HTTPException
 
 load_dotenv()
 
@@ -43,22 +43,15 @@ def _require_admin_payload(payload):
 
 
 def require_admin(authorization: str = Header(None)):
-    """Dependency for JSON endpoints: reads "Authorization: Bearer <token>"."""
+    """The only way in: reads "Authorization: Bearer <token>".
+
+    Charts used to have a second dependency that took the token from the query
+    string, because an <img src="..."> cannot send a header. The frontend now
+    fetches each chart itself and shows it through a blob: URL, so the header
+    works there too - and that weaker path is gone rather than left reachable
+    by anyone who knows the URL shape.
+    """
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing authentication token")
 
     return _require_admin_payload(_decode(authorization[7:]))
-
-
-def require_admin_query(token: str = Query(None)):
-    """Dependency for chart images.
-
-    A chart is displayed with <img src="...">, and an image request cannot carry
-    an Authorization header, so the token arrives as a query parameter instead.
-    This is deliberately weaker - query strings end up in server logs - and it is
-    accepted only because the alternative is leaving the charts open.
-    """
-    if not token:
-        raise HTTPException(status_code=401, detail="Missing authentication token")
-
-    return _require_admin_payload(_decode(token))

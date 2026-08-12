@@ -1,4 +1,46 @@
+import { randomUUID } from 'crypto';
 import { buildErrorResponse } from '../utils/response.builder.js';
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+/**
+ * Gives every request a short id, so a message shown to a user can be found in
+ * the log. Without it "something went wrong" is untraceable, which is why the
+ * controllers ended up forwarding raw driver text in the first place.
+ */
+export function requestId(req, res, next) {
+    req.id = randomUUID().slice(0, 8);
+    res.setHeader('X-Request-Id', req.id);
+    next();
+}
+
+/**
+ * Stops internal error text from reaching the client.
+ *
+ * The controllers do not call next(error) - they catch and answer directly with
+ * res.status(500).json(buildErrorResponse(error.message)), in 56 places. So the
+ * error handler below never sees them, and rewriting all 56 by hand is the kind
+ * of mechanical edit that introduces mistakes.
+ *
+ * What every one of them does share is the status code the controller chose: a
+ * message written for the user goes out as 400/401/404, while an error that
+ * escaped from the driver goes out as 500. That is the signal, so this wraps
+ * res.json once and redacts only the 5xx bodies. The real text goes to the log
+ * under the request id that the client is shown.
+ */
+export function hideInternalErrors(req, res, next) {
+    const sendJson = res.json.bind(res);
+
+    res.json = (body) => {
+        if (isProduction && res.statusCode >= 500 && body && body.success === false) {
+            console.error(`[ERROR ${req.id}] ${req.method} ${req.originalUrl}:`, body.error);
+            return sendJson({ ...body, error: `Something went wrong on our side. Reference: ${req.id}` });
+        }
+        return sendJson(body);
+    };
+
+    next();
+}
 
 /** 404 handler - runs when no route matched the request. */
 export function notFoundHandler(req, res) {
@@ -9,10 +51,27 @@ export function notFoundHandler(req, res) {
  * Global error handler - the last middleware in the chain.
  * Express recognises it by its four arguments and sends every error that a
  * route passed to next(error) here, so error formatting lives in one place.
+ *
+ * This is also where it is decided what may leave the process. Controllers
+ * still call buildErrorResponse(error.message), which is useful in the log but
+ * would otherwise hand the client table names, column names and driver text -
+ * a free map of the schema. In production the client gets a fixed sentence and
+ * the request id; the detail stays here.
+ *
+ * An error we raised on purpose ("Email already registered") is recognised by
+ * carrying a status below 500, and its text is still shown - those messages are
+ * written for the user.
  */
-export function errorHandler(error, req, res, next) {
-    console.error(`[ERROR] ${req.method} ${req.originalUrl}:`, error.message);
+export function errorHandler(error, req, res, _next) {
+    const status = error.status || error.statusCode || 500;
+    const id = req.id ? ` [${req.id}]` : '';
 
-    const status = error.status || 500;
-    return res.status(status).json(buildErrorResponse(error.message || 'Server Error'));
+    console.error(`[ERROR${id}] ${req.method} ${req.originalUrl}:`, error.stack || error.message);
+
+    const deliberate = status < 500;
+    const message = (deliberate || !isProduction)
+        ? (error.message || 'Server Error')
+        : `Something went wrong on our side. Reference: ${req.id}`;
+
+    return res.status(status).json(buildErrorResponse(message));
 }

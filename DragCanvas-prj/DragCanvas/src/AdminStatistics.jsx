@@ -17,6 +17,9 @@ const [summary, setSummary] = useState(null);
 const [projectsPerUser, setProjectsPerUser] = useState([]);
 const [error, setError] = useState(null);
 const [refreshKey, setRefreshKey] = useState(0);
+// chart url -> blob: URL. Charts used to be plain <img src="...?token=jwt">,
+// which put the token in server logs, browser history and any copied link.
+const [chartUrls, setChartUrls] = useState({});
 
   useEffect(() => {
     /**
@@ -59,6 +62,46 @@ const [refreshKey, setRefreshKey] = useState(0);
     loadStats();
   }, [refreshKey]);
 
+  /**
+   * Charts are PNGs behind the same admin check, and an <img> cannot send an
+   * Authorization header - which is why the token used to ride in the query
+   * string. Fetching them here and handing the <img> a blob: URL keeps the
+   * token in the header where it belongs.
+   *
+   * Every object URL holds its blob until it is revoked, and the Refresh button
+   * makes a new set each time, so the previous ones are released on replacement
+   * and on unmount.
+   */
+  useEffect(() => {
+    const token = getToken();
+    if (!token) return;
+
+    let cancelled = false;
+    const created = [];
+
+    // In parallel, and each chart appears as soon as it arrives
+    CHARTS.forEach(async (chart) => {
+      try {
+        const res = await fetch(`${PY_API}${chart.url}`, { headers: { Authorization: `Bearer ${token}` } });
+        if (!res.ok) return;
+        const objectUrl = URL.createObjectURL(await res.blob());
+        if (cancelled) { URL.revokeObjectURL(objectUrl); return; }
+        created.push(objectUrl);
+        setChartUrls(prev => {
+          if (prev[chart.url]) URL.revokeObjectURL(prev[chart.url]);
+          return { ...prev, [chart.url]: objectUrl };
+        });
+      } catch {
+        // loadStats above already reports the service being unreachable
+      }
+    });
+
+    return () => {
+      cancelled = true;
+      created.forEach(URL.revokeObjectURL);
+    };
+  }, [refreshKey]);
+
 if (error) return <Alert variant="warning">{error}</Alert>;
 if (!summary) return <Spinner animation="border" />;
 
@@ -92,12 +135,9 @@ return (
             <Card className="shadow-sm">
             <Card.Header>{chart.title}</Card.Header>
             <Card.Body className="text-center">
-                {/* An <img> cannot carry an Authorization header, so the token goes in
-                    the query string. Deliberately weaker - query strings land in
-                    server logs - and accepted only because the alternative is
-                    leaving the charts open to everyone. */}
-                <img src={`${PY_API}${chart.url}?token=${encodeURIComponent(getToken() || '')}&t=${refreshKey}`} alt={chart.title} style={{
-maxWidth: '100%' }} />
+                {chartUrls[chart.url]
+                  ? <img src={chartUrls[chart.url]} alt={chart.title} style={{ maxWidth: '100%' }} />
+                  : <Spinner animation="border" size="sm" />}
             </Card.Body>
             </Card>
         </Col>

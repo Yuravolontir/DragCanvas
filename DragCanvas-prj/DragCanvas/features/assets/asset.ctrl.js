@@ -1,5 +1,5 @@
 import AssetMdl from './asset.mdl.js';
-import { cloudinary } from '../../middlewares/files.js';
+import { cloudinary, detectImageType } from '../../middlewares/files.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
 
 /**
@@ -13,23 +13,40 @@ export async function uploadAsset(req, res) {
             return res.status(400).json(buildErrorResponse('No file received'));
         }
 
+        // The MIME check in fileFilter trusts a header the client chose. This
+        // reads the bytes, so a renamed .txt cannot get through as a JPEG.
+        const realType = detectImageType(req.file.buffer);
+        if (!realType) {
+            return res.status(400).json(buildErrorResponse('That file is not a JPEG, PNG, GIF or WEBP image'));
+        }
+
         const base64 = Buffer.from(req.file.buffer).toString('base64');
-        const dataURI = `data:${req.file.mimetype};base64,${base64}`;
+        const dataURI = `data:${realType};base64,${base64}`;
 
         const uploaded = await cloudinary.uploader.upload(dataURI, {
             folder: 'dragcanvas',
-            resource_type: 'auto',
+            // Not 'auto': Cloudinary should refuse anything that is not an image
+            // even if both checks above were somehow satisfied.
+            resource_type: 'image',
         });
 
-        const asset = await AssetMdl.addAssetToDB({
-            userId: req.user.userId,
-            url: uploaded.secure_url,
-            publicId: uploaded.public_id,
-            format: uploaded.format,
-            bytes: uploaded.bytes,
-        });
-
-        return res.status(201).json(buildSuccessResponse(asset));
+        // Cloudinary already holds the file at this point. If the row fails to
+        // save we would otherwise leave a file nothing references and nothing
+        // will ever delete, so it is removed before the error goes back.
+        try {
+            const asset = await AssetMdl.addAssetToDB({
+                userId: req.user.userId,
+                url: uploaded.secure_url,
+                publicId: uploaded.public_id,
+                format: uploaded.format,
+                bytes: uploaded.bytes,
+            });
+            return res.status(201).json(buildSuccessResponse(asset));
+        } catch (dbError) {
+            await cloudinary.uploader.destroy(uploaded.public_id)
+                .catch(e => console.error('[ASSET] orphan left on Cloudinary:', uploaded.public_id, e.message));
+            throw dbError;
+        }
     } catch (error) {
         return res.status(500).json(buildErrorResponse(error.message));
     }

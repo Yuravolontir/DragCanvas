@@ -33,3 +33,20 @@ export const aiLimiter = rateLimit({
     legacyHeaders: false,
     handler: reject('Too many AI requests. Please wait a moment.'),
 });
+
+/**
+ * Login and register are the two endpoints worth guessing at, and until now
+ * they were the only public ones without a limit.
+ *
+ * Ten attempts in fifteen minutes leaves room for someone mistyping a password
+ * a few times, while making a guessing run pointless. Successful logins are not
+ * counted, so a person who signs in correctly never meets this.
+ */
+export const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    skipSuccessfulRequests: true,
+    standardHeaders: true,
+    legacyHeaders: false,
+    handler: reject('Too many attempts. Please wait a few minutes and try again.'),
+});

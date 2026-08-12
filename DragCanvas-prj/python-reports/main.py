@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 import reports
 import charts
 import qr
-from auth import require_admin, require_admin_query
+from auth import require_admin
 
 load_dotenv()
 
@@ -62,28 +62,28 @@ def get_actions():
 
 # ---------- PNG endpoints (charts) ----------
 
-@app.get("/api/charts/registrations", dependencies=[Depends(require_admin_query)])
+@app.get("/api/charts/registrations", dependencies=[Depends(require_admin)])
 def chart_registrations():
     return StreamingResponse(charts.registrations_chart(), media_type="image/png")
 
 
-@app.get("/api/charts/projects-per-user", dependencies=[Depends(require_admin_query)])
+@app.get("/api/charts/projects-per-user", dependencies=[Depends(require_admin)])
 def chart_projects_per_user():
     return StreamingResponse(charts.projects_per_user_chart(),
 media_type="image/png")
 
 
-@app.get("/api/charts/published", dependencies=[Depends(require_admin_query)])
+@app.get("/api/charts/published", dependencies=[Depends(require_admin)])
 def chart_published():
     return StreamingResponse(charts.published_pie_chart(), media_type="image/png")
 
 
-@app.get("/api/charts/actions", dependencies=[Depends(require_admin_query)])
+@app.get("/api/charts/actions", dependencies=[Depends(require_admin)])
 def chart_actions():
     return StreamingResponse(charts.actions_chart(), media_type="image/png")
 
 
-@app.get("/api/charts/project-sizes", dependencies=[Depends(require_admin_query)])
+@app.get("/api/charts/project-sizes", dependencies=[Depends(require_admin)])
 def chart_project_sizes():
     return StreamingResponse(charts.project_sizes_chart(), media_type="image/png")
 
