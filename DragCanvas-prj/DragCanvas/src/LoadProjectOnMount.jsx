@@ -46,7 +46,6 @@ import { useEffect } from 'react';
           return;
         }
 
-        const currentUser = JSON.parse(storedUser);
         console.log('Loading project:', projectId);
 
         try {
@@ -82,6 +81,12 @@ import { useEffect } from 'react';
       };
 
       loadProject();
+      // `navigate` is left out deliberately. react-router memoises it, so adding
+      // it would change nothing - but if that ever stopped being true this
+      // effect would re-import the saved canvas over whatever the user has just
+      // edited. The upside of listing it is zero and the downside is losing
+      // someone's work, so the omission stays.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.state, actions]);
 
     return null;

@@ -1,5 +1,5 @@
-import { useNode, useEditor } from '@craftjs/core';
-import React, { useEffect, useRef } from 'react';
+import { useEditor } from '@craftjs/core';
+import React, { useEffect } from 'react';
 import { Resizer } from './Resizer';
 import { MapSettings } from './MapSettings';
 import L from 'leaflet';
@@ -27,7 +27,6 @@ export const Map = ({ lat, lng, zoom, height, label }) => {
   const { enabled } = useEditor((state) => ({
     enabled: state.options.enabled,
   }));
-  const mapKey = useRef(0);
 
   return (
     <Resizer
@@ -47,7 +46,6 @@ export const Map = ({ lat, lng, zoom, height, label }) => {
         position: 'relative',
       }}>
         <MapContainer
-          key={mapKey.current}
           center={[lat, lng]}
           zoom={zoom}
           scrollWheelZoom={!enabled}

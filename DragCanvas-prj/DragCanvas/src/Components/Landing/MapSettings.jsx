@@ -1,5 +1,6 @@
 import React from 'react';
-import { ToolbarSection, ToolbarItem } from './Toolbar';
+import { ToolbarSection } from './Toolbar/ToolbarSection';
+import { ToolbarItem } from './Toolbar/ToolbarItem';
 
 export const MapSettings = () => {
   return (

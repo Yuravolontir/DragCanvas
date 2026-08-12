@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNode, useEditor } from '@craftjs/core';
-import { ToolbarSection, ToolbarItem } from './Toolbar';
+import { ToolbarSection } from './Toolbar/ToolbarSection';
+import { ToolbarItem } from './Toolbar/ToolbarItem';
 import { ToolbarRadio } from './Toolbar/ToolbarRadio';
 
 export const NavbarSettings = () => {

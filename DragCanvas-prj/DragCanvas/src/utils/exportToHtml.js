@@ -22,7 +22,7 @@ const spacingToCss = (spacing) => {
 // Helper: { flexDirection: 'row' } → "  flex-direction: row;" (valid CSS, not React camelCase)
 const stylesToCss = (styles) => {
   return Object.entries(styles)
-    .filter(([_, value]) => value !== undefined && value !== null)
+    .filter(([, value]) => value !== undefined && value !== null)
     .map(([key, value]) => `  ${key.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase())}: ${value};`)
     .join('\n');
 };

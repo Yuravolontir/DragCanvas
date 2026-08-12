@@ -1,11 +1,6 @@
 import { useEditor } from '@craftjs/core';
 import React from 'react';
 
-export * from './Toolbar/ToolbarItem';
-export * from './Toolbar/ToolbarSection';
-export * from './Toolbar/ToolbarTextInput';
-export * from './Toolbar/ToolbarDropdown';
-
 export const Toolbar = () => {
   const { active, related } = useEditor((state, query) => {
     // TODO: handle multiple selected elements

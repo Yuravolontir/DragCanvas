@@ -4,12 +4,11 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useNavigate } from "react-router-dom";
-import { useUserContext } from "./UserContextProvider";
+import { useUserContext } from './userContext.js';
 
 export default function NavBar() {
   const navigate = useNavigate();
   const { currentUser, logout, isAdmin, isSuperAdmin, notificationsVersion } = useUserContext();
-  const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [scrolled, setScrolled] = useState(false);
 

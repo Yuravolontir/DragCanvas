@@ -63,7 +63,7 @@ export async function getSiteByDomain(req, res) {
         }
         res.setHeader('Content-Type', 'text/html');
         return res.send(html);
-    } catch (error) {
+    } catch {
         return res.status(500).send('Server error');
     }
 }

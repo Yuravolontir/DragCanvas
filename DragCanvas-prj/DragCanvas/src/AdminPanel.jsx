@@ -62,7 +62,7 @@ export default function AdminPanel() {
     const [notificationLogs, setNotificationLogs] = useState([]);
     const [logStats, setLogStats] = useState({ Total: 0, Delivered: 0, Viewed: 0, Failed: 0 });
     const [loadingLogs, setLoadingLogs] = useState(true);
-    const [logPage, setLogPage] = useState(1);
+    const [, setLogPage] = useState(1);
     const [logFilters, setLogFilters] = useState({ status: '', startDate: '', endDate: '', search: '' });
 
     // Notification Settings State
@@ -81,6 +81,9 @@ export default function AdminPanel() {
       fetchUsers();
       fetchTemplates();
       fetchNotifications();
+      // Once, on mount. The fetchers are redefined on every render, so listing
+      // them would refetch continuously.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -96,6 +99,9 @@ export default function AdminPanel() {
         fetchTemplates();
         fetchNotifications();
       }
+      // Keyed on the user id on purpose: the fetchers change identity every
+      // render, so listing them would loop.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentUser?.User_ID]);
 
     // Access control - check if user is admin or superadmin
@@ -559,19 +565,6 @@ const confirmRoleChange = async () => {
     }
   };
 
-  const handleSaveNotificationSettings = async (settings) => {
-    try {
-      await apiFetch('/api/notifications/settings', {
-        method: 'PUT',
-        body: { settings }
-      });
-      showAlertModal('Settings saved!', 'success');
-      fetchNotificationSettings();
-    } catch (err) {
-      showAlertModal(err.message, 'error');
-    }
-  };
-
   // Fetch all notification-related data when currentUser is loaded
   useEffect(() => {
     if (currentUser?.User_ID) {
@@ -581,6 +574,8 @@ const confirmRoleChange = async () => {
       fetchLogStats();
       fetchNotificationSettings();
     }
+    // Same reason as above: keyed on the id, not on the fetchers.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser?.User_ID]);
 
   if (loading) return (

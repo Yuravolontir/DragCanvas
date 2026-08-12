@@ -25,7 +25,11 @@ export default defineConfig([
       },
     },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      // A leading underscore marks a binding that must exist but is not read.
+      // Express identifies an error handler by its arity, so errorHandler has
+      // to keep four parameters even though it never calls next - hence
+      // argsIgnorePattern alongside the existing one for variables.
+      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]', argsIgnorePattern: '^_' }],
     },
   },
   {

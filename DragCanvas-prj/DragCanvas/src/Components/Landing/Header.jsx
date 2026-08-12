@@ -5,7 +5,6 @@ import { apiFetch } from '../../api.js';
   import cx from 'classnames';
   import React, { useEffect, useState } from 'react';
   import styled from 'styled-components';
-  import { useUserContext } from '../../UserContextProvider';
   import { useLocation } from 'react-router-dom';
   import html2canvas from 'html2canvas';
   import { exportToHtml } from '../../utils/exportToHtml';
@@ -84,7 +83,17 @@ export const Header = () => {
   const [projectName, setProjectName] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
   const [showSaveModal, setShowSaveModal] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  // Read once during the first render rather than in an effect: the value is
+  // already known, and setting it from an effect made the component render
+  // twice on every mount.
+  const [currentUser] = useState(() => {
+    try {
+      const stored = localStorage.getItem('currentUser');
+      return stored && stored !== 'undefined' ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  });
 
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -113,15 +122,7 @@ export const Header = () => {
     canRedo: query.history.canRedo(),
   }));
 
- const { addproject } = useUserContext();
  
-
-   useEffect(() => {
-     const storedUser = localStorage.getItem('currentUser');
-     if (storedUser) {
-       setCurrentUser(JSON.parse(storedUser));
-     }
-   }, []);
 
    // If the loaded project was published before, restore its live URL (for the Published chip)
    useEffect(() => {

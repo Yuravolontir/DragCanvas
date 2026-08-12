@@ -21,7 +21,7 @@ async function attemptGeneration(prompt, creativity) {
     let parsed;
     try {
         parsed = safeParseAIJson(raw);
-    } catch (parseError) {
+    } catch {
         // Broken but present JSON is worth one repair round-trip
         parsed = safeParseAIJson(await aiService.repairLayoutJson(raw));
     }
@@ -119,7 +119,7 @@ export async function refineWebsite(req, res) {
             let parsed;
             try {
                 parsed = safeParseAIJson(raw);
-            } catch (parseError) {
+            } catch {
                 parsed = safeParseAIJson(await aiService.repairLayoutJson(raw));
             }
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Text } from './Text';
 import { Button } from './Button';
-import { Container, ContainerDefaultProps } from './Container';
+import { Container } from './Container';
+import { ContainerDefaultProps } from './Container.props.js';
 
 export const Card = ({ background, padding = 20 }) => {
   return (

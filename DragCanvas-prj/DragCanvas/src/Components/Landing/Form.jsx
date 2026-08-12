@@ -1,4 +1,4 @@
-import { useNode, useEditor } from '@craftjs/core';
+import { useEditor } from '@craftjs/core';
 import React from 'react';
 import { Resizer } from './Resizer';
 import { FormSettings } from './FormSettings';
@@ -17,7 +17,6 @@ export const Form = (props) => {
   const {
     fields = [],
     submitText = 'Send',
-    successMessage = 'Thank you! We will be in touch.',
     background,
     accent,
     radius = 8,

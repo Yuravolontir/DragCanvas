@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { capitalize, weightDescription } from '../../utils/text';
-import { ToolbarSection, ToolbarItem } from './Toolbar';
+import { ToolbarSection } from './Toolbar/ToolbarSection';
+import { ToolbarItem } from './Toolbar/ToolbarItem';
 import { ToolbarRadio } from './Toolbar/ToolbarRadio';
 
 export const TextSettings = () => {

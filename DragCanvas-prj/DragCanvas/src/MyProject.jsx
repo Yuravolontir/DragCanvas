@@ -37,6 +37,8 @@ export default function MyProject() {
     if (currentUser?.User_ID) {
       fetchProjects();
     }
+    // Keyed on the user: fetchProjects is redefined every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
   const fetchProjects = async () => {

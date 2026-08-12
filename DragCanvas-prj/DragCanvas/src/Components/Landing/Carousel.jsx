@@ -1,14 +1,10 @@
 
-  import { useNode, useEditor } from '@craftjs/core';
   import React from 'react';
   import { Resizer } from './Resizer';
   import { CarouselSettings } from './CarouselSettings';
   import BootstrapCarousel from 'react-bootstrap/Carousel';
 
   export const Carousel = (props) => {
-    const { enabled } = useEditor((state) => ({
-      enabled: state.options.enabled,
-    }));
 
     const {
       src1 = 'https://via.placeholder.com/800x400?text=Slide+1',

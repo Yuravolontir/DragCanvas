@@ -8,12 +8,15 @@ import Col from 'react-bootstrap/Col';
 import NavBar from './NavBar';
 import './LandingPage.css';
 
-export default function LandingPage(props) {
+export default function LandingPage() {
   const videoContainerRef = useRef(null);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [, setImagesLoaded] = useState(false);
 
   useEffect(() => {
     initSmoothScrollAnimation();
+    // Runs once to attach the scroll animation; the function is declared below
+    // and redefined each render, so listing it would re-attach continuously.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const initSmoothScrollAnimation = async () => {

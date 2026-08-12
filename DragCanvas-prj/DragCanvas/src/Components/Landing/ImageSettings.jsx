@@ -1,6 +1,7 @@
   import React, { useState, useRef } from 'react';
   import { useNode } from '@craftjs/core';
-  import { ToolbarSection, ToolbarItem } from './Toolbar';
+  import { ToolbarSection } from './Toolbar/ToolbarSection';
+import { ToolbarItem } from './Toolbar/ToolbarItem';
   import { apiFetch, getToken } from '../../api.js';
 
   export const ImageSettings = () => {

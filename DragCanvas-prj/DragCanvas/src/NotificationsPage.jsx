@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
-import { useUserContext } from './UserContextProvider';
+import { useUserContext } from './userContext.js';
 import DOMPurify from 'dompurify';
 
 /**
@@ -64,7 +64,11 @@ export default function NotificationsPage() {
       }
     };
     fetchNotifications();
-  }, [currentUser, navigate]);
+    // `loading` is listed because the guard above reads it. `refreshNotifications`
+    // is not: it comes from the context and is a new function on every render, so
+    // listing it would make this effect refetch forever.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser, navigate, loading]);
 
   const handleDeleteClick = (notificationId) => {
     setNotificationToDelete(notificationId);
@@ -217,7 +221,6 @@ export default function NotificationsPage() {
                                 />
                               ) : (
                                 <div style={{ padding: '14px', fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.85rem', color: 'var(--on-surface-variant)' }}>
-                                  {/* eslint-disable-next-line react/no-danger */}
                                   <div dangerouslySetInnerHTML={{ __html: cleanHtml(notif.Message) }} />
                                 </div>
                               )}

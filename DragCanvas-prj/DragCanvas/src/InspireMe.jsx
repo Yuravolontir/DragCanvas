@@ -1,5 +1,5 @@
 import { apiFetch } from './api.js';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import NavBar from './NavBar';
 import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
@@ -28,6 +28,9 @@ export default function InspireMe() {
     if (storedUser) {
       setCurrentUser(JSON.parse(storedUser));
     }
+    // Deliberately once, on mount: the gallery is fetched when the page opens,
+    // and refetching on every render would hammer the API for no benefit.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -53,7 +56,7 @@ export default function InspireMe() {
     setShowAlert(true);
   };
 
-  const useTemplate = (templateId) => {
+  const applyTemplate = (templateId) => {
     // Templates are open to everyone — anonymous users can try them
     // in the editor; signup is only required to save/publish.
     navigate('/create-new-project', { state: { templateId } });
@@ -89,13 +92,16 @@ export default function InspireMe() {
   const categories = ['all', ...new Set(templates.map(t => t.Category))];
   const currentTemplate = filteredTemplates[currentIndex];
 
-  const goToPrevious = () => {
+  // Wrapped so the keyboard effect below can list them honestly. Both read only
+  // filteredTemplates.length and use the functional setState form, so there is
+  // no stale state to worry about.
+  const goToPrevious = useCallback(() => {
     setCurrentIndex((prev) => prev === 0 ? filteredTemplates.length - 1 : prev - 1);
-  };
+  }, [filteredTemplates.length]);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % filteredTemplates.length);
-  };
+  }, [filteredTemplates.length]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -104,7 +110,7 @@ export default function InspireMe() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [filteredTemplates.length]);
+  }, [goToNext, goToPrevious]);
 
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
@@ -150,7 +156,6 @@ export default function InspireMe() {
                 style={{
                   padding: '8px 20px',
                   borderRadius: '9999px',
-                  border: 'none',
                   background: filterCategory === cat ? 'var(--primary)' : 'white',
                   color: filterCategory === cat ? 'white' : 'var(--on-surface-variant)',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -380,7 +385,7 @@ export default function InspireMe() {
                     </button>
                   )}
                   <button
-                    onClick={() => useTemplate(currentTemplate?.Template_ID)}
+                    onClick={() => applyTemplate(currentTemplate?.Template_ID)}
                     style={{
                       padding: '12px 28px',
                       background: 'var(--primary)',

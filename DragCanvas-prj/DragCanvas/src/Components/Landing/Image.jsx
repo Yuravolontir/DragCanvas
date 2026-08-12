@@ -1,4 +1,4 @@
-import { useNode, useEditor } from '@craftjs/core';
+import { useEditor } from '@craftjs/core';
   import React from 'react';
   import { Resizer } from './Resizer';
   import { ImageSettings } from './ImageSettings';

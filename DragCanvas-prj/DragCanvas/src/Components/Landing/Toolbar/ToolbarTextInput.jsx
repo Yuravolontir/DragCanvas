@@ -6,7 +6,6 @@
   export const ToolbarTextInput = ({
     onChange,
     value,
-    prefix,
     label,
     type,
     ...props

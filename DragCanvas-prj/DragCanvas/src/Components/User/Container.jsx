@@ -1,4 +1,5 @@
 import React from 'react';
+import { ContainerDefaultProps } from './Container.props.js';
 import { Paper } from '@mui/material';
 import { useNode } from '@craftjs/core';
 
@@ -11,10 +12,6 @@ export const Container = ({ background, padding = 0, children }) => {
   );
 };
 
-export const ContainerDefaultProps = {
-  background: '#ffffff',
-  padding: 3,
-};
 
 Container.craft = {
   props: ContainerDefaultProps,

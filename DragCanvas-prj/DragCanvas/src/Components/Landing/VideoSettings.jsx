@@ -1,5 +1,5 @@
 import React from 'react';
-  import { ToolbarSection } from './Toolbar';
+  import { ToolbarSection } from './Toolbar/ToolbarSection';
   import { useNode } from '@craftjs/core';
   import { GridLegacy, TextField } from '@mui/material';
 

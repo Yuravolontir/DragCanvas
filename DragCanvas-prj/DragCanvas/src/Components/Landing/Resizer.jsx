@@ -2,7 +2,7 @@ import { useNode, useEditor } from '@craftjs/core';
 import cx from 'classnames';
 import debounce from 'debounce';
 import { Resizable } from 're-resizable';
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -113,8 +113,16 @@ export const Resizer = ({ propKey, children, ...props }) => {
   const resizable = useRef(null);
   const isResizing = useRef(false);
   const editingDimensions = useRef(null);
-  const nodeDimensions = useRef(null);
-  nodeDimensions.current = { width: nodeWidth, height: nodeHeight };
+  const nodeDimensions = useRef({ width: nodeWidth, height: nodeHeight });
+
+  // The callbacks below read this ref instead of closing over the dimensions,
+  // so they never go stale. Writing it during render is what React forbids -
+  // a render that gets discarded would still have written. useLayoutEffect
+  // rather than useEffect because it runs before paint, so the resize handlers
+  // and the effect below never see a frame-old value while dragging.
+  useLayoutEffect(() => {
+    nodeDimensions.current = { width: nodeWidth, height: nodeHeight };
+  });
 
   const [internalDimensions, setInternalDimensions] = useState({
     width: nodeWidth,

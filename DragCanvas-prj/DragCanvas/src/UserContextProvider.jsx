@@ -1,10 +1,7 @@
 import { apiFetch, setToken, clearToken, getToken } from './api.js';
-import React, { createContext, useState, useEffect, useContext }
-  from "react";
+import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
-
-export const UserContext = createContext();
-export const useUserContext = () => useContext(UserContext);
+import { UserContext } from './userContext.js';
 
 export default function UserContextProvider(props) {
 
