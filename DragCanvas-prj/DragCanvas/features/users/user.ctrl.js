@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import UserMdl from './user.mdl.js';
+import { invalidateUser } from '../../utils/roleCache.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
 
 export async function getAllUsers(req, res) {
@@ -67,6 +68,9 @@ export async function updateStatus(req, res) {
         }
 
         await UserMdl.updateStatusInDB(targetID, newStatus);
+        // Drop the cached entry so the target's next request reads the new
+        // status from the database instead of the one held for up to TTL.
+        invalidateUser(targetID);
         return res.status(200).json(buildSuccessResponse({
             message: `User status updated to ${newStatus ? 'active' : 'inactive'}`,
         }));
@@ -94,6 +98,9 @@ export async function updateRole(req, res) {
             return res.status(404).json(buildErrorResponse('User not found'));
         }
 
+        // Same reason as updateStatus: the demotion must bite on the target's
+        // next request, not after the cache TTL.
+        invalidateUser(targetID);
         return res.status(200).json(buildSuccessResponse({
             message: `User role updated to ${makeAdmin ? 'admin' : 'regular user'}`,
         }));

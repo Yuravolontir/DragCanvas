@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import db from '../utils/db.sql.services.js';
+import { getCachedUser, setCachedUser } from '../utils/roleCache.js';
 import { buildErrorResponse } from '../utils/response.builder.js';
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -26,6 +27,14 @@ export function createToken(user) {
  * seven-day token kept its day-one rights: "Remove Admin" and "Deactivate" in
  * the admin panel wrote to the database correctly and then changed nothing for
  * up to a week. Reading the row here makes those buttons take effect at once.
+ *
+ * That lookup is one round-trip to Supabase per request, so its result is held
+ * in a short-lived cache (utils/roleCache.js). A cache hit is an assertion the
+ * caller was a confirmed-active user at most TTL ago - which is why the IsActive
+ * check below is allowed to be skipped on a hit. The entry is only ever stored
+ * on the happy path, so a database error, a missing row or a deactivated account
+ * is never pinned. updateRole/updateStatus drop the entry the moment they write
+ * a change, so a demotion made through the app still takes effect at once.
  */
 export async function verifyToken(req, res, next) {
     const header = req.headers.authorization || '';
@@ -42,6 +51,12 @@ export async function verifyToken(req, res, next) {
         return res.status(401).json(buildErrorResponse('Invalid or expired token'));
     }
 
+    const cached = getCachedUser(payload.userId);
+    if (cached) {
+        req.user = cached;
+        return next();
+    }
+
     let rows;
     try {
         rows = await db.executeQuery(`
@@ -50,9 +65,10 @@ export async function verifyToken(req, res, next) {
             WHERE "User_ID" = $1
         `, [payload.userId]);
     } catch (error) {
-        // A database failure is not an authentication failure. Answering 401
-        // here would look exactly like every token expiring at once, which is a
-        // miserable thing to diagnose - so this says 500.
+        // A database failure is not an authentication failure, and it is not
+        // cached: pinning a transient error would lock every user out for the
+        // TTL. Answering 401 here would look exactly like every token expiring
+        // at once, which is a miserable thing to diagnose - so this says 500.
         console.error('[AUTH] Could not load the caller:', error.message);
         return res.status(500).json(buildErrorResponse('Could not verify the session'));
     }
@@ -65,8 +81,9 @@ export async function verifyToken(req, res, next) {
     if (!user) {
         return res.status(401).json(buildErrorResponse('Account no longer exists'));
     }
-    // A deactivated account must not keep working on its existing token.
     if (user.IsActive === false) {
+        // Not cached: a deactivated account must be re-checked on the next
+        // request, not served a stale "active" verdict for the TTL window.
         return res.status(401).json(buildErrorResponse('Account is deactivated'));
     }
 
@@ -77,6 +94,7 @@ export async function verifyToken(req, res, next) {
         isSuperAdmin: !!user.IsSuperAdmin,
     };
 
+    setCachedUser(payload.userId, req.user);
     next();
 }
 
