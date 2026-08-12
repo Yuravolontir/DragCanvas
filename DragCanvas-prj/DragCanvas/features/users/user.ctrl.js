@@ -59,6 +59,13 @@ export async function updateStatus(req, res) {
             return res.status(404).json(buildErrorResponse('Target user not found'));
         }
 
+        // Roles and status are now read from the database on every request, so
+        // deactivating yourself takes effect immediately instead of in seven
+        // days. With a single superadmin that is an unrecoverable state.
+        if (Number(targetID) === Number(req.user.userId) && newStatus === false) {
+            return res.status(400).json(buildErrorResponse('You cannot deactivate your own account'));
+        }
+
         await UserMdl.updateStatusInDB(targetID, newStatus);
         return res.status(200).json(buildSuccessResponse({
             message: `User status updated to ${newStatus ? 'active' : 'inactive'}`,
@@ -74,6 +81,12 @@ export async function updateRole(req, res) {
 
         if (!targetID || makeAdmin === undefined) {
             return res.status(400).json(buildErrorResponse('targetID and makeAdmin are required'));
+        }
+
+        // Same reason as updateStatus: the demotion now bites on the next
+        // request, so removing your own admin flag locks you out for real.
+        if (Number(targetID) === Number(req.user.userId) && makeAdmin === false) {
+            return res.status(400).json(buildErrorResponse('You cannot remove your own admin rights'));
         }
 
         const rowCount = await UserMdl.updateRoleInDB(targetID, makeAdmin);

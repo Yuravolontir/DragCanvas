@@ -1,4 +1,4 @@
-import { apiFetch, setToken, clearToken } from './api.js';
+import { apiFetch, setToken, clearToken, getToken } from './api.js';
 import React, { createContext, useState, useEffect, useContext }
   from "react";
 import { v4 as uuidv4 } from 'uuid';
@@ -16,7 +16,6 @@ export default function UserContextProvider(props) {
   const [projects, setProjects] = useState([]);
 
   // Add notification state and refetch function
-  const [notificationCount, setNotificationCount] = useState(0);
   const [notificationsVersion, setNotificationsVersion] =
     useState(0);
 
@@ -36,26 +35,45 @@ export default function UserContextProvider(props) {
   const deleteproject = (id) => {
     setProjects(projects.filter(p => p.id !== id));
   }
-  // Check if user is logged in on mount
+  /**
+   * Restore the session on mount.
+   *
+   * The stored copy is used first so the page paints immediately instead of
+   * flashing a logged-out header, and then the server is asked who this user
+   * currently is. Roles used to be kept in localStorage and never refreshed,
+   * which meant a demoted admin kept seeing the admin panel until they cleared
+   * their browser - the server now answers 403, so the UI has to agree.
+   */
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem('currentUser');
-      const storedIsAdmin = localStorage.getItem('isAdmin');
-      const storedIsSuperAdmin = localStorage.getItem('isSuperAdmin');
       if (storedUser && storedUser !== 'undefined') {
         setCurrentUser(JSON.parse(storedUser));
       }
-      if (storedIsAdmin && storedIsAdmin !== 'undefined') {
-        setIsAdmin(JSON.parse(storedIsAdmin));
-      }
-      if (storedIsSuperAdmin && storedIsSuperAdmin !== 'undefined') {
-        setIsSuperAdmin(JSON.parse(storedIsSuperAdmin));
-      }
-    } catch (e) {
+    } catch {
       localStorage.removeItem('currentUser');
-      localStorage.removeItem('isAdmin');
-      localStorage.removeItem('isSuperAdmin');
     }
+
+    // Left over from when roles lived here; removed so nothing reads them again
+    localStorage.removeItem('isAdmin');
+    localStorage.removeItem('isSuperAdmin');
+
+    // Only ask when there is a session to ask about - an anonymous visitor
+    // browsing templates must not be bounced to the login page.
+    if (!getToken()) return;
+
+    apiFetch('/api/users/me')
+      .then((user) => {
+        setCurrentUser(user);
+        setIsAdmin(user.IsAdmin);
+        setIsSuperAdmin(user.IsSuperAdmin);
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      })
+      .catch(() => {
+        // A 401 (deactivated, deleted, expired) is already handled inside
+        // apiFetch, which clears the token and redirects to login.
+        localStorage.removeItem('currentUser');
+      });
   }, []);
 
   const login = async (email, password) => {
@@ -78,9 +96,9 @@ export default function UserContextProvider(props) {
       setCurrentUser(data2);
       setIsAdmin(data2.IsAdmin);
       setIsSuperAdmin(data2.IsSuperAdmin);
+      // Roles are deliberately not stored - they are read from the server, so
+      // a change of role takes effect without the user clearing their browser
       localStorage.setItem('currentUser',JSON.stringify(data2));
-      localStorage.setItem('isAdmin',JSON.stringify(data2.IsAdmin));
-      localStorage.setItem('isSuperAdmin',JSON.stringify(data2.IsSuperAdmin));
 
       return { success: true };
     } catch (err) {
@@ -112,8 +130,6 @@ export default function UserContextProvider(props) {
       setIsSuperAdmin(data.user.IsSuperAdmin);
       localStorage.setItem('currentUser',
         JSON.stringify(data.user));
-      localStorage.setItem('isAdmin', JSON.stringify(data.user.IsAdmin));
-      localStorage.setItem('isSuperAdmin', JSON.stringify(data.user.IsSuperAdmin));
       return { success: true };
     } catch (err) {
       setError(err.message);
@@ -129,8 +145,6 @@ export default function UserContextProvider(props) {
     setIsAdmin(null);
     setIsSuperAdmin(null);
     localStorage.removeItem('currentUser');
-    localStorage.removeItem('isAdmin');
-    localStorage.removeItem('isSuperAdmin');
   };
 
   return (

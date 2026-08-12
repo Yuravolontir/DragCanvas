@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import db from '../utils/db.sql.services.js';
 import { buildErrorResponse } from '../utils/response.builder.js';
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -17,10 +18,16 @@ export function createToken(user) {
 
 /**
  * Middleware: only lets the request through if it carries a valid token.
- * Reads "Authorization: Bearer <token>", verifies the signature,
- * and puts the decoded payload on req.user for the controllers to use.
+ *
+ * The token proves WHO the caller is. It does not decide WHAT they may do -
+ * that is read from the database.
+ *
+ * The roles used to come straight out of the token payload, which meant a
+ * seven-day token kept its day-one rights: "Remove Admin" and "Deactivate" in
+ * the admin panel wrote to the database correctly and then changed nothing for
+ * up to a week. Reading the row here makes those buttons take effect at once.
  */
-export function verifyToken(req, res, next) {
+export async function verifyToken(req, res, next) {
     const header = req.headers.authorization || '';
     const token = header.startsWith('Bearer ') ? header.slice(7) : null;
 
@@ -28,12 +35,49 @@ export function verifyToken(req, res, next) {
         return res.status(401).json(buildErrorResponse('Missing authentication token'));
     }
 
+    let payload;
     try {
-        req.user = jwt.verify(token, JWT_SECRET);
-        next();
-    } catch (error) {
+        payload = jwt.verify(token, JWT_SECRET);
+    } catch {
         return res.status(401).json(buildErrorResponse('Invalid or expired token'));
     }
+
+    let rows;
+    try {
+        rows = await db.executeQuery(`
+            SELECT "User_ID", "UserEmail", "IsActive", "IsAdmin", "IsSuperAdmin"
+            FROM "TBUsers"
+            WHERE "User_ID" = $1
+        `, [payload.userId]);
+    } catch (error) {
+        // A database failure is not an authentication failure. Answering 401
+        // here would look exactly like every token expiring at once, which is a
+        // miserable thing to diagnose - so this says 500.
+        console.error('[AUTH] Could not load the caller:', error.message);
+        return res.status(500).json(buildErrorResponse('Could not verify the session'));
+    }
+
+    const user = rows[0];
+
+    // Deliberately no fall back to the roles inside the token when the lookup
+    // finds nothing. Falling back would restore the exact bug this removes,
+    // only intermittently, which is worse than failing closed.
+    if (!user) {
+        return res.status(401).json(buildErrorResponse('Account no longer exists'));
+    }
+    // A deactivated account must not keep working on its existing token.
+    if (user.IsActive === false) {
+        return res.status(401).json(buildErrorResponse('Account is deactivated'));
+    }
+
+    req.user = {
+        userId: user.User_ID,
+        email: user.UserEmail,
+        isAdmin: !!user.IsAdmin,
+        isSuperAdmin: !!user.IsSuperAdmin,
+    };
+
+    next();
 }
 
 /** Middleware: must run after verifyToken. Blocks non-admin users. */
