@@ -44,6 +44,7 @@ export default defineConfig([
       'middlewares/**/*.js',
       'utils/**/*.js',
       'scripts/**/*.{js,mjs}',
+      'tests/**/*.js',
     ],
     languageOptions: {
       globals: globals.node,
