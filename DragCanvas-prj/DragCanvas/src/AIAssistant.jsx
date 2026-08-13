@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { apiFetch } from './api.js';
+import API_URL, { apiFetch, getToken } from './api.js';
   import { useEditor } from '@craftjs/core';
 
   export default function AIAssistant() {
@@ -82,27 +82,32 @@ import { apiFetch } from './api.js';
       return nodes;
     };
 
+    /**
+     * Ask our own server for one generated image.
+     *
+     * This used to call Stability straight from the browser with the key in an
+     * import.meta.env variable, which Vite compiles into the bundle every
+     * visitor downloads - the key was readable by anyone who opened the site.
+     * The server holds it now and returns the PNG, exactly as the admin charts
+     * do. A null means "leave the placeholder", so one failed image never
+     * costs the whole page.
+     */
     const generateImage = async (imagePrompt) => {
       try {
-        const formData = new FormData();
-        formData.append('prompt', imagePrompt);
-        formData.append('output_format', 'png');
-        formData.append('aspect_ratio', '16:9');
-
-        const res = await fetch('https://api.stability.ai/v2beta/stable-image/generate/sd3', {
+        const res = await fetch(`${API_URL}/api/ai/image`, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_STABILITY_API_KEY}`,
-            'Accept': 'image/*',
+            'Authorization': `Bearer ${getToken()}`,
+            'Content-Type': 'application/json',
           },
-          body: formData,
+          body: JSON.stringify({ prompt: imagePrompt }),
         });
 
         if (!res.ok) return null;
         const blob = await res.blob();
         return URL.createObjectURL(blob);
       } catch (e) {
-        console.error('Stability AI error:', e);
+        console.error('Image generation error:', e);
         return null;
       }
     };

@@ -147,3 +147,59 @@ export async function fetchPexelsVideos(query, count = 5) {
         return [];
     }
 }
+
+const STABILITY_API = 'https://api.stability.ai/v2beta/stable-image/generate/sd3';
+
+// A generated 16:9 PNG is well under this; anything larger means something is
+// wrong upstream and is not worth buffering into memory.
+const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
+
+/**
+ * Generate one image for a placeholder the model left in the layout.
+ *
+ * The browser used to call Stability directly with the key in the bundle, the
+ * same mistake the text generation already moved away from - a VITE_ variable
+ * is compiled into the JavaScript every visitor downloads, so the key was
+ * readable by anyone who opened the site. It lives on the server now.
+ *
+ * @returns {Promise<{buffer: Buffer, contentType: string}>}
+ */
+export async function generateImage(prompt) {
+    const apiKey = process.env.STABILITY_API_KEY;
+    if (!apiKey) {
+        const error = new Error('Missing STABILITY_API_KEY on the server');
+        error.status = 500;
+        throw error;
+    }
+
+    const form = new FormData();
+    form.append('prompt', prompt);
+    form.append('output_format', 'png');
+    form.append('aspect_ratio', '16:9');
+
+    const response = await fetch(STABILITY_API, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Accept': 'image/*',
+        },
+        body: form,
+    });
+
+    if (!response.ok) {
+        // The body is JSON when the request was refused, not an image
+        const detail = await response.text().catch(() => '');
+        const error = new Error(`Stability error (${response.status})${detail ? `: ${detail.slice(0, 200)}` : ''}`);
+        error.status = response.status;
+        throw error;
+    }
+
+    const buffer = Buffer.from(await response.arrayBuffer());
+    if (buffer.length > MAX_IMAGE_BYTES) {
+        const error = new Error('Generated image is too large');
+        error.status = 502;
+        throw error;
+    }
+
+    return { buffer, contentType: response.headers.get('content-type') || 'image/png' };
+}

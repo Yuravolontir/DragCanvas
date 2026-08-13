@@ -144,3 +144,30 @@ export async function refineWebsite(req, res) {
         `Could not apply that change (${lastProblem}). Please try rephrasing it.`
     ));
 }
+
+/**
+ * One generated image, returned as the PNG itself.
+ *
+ * The client asks for a blob and hands it to an <img> as an object URL, which
+ * is how the admin charts already work: the bytes travel through us so the
+ * provider key stays on the server.
+ */
+export async function generateImage(req, res) {
+    const { prompt } = req.body || {};
+
+    if (!prompt || !String(prompt).trim()) {
+        return res.status(400).json(buildErrorResponse('Missing prompt'));
+    }
+
+    try {
+        const { buffer, contentType } = await aiService.generateImage(String(prompt).trim());
+        res.set('Content-Type', contentType);
+        return res.send(buffer);
+    } catch (error) {
+        console.log(`[AI] image generation failed: ${error.message}`);
+        // A single failed image is not a failed page: the caller drops it and
+        // leaves the placeholder in place, so this never blocks a generation.
+        const status = error.status === 500 ? 500 : 502;
+        return res.status(status).json(buildErrorResponse(error.message));
+    }
+}

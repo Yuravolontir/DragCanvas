@@ -9,5 +9,6 @@ const aiRouter = Router();
 aiRouter
     .post('/generate', verifyToken, aiLimiter, ctrl.generateWebsite)
     .post('/refine', verifyToken, aiLimiter, ctrl.refineWebsite)
+    .post('/image', verifyToken, aiLimiter, ctrl.generateImage)
 
 export default aiRouter;
