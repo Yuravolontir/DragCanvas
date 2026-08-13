@@ -15,6 +15,9 @@ The full documentation — what the system does, the technologies, the API
 endpoints and how to run everything — is in
 **[`DragCanvas-prj/DragCanvas/README.md`](DragCanvas-prj/DragCanvas/README.md)**.
 
+Deploying it — which variable belongs on which service, and what to check once
+it is live — is in **[`DEPLOY.md`](DEPLOY.md)**.
+
 ## Branches
 
 `main` holds the current code and is what the deployed site runs from. The
