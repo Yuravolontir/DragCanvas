@@ -33,6 +33,7 @@ export const Container = (props) => {
     margin,
     shadow,
     radius,
+    anchor,
     children,
   } = props;
   return (
@@ -54,6 +55,17 @@ export const Container = (props) => {
         flex: fillSpace === 'yes' ? 1 : 'unset',
       }}
     >
+      {/*
+        A target the navigation bar can actually reach.
+        
+        The exported page puts the anchor on the section itself, but here the
+        section's id already belongs to Craft - it is how dragging finds the node -
+        so overriding it would break the editor to fix a link. An empty span
+        carries the anchor instead. The canvas runs with `enabled: false`, so a
+        click on a navbar link really does navigate, and until now it navigated to
+        an anchor that existed only in the published copy.
+      */}
+      {anchor && <span id={anchor} aria-hidden="true" />}
       {children}
     </Resizer>
   );
