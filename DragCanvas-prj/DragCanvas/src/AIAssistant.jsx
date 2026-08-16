@@ -113,16 +113,33 @@ function stageLabel(stage) {
       for (const section of sections) {
         const sectionId = `section-${idCounter++}`;
 
+        /**
+         * A top-level section is usually a Container, but not always.
+         *
+         * The model sometimes puts a NavbarElement straight at the top rather
+         * than wrapping it, and this loop used to build every section as a
+         * Container regardless - so that navbar became an empty Container with a
+         * navbar's props, and the page came out with no navigation at all. Two
+         * generations out of three lost their navbar that way.
+         *
+         * Only a Container can hold children, so isCanvas follows the type
+         * rather than being assumed.
+         */
+        const sectionType = section.type && section.type.toLowerCase() !== 'container'
+          ? section.type.charAt(0).toUpperCase() + section.type.slice(1)
+          : 'Container';
+
         nodes[sectionId] = {
-          type: { resolvedName: 'Container' },
-          isCanvas: true,
+          type: { resolvedName: sectionType },
+          isCanvas: sectionType === 'Container',
           props: section.props || {},
-          displayName: 'Container',
+          displayName: sectionType,
           custom: {},
           hidden: false,
           nodes: []
         };
 
+        nodeIdOf.set(section, sectionId);
         nodes.ROOT.nodes.push(sectionId);
 
         // Build all children recursively
