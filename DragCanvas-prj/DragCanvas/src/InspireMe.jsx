@@ -195,7 +195,7 @@ export default function InspireMe() {
           <div style={{
             textAlign: 'center',
             padding: '100px 40px',
-            background: 'white',
+            background: 'var(--surface)',
             borderRadius: '24px',
             border: '2px dashed var(--outline-light)',
             boxShadow: 'var(--shadow-sm)',
@@ -277,7 +277,7 @@ export default function InspireMe() {
 
             {/* Template Card */}
             <div style={{
-              background: 'white',
+              background: 'var(--surface)',
               borderRadius: '24px',
               border: '1px solid var(--outline-light)',
               overflow: 'hidden',
@@ -389,7 +389,7 @@ export default function InspireMe() {
                     style={{
                       padding: '12px 28px',
                       background: 'var(--primary)',
-                      color: 'white',
+                      color: 'var(--on-primary)',
                       border: 'none',
                       borderRadius: '9999px',
                       fontFamily: "'Plus Jakarta Sans', sans-serif",

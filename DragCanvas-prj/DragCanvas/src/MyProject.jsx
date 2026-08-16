@@ -167,7 +167,7 @@ export default function MyProject() {
               gap: '8px',
               padding: '12px 24px',
               background: 'var(--primary)',
-              color: 'white',
+              color: 'var(--on-primary)',
               border: 'none',
               borderRadius: '9999px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -180,7 +180,7 @@ export default function MyProject() {
             onMouseEnter={(e) => {
               e.currentTarget.style.background = 'var(--primary-hover)';
               e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 96, 172, 0.3)';
+              e.currentTarget.style.boxShadow = '0 4px 16px color-mix(in oklab, var(--primary) 40%, transparent)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = 'var(--primary)';
@@ -203,7 +203,7 @@ export default function MyProject() {
           <div style={{
             textAlign: 'center',
             padding: '100px 40px',
-            background: 'white',
+            background: 'var(--surface)',
             borderRadius: '24px',
             border: '2px dashed var(--outline-light)',
             boxShadow: 'var(--shadow-sm)',
@@ -242,7 +242,7 @@ export default function MyProject() {
               style={{
                 padding: '12px 28px',
                 background: 'var(--primary)',
-                color: 'white',
+                color: 'var(--on-primary)',
                 border: 'none',
                 borderRadius: '9999px',
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -272,7 +272,7 @@ export default function MyProject() {
                   className={`animate-fade-in-up stagger-${Math.min(index + 1, 5)}`}
                   style={{
                     gridColumn: isFirst ? 'span 8' : 'span 4',
-                    background: 'white',
+                    background: 'var(--surface)',
                     borderRadius: '20px',
                     overflow: 'hidden',
                     border: '1px solid var(--outline-light)',
@@ -430,9 +430,9 @@ export default function MyProject() {
                           title="Messages from your site"
                           style={{
                             padding: '10px 12px',
-                            background: inbox[project.Project_ID].unread > 0 ? '#7e57c2' : 'transparent',
-                            color: inbox[project.Project_ID].unread > 0 ? '#fff' : '#7e57c2',
-                            border: '1px solid #7e57c2',
+                            background: inbox[project.Project_ID].unread > 0 ? 'var(--haze)' : 'transparent',
+                            color: inbox[project.Project_ID].unread > 0 ? '#fff' : 'var(--haze)',
+                            border: '1px solid var(--haze)',
                             borderRadius: '12px',
                             cursor: 'pointer',
                             display: 'flex',
@@ -456,7 +456,7 @@ export default function MyProject() {
                           style={{
                             padding: '10px',
                             background: 'transparent',
-                            color: '#0060ac',
+                            color: 'var(--primary)',
                             border: '1px solid #b3d4f0',
                             borderRadius: '12px',
                             cursor: 'pointer',
@@ -466,8 +466,8 @@ export default function MyProject() {
                             justifyContent: 'center',
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#eef4fb';
-                            e.currentTarget.style.borderColor = '#0060ac';
+                            e.currentTarget.style.background = 'var(--primary-light)';
+                            e.currentTarget.style.borderColor = 'var(--primary)';
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.background = 'transparent';
@@ -565,7 +565,7 @@ export default function MyProject() {
                 onClick={() => !item.IsRead && markRead(openInbox, item.Submission_ID)}
                 style={{
                   border: '1px solid #eee',
-                  borderLeft: item.IsRead ? '1px solid #eee' : '3px solid #7e57c2',
+                  borderLeft: item.IsRead ? '1px solid #eee' : '3px solid var(--haze)',
                   borderRadius: 10,
                   padding: '12px 14px',
                   marginBottom: 10,
@@ -575,11 +575,11 @@ export default function MyProject() {
               >
                 <div style={{ fontSize: 11, color: '#a09aa8', marginBottom: 6 }}>
                   {new Date(item.CreatedDate).toLocaleString()}
-                  {!item.IsRead && <span style={{ color: '#7e57c2', marginLeft: 8 }}>• new</span>}
+                  {!item.IsRead && <span style={{ color: 'var(--haze)', marginLeft: 8 }}>• new</span>}
                 </div>
                 {Object.entries(item.Data || {}).map(([key, value]) => (
                   <div key={key} style={{ display: 'flex', gap: 10, fontSize: 14, marginBottom: 3 }}>
-                    <span style={{ color: '#79747e', minWidth: 90 }}>{key}</span>
+                    <span style={{ color: 'var(--muted)', minWidth: 90 }}>{key}</span>
                     <span style={{ whiteSpace: 'pre-wrap' }}>{value}</span>
                   </div>
                 ))}

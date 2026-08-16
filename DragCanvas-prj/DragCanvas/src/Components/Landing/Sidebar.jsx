@@ -15,26 +15,26 @@ const SidebarItemDiv = styled.div`
     props.$visible && props.$height && props.$height === 'full'
       ? `1`
       : 'unset'};
-  color: #49454f;
+  color: var(--on-surface-variant, var(--on-surface-variant));
   border-bottom: 1px solid transparent;
-  border-color: ${(props) => (props.$visible ? '#e8e0eb' : 'transparent')};
+  border-color: ${(props) => (props.$visible ? 'var(--outline-light, var(--outline-light))' : 'transparent')};
 `;
 
 const HeaderDiv = styled.div`
-  color: #49454f;
-  height: 45px;
+  color: var(--on-surface-variant, var(--on-surface-variant));
+  min-height: 48px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  padding: 0 10px;
-  background: #f7f4ec;
-  border-bottom: 1px solid #e8e0eb;
+  padding: 0 14px;
+  background: var(--surface-container-low, var(--surface-dim));
+  border-bottom: 1px solid var(--outline-light, var(--outline-light));
   font-family: 'Plus Jakarta Sans', sans-serif;
   svg {
-    fill: #79747e;
+    fill: var(--muted);
   }
   &:hover {
-    background: #f0ece3;
+    background: var(--surface-container, var(--surface-container));
   }
 `;
 
@@ -52,12 +52,12 @@ const SidebarItem = ({ visible, icon, title, children, height, onChange, classNa
         className={cx({ 'shadow-sm': visible })}
       >
         <div className="flex-1 flex items-center">
-          <span className="material-symbols-outlined" style={{ fontSize: '16px', marginRight: '8px', color: '#79747e' }}>{icon}</span>
+          <span className="material-symbols-outlined" style={{ fontSize: '16px', marginRight: '8px', color: 'var(--muted)' }}>{icon}</span>
           <h2 className="text-xs uppercase" style={{ fontWeight: 600, letterSpacing: '0.05em' }}>{title}</h2>
         </div>
         <span className="material-symbols-outlined" style={{
           fontSize: '16px',
-          color: '#79747e',
+          color: 'var(--muted)',
           transform: visible ? 'rotate(180deg)' : 'rotate(0)',
           transition: 'transform 0.2s ease',
         }}>expand_more</span>
@@ -70,15 +70,16 @@ const SidebarItem = ({ visible, icon, title, children, height, onChange, classNa
 };
 
 export const SidebarDiv = styled.div`
-  width: 280px;
+  width: 300px;
   opacity: ${(props) => (props.$enabled ? 1 : 0)};
-  background: #f7f4ec;
-  border-left: 1px solid #e8e0eb;
-  margin-right: ${(props) => (props.$enabled ? 0 : -280)}px;
+  background: var(--surface-container-low, var(--surface-dim));
+  border-left: 1px solid var(--outline-light, var(--outline-light));
+  margin-right: ${(props) => (props.$enabled ? 0 : -300)}px;
+  box-shadow: -2px 0 14px color-mix(in oklab, var(--paper) 6%, transparent);
 `;
 
 export const Sidebar = () => {
-  const [layersVisible, setLayerVisible] = useState(false);
+  const [layersVisible, setLayerVisible] = useState(true);
   const [toolbarVisible, setToolbarVisible] = useState(true);
   const { enabled } = useEditor((state) => ({
     enabled: state.options.enabled,
@@ -89,7 +90,7 @@ export const Sidebar = () => {
       <div className="flex flex-col h-full">
         <SidebarItem
           icon="tune"
-          title="Customize"
+          title="Properties"
           height={!layersVisible ? 'full' : '55%'}
           visible={toolbarVisible}
           onChange={(val) => setToolbarVisible(val)}

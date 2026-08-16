@@ -50,7 +50,11 @@ export const Viewport = ({ children }) => {
           <div className="page-container flex flex-1 h-full flex-col">
             <Header />
             <div
-              className={`craftjs-renderer flex-1 h-full w-full transition pb-8 overflow-auto ${enabled ? '' : ''}`}
+              // `paper` is not decoration: what is rendered below is the user's own
+              // website, drawn by the components that will draw it once published.
+              // Letting the editor's dark palette reach it would mean designing
+              // against one set of colours and shipping another.
+              className={`craftjs-renderer paper flex-1 h-full w-full transition pb-8 overflow-auto ${enabled ? '' : ''}`}
               style={{ background: enabled ? 'var(--surface-dim, #f7f4ec)' : 'transparent' }}
               ref={(ref) => {
                 connectors.select(connectors.hover(ref, null), null);

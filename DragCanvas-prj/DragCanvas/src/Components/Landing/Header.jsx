@@ -16,30 +16,33 @@ const PY_API = import.meta.env.VITE_PY_API_URL || 'http://localhost:8000';
 
 const HeaderDiv = styled.div`
   width: 100%;
-  height: 45px;
+  min-height: 56px;
   z-index: 99999;
   position: relative;
-  padding: 0px 10px;
-  background: #f7f4ec;
+  padding: 0 12px;
+  background: color-mix(in oklab, var(--surface) 96%, transparent);
+  border-bottom: 1px solid var(--outline-light, var(--outline-light));
+  box-shadow: 0 2px 12px color-mix(in oklab, var(--paper) 7%, transparent);
   display: flex;
 `;
 
-const Btn = styled.a`
+const Btn = styled.button`
   display: inline-flex;
   align-items: center;
   padding: 6px 14px;
   border-radius: 9999px;
-  color: #fff;
+  color: 'var(--on-primary)';
   font-size: 12px;
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 600;
   text-decoration: none;
+  border: 0;
   transition: all 0.15s ease;
   gap: 5px;
   white-space: nowrap;
   .material-symbols-outlined {
     font-size: 15px;
-    color: #fff;
+    color: 'var(--on-primary)';
   }
   &:hover {
     filter: brightness(1.08);
@@ -58,13 +61,13 @@ const Item = styled.a`
   transition: all 0.15s ease;
   .material-symbols-outlined {
     font-size: 20px;
-    color: #79747e;
+    color: var(--muted);
     transition: color 0.15s ease;
   }
   &:hover {
     background: #e3f2fd;
     .material-symbols-outlined {
-      color: #0060ac;
+      color: var(--primary, var(--primary));
     }
   }
   ${(props) =>
@@ -74,6 +77,13 @@ const Item = styled.a`
     cursor: not-allowed;
     pointer-events: none;
   `}
+`;
+
+const Divider = styled.span`
+  width: 1px;
+  height: 26px;
+  background: var(--outline-light, var(--outline-light));
+  margin: 0 4px;
 `;
 
 
@@ -176,7 +186,7 @@ export const Header = () => {
       if (canvasElement) {
         await new Promise(resolve => setTimeout(resolve, 100));
         const canvas = await html2canvas(canvasElement, {
-          backgroundColor: '#ffffff',
+          backgroundColor: 'var(--surface)',
           scale: 1,
           useCORS: true,
           allowTaint: false,
@@ -232,7 +242,7 @@ export const Header = () => {
         await new Promise(resolve => setTimeout(resolve, 100));
 
         const canvas = await html2canvas(canvasElement, {
-          backgroundColor: '#ffffff',
+          backgroundColor: 'var(--surface)',
           scale: 1,
           useCORS: true,
           allowTaint: false,
@@ -357,10 +367,10 @@ const handlePublish = async () => {
 
   return (
     <HeaderDiv className="header text-white transition w-full">
-      <div className="items-center flex w-full px-4 justify-end">
+      <div className="items-center flex w-full px-2 justify-end">
         {enabled && (
           <div className="flex-1 flex">
-            <Tooltip title="Undo" placement="bottom">
+            <Tooltip title="Undo last change" placement="bottom">
               <Item
                 $disabled={!canUndo}
                 onClick={() => canUndo && actions.history.undo()}
@@ -368,7 +378,7 @@ const handlePublish = async () => {
                 <span className="material-symbols-outlined">undo</span>
               </Item>
             </Tooltip>
-            <Tooltip title="Redo" placement="bottom">
+            <Tooltip title="Redo last change" placement="bottom">
               <Item
                 $disabled={!canRedo}
                 onClick={() => canRedo && actions.history.redo()}
@@ -378,7 +388,7 @@ const handlePublish = async () => {
             </Tooltip>
           </div>
         )}
-        <div className="flex" style={{ gap: '6px', alignItems: 'center' }}>
+        <div className="flex" style={{ gap: '7px', alignItems: 'center' }}>
           <Btn
             className={cx([
               'transition cursor-pointer',
@@ -392,17 +402,21 @@ const handlePublish = async () => {
             }}
           >
             <span className="material-symbols-outlined">{enabled ? 'check_circle' : 'edit'}</span>
-            {enabled ? 'Finish' : 'Edit'}
+            {enabled ? 'Preview' : 'Edit page'}
           </Btn>
 
-            <Btn style={{ background: '#8b6f47',cursor: 'pointer' }} onClick={() => (currentUser ? downloadHTML() : promptSignup())}>
-              <span className="material-symbols-outlined">code</span>
-              HTML
+          <Divider />
+
+          <Tooltip title="Download the page as an HTML file" placement="bottom">
+            <Btn style={{ background: '#675f58',cursor: 'pointer' }} onClick={() => (currentUser ? downloadHTML() : promptSignup())}>
+              <span className="material-symbols-outlined">download</span>
+              Export
             </Btn>
+          </Tooltip>
 
           <Btn style={{ background: '#3b82c4',cursor: 'pointer' }} onClick={openSaveModal}>
             <span className="material-symbols-outlined">save</span>
-            Save
+            Save project
           </Btn>
 
           <Btn style={{ background: '#4caf6a' ,cursor: 'pointer' }} onClick={() => (currentUser ? setPublishModal(true) : promptSignup())}>
@@ -412,7 +426,7 @@ const handlePublish = async () => {
 
           {publishedUrl && (
             <Tooltip title="Your site is live — link & QR" placement="bottom">
-              <Btn style={{ background: '#0060ac', cursor: 'pointer', marginLeft: '6px' }} onClick={() => setPublishInfoOpen(true)}>
+              <Btn style={{ background: 'var(--primary)', cursor: 'pointer', marginLeft: '6px' }} onClick={() => setPublishInfoOpen(true)}>
                 <span className="material-symbols-outlined">qr_code_2</span>
                 Live
               </Btn>
@@ -520,13 +534,13 @@ const handlePublish = async () => {
 
   {publishModal && (
     <div style={{ position: 'fixed', inset: 0, background:
-  'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center',
+  'var(--shadow-md)', display: 'flex', alignItems: 'center',
   justifyContent: 'center', zIndex: 99999 }}>
-      <div style={{ background: 'white', padding: '32px',
-  borderRadius: '20px', width: '420px', color: '#1c1b1f', boxShadow: '0 16px 48px rgba(0,0,0,0.12)' }}>
+      <div style={{ background: 'var(--surface)', padding: '32px',
+  borderRadius: '20px', width: '420px', color: 'var(--on-surface)', boxShadow: '0 16px 48px rgba(0,0,0,0.12)' }}>
         <h3 style={{ marginBottom: '20px', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>Publish Your Site</h3>
 
-        <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '12px', marginBottom: '10px', background: publishTarget === 'netlify' ? '#eef4fb' : '#f7f4ec', border: `1px solid ${publishTarget === 'netlify' ? '#0060ac' : '#e8e0eb'}`, borderRadius: '12px', cursor: 'pointer' }}>
+        <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '12px', marginBottom: '10px', background: publishTarget === 'netlify' ? 'var(--primary-light)' : 'var(--surface-dim)', border: `1px solid ${publishTarget === 'netlify' ? 'var(--primary)' : 'var(--outline-light)'}`, borderRadius: '12px', cursor: 'pointer' }}>
           <input
             type="radio"
             name="publishTarget"
@@ -536,11 +550,11 @@ const handlePublish = async () => {
           />
           <span>
             <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>Netlify subdomain</span>
-            <span style={{ display: 'block', fontSize: '0.8rem', color: '#9994a0' }}>Free instant URL (*.netlify.app) + QR code</span>
+            <span style={{ display: 'block', fontSize: '0.8rem', color: 'var(--hint)' }}>Free instant URL (*.netlify.app) + QR code</span>
           </span>
         </label>
 
-        <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '12px', marginBottom: '10px', background: publishTarget === 'custom' ? '#eef4fb' : '#f7f4ec', border: `1px solid ${publishTarget === 'custom' ? '#0060ac' : '#e8e0eb'}`, borderRadius: '12px', cursor: 'pointer' }}>
+        <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '12px', marginBottom: '10px', background: publishTarget === 'custom' ? 'var(--primary-light)' : 'var(--surface-dim)', border: `1px solid ${publishTarget === 'custom' ? 'var(--primary)' : 'var(--outline-light)'}`, borderRadius: '12px', cursor: 'pointer' }}>
           <input
             type="radio"
             name="publishTarget"
@@ -550,7 +564,7 @@ const handlePublish = async () => {
           />
           <span style={{ flex: 1 }}>
             <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>My own domain</span>
-            <span style={{ display: 'block', fontSize: '0.8rem', color: '#9994a0' }}>
+            <span style={{ display: 'block', fontSize: '0.8rem', color: 'var(--hint)' }}>
               Buy a domain on <a href='https://www.namecheap.com/'>Namecheap</a> or <a href='https://www.godaddy.com/en'>GoDaddy</a>, then enter it here
             </span>
             {publishTarget === 'custom' && (
@@ -558,7 +572,7 @@ const handlePublish = async () => {
                 placeholder="mysite.com"
                 value={customDomain}
                 onChange={(e) => setCustomDomain(e.target.value)}
-                style={{ width: '100%', padding: '10px', margin: '8px 0 0', background: 'white', border: '1px solid #e8e0eb', borderRadius: '12px', color: '#1c1b1f', fontSize: '0.95rem', outline: 'none' }}
+                style={{ width: '100%', padding: '10px', margin: '8px 0 0', background: 'var(--surface)', border: '1px solid var(--outline-light)', borderRadius: '12px', color: 'var(--on-surface)', fontSize: '0.95rem', outline: 'none' }}
               />
             )}
           </span>
@@ -569,13 +583,13 @@ const handlePublish = async () => {
           <button
             onClick={handlePublish}
             disabled={publishing}
-            style={{ flex: 1, padding: '10px', background: publishing ? 'rgba(0,96,172,0.5)' : '#0060ac', color: 'white', border: 'none', borderRadius: '9999px', cursor: publishing ? 'not-allowed' : 'pointer', fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            style={{ flex: 1, padding: '10px', background: publishing ? 'color-mix(in oklab, var(--primary) 55%, transparent)' : 'var(--primary)', color: 'var(--on-primary)', border: 'none', borderRadius: '9999px', cursor: publishing ? 'not-allowed' : 'pointer', fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             {publishing ? 'Publishing...' : 'Publish'}
           </button>
           <button
             onClick={() => setPublishModal(false)}
-            style={{ padding: '10px 20px', background: 'transparent', color: '#79747e', border: '1px solid #e8e0eb', borderRadius: '9999px', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            style={{ padding: '10px 20px', background: 'transparent', color: 'var(--muted)', border: '1px solid var(--outline-light)', borderRadius: '9999px', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             Cancel
           </button>

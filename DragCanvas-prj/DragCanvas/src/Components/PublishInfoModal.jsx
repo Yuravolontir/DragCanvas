@@ -51,14 +51,14 @@ export default function PublishInfoModal({ show, onClose, url, title = '🎉 You
   };
 
   return (
-    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 99999 }}>
-      <div style={{ background: 'white', padding: '32px', borderRadius: '20px', width: '420px', color: '#1c1b1f', boxShadow: '0 16px 48px rgba(0,0,0,0.12)' }}>
+    <div style={{ position: 'fixed', inset: 0, background: 'var(--shadow-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 99999 }}>
+      <div style={{ background: 'var(--surface)', padding: '32px', borderRadius: '20px', width: '420px', color: 'var(--on-surface)', boxShadow: '0 16px 48px rgba(0,0,0,0.12)' }}>
         <h3 style={{ marginBottom: '20px', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>{title}</h3>
         <a
           href={url}
           target="_blank"
           rel="noreferrer"
-          style={{ display: 'block', textAlign: 'center', color: '#0060ac', fontWeight: 600, wordBreak: 'break-all', marginBottom: '16px' }}
+          style={{ display: 'block', textAlign: 'center', color: 'var(--primary)', fontWeight: 600, wordBreak: 'break-all', marginBottom: '16px' }}
         >
           {url}
         </a>
@@ -67,18 +67,18 @@ export default function PublishInfoModal({ show, onClose, url, title = '🎉 You
           alt="QR code"
           style={{ display: 'block', margin: '0 auto 12px', width: '180px', height: '180px' }}
         />
-        <p style={{ fontSize: '0.8rem', color: '#9994a0', textAlign: 'center', marginBottom: '20px' }}>
+        <p style={{ fontSize: '0.8rem', color: 'var(--hint)', textAlign: 'center', marginBottom: '20px' }}>
           Scan the QR code to open your site on a phone
         </p>
         <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
-          <button onClick={copyUrl} style={{ ...btnStyle, background: '#eef4fb', color: '#0060ac', border: '1px solid #0060ac' }}>
+          <button onClick={copyUrl} style={{ ...btnStyle, background: 'var(--primary-light)', color: 'var(--primary)', border: '1px solid var(--primary)' }}>
             {copied ? 'Copied!' : 'Copy link'}
           </button>
-          <button onClick={downloadQr} style={{ ...btnStyle, background: '#eef4fb', color: '#0060ac', border: '1px solid #0060ac' }}>
+          <button onClick={downloadQr} style={{ ...btnStyle, background: 'var(--primary-light)', color: 'var(--primary)', border: '1px solid var(--primary)' }}>
             Download QR
           </button>
         </div>
-        <button onClick={onClose} style={{ ...btnStyle, width: '100%', background: '#0060ac', color: 'white' }}>
+        <button onClick={onClose} style={{ ...btnStyle, width: '100%', background: 'var(--primary)', color: 'var(--on-primary)' }}>
           Close
         </button>
       </div>

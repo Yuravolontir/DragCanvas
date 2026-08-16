@@ -44,7 +44,7 @@ export const FormSettings = () => {
     width: '100%',
     padding: '5px 8px',
     fontSize: 12,
-    border: '1px solid #e8e0eb',
+    border: '1px solid var(--outline-light)',
     borderRadius: 6,
     marginBottom: 5,
     boxSizing: 'border-box',
@@ -55,7 +55,7 @@ export const FormSettings = () => {
     background: 'transparent',
     cursor: 'pointer',
     fontSize: 13,
-    color: '#79747e',
+    color: 'var(--muted)',
     padding: '0 4px',
   };
 
@@ -66,7 +66,7 @@ export const FormSettings = () => {
           {fields.map((field, index) => (
             <div
               key={index}
-              style={{ border: '1px solid #f0ecf2', borderRadius: 8, padding: 8, marginBottom: 8 }}
+              style={{ border: '1px solid var(--surface-container)', borderRadius: 8, padding: 8, marginBottom: 8 }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 5 }}>
                 <span style={{ fontSize: 11, color: '#a09aa8', flex: 1 }}>Field {index + 1}</span>
@@ -95,7 +95,7 @@ export const FormSettings = () => {
                 >
                   {FIELD_TYPES.map((type) => <option key={type} value={type}>{type}</option>)}
                 </select>
-                <label style={{ fontSize: 11, color: '#79747e', display: 'flex', alignItems: 'center', gap: 4 }}>
+                <label style={{ fontSize: 11, color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: 4 }}>
                   <input
                     type="checkbox"
                     checked={!!field.required}
@@ -114,10 +114,10 @@ export const FormSettings = () => {
               padding: '7px',
               fontSize: 12,
               borderRadius: 8,
-              border: '1px dashed #cac4d0',
+              border: '1px dashed var(--outline-variant)',
               background: 'transparent',
               cursor: 'pointer',
-              color: '#7e57c2',
+              color: 'var(--haze)',
             }}
           >
             + Add field

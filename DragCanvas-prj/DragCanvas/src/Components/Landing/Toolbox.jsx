@@ -18,38 +18,44 @@ const ToolboxDiv = styled.div`
   transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
   ${(props) => (!props.$enabled ? `width: 0;` : '')}
   ${(props) => (!props.$enabled ? `opacity: 0;` : '')}
-  background: #f7f4ec;
-  border-right: 1px solid #e8e0eb;
+  background: var(--surface-container-low, var(--surface-dim));
+  border-right: 1px solid var(--outline-light, var(--outline-light));
+  box-shadow: 2px 0 14px color-mix(in oklab, var(--paper) 6%, transparent);
 `;
 
-const Item = styled.a`
+const Item = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  border-radius: 10px;
-  padding: 8px;
+  width: 78px;
+  min-height: 58px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 8px 6px;
   transition: all 0.15s ease;
   .material-symbols-outlined {
-    font-size: 22px;
-    color: #79747e;
+    font-size: 24px;
+    color: var(--muted, var(--muted));
     transition: color 0.15s ease;
   }
   .icon-label {
-    font-size: 8px;
+    font-size: 10px;
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 600;
-    color: #9994a0;
-    margin-top: 2px;
+    color: var(--muted, var(--muted));
+    margin-top: 4px;
     letter-spacing: 0.02em;
   }
   &:hover {
-    background: #e3f2fd;
+    background: var(--primary-light, var(--primary-light));
+    border-color: var(--primary-container, #dde1ff);
+    transform: translateY(-1px);
     .material-symbols-outlined {
-      color: #0060ac;
+      color: var(--primary, var(--primary));
     }
     .icon-label {
-      color: #0060ac;
+      color: var(--primary, var(--primary));
     }
   }
   ${(props) =>
@@ -57,6 +63,15 @@ const Item = styled.a`
     `
     cursor: move;
   `}
+`;
+
+const PanelTitle = styled.div`
+  width: 100%;
+  padding: 16px 12px 10px;
+  font: 700 11px/1.2 'Plus Jakarta Sans', sans-serif;
+  color: var(--on-surface-variant);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 `;
 
 export const Toolbox = () => {
@@ -70,9 +85,11 @@ export const Toolbox = () => {
   return (
     <ToolboxDiv
       $enabled={enabled && enabled}
-      className="toolbox transition w-14 h-full flex flex-col"
+      className="toolbox transition h-full flex flex-col"
+      style={{ width: enabled ? '104px' : 0 }}
     >
-      <div className="flex flex-1 flex-col items-center pt-4 gap-2">
+      <PanelTitle>Elements</PanelTitle>
+      <div className="flex flex-1 flex-col items-center gap-1 overflow-y-auto pb-4">
         <div
           ref={(ref) => {
             create(
@@ -88,10 +105,10 @@ export const Toolbox = () => {
             );
           }}
         >
-          <Tooltip title="Container" placement="right">
+          <Tooltip title="Drag a layout container onto the page" placement="right">
             <Item $move>
-              <span className="material-symbols-outlined">crop_square</span>
-              <span className="icon-label">Box</span>
+              <span className="material-symbols-outlined">dashboard</span>
+              <span className="icon-label">Container</span>
             </Item>
           </Tooltip>
         </div>
@@ -100,7 +117,7 @@ export const Toolbox = () => {
             create(ref, <Text fontSize="12" textAlign="left" text="Hi there" />);
           }}
         >
-          <Tooltip title="Text" placement="right">
+          <Tooltip title="Drag text onto the page" placement="right">
             <Item $move>
               <span className="material-symbols-outlined">title</span>
               <span className="icon-label">Text</span>
@@ -112,9 +129,9 @@ export const Toolbox = () => {
             create(ref, <Button />);
           }}
         >
-          <Tooltip title="Button" placement="right">
+          <Tooltip title="Drag a call-to-action button" placement="right">
             <Item $move>
-              <span className="material-symbols-outlined">radio_button_unchecked</span>
+              <span className="material-symbols-outlined">smart_button</span>
               <span className="icon-label">Button</span>
             </Item>
           </Tooltip>
@@ -149,9 +166,9 @@ export const Toolbox = () => {
             create(ref, <Form />);
           }}
         >
-          <Tooltip title="Contact form" placement="right">
+          <Tooltip title="Drag a contact form" placement="right">
             <Item $move>
-              <span className="material-symbols-outlined">edit_note</span>
+              <span className="material-symbols-outlined">dynamic_form</span>
               <span className="icon-label">Form</span>
             </Item>
           </Tooltip>
@@ -176,7 +193,7 @@ export const Toolbox = () => {
           <Tooltip title="Carousel" placement="right">
             <Item $move>
               <span className="material-symbols-outlined">view_carousel</span>
-              <span className="icon-label">Slide</span>
+              <span className="icon-label">Carousel</span>
             </Item>
           </Tooltip>
         </div>
@@ -197,10 +214,10 @@ export const Toolbox = () => {
             create(ref, <NavbarElement />);
           }}
         >
-          <Tooltip title="Navbar" placement="right">
+          <Tooltip title="Drag a navigation bar" placement="right">
             <Item $move>
-              <span className="material-symbols-outlined">menu</span>
-              <span className="icon-label">Navbar</span>
+              <span className="material-symbols-outlined">web_asset</span>
+              <span className="icon-label">Navigation</span>
             </Item>
           </Tooltip>
         </div>

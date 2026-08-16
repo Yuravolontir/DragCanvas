@@ -52,7 +52,7 @@ export default function Register() {
 
   const handleFocus = (e) => {
     e.target.style.borderColor = 'var(--primary)';
-    e.target.style.boxShadow = '0 0 0 3px rgba(0, 96, 172, 0.08)';
+    e.target.style.boxShadow = '0 0 0 3px color-mix(in oklab, var(--beam) 22%, transparent)';
   };
 
   const handleBlur = (e) => {
@@ -76,7 +76,7 @@ export default function Register() {
         position: 'absolute',
         width: '500px',
         height: '500px',
-        background: 'radial-gradient(circle, rgba(169, 51, 73, 0.04) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, color-mix(in oklab, var(--haze) 10%, transparent) 0%, transparent 70%)',
         top: '-150px',
         left: '-100px',
         pointerEvents: 'none',
@@ -85,7 +85,7 @@ export default function Register() {
         position: 'absolute',
         width: '400px',
         height: '400px',
-        background: 'radial-gradient(circle, rgba(0, 96, 172, 0.04) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, color-mix(in oklab, var(--beam) 10%, transparent) 0%, transparent 70%)',
         bottom: '-150px',
         right: '-100px',
         pointerEvents: 'none',
@@ -95,12 +95,12 @@ export default function Register() {
       <div style={{
         width: '100%',
         maxWidth: '420px',
-        background: 'rgba(255, 255, 255, 0.85)',
+        background: 'color-mix(in oklab, var(--ink-raised) 88%, transparent)',
         backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(0, 0, 0, 0.06)',
+        border: '1px solid var(--edge)',
         borderRadius: '24px',
         padding: '48px 40px',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.06)',
+        boxShadow: '0 8px 32px var(--edge)',
         animation: 'fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both',
       }}>
         {/* Logo */}
@@ -225,7 +225,7 @@ export default function Register() {
             style={{
               width: '100%',
               padding: '13px',
-              background: loading ? 'rgba(0, 96, 172, 0.5)' : 'var(--primary)',
+              background: loading ? 'color-mix(in oklab, var(--beam) 55%, transparent)' : 'var(--primary)',
               color: 'white',
               border: 'none',
               borderRadius: '9999px',
@@ -235,7 +235,7 @@ export default function Register() {
               cursor: loading ? 'not-allowed' : 'pointer',
               marginTop: '8px',
               transition: 'all 0.15s ease',
-              boxShadow: '0 2px 8px rgba(0, 96, 172, 0.2)',
+              boxShadow: '0 6px 18px -8px color-mix(in oklab, var(--beam) 70%, transparent)',
             }}
           >
             {loading ? 'Creating account...' : 'Create Account'}
@@ -246,8 +246,8 @@ export default function Register() {
           <div style={{
             marginTop: '16px',
             padding: '12px 16px',
-            background: 'rgba(186, 26, 26, 0.05)',
-            border: '1px solid rgba(186, 26, 26, 0.12)',
+            background: 'color-mix(in oklab, var(--error) 12%, transparent)',
+            border: '1px solid color-mix(in oklab, var(--error) 34%, transparent)',
             borderRadius: '12px',
             color: 'var(--error)',
             fontFamily: "'Plus Jakarta Sans', sans-serif",

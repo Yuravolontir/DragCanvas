@@ -63,7 +63,7 @@ export default function PublishDemo() {
         </ol>
       </div>
 
-      <figure className="publish-demo__qr reveal" ref={qrRef}>
+      <figure className="publish-demo__qr paper reveal" ref={qrRef}>
         {qrFailed ? (
           // The reports service sleeps between visits, so a cold start can lose
           // this image. The address is the point; the code is only a shortcut

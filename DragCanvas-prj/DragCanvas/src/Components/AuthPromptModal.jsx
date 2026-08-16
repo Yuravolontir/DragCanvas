@@ -22,24 +22,24 @@ export default function AuthPromptModal({ show, onClose, message = 'Create a fre
   if (!show) return null;
 
   return (
-    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 99999 }}>
-      <div style={{ background: 'white', padding: '32px', borderRadius: '20px', width: '420px', color: '#1c1b1f', boxShadow: '0 16px 48px rgba(0,0,0,0.12)' }}>
+    <div style={{ position: 'fixed', inset: 0, background: 'var(--shadow-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 99999 }}>
+      <div style={{ background: 'var(--surface)', padding: '32px', borderRadius: '20px', width: '420px', color: 'var(--on-surface)', boxShadow: '0 16px 48px rgba(0,0,0,0.12)' }}>
         <h3 style={{ marginBottom: '12px', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>
           Sign up to save your work
         </h3>
-        <p style={{ fontSize: '0.9rem', color: '#49454f', marginBottom: '8px' }}>{message}</p>
-        <p style={{ fontSize: '0.8rem', color: '#9994a0', marginBottom: '20px' }}>
+        <p style={{ fontSize: '0.9rem', color: 'var(--on-surface-variant)', marginBottom: '8px' }}>{message}</p>
+        <p style={{ fontSize: '0.8rem', color: 'var(--hint)', marginBottom: '20px' }}>
           Your current design is kept safe and will be restored after you sign in.
         </p>
         <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
-          <button onClick={() => navigate('/register')} style={{ ...btnStyle, background: '#0060ac', color: 'white' }}>
+          <button onClick={() => navigate('/register')} style={{ ...btnStyle, background: 'var(--primary)', color: 'var(--on-primary)' }}>
             Create account
           </button>
-          <button onClick={() => navigate('/login')} style={{ ...btnStyle, background: '#eef4fb', color: '#0060ac', border: '1px solid #0060ac' }}>
+          <button onClick={() => navigate('/login')} style={{ ...btnStyle, background: 'var(--primary-light)', color: 'var(--primary)', border: '1px solid var(--primary)' }}>
             Log in
           </button>
         </div>
-        <button onClick={onClose} style={{ ...btnStyle, width: '100%', background: 'transparent', color: '#9994a0' }}>
+        <button onClick={onClose} style={{ ...btnStyle, width: '100%', background: 'transparent', color: 'var(--hint)' }}>
           Keep editing
         </button>
       </div>

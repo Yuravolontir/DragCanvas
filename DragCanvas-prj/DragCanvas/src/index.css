@@ -3,75 +3,90 @@
 
 /* ─── Design System — Friendly Canvas ─── */
 :root {
-  /* Background */
-  --bg: #faf9f8;
-  --bg-dim: #f4f3f2;
-  --bg-bright: #ffffff;
+  /* ── Ground ──────────────────────────────────────────────────
+     A deep blue-violet rather than a neutral black. Near-black with one bright
+     accent is the house style of every generated dark interface; a ground with
+     real hue in it reads as chosen. The hue is the project's own blue taken
+     into shadow, with the accent that same blue lifted until it glows. */
+  --ink: #080b14;
+  --ink-raised: #0f1424;
+  --ink-sunken: #05070d;
+  --edge: #1e2740;
 
-  /* Surface system (cards, panels) */
-  --surface: #ffffff;
-  --surface-dim: #f4f3f2;
-  --surface-container-low: #f4f3f2;
-  --surface-container: #eeeeed;
-  --surface-container-high: #e9e8e7;
-  --surface-container-highest: #e3e2e1;
+  --beam: #4c8dff;
+  --haze: #7b5cff;
+  --ember: #ff6b4a;
 
-  /* Primary — Blue */
-  /* The top bar. Declared here so a page with its own palette can restate them
-     instead of the component hardcoding one appearance for every route. */
-  --nav-bg: rgba(252, 249, 241, 0.7);
-  --nav-bg-scrolled: rgba(252, 249, 241, 0.9);
-  --nav-border: rgba(0, 0, 0, 0.06);
+  --paper: #eef1f8;
+  --paper-soft: #b9c2d8;
+  /* 4.5:1 or better on every surface below, including the lightest */
+  --paper-faint: #8f99b2;
 
-  --primary: #0040e0;
-  --primary-hover: #0035be;
-  --primary-light: #eef0ff;
-  --primary-container: #dde1ff;
-  --on-primary: #ffffff;
-  --on-primary-container: #001356;
+  /* ── The names the application already speaks ────────────────
+     Most of the app was written against these, so restating them here is what
+     turns it dark. Elevation is a hint, not a march toward mid-grey: mixing
+     more than about a tenth of white in produces surfaces that muted text
+     cannot sit on. */
+  --bg: var(--ink);
+  --bg-dim: var(--ink-sunken);
+  --bg-bright: var(--ink-raised);
 
-  /* Secondary — Coral/Rose */
-  --secondary: #ff7f66;
-  --secondary-hover: #ee6d55;
-  --secondary-light: #fff0ed;
-  --secondary-container: #ffdad3;
-  --on-secondary: #3f0400;
-  --on-secondary-container: #711707;
+  --surface: var(--ink-raised);
+  --surface-dim: var(--ink-sunken);
+  --surface-container-low: color-mix(in oklab, var(--ink-raised) 98%, #fff);
+  --surface-container: color-mix(in oklab, var(--ink-raised) 96%, #fff);
+  --surface-container-high: color-mix(in oklab, var(--ink-raised) 93%, #fff);
+  --surface-container-highest: color-mix(in oklab, var(--ink-raised) 90%, #fff);
 
-  /* Tertiary — Warm Amber */
-  --tertiary: #7a5900;
-  --tertiary-light: #fff8e1;
-  --tertiary-container: #ffe08a;
+  --nav-bg: color-mix(in oklab, var(--ink) 62%, transparent);
+  --nav-bg-scrolled: color-mix(in oklab, var(--ink) 88%, transparent);
+  --nav-border: var(--edge);
 
-  /* On surface text */
-  --on-surface: #1a1c1c;
-  --on-surface-variant: #434656;
-  --on-background: #1a1c1c;
-  --muted: #747688;
-  --hint: #8b8d9e;
+  --primary: var(--beam);
+  --primary-hover: color-mix(in oklab, var(--beam) 82%, #fff);
+  --primary-light: color-mix(in oklab, var(--beam) 16%, transparent);
+  --primary-container: color-mix(in oklab, var(--beam) 22%, transparent);
+  --on-primary: #06101f;
+  --on-primary-container: var(--paper);
 
-  /* Outlines */
-  --outline: #747688;
-  --outline-variant: #c4c5d9;
-  --outline-light: #e2e8f0;
+  --secondary: var(--ember);
+  --secondary-hover: color-mix(in oklab, var(--ember) 84%, #fff);
+  --secondary-light: color-mix(in oklab, var(--ember) 14%, transparent);
+  --secondary-container: color-mix(in oklab, var(--ember) 24%, transparent);
+  --on-secondary: #2a0a03;
+  --on-secondary-container: var(--paper);
 
-  /* Semantic */
-  --error: #ba1a1a;
-  --success: #2e7d32;
-  --warning: #f57c00;
+  --tertiary: #ffc247;
+  --tertiary-light: color-mix(in oklab, #ffc247 14%, transparent);
+  --tertiary-container: color-mix(in oklab, #ffc247 25%, transparent);
 
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04);
-  --shadow-lg: 0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
-  --shadow-xl: 0 16px 48px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.05);
+  --on-surface: var(--paper);
+  --on-surface-variant: var(--paper-soft);
+  --on-background: var(--paper);
+  --muted: var(--paper-faint);
+  --hint: var(--paper-faint);
 
-  /* Typography */
+  --outline: var(--edge);
+  --outline-variant: var(--edge);
+  --outline-light: var(--edge);
+
+  --error: #ff6b6b;
+  --success: #5ddc8a;
+  --warning: #ffc247;
+
+  /* Shadows carry almost nothing on a dark ground, so they are deeper here and
+     paired with a hairline that does the work the shadow used to do. */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.5);
+  --shadow-md: 0 6px 18px -8px rgb(0 0 0 / 0.75);
+  --shadow-lg: 0 14px 40px -18px rgb(0 0 0 / 0.85);
+  --shadow-xl: 0 26px 64px -26px rgb(0 0 0 / 0.9);
+
   --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-label: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-meter: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
-  /* Misc */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
@@ -81,6 +96,117 @@
   --duration-fast: 150ms;
   --duration-normal: 250ms;
   --duration-slow: 400ms;
+}
+
+/*
+ * ── Bootstrap, told about the palette ─────────────────────────
+ *
+ * Cards, tables, modals and form controls from react-bootstrap are used across
+ * the admin panel and the project pages, and they read Bootstrap's own
+ * variables rather than ours. Pointing those at our tokens re-themes all of
+ * them at once, which is a great deal less work - and less drift - than
+ * restyling each component where it is used.
+ */
+:root {
+  --bs-body-bg: var(--ink);
+  --bs-body-color: var(--paper);
+  --bs-emphasis-color: var(--paper);
+  --bs-secondary-color: var(--paper-soft);
+  --bs-tertiary-color: var(--paper-faint);
+  --bs-border-color: var(--edge);
+  --bs-border-color-translucent: var(--edge);
+  --bs-secondary-bg: var(--ink-raised);
+  --bs-tertiary-bg: var(--ink-sunken);
+
+  --bs-primary: var(--beam);
+  --bs-link-color: var(--beam);
+  --bs-link-hover-color: var(--primary-hover);
+
+  --bs-card-bg: var(--ink-raised);
+  --bs-card-border-color: var(--edge);
+  --bs-modal-bg: var(--ink-raised);
+  --bs-modal-color: var(--paper);
+  --bs-modal-border-color: var(--edge);
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--paper);
+  --bs-table-border-color: var(--edge);
+  --bs-table-striped-color: var(--paper);
+  --bs-table-striped-bg: color-mix(in oklab, var(--paper) 4%, transparent);
+  --bs-table-hover-color: var(--paper);
+  --bs-table-hover-bg: color-mix(in oklab, var(--beam) 8%, transparent);
+}
+
+/* A document keeps Bootstrap light too */
+.paper {
+  --bs-body-bg: #ffffff;
+  --bs-body-color: #1a1c1c;
+  --bs-border-color: #e2e8f0;
+  --bs-card-bg: #ffffff;
+}
+
+/*
+ * ── Paper: surfaces that are documents, not interface ─────────
+ *
+ * The editor canvas holds the user's own website, rendered by the components
+ * that will render it once published. Tinting it would mean designing against
+ * one set of colours and shipping another. The publish preview, the QR card and
+ * template thumbnails are the same kind of thing: they show output.
+ *
+ * Declared as an explicit scope rather than left to whatever fails to cascade,
+ * so that a surface which must be light says so, and the next person to touch a
+ * stylesheet cannot darken a document by accident.
+ */
+.paper {
+  --bg: #faf9f8;
+  --bg-dim: #f4f3f2;
+  --bg-bright: #ffffff;
+
+  --surface: #ffffff;
+  --surface-dim: #f4f3f2;
+  --surface-container-low: #f4f3f2;
+  --surface-container: #eeeeed;
+  --surface-container-high: #e9e8e7;
+  --surface-container-highest: #e3e2e1;
+
+  --primary: #0040e0;
+  --primary-hover: #0035be;
+  --primary-light: #eef0ff;
+  --primary-container: #dde1ff;
+  --on-primary: #ffffff;
+  --on-primary-container: #001356;
+
+  --secondary: #ff7f66;
+  --secondary-hover: #ee6d55;
+  --secondary-light: #fff0ed;
+  --secondary-container: #ffdad3;
+  --on-secondary: #3f0400;
+  --on-secondary-container: #711707;
+
+  --tertiary: #7a5900;
+  --tertiary-light: #fff8e1;
+  --tertiary-container: #ffe08a;
+
+  --on-surface: #1a1c1c;
+  --on-surface-variant: #434656;
+  --on-background: #1a1c1c;
+  --muted: #747688;
+  --hint: #8b8d9e;
+
+  --outline: #747688;
+  --outline-variant: #c4c5d9;
+  --outline-light: #e2e8f0;
+
+  --error: #ba1a1a;
+  --success: #2e7d32;
+  --warning: #f57c00;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.05);
+
+  color: var(--on-surface);
+  background: var(--bg-bright);
 }
 
 /* Material Symbols */

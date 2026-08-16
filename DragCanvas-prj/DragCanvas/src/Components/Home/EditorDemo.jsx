@@ -79,7 +79,7 @@ export default function EditorDemo() {
               <Controls />
             </div>
             <div className="editor-demo__workspace">
-              <div className="editor-demo__canvas">
+              <div className="editor-demo__canvas paper">
                 <Frame>
                   <Element
                     is={Container}

@@ -113,9 +113,9 @@ export const RenderNode = ({ render }) => {
                 left: getPos(dom).left,
                 top: getPos(dom).top,
                 zIndex: 9999,
-                background: '#0060ac',
+                background: 'var(--primary)',
                 borderRadius: '6px 6px 0 0',
-                boxShadow: '0 2px 8px rgba(0, 96, 172, 0.3)',
+                boxShadow: '0 2px 8px color-mix(in oklab, var(--primary) 40%, transparent)',
               }}
             >
               <h2 className="flex-1 mr-4">{name}</h2>
@@ -126,7 +126,7 @@ export const RenderNode = ({ render }) => {
                     drag(dom);
                   }}
                 >
-                  <span className="material-symbols-outlined" style={{ fontSize: '15px', color: '#fff' }}>open_with</span>
+                  <span className="material-symbols-outlined" style={{ fontSize: '15px', color: 'var(--on-primary)' }}>open_with</span>
                 </Btn>
               ) : null}
               {id !== ROOT_NODE && (
@@ -136,7 +136,7 @@ export const RenderNode = ({ render }) => {
                     actions.selectNode(parent);
                   }}
                 >
-                  <span className="material-symbols-outlined" style={{ fontSize: '15px', color: '#fff' }}>arrow_upward</span>
+                  <span className="material-symbols-outlined" style={{ fontSize: '15px', color: 'var(--on-primary)' }}>arrow_upward</span>
                 </Btn>
               )}
               {deletable ? (
@@ -147,7 +147,7 @@ export const RenderNode = ({ render }) => {
                     actions.delete(id);
                   }}
                 >
-                  <span className="material-symbols-outlined" style={{ fontSize: '15px', color: '#fff' }}>delete</span>
+                  <span className="material-symbols-outlined" style={{ fontSize: '15px', color: 'var(--on-primary)' }}>delete</span>
                 </Btn>
               ) : null}
             </IndicatorDiv>,

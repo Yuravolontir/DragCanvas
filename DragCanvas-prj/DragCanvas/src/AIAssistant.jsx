@@ -247,16 +247,16 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
       <div style={{
         padding: '12px 16px',
         marginBottom: 10,
-        background: '#fff',
+        background: 'var(--surface)',
         borderRadius: '12px',
-        border: '1px solid #e8e0eb',
+        border: '1px solid var(--outline-light)',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
         maxWidth: '800px',
         width: '100%',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#7e57c2' }}>auto_awesome</span>
-          <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '13px', fontWeight: 700, color: '#49454f' }}>AI Generator</span>
+          <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--haze)' }}>auto_awesome</span>
+          <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '13px', fontWeight: 700, color: 'var(--on-surface-variant)' }}>AI Generator</span>
         </div>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
           <textarea
@@ -267,14 +267,14 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
             style={{
               flex: 1,
               padding: '8px 12px',
-              border: '1px solid #e8e0eb',
+              border: '1px solid var(--outline-light)',
               borderRadius: '10px',
               fontSize: '13px',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               outline: 'none',
               resize: 'none',
-              background: '#f7f4ec',
-              color: '#1c1b1f',
+              background: 'var(--surface-dim)',
+              color: 'var(--on-surface)',
             }}
           />
           <button
@@ -282,8 +282,8 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
             disabled={loading}
             style={{
               padding: '8px 18px',
-              backgroundColor: loading ? '#cac4d0' : '#7e57c2',
-              color: 'white',
+              backgroundColor: loading ? 'var(--outline-variant)' : 'var(--haze)',
+              color: 'var(--on-primary)',
               border: 'none',
               borderRadius: '9999px',
               cursor: loading ? 'not-allowed' : 'pointer',
@@ -296,14 +296,14 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
               gap: '5px',
             }}
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '15px', color: '#fff' }}>auto_awesome</span>
+            <span className="material-symbols-outlined" style={{ fontSize: '15px', color: 'var(--on-primary)' }}>auto_awesome</span>
             {loading ? 'Wait...' : 'Generate'}
           </button>
         </div>
 
         {/* How far the model may stray from the safe, conventional answer */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '8px' }}>
-          <span style={{ fontSize: 11, color: '#79747e', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Style:</span>
+          <span style={{ fontSize: 11, color: 'var(--muted)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Style:</span>
           {[
             { key: 'low', label: 'Safe' },
             { key: 'balanced', label: 'Balanced' },
@@ -318,9 +318,9 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
                 fontSize: 11,
                 fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: creativity === option.key ? 700 : 500,
-                color: creativity === option.key ? '#fff' : '#79747e',
-                background: creativity === option.key ? '#7e57c2' : 'transparent',
-                border: `1px solid ${creativity === option.key ? '#7e57c2' : '#e8e0eb'}`,
+                color: creativity === option.key ? '#fff' : 'var(--muted)',
+                background: creativity === option.key ? 'var(--haze)' : 'transparent',
+                border: `1px solid ${creativity === option.key ? 'var(--haze)' : 'var(--outline-light)'}`,
                 borderRadius: '9999px',
                 cursor: loading ? 'not-allowed' : 'pointer',
               }}
@@ -332,10 +332,10 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
 
         {/* Once a page exists, the user can keep asking for changes to it */}
         {layout && (
-          <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid #f0ecf2' }}>
+          <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--surface-container)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '16px', color: '#7e57c2' }}>tune</span>
-              <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '12px', fontWeight: 700, color: '#49454f' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '16px', color: 'var(--haze)' }}>tune</span>
+              <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '12px', fontWeight: 700, color: 'var(--on-surface-variant)' }}>
                 Refine this page
               </span>
             </div>
@@ -349,13 +349,13 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
                 style={{
                   flex: 1,
                   padding: '8px 12px',
-                  border: '1px solid #e8e0eb',
+                  border: '1px solid var(--outline-light)',
                   borderRadius: '10px',
                   fontSize: '13px',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   outline: 'none',
-                  background: '#f7f4ec',
-                  color: '#1c1b1f',
+                  background: 'var(--surface-dim)',
+                  color: 'var(--on-surface)',
                 }}
               />
               <button
@@ -363,8 +363,8 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
                 disabled={loading || !refinement.trim()}
                 style={{
                   padding: '8px 16px',
-                  backgroundColor: (loading || !refinement.trim()) ? '#cac4d0' : '#49454f',
-                  color: 'white',
+                  backgroundColor: (loading || !refinement.trim()) ? 'var(--outline-variant)' : 'var(--on-surface-variant)',
+                  color: 'var(--on-primary)',
                   border: 'none',
                   borderRadius: '9999px',
                   cursor: (loading || !refinement.trim()) ? 'not-allowed' : 'pointer',
@@ -379,7 +379,7 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
             </div>
 
             {history.length > 1 && (
-              <div style={{ marginTop: 8, fontSize: 11, color: '#79747e', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              <div style={{ marginTop: 8, fontSize: 11, color: 'var(--muted)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 {history.slice(1).map((item, i) => (
                   <div key={i} style={{ padding: '2px 0' }}>· {item}</div>
                 ))}
