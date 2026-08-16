@@ -1,0 +1,254 @@
+/*
+ * The landing's visual language: the canvas at night.
+ *
+ * Scoped to `.home`, never to `:root`. The editor and the admin panel keep the
+ * light palette they have - somebody works inside those for hours, and a tool
+ * has different requirements from a page that gets ninety seconds of attention.
+ * Anything here that leaked to `:root` would restain the whole application by
+ * accident.
+ *
+ * The ground is a deep blue-violet rather than a neutral black. Near-black with
+ * one bright accent is the house style of every generated dark page this year;
+ * a ground with real hue in it reads as chosen. The hue is not borrowed either -
+ * it is this project's own primary blue taken down into shadow, with the accent
+ * being that same blue lifted until it glows.
+ */
+
+.home {
+  /* ── Ground ─────────────────────────────────────────────── */
+  --ink: #080b14;          /* page */
+  --ink-raised: #0f1424;   /* panels, glass base */
+  --ink-sunken: #05070d;   /* wells, insets */
+  --edge: #1e2740;         /* hairlines, canvas guides */
+
+  /* ── Light ──────────────────────────────────────────────── */
+  --beam: #4c8dff;         /* the project blue, lifted to glow on dark */
+  --beam-dim: #2f5fb8;
+  --haze: #7b5cff;         /* the violet the light drifts through */
+  --ember: #ff6b4a;        /* the counter-accent. Used rarely, on purpose. */
+
+  /* ── Type ───────────────────────────────────────────────── */
+  --paper: #eef1f8;        /* not pure white: pure white on near-black glares */
+  --paper-soft: #b9c2d8;
+  /* Raised from #7c86a1, which measured 3.87:1 on the lightest raised surface -
+     under the 4.5 needed for body text. #8f99b2 clears 4.5 on every ground the
+     page uses, the lightest included. */
+  --paper-faint: #8f99b2;
+
+  /* ── Families ───────────────────────────────────────────── */
+  --display: 'Bricolage Grotesque', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --body: 'Plus Jakarta Sans', system-ui, sans-serif;
+  /* Canvas readouts - dimensions, node names. The system stack is used on
+     purpose: three webfonts to set eleven-pixel labels would be absurd. */
+  --meter: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* ── Scale ──────────────────────────────────────────────────
+     Display sizes are set tight: tracking near -0.03em and leading close to
+     1.02. Loose, wide headings at 400 weight are most of what makes a page look
+     like it was built in 2012. */
+  --step-6: clamp(2.6rem, 6.4vw, 5.2rem);
+  --step-5: clamp(2.1rem, 4.4vw, 3.4rem);
+  --step-4: clamp(1.6rem, 3vw, 2.3rem);
+  --step-3: clamp(1.2rem, 1.8vw, 1.45rem);
+  --step-2: 1.06rem;
+  --step-1: 0.94rem;
+  --step-0: 0.84rem;
+  --step-tiny: 0.72rem;
+
+  /* ── Rhythm ─────────────────────────────────────────────── */
+  --gutter: clamp(20px, 5vw, 56px);
+  --measure: 1280px;
+  --section-y: clamp(64px, 11vh, 148px);
+
+  --radius-lg: 20px;
+  --radius: 14px;
+  --radius-sm: 9px;
+
+  color: var(--paper);
+  background: var(--ink);
+  font-family: var(--body);
+}
+
+/* ── Type roles ─────────────────────────────────────────────── */
+
+.home h1,
+.home h2,
+.home h3 {
+  font-family: var(--display);
+  font-weight: 800;
+  letter-spacing: -0.032em;
+  line-height: 1.03;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.home h1 { font-size: var(--step-6); }
+.home h2 { font-size: var(--step-5); }
+.home h3 { font-size: var(--step-4); }
+
+/* Small caps label above a heading. Only where it says something the heading
+   does not - a stage, a count, a name. Never as decoration. */
+.home .eyebrow {
+  font-family: var(--meter);
+  font-size: var(--step-tiny);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper-faint);
+}
+
+.home .lede {
+  font-size: var(--step-3);
+  line-height: 1.55;
+  color: var(--paper-soft);
+  max-width: 34ch;
+  text-wrap: pretty;
+}
+
+/* ── Depth ──────────────────────────────────────────────────
+   One glass recipe and one glow, defined here so five sections cannot each
+   invent a slightly different version of them. */
+
+.home .glass {
+  background: color-mix(in oklab, var(--ink-raised) 82%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-lg);
+}
+
+.home .glow {
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--beam) 22%, transparent),
+    0 24px 70px -30px color-mix(in oklab, var(--beam) 60%, transparent),
+    0 8px 30px -18px rgb(0 0 0 / 0.7);
+}
+
+/* The canvas guide: a hairline that says "this is a design surface".
+   Sparse on purpose - section edges and the hero frame, nowhere else. A page
+   ruled all over stops being a canvas and becomes a spreadsheet. */
+.home .guide {
+  position: relative;
+}
+
+.home .guide::before {
+  content: '';
+  position: absolute;
+  inset-inline: calc(var(--gutter) * -0.5);
+  top: 0;
+  border-top: 1px dashed var(--edge);
+  pointer-events: none;
+}
+
+/* ── Section shell ──────────────────────────────────────────── */
+
+.home .section {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding: var(--section-y) var(--gutter);
+}
+
+/* ── Motion ─────────────────────────────────────────────────── */
+
+.home {
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --fast: 180ms;
+  --slow: 620ms;
+}
+
+/* Paired with useReveal. The end state is the resting state, so a page where
+   the observer never fires - or where motion is switched off - is simply a page
+   that has already arrived. */
+.home .reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--slow) var(--ease), transform var(--slow) var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.home .reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home .reveal,
+  .home .reveal.is-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/*
+ * ── Legacy tokens, restated for the dark page ────────────────
+ *
+ * The navbar and the sections below the hero were written against the
+ * application's light token names - `--primary`, `--on-surface-variant`,
+ * `--outline-light` and so on. Rather than rewrite four stylesheets and a
+ * shared navbar to use the new names, the old names are given dark values
+ * inside `.home`.
+ *
+ * Two reasons this is the better trade. The navbar is shared with five other
+ * routes, so touching its colours directly would mean a prop threaded through
+ * all of them for the benefit of one. And a component that already speaks in
+ * tokens should be re-themeable by restating tokens - if it is not, the token
+ * layer was not doing its job.
+ */
+.home {
+  --nav-bg: color-mix(in oklab, var(--ink) 62%, transparent);
+  --nav-bg-scrolled: color-mix(in oklab, var(--ink) 88%, transparent);
+  --nav-border: var(--edge);
+
+  --primary: var(--beam);
+  --primary-hover: color-mix(in oklab, var(--beam) 82%, #fff);
+  --primary-light: color-mix(in oklab, var(--beam) 16%, transparent);
+  --primary-container: color-mix(in oklab, var(--beam) 22%, transparent);
+  --on-primary: #06101f;
+  --on-primary-container: var(--paper);
+
+  --secondary: var(--ember);
+  --tertiary: #ffc247;
+  --tertiary-container: color-mix(in oklab, #ffc247 25%, transparent);
+
+  --bg: var(--ink);
+  --bg-bright: var(--ink-raised);
+  --bg-dim: var(--ink-sunken);
+  --surface: var(--ink-raised);
+  --surface-dim: var(--ink-sunken);
+  /* Elevation on a dark palette is a hint, not a march toward mid-grey. The
+     first pass mixed 12-28% white in and produced #525661, on which muted text
+     measured 2.02:1 - the grey-on-grey this page was reported for. */
+  --surface-container: color-mix(in oklab, var(--ink-raised) 96%, #fff);
+  --surface-container-high: color-mix(in oklab, var(--ink-raised) 93%, #fff);
+  --surface-container-highest: color-mix(in oklab, var(--ink-raised) 90%, #fff);
+
+  --on-background: var(--paper);
+  --on-surface: var(--paper);
+  --on-surface-variant: var(--paper-soft);
+  --muted: var(--paper-faint);
+  --hint: var(--paper-faint);
+
+  --outline: var(--edge);
+  --outline-variant: var(--edge);
+  --outline-light: var(--edge);
+}
+
+/*
+ * ── Above the light ──────────────────────────────────────────
+ *
+ * The aurora is fixed across the whole viewport, so anything that does not
+ * declare a stacking context paints underneath it and disappears. The symptom
+ * is peculiar enough to be worth writing down: such a section stays invisible
+ * until the cursor touches it, because a hover `transform` promotes the element
+ * to its own compositing layer and lifts it over the background for as long as
+ * the pointer is there.
+ *
+ * Listed by name rather than as `.home > *`. That would also catch the navbar,
+ * whose `position: fixed` a blanket `position: relative` would quietly cancel -
+ * trading one invisible section for a header that scrolls away.
+ */
+.home .editor-demo,
+.home .publish-demo,
+.home .templates-strip {
+  position: relative;
+  z-index: 1;
+}

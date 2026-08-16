@@ -1,0 +1,147 @@
+/*
+ * Publish section: the steps on one side, something scannable on the other.
+ *
+ * Sits on a tinted band so it reads as the closing argument of the page rather
+ * than another row of cards.
+ */
+
+.publish-demo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) auto;
+  gap: clamp(28px, 6vw, 72px);
+  align-items: center;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(44px, 8vh, 92px) clamp(20px, 5vw, 48px);
+}
+
+.publish-demo__title {
+  font-family: var(--font-heading, system-ui, sans-serif);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  letter-spacing: -0.015em;
+  color: var(--on-background, #1c1b1f);
+  margin: 0 0 10px;
+}
+
+.publish-demo__subtitle {
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--on-surface-variant, #49454f);
+  max-width: 32em;
+  margin: 0 0 clamp(20px, 3vh, 30px);
+}
+
+.publish-demo__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.publish-demo__step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.publish-demo__number {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--primary-container, #d1e8ff);
+  color: var(--on-primary-container, #001d38);
+  font-family: var(--font-label, system-ui, sans-serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.publish-demo__step-title {
+  display: block;
+  font-size: 1rem;
+  color: var(--on-surface, #1c1b1f);
+}
+
+.publish-demo__step-body {
+  display: block;
+  font-size: 0.94rem;
+  line-height: 1.5;
+  color: var(--on-surface-variant, #49454f);
+}
+
+.publish-demo__qr {
+  margin: 0;
+  text-align: center;
+  padding: 20px;
+  border-radius: 18px;
+  background: var(--surface, #ffffff);
+  border: 1.5px solid var(--outline-light, #e8e0eb);
+  box-shadow: 0 14px 34px rgb(0 0 0 / 0.08);
+}
+
+.publish-demo__qr-image {
+  display: block;
+  width: 200px;
+  height: 200px;
+  /* Reserved even before the image lands, so the card does not resize */
+  background: var(--surface-container, #f0ece3);
+  border-radius: 10px;
+}
+
+.publish-demo__fallback {
+  display: grid;
+  place-items: center;
+  width: 200px;
+  height: 200px;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--surface-container, #f0ece3);
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary, #0060ac);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.publish-demo__caption {
+  margin-top: 12px;
+  max-width: 200px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--muted, #79747e);
+}
+
+@media (max-width: 820px) {
+  .publish-demo {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+  }
+}
+
+/*
+ * ── On the dark page ─────────────────────────────────────────
+ *
+ * The QR card stays light. A code needs its quiet zone and its contrast to be
+ * read by a phone camera, and inverting one to match a colour scheme is a good
+ * way to produce a decoration that does not scan.
+ */
+
+.home .publish-demo__qr {
+  background: #ffffff;
+  border-color: color-mix(in oklab, var(--beam) 22%, transparent);
+  box-shadow: 0 24px 60px -28px rgb(0 0 0 / 0.9);
+}
+
+.home .publish-demo__caption {
+  color: #5b6376;
+}
+
+.home .publish-demo__fallback {
+  background: #f1f3f7;
+  color: #0040e0;
+}

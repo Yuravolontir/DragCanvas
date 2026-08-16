@@ -4,32 +4,39 @@
 /* ─── Design System — Friendly Canvas ─── */
 :root {
   /* Background */
-  --bg: #fcf9f1;
-  --bg-dim: #f3efe4;
+  --bg: #faf9f8;
+  --bg-dim: #f4f3f2;
   --bg-bright: #ffffff;
 
   /* Surface system (cards, panels) */
   --surface: #ffffff;
-  --surface-dim: #f7f4ec;
-  --surface-container: #f0ece3;
-  --surface-container-high: #e8e4db;
-  --surface-container-highest: #dfd9ce;
+  --surface-dim: #f4f3f2;
+  --surface-container-low: #f4f3f2;
+  --surface-container: #eeeeed;
+  --surface-container-high: #e9e8e7;
+  --surface-container-highest: #e3e2e1;
 
   /* Primary — Blue */
-  --primary: #0060ac;
-  --primary-hover: #004d8a;
-  --primary-light: #e3f2fd;
-  --primary-container: #d1e8ff;
+  /* The top bar. Declared here so a page with its own palette can restate them
+     instead of the component hardcoding one appearance for every route. */
+  --nav-bg: rgba(252, 249, 241, 0.7);
+  --nav-bg-scrolled: rgba(252, 249, 241, 0.9);
+  --nav-border: rgba(0, 0, 0, 0.06);
+
+  --primary: #0040e0;
+  --primary-hover: #0035be;
+  --primary-light: #eef0ff;
+  --primary-container: #dde1ff;
   --on-primary: #ffffff;
-  --on-primary-container: #001d38;
+  --on-primary-container: #001356;
 
   /* Secondary — Coral/Rose */
-  --secondary: #a93349;
-  --secondary-hover: #8c2a3c;
-  --secondary-light: #fce8ec;
-  --secondary-container: #ffdad9;
-  --on-secondary: #ffffff;
-  --on-secondary-container: #3b0618;
+  --secondary: #ff7f66;
+  --secondary-hover: #ee6d55;
+  --secondary-light: #fff0ed;
+  --secondary-container: #ffdad3;
+  --on-secondary: #3f0400;
+  --on-secondary-container: #711707;
 
   /* Tertiary — Warm Amber */
   --tertiary: #7a5900;
@@ -37,16 +44,16 @@
   --tertiary-container: #ffe08a;
 
   /* On surface text */
-  --on-surface: #1c1b1f;
-  --on-surface-variant: #49454f;
-  --on-background: #1c1b1f;
-  --muted: #79747e;
-  --hint: #9994a0;
+  --on-surface: #1a1c1c;
+  --on-surface-variant: #434656;
+  --on-background: #1a1c1c;
+  --muted: #747688;
+  --hint: #8b8d9e;
 
   /* Outlines */
-  --outline: #79747e;
-  --outline-variant: #cac4d0;
-  --outline-light: #e8e0eb;
+  --outline: #747688;
+  --outline-variant: #c4c5d9;
+  --outline-light: #e2e8f0;
 
   /* Semantic */
   --error: #ba1a1a;

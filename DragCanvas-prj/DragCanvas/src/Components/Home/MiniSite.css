@@ -1,0 +1,246 @@
+/*
+ * A real page, laid out at 1120px and scaled to fit.
+ *
+ * Everything here is sized in the page's own terms - a 52px headline, a 15px
+ * paragraph - and the whole thing is shrunk at the end. That is why it reads as
+ * a website rather than as a diagram of one.
+ */
+
+.mini {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--site-bg, #fff);
+}
+
+.mini__page {
+  width: 1120px;
+  transform: scale(var(--mini-scale, 1));
+  transform-origin: 0 0;
+  background: var(--site-bg);
+  color: var(--site-fg);
+}
+
+/*
+ * A section being placed on the canvas.
+ *
+ * Placed is the resting state: unplaced sections are the temporary condition,
+ * so a page that never animates is a finished page rather than an empty one.
+ */
+.mini__section {
+  position: relative;
+  animation: mini-place 460ms var(--ease, ease) var(--place-delay, 0ms) both;
+}
+
+@keyframes mini-place {
+  from { opacity: 0; transform: translateY(18px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini__section { animation: none; }
+}
+
+/* ── Nav ─────────────────────────────────────────────────────── */
+
+.mini-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 56px;
+  border-bottom: 1px solid color-mix(in oklab, var(--site-fg) 10%, transparent);
+}
+
+.mini-nav__brand {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.mini-nav__links {
+  display: flex;
+  gap: 30px;
+  font-size: 15px;
+  color: var(--site-muted);
+}
+
+/* ── Hero ────────────────────────────────────────────────────── */
+
+.mini-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+  padding: 64px 56px;
+}
+
+.mini-hero__title {
+  font-size: 52px;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  margin: 0 0 20px;
+  color: var(--site-fg);
+}
+
+.mini-hero__text {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--site-muted);
+  margin: 0 0 28px;
+  max-width: 42ch;
+}
+
+.mini-hero__cta {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: var(--site-radius);
+  background: var(--site-accent);
+  color: var(--site-bg);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.mini-hero__image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--site-radius);
+  display: block;
+}
+
+/* ── Cards ───────────────────────────────────────────────────── */
+
+.mini-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 0 56px 56px;
+}
+
+.mini-card {
+  padding: 28px;
+  border-radius: var(--site-radius);
+  background: var(--site-panel);
+}
+
+.mini-card__title {
+  display: block;
+  font-size: 19px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.mini-card__text {
+  display: block;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--site-muted);
+}
+
+/* ── Gallery ─────────────────────────────────────────────────── */
+
+.mini-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 0 56px 56px;
+}
+
+.mini-gallery img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: var(--site-radius);
+  display: block;
+}
+
+/* ── Agenda ──────────────────────────────────────────────────── */
+
+.mini-agenda {
+  padding: 0 56px 56px;
+}
+
+.mini-agenda__row {
+  display: flex;
+  gap: 28px;
+  align-items: baseline;
+  padding: 20px 0;
+  border-top: 1px solid color-mix(in oklab, var(--site-fg) 12%, transparent);
+}
+
+.mini-agenda__time {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--site-accent);
+  min-width: 62px;
+}
+
+.mini-agenda__title {
+  font-size: 18px;
+}
+
+/* ── Footer ──────────────────────────────────────────────────── */
+
+.mini-footer {
+  padding: 30px 56px;
+  border-top: 1px solid color-mix(in oklab, var(--site-fg) 10%, transparent);
+  font-size: 14px;
+  color: var(--site-muted);
+}
+
+/*
+ * ── Selection chrome ─────────────────────────────────────────
+ *
+ * The signature of this page. As a section lands, the outline and node label
+ * the editor would draw around it flash for a beat and then leave. It is the
+ * one thing here that could not be on anybody else's landing page, because it
+ * is this product's own vocabulary - and it is transient on purpose. Left up,
+ * it would turn a finished site back into the wireframe this design replaced.
+ */
+
+.mini__section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  outline: 2px solid #4c8dff;
+  outline-offset: -2px;
+  opacity: 0;
+  animation: mini-select 900ms var(--ease, ease) var(--place-delay, 0ms) 1;
+}
+
+.mini__section::before {
+  content: attr(data-node);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  transform: translateY(-100%);
+  padding: 3px 9px;
+  background: #4c8dff;
+  color: #fff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  animation: mini-select 900ms var(--ease, ease) var(--place-delay, 0ms) 1;
+}
+
+@keyframes mini-select {
+  0%   { opacity: 0; }
+  18%  { opacity: 1; }
+  62%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Nothing lands, so nothing needs announcing */
+@media (prefers-reduced-motion: reduce) {
+  .mini__section::after,
+  .mini__section::before {
+    animation: none;
+    opacity: 0;
+  }
+}

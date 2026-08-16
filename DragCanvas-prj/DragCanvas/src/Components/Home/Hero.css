@@ -1,0 +1,287 @@
+/*
+ * The first screen.
+ *
+ * Asymmetric on purpose: the copy column is narrower than the frame column, and
+ * the frame runs past the right gutter. Two equal columns inside a centred box
+ * is the shape of every template, and the page is trying not to be one.
+ */
+
+.home-hero {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+  gap: clamp(28px, 5vw, 76px);
+  align-items: center;
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding: clamp(56px, 12vh, 132px) var(--gutter) clamp(48px, 9vh, 108px);
+}
+
+.home-hero__title {
+  margin-bottom: clamp(16px, 2.2vh, 24px);
+}
+
+.home-hero__accent {
+  /* The one gradient on the page that touches type. Everything else is light
+     behind glass; this is the headline claiming the same light. */
+  background: linear-gradient(96deg, var(--beam), var(--haze) 74%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.home-hero__subtitle {
+  margin: 0 0 clamp(24px, 3.4vh, 36px);
+}
+
+/* ── Prompt ──────────────────────────────────────────────────
+   The primary action, so it is the brightest object in the column. */
+
+.home-hero__form { margin: 0; }
+
+.home-hero__label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.home-hero__field {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+  padding: 6px 6px 6px 18px;
+  border-radius: var(--radius);
+  background: color-mix(in oklab, var(--ink-raised) 78%, transparent);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--edge);
+  transition: border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
+}
+
+.home-hero__field:focus-within {
+  border-color: color-mix(in oklab, var(--beam) 62%, var(--edge));
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--beam) 14%, transparent);
+}
+
+.home-hero__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--body);
+  font-size: var(--step-2);
+  color: var(--paper);
+  padding: 13px 0;
+}
+
+.home-hero__input::placeholder { color: var(--paper-faint); }
+
+.home-hero__submit {
+  flex: 0 0 auto;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0 24px;
+  font-family: var(--body);
+  font-size: var(--step-1);
+  font-weight: 700;
+  color: #06101f;
+  background: var(--beam);
+  cursor: pointer;
+  transition: background var(--fast) var(--ease), transform var(--fast) var(--ease);
+}
+
+.home-hero__submit:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--beam) 84%, #fff);
+  transform: translateY(-1px);
+}
+
+.home-hero__submit:disabled {
+  background: var(--edge);
+  color: var(--paper-faint);
+  cursor: not-allowed;
+}
+
+.home-hero__submit:focus-visible {
+  outline: 2px solid var(--paper);
+  outline-offset: 3px;
+}
+
+.home-hero__hint {
+  margin: 11px 2px 0;
+  font-size: var(--step-0);
+  color: var(--paper-faint);
+}
+
+.home-hero__links { margin-top: clamp(20px, 2.6vh, 28px); }
+
+.home-hero__secondary {
+  font-size: var(--step-1);
+  font-weight: 600;
+  color: var(--paper-soft);
+  text-decoration: none;
+  border-bottom: 1px solid var(--edge);
+  padding-bottom: 2px;
+  transition: color var(--fast) var(--ease), border-color var(--fast) var(--ease);
+}
+
+.home-hero__secondary:hover {
+  color: var(--paper);
+  border-bottom-color: var(--beam);
+}
+
+/* ── Example prompts ─────────────────────────────────────────── */
+
+.home-examples { margin-top: clamp(20px, 2.8vh, 30px); }
+
+.home-examples__label {
+  display: block;
+  margin-bottom: 10px;
+  font-family: var(--meter);
+  font-size: var(--step-tiny);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper-faint);
+}
+
+.home-examples__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.home-examples__chip {
+  border: 1px solid var(--edge);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--ink-raised) 60%, transparent);
+  padding: 7px 15px;
+  font-family: var(--body);
+  font-size: var(--step-0);
+  color: var(--paper-soft);
+  cursor: pointer;
+  transition: border-color var(--fast) var(--ease), color var(--fast) var(--ease),
+              background var(--fast) var(--ease);
+}
+
+.home-examples__chip:hover {
+  color: var(--paper);
+  border-color: color-mix(in oklab, var(--beam) 50%, var(--edge));
+}
+
+/* The one the frame is building right now */
+.home-examples__chip--active {
+  background: color-mix(in oklab, var(--beam) 16%, transparent);
+  border-color: color-mix(in oklab, var(--beam) 55%, var(--edge));
+  color: var(--paper);
+  font-weight: 600;
+}
+
+.home-examples__chip:focus-visible {
+  outline: 2px solid var(--beam);
+  outline-offset: 2px;
+}
+
+/* ── Stage ───────────────────────────────────────────────────── */
+
+.home-hero__stage {
+  position: relative;
+  /* Runs past the container edge: a frame that stops politely at the gutter
+     looks placed in a box, and this one should look like it carries on. */
+  margin-right: calc(var(--gutter) * -0.6);
+}
+
+@media (max-width: 980px) {
+  .home-hero {
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: clamp(40px, 8vh, 76px);
+  }
+
+  /* Words first: the prompt box is the thing to reach on a phone */
+  .home-hero__copy { order: 1; }
+  .home-hero__stage { order: 2; margin-right: 0; }
+}
+
+@media (max-width: 560px) {
+  .home-hero__field {
+    flex-wrap: wrap;
+    padding: 10px;
+  }
+
+  .home-hero__input {
+    flex-basis: 100%;
+    padding: 6px 8px 10px;
+  }
+
+  .home-hero__submit {
+    flex: 1 1 auto;
+    padding: 13px 24px;
+  }
+
+  .home-examples__list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .home-examples__list::-webkit-scrollbar { display: none; }
+  .home-examples__chip { white-space: nowrap; }
+}
+
+/*
+ * ── Three things the product does ────────────────────────────
+ *
+ * A label and its explanation per row. They were running together into
+ * "AI layoutsBuilt from your brief" because `strong` and `span` are both inline
+ * and nothing here had any styling yet.
+ */
+
+.home-hero__proof {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  list-style: none;
+  margin: clamp(24px, 3.4vh, 34px) 0 0;
+  padding: clamp(18px, 2.4vh, 24px) 0 0;
+  border-top: 1px dashed var(--edge);
+}
+
+.home-hero__proof li {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.home-hero__proof strong {
+  font-family: var(--body);
+  font-size: var(--step-1);
+  font-weight: 700;
+  color: var(--paper);
+  letter-spacing: -0.005em;
+}
+
+.home-hero__proof span {
+  font-size: var(--step-0);
+  line-height: 1.4;
+  color: var(--paper-faint);
+  text-wrap: pretty;
+}
+
+@media (max-width: 560px) {
+  /* Three narrow columns turn into three stacks of broken words */
+  .home-hero__proof {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .home-hero__proof li {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .home-hero__proof strong { flex: 0 0 auto; }
+}

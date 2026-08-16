@@ -1,0 +1,106 @@
+/*
+ * The close.
+ *
+ * The previous version was a solid blue band across the page - the shape every
+ * template ends on, and the one thing on a page that says "this is where the
+ * design ran out". This ends the way the page began: light coming from behind
+ * something, rather than a rectangle of colour.
+ */
+
+.closing {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: clamp(72px, 13vh, 168px) var(--gutter);
+  overflow: hidden;
+}
+
+/* The glow the page has been lit by all along, gathered under the last line */
+.closing::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -55%;
+  width: min(1100px, 130%);
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--beam) 34%, transparent) 0%,
+    color-mix(in oklab, var(--haze) 16%, transparent) 42%,
+    transparent 68%
+  );
+  pointer-events: none;
+}
+
+.closing > * {
+  position: relative;
+}
+
+.closing__title {
+  margin-bottom: 14px;
+}
+
+.closing__subtitle {
+  font-size: var(--step-3);
+  line-height: 1.55;
+  color: var(--paper-soft);
+  max-width: 32ch;
+  margin: 0 auto clamp(26px, 3.6vh, 38px);
+}
+
+.closing__cta {
+  display: inline-block;
+  padding: 16px 36px;
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: #06101f;
+  font-family: var(--body);
+  font-size: var(--step-2);
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
+}
+
+.closing__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 46px -20px color-mix(in oklab, var(--beam) 75%, transparent);
+  color: #06101f;
+}
+
+.closing__cta:focus-visible {
+  outline: 3px solid var(--beam);
+  outline-offset: 4px;
+}
+
+.site-footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: clamp(28px, 5vh, 52px) var(--gutter);
+  border-top: 1px solid var(--edge);
+}
+
+.site-footer__brand {
+  font-family: var(--display);
+  font-size: var(--step-2);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--paper-soft);
+  margin: 0 0 6px;
+}
+
+.site-footer__copy {
+  font-family: var(--meter);
+  font-size: var(--step-tiny);
+  color: var(--paper-faint);
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .closing__cta,
+  .closing__cta:hover {
+    transform: none;
+    transition: none;
+  }
+}

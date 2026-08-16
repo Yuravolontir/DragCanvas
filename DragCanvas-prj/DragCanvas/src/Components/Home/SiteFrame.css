@@ -1,0 +1,133 @@
+/*
+ * The browser frame, floating and tilted.
+ *
+ * All of the depth is one `transform` on one element. Perspective lives on the
+ * wrapper so the tilt reads as rotation in space rather than as a skew.
+ */
+
+.frame {
+  position: relative;
+  perspective: 1400px;
+}
+
+.frame__body {
+  overflow: hidden;
+  transform:
+    rotateX(var(--tilt-x, 2deg))
+    rotateY(var(--tilt-y, -6deg));
+  transform-style: preserve-3d;
+  transition: transform 420ms var(--ease);
+  will-change: transform;
+}
+
+.frame__bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 16px;
+  background: color-mix(in oklab, var(--ink-sunken) 88%, transparent);
+  border-bottom: 1px solid var(--edge);
+}
+
+.frame__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--edge);
+  flex: 0 0 auto;
+}
+
+.frame__dot:nth-child(1) { background: color-mix(in oklab, var(--ember) 70%, var(--edge)); }
+.frame__dot:nth-child(2) { background: color-mix(in oklab, #ffc247 55%, var(--edge)); }
+.frame__dot:nth-child(3) { background: color-mix(in oklab, var(--beam) 55%, var(--edge)); }
+
+.frame__url {
+  flex: 1 1 auto;
+  margin-left: 10px;
+  padding: 4px 13px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--ink) 70%, transparent);
+  border: 1px solid var(--edge);
+  font-family: var(--meter);
+  font-size: 0.72rem;
+  color: var(--paper-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Reserved before anything is typed, so the bar does not jump */
+  min-height: 1.7em;
+}
+
+.frame__caret {
+  display: inline-block;
+  width: 1px;
+  height: 0.85em;
+  margin-left: 1px;
+  vertical-align: -1px;
+  background: var(--beam);
+  animation: frame-caret 900ms steps(2, start) infinite;
+}
+
+@keyframes frame-caret {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+.frame__viewport {
+  background: #fff;
+}
+
+/*
+ * The badge sits outside the tilted body, flat to the screen.
+ *
+ * Rotating it with the frame would make the one piece of confirmation on the
+ * page the hardest thing on it to read.
+ */
+.frame__badge {
+  position: absolute;
+  right: -14px;
+  bottom: -18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 18px 10px 12px;
+  border-radius: 999px;
+  background: var(--ink-raised);
+  border: 1px solid color-mix(in oklab, var(--beam) 35%, var(--edge));
+  color: var(--beam);
+  font-family: var(--body);
+  font-size: 0.84rem;
+  font-weight: 700;
+  box-shadow: 0 16px 40px -18px rgb(0 0 0 / 0.9);
+  opacity: 0;
+  transform: translateY(10px) scale(0.96);
+  transition: opacity 320ms var(--ease), transform 320ms var(--ease);
+}
+
+.frame__badge.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame__body,
+  .frame__badge {
+    transition: none;
+  }
+
+  .frame__caret {
+    animation: none;
+  }
+}
+
+@media (max-width: 720px) {
+  /* No cursor to follow, and the tilt eats horizontal room a phone has none of */
+  .frame__body {
+    transform: none;
+  }
+
+  .frame__badge {
+    right: 8px;
+    bottom: -14px;
+  }
+}

@@ -47,10 +47,10 @@ export default function NavBar() {
       expand="lg"
       fixed="top"
       style={{
-        background: scrolled ? 'rgba(252, 249, 241, 0.9)' : 'rgba(252, 249, 241, 0.7)',
+        background: scrolled ? 'var(--nav-bg-scrolled)' : 'var(--nav-bg)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: scrolled ? '1px solid rgba(0, 0, 0, 0.06)' : '1px solid transparent',
+        borderBottom: scrolled ? '1px solid var(--nav-border)' : '1px solid transparent',
         padding: '0',
         transition: 'all 0.3s ease',
         boxShadow: scrolled ? '0 1px 8px rgba(0,0,0,0.04)' : 'none',
@@ -159,7 +159,7 @@ export default function NavBar() {
                       top: '2px',
                       right: '2px',
                       background: 'var(--secondary)',
-                      color: 'white',
+                      color: 'var(--on-primary)',
                       borderRadius: '50%',
                       width: '16px',
                       height: '16px',
@@ -207,7 +207,7 @@ export default function NavBar() {
                   onClick={() => navigate("/register")}
                   style={{
                     background: 'var(--primary)',
-                    color: 'white',
+                    color: 'var(--on-primary)',
                     border: 'none',
                     fontSize: '0.85rem',
                     fontFamily: "'Plus Jakarta Sans', sans-serif",

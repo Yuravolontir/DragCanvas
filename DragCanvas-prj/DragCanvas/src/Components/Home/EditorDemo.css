@@ -1,0 +1,255 @@
+/*
+ * The live editor section.
+ *
+ * The canvas keeps a fixed height whether or not the editor has mounted yet, so
+ * scrolling past does not make the page jump under the reader when the engine
+ * boots.
+ */
+
+.editor-demo {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(48px, 8vh, 96px) clamp(20px, 5vw, 48px);
+}
+
+.editor-demo__intro {
+  max-width: 46em;
+  margin-bottom: clamp(20px, 3vh, 32px);
+}
+
+.editor-demo__title {
+  font-family: var(--font-heading, system-ui, sans-serif);
+  font-weight: 800;
+  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+  letter-spacing: -0.015em;
+  color: var(--on-background, #1c1b1f);
+  margin: 0 0 10px;
+}
+
+.editor-demo__subtitle {
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--on-surface-variant, #49454f);
+  margin: 0;
+}
+
+.editor-demo__shell {
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--outline-light, #e2e8f0);
+  border-radius: 16px;
+  background: var(--surface-container, #f0ece3);
+}
+
+/* Same footprint before the editor mounts, so nothing shifts */
+.editor-demo__shell--placeholder {
+  min-height: 460px;
+}
+
+/*
+ * A toolbar, not a sidebar.
+ *
+ * The blocks used to be full-width buttons stacked in a 190px column, which
+ * stretched three short words across a wide target and read as a form rather
+ * than as a set of things to pick up. Sized to their contents in a row, they
+ * look like what they are.
+ */
+.editor-demo__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editor-demo__toolbox {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.editor-demo__toolbox-label {
+  font-family: var(--meter, ui-monospace, monospace);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--hint, #9994a0);
+  margin-right: 2px;
+}
+
+.editor-demo__block {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  padding: 9px 15px 9px 12px;
+  border: 1px solid var(--outline-light, #e2e8f0);
+  border-radius: 999px;
+  background: var(--surface, #ffffff);
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--on-surface, #1c1b1f);
+  cursor: grab;
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+
+.editor-demo__block .material-symbols-outlined {
+  font-size: 18px;
+  color: var(--primary, #0040e0);
+}
+
+.editor-demo__block:hover {
+  border-color: var(--primary, #0060ac);
+  transform: translateY(-1px);
+}
+
+.editor-demo__block:active { cursor: grabbing; }
+
+.editor-demo__block:focus-visible {
+  outline: 2px solid var(--primary, #0060ac);
+  outline-offset: 2px;
+}
+
+/* ── Selection ─────────────────────────────────────────────── */
+
+.editor-demo__status,
+.editor-demo__selected-name {
+  font-family: var(--meter, ui-monospace, monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--hint, #9994a0);
+}
+
+.editor-demo__selection {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.editor-demo__selected-name {
+  color: var(--primary, #0040e0);
+  font-weight: 700;
+}
+
+.editor-demo__remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px 8px 10px;
+  border: 1px solid var(--outline-light, #e2e8f0);
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--on-surface-variant, #49454f);
+  cursor: pointer;
+  transition: border-color 150ms ease, color 150ms ease;
+}
+
+.editor-demo__remove .material-symbols-outlined { font-size: 17px; }
+
+.editor-demo__remove:hover {
+  border-color: var(--secondary, #a93349);
+  color: var(--secondary, #a93349);
+}
+
+.editor-demo__remove:focus-visible {
+  outline: 2px solid var(--secondary, #a93349);
+  outline-offset: 2px;
+}
+
+/*
+ * A page on a workspace, not a white field.
+ *
+ * The canvas used to be as wide as the section, so two or three blocks sat in
+ * the top-left of a very large empty rectangle and the whole thing read as
+ * broken rather than as ready. Every editor worth copying - Figma, Webflow, the
+ * one this project ships - puts a page-sized sheet on a darker surface, and the
+ * sheet is narrower than the window. Same here.
+ */
+.editor-demo__workspace {
+  display: flex;
+  justify-content: center;
+  padding: clamp(16px, 3vw, 34px);
+  border-radius: 12px;
+  background: var(--surface-dim, #efece6);
+  /* The workspace is the recessed surface; the sheet sits on top of it */
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.16);
+}
+
+.editor-demo__canvas {
+  width: 100%;
+  max-width: 620px;
+  min-height: 330px;
+  border-radius: 8px;
+  background: #ffffff;
+  overflow: auto;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.1), 0 12px 30px -14px rgb(0 0 0 / 0.4);
+}
+
+@media (max-width: 620px) {
+  .editor-demo__toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/*
+ * ── On the dark page ─────────────────────────────────────────
+ *
+ * The shell goes dark with everything else, but the canvas stays white. It is a
+ * document, and a document is the one thing on this page that should not be
+ * restyled to match the furniture around it - what a visitor drags a block onto
+ * here is what they will be editing after they sign up.
+ */
+
+.home .editor-demo__shell {
+  background: color-mix(in oklab, var(--ink-raised) 70%, transparent);
+  backdrop-filter: blur(16px);
+  border-color: var(--edge);
+}
+
+.home .editor-demo__workspace {
+  background: var(--ink-sunken);
+  box-shadow: inset 0 1px 4px rgb(0 0 0 / 0.6);
+}
+
+.home .editor-demo__canvas {
+  background: #ffffff;
+  /* A lit sheet on a dark desk, rather than a hole cut in the page */
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.5), 0 26px 60px -26px rgb(0 0 0 / 0.9);
+}
+
+.home .editor-demo__block {
+  background: color-mix(in oklab, var(--ink) 55%, transparent);
+  border-color: var(--edge);
+  color: var(--paper-soft);
+}
+
+.home .editor-demo__block:hover {
+  border-color: color-mix(in oklab, var(--beam) 55%, var(--edge));
+  color: var(--paper);
+}
+
+/*
+ * ── The dropped button ───────────────────────────────────────
+ *
+ * The editor's Button element hardcodes `w-full` in its class list
+ * (Components/Landing/Button.jsx), so every button dropped on a canvas spans
+ * its whole container. On a real page being built that may be what someone
+ * wants; in a three-block demo it just looks like something broke.
+ *
+ * Corrected here rather than in the element, because changing the element would
+ * change the actual editor for every existing project - a different decision
+ * from making this demo presentable, and not one to make as a side effect.
+ */
+
+.editor-demo__canvas button {
+  width: auto;
+  align-self: flex-start;
+}

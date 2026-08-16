@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import API_URL, { apiFetch, getToken } from './api.js';
+import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
   import { useEditor } from '@craftjs/core';
 
   export default function AIAssistant() {
@@ -14,6 +15,20 @@ import API_URL, { apiFetch, getToken } from './api.js';
     const [history, setHistory] = useState([]);
 
     const { actions } = useEditor();
+
+    /**
+     * Pick up a prompt typed on the landing page.
+     *
+     * Someone who described their site in the hero was sent here through
+     * registration; arriving at an empty box would make that invitation a bait.
+     * Read in an effect rather than in a useState initialiser because the
+     * read consumes the value, and StrictMode invokes initialisers twice - the
+     * second call would find it already gone.
+     */
+    useEffect(() => {
+      const pending = consumePendingPrompt();
+      if (pending) setPrompt(pending);
+    }, []);
 
     const buildCraftTree = (sections) => {
       const nodes = {};
