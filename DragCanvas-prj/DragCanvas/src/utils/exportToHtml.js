@@ -95,6 +95,23 @@ let exportContext = {};
 const escapeHtmlText = (text) =>
   String(text ?? '').replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
 
+/**
+ * Anchors that some section in this document actually claimed.
+ *
+ * Collected while converting so that navigation links can be checked against
+ * reality rather than hope. Reset per export - a module-level Set would carry
+ * one page's anchors into the next.
+ */
+let knownAnchors = new Set();
+
+/** A section's anchor, reduced to something legal in a URL fragment. */
+const slugifyAnchor = (value) => String(value || '')
+  .trim()
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-+|-+$/g, '')
+  .slice(0, 60);
+
 const escapeAttribute = (text) =>
   String(text ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
@@ -176,7 +193,14 @@ const converters = {
       childrenHtml += convertNode(childNodeId, data, depth + 1);
     }
 
-    return `  <div class="${className}">\n${childrenHtml}  </div>\n`;
+    // An anchor makes this section something a navigation link can reach. Only
+    // the generator sets one, and only on top-level sections; everything else
+    // renders exactly as before.
+    const anchor = slugifyAnchor(props.anchor);
+    if (anchor) knownAnchors.add(anchor);
+    const idAttr = anchor ? ` id="${escapeAttribute(anchor)}"` : '';
+
+    return `  <div${idAttr} class="${className}">\n${childrenHtml}  </div>\n`;
   },
 
   Text: (node) => {
@@ -526,10 +550,32 @@ ${inputs}
   font-size: 15px;
   opacity: 0.9;
 }
-.${className} .links a:hover { opacity: 1; text-decoration: underline; }`);
+.${className} .links a:hover { opacity: 1; text-decoration: underline; }
+.${className} .links .dead { color: ${textColor}; opacity: 0.55; }`);
 
+    /**
+     * A link is only a link if it leads somewhere.
+     *
+     * These used to be written out whatever they pointed at, and nothing in the
+     * document ever carried an id - so every one of them was dead. An anchor
+     * with no matching section now renders as its label: a word that does
+     * nothing is honest, a link that does nothing invites the click first.
+     */
     const links = (Array.isArray(props.links) ? props.links : [])
-      .map(link => `        <a href="${escapeAttribute(link.href || '#')}">${escapeHtmlText(link.text || '')}</a>`)
+      .map(link => {
+        const label = escapeHtmlText(link.text || '');
+        const href = String(link.href || '').trim();
+        const anchor = href.startsWith('#') ? slugifyAnchor(href.slice(1)) : '';
+
+        if (anchor && knownAnchors.has(anchor)) {
+          return `        <a href="#${escapeAttribute(anchor)}">${label}</a>`;
+        }
+        // An external link still points somewhere real
+        if (/^(https?:)?\/\//.test(href) || href.startsWith('mailto:') || href.startsWith('tel:')) {
+          return `        <a href="${escapeAttribute(href)}">${label}</a>`;
+        }
+        return `        <span class="dead">${label}</span>`;
+      })
       .join('\n');
 
     return `    <nav class="${className}">
@@ -601,11 +647,25 @@ export const exportToHtml = (serializedData, title = 'My Website', options = {})
     apiUrl: options.apiUrl || import.meta.env?.VITE_API_URL || 'http://localhost:3001',
   };
 
+  // Which anchors exist has to be known before the first link is written, and
+  // the navigation bar is usually the very first section converted. So the
+  // anchors are collected in their own pass rather than as we go.
+  knownAnchors = new Set();
+  for (const node of Object.values(serializedData || {})) {
+    const anchor = slugifyAnchor(node?.props?.anchor);
+    if (anchor) knownAnchors.add(anchor);
+  }
+
   // Add base CSS
   cssRules.push(`* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html {
+  /* Navigation links land on their section instead of teleporting to it */
+  scroll-behavior: smooth;
 }
 
 body {

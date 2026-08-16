@@ -1,11 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import API_URL, { apiFetch, getToken } from './api.js';
 import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
+
+/**
+ * What to call the current stage on the button.
+ *
+ * Named for what is happening rather than for how long it will take, because
+ * nobody can promise the second one and a wrong promise is worse than none.
+ */
+function stageLabel(stage) {
+  if (!stage) return 'Working…';
+  if (stage.name === 'layout') return 'Writing the layout…';
+  if (stage.name === 'refining') return 'Rewriting the page…';
+  if (stage.name === 'placing') return 'Placing the page…';
+  if (stage.name === 'images') {
+    return stage.remaining > 0
+      ? `Drawing ${stage.remaining} image${stage.remaining === 1 ? '' : 's'}…`
+      : 'Finishing…';
+  }
+  return 'Working…';
+}
   import { useEditor } from '@craftjs/core';
 
   export default function AIAssistant() {
     const [prompt, setPrompt] = useState('');
     const [loading, setLoading] = useState(false);
+    /**
+     * Which part of the wait we are in.
+     *
+     * A spinner turning for fifty seconds says the same thing as a frozen one.
+     * These three are already distinct events in the code - the completion
+     * returns, the pictures are requested, the tree is deserialised - so the
+     * wait can say which it is in, and how many pictures are left.
+     */
+    const [stage, setStage] = useState(null);
     const [error, setError] = useState(null);
     // low / balanced / bold -> temperature on the server
     const [creativity, setCreativity] = useState('balanced');
@@ -30,8 +58,18 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
       if (pending) setPrompt(pending);
     }, []);
 
+    /**
+     * Turn the generated layout into a Craft node map.
+     *
+     * Also hands back which node each source element became. The images are
+     * swapped in after the page is already on the canvas, and by then the
+     * layout JSON is no longer what the editor is showing - the nodes are. Without
+     * this mapping the only way back would be to deserialise a second time, which
+     * would throw away anything the person had touched in the meantime.
+     */
     const buildCraftTree = (sections) => {
       const nodes = {};
+      const nodeIdOf = new Map();
 
       nodes.ROOT = {
         type: { resolvedName: 'Container' },
@@ -61,6 +99,7 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
           nodes: []
         };
 
+        nodeIdOf.set(element, nodeId);
         nodes[parentId].nodes.push(nodeId);
 
         // Recursively build children
@@ -94,7 +133,7 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
         }
       }
 
-      return nodes;
+      return { nodes, nodeIdOf };
     };
 
     /**
@@ -154,34 +193,58 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
       return images;
     };
 
-    const replaceImages = async (sections) => {
+    /**
+     * Fill in the pictures on a page that is already on screen.
+     *
+     * Each generated image takes several seconds, so they are requested together
+     * and each one is placed the moment it arrives rather than waiting for the
+     * slowest. A failure leaves that placeholder alone: one image nobody could
+     * draw should not cost the other five.
+     */
+    const fillInImages = async (sections, nodeIdOf) => {
       const images = collectImageInfo(sections);
       if (images.length === 0) return;
 
       const prompts = [...new Set(images.map(i => i.prompt))].slice(0, 6);
-      const results = await Promise.all(
-        prompts.map(p => generateImage(p))
-      );
-      const urlMap = {};
-      prompts.forEach((p, i) => { urlMap[p] = results[i]; });
+      let remaining = prompts.length;
+      setStage({ name: 'images', remaining });
 
-      images.forEach(img => {
-        const url = urlMap[img.prompt];
-        if (url) {
-          if (img.key) {
-            img.path.props[img.key] = url;
-          } else {
-            img.path.props.src = url;
+      await Promise.all(prompts.map(async (imagePrompt) => {
+        const url = await generateImage(imagePrompt);
+        remaining -= 1;
+        setStage({ name: 'images', remaining });
+        if (!url) return;
+
+        for (const img of images) {
+          if (img.prompt !== imagePrompt) continue;
+          const nodeId = nodeIdOf.get(img.path);
+          if (!nodeId) continue;
+          try {
+            actions.setProp(nodeId, props => { props[img.key || 'src'] = url; });
+          } catch {
+            // The node is gone - the person deleted it while we were drawing.
+            // That is their prerogative, and not an error.
           }
         }
-      });
+      }));
     };
 
-    /** Put a layout on the canvas and remember it for the next refinement. */
+    /**
+     * Put a layout on the canvas and remember it for the next refinement.
+     *
+     * The page goes up before the images exist. It used to wait for every one of
+     * them, so a generation that took fifty seconds showed a blank canvas for all
+     * fifty and then everything at once. The images take just as long now; the
+     * difference is that there is something to look at while they arrive.
+     */
     const applyLayout = async (nextLayout) => {
-      await replaceImages(nextLayout.sections);
-      actions.deserialize(buildCraftTree(nextLayout.sections));
+      const { nodes, nodeIdOf } = buildCraftTree(nextLayout.sections);
+
+      setStage({ name: 'placing' });
+      actions.deserialize(nodes);
       setLayout(nextLayout);
+
+      await fillInImages(nextLayout.sections, nodeIdOf);
     };
 
     /**
@@ -193,6 +256,7 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
 
       setLoading(true);
       setError(null);
+      setStage({ name: 'refining' });
 
       try {
         const refined = await apiFetch('/api/ai/refine', {
@@ -211,6 +275,7 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
         setError(err.message);
       } finally {
         setLoading(false);
+        setStage(null);
       }
     };
 
@@ -219,6 +284,7 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
 
       setLoading(true);
       setError(null);
+      setStage({ name: 'layout' });
 
       try {
         // Generation runs on our server: the provider key stays there, and the
@@ -240,6 +306,7 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
         setError(err.message);
       } finally {
         setLoading(false);
+        setStage(null);
       }
     };
 
@@ -297,7 +364,7 @@ import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
             }}
           >
             <span className="material-symbols-outlined" style={{ fontSize: '15px', color: 'var(--on-primary)' }}>auto_awesome</span>
-            {loading ? 'Wait...' : 'Generate'}
+            {loading ? stageLabel(stage) : 'Generate'}
           </button>
         </div>
 

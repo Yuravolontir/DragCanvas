@@ -43,8 +43,21 @@ export const Button = ({ text, textComponent, color, buttonStyle, background, ma
       ref={(dom) => {
         connect(dom);
       }}
+      /**
+       * No `w-full` here.
+       *
+       * It made every button span its container, so a generated page showed a
+       * call to action as a bar across the whole screen. The published page never
+       * looked like that: exportToHtml writes `display: inline-block` with no
+       * width, so the button sizes to its label there.
+       *
+       * The two disagreed, and the editor was the one that was wrong. Removing
+       * this changes no published site - it only stops the canvas misrepresenting
+       * what the visitor will get. Anyone who wants a full-width button can still
+       * set the width prop.
+       */
       className={cx([
-        'rounded w-full px-4 py-2',
+        'rounded px-4 py-2',
         {
           'shadow-lg': buttonStyle === 'full',
         },

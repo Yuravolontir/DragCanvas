@@ -239,17 +239,8 @@
 /*
  * ── The dropped button ───────────────────────────────────────
  *
- * The editor's Button element hardcodes `w-full` in its class list
- * (Components/Landing/Button.jsx), so every button dropped on a canvas spans
- * its whole container. On a real page being built that may be what someone
- * wants; in a three-block demo it just looks like something broke.
- *
- * Corrected here rather than in the element, because changing the element would
- * change the actual editor for every existing project - a different decision
- * from making this demo presentable, and not one to make as a side effect.
+ * The override that used to live here is gone: `w-full` was removed from the
+ * Button element itself, because the editor and the published page disagreed
+ * about how wide a button is and the editor was the one that was wrong. The
+ * demo inherits the fix rather than papering over it locally.
  */
-
-.editor-demo__canvas button {
-  width: auto;
-  align-self: flex-start;
-}

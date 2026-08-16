@@ -36,6 +36,43 @@ const DENSITIES = [
     { name: 'tight',   section: 32, inner: 16, note: 'compact, more content visible at once' },
 ];
 
+/**
+ * How the page is put together, as opposed to how it is coloured.
+ *
+ * Palette, type and spacing already vary per generation, and two pages still came
+ * back looking like the same page: colour changes, shape does not. The opening is
+ * the strongest part of that - a visitor decides what kind of site this is from
+ * the first screen - so the hero form is drawn separately, and the rhythm below it
+ * with it.
+ */
+const COMPOSITIONS = [
+    {
+        name: 'full-bleed opening',
+        hero: 'a full-width image or video filling the first screen, headline laid over it, one button',
+        rhythm: 'wide bands of alternating dark and light, one idea per band',
+    },
+    {
+        name: 'split opening',
+        hero: 'a two-column first screen: words on one side, a single strong image on the other',
+        rhythm: 'alternating split rows, the image swapping sides each time',
+    },
+    {
+        name: 'typographic opening',
+        hero: 'no image at all at the top - a very large headline, a short line under it, and space',
+        rhythm: 'content led by headings, images arriving later and used sparingly',
+    },
+    {
+        name: 'editorial opening',
+        hero: 'a narrow column of text over a muted background, like the first page of an article',
+        rhythm: 'a centred column throughout, wide images breaking out of it occasionally',
+    },
+    {
+        name: 'showcase opening',
+        hero: 'a grid of three or four images immediately, with the headline sitting above them',
+        rhythm: 'grids of cards, varying between two and three across',
+    },
+];
+
 const pick = list => list[Math.floor(Math.random() * list.length)];
 
 /** One palette + one type scale + one density, as prompt text. */
@@ -43,9 +80,10 @@ export function buildVisualBrief() {
     const palette = pick(PALETTES);
     const type = pick(TYPE_SCALES);
     const density = pick(DENSITIES);
+    const composition = pick(COMPOSITIONS);
 
     return {
-        chosen: { palette: palette.name, type: type.name, density: density.name },
+        chosen: { palette: palette.name, type: type.name, density: density.name, composition: composition.name },
         text: `VISUAL BRIEF FOR THIS PAGE
 
 Palette "${palette.name}" — ${palette.note}
@@ -61,8 +99,15 @@ Type scale "${type.name}" — ${type.note}
 Spacing "${density.name}" — ${density.note}
   section padding ~${density.section}px · padding inside cards ~${density.inner}px
 
+Composition "${composition.name}"
+  opening: ${composition.hero}
+  below:   ${composition.rhythm}
+This one decides the shape of the page. Two sites in different colours with the
+same shape still look like the same site, so do not default to a centred headline
+over a background image unless that is what is asked for above.
+
 Follow this brief. It is what makes this page look different from the last one.`,
     };
 }
 
-export { PALETTES, TYPE_SCALES, DENSITIES };
+export { PALETTES, TYPE_SCALES, DENSITIES, COMPOSITIONS };

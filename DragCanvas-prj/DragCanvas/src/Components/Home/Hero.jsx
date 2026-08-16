@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { useUserContext } from '../../userContext.js';
+
 import Examples from './Examples.jsx';
 import SiteFrame from './SiteFrame.jsx';
 import { SITES } from './sites.js';
@@ -31,6 +33,7 @@ const EXAMPLES = SITES.map(site => site.prompt);
 
 export default function Hero() {
   const navigate = useNavigate();
+  const { currentUser } = useUserContext();
   const prefersReducedMotion = usePrefersReducedMotion();
 
   const [prompt, setPrompt] = useState('');
@@ -80,7 +83,11 @@ export default function Hero() {
     if (!text) return;
 
     storePendingPrompt(text);
-    navigate('/register');
+    // Somebody already signed in has no reason to be shown a sign-up form. The
+    // prompt still travels through storage rather than through the URL, so the
+    // editor picks it up the same way on both paths and there is only one place
+    // that knows how the hand-off works.
+    navigate(currentUser ? '/create-new-project' : '/register');
   };
 
   return (
@@ -130,7 +137,9 @@ export default function Hero() {
           </div>
 
           <p className="home-hero__hint">
-            Free to start. You will be asked to create an account before it builds.
+            {currentUser
+              ? 'Opens in the editor with your prompt ready to run.'
+              : 'Free to start. You will be asked to create an account before it builds.'}
           </p>
         </form>
 

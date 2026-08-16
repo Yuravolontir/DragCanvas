@@ -5,36 +5,42 @@
  * every design, so a coffee shop, a portfolio and a SaaS landing all came out
  * with the same ingredients — carousel and map appeared in 15 generations out
  * of 15. Here each kind gets its own vocabulary and nothing is compulsory.
+ *
+ * That fixed the ingredients and left the shape. `sections` used to read as a
+ * running order, so every bakery came back with the same six sections in the same
+ * sequence and only the colours changed. It is a menu now: more entries than any
+ * one page should use, and the model chooses which and in what order. The
+ * composition drawn in design.presets.js decides the shape they are poured into.
  */
 
 const SITE_KINDS = {
     restaurant: {
         label: 'restaurant / cafe / bar',
-        sections: 'hero with atmosphere, the menu or signature dishes, a gallery of the place, the story behind it, opening hours and how to find it, footer',
+        sections: 'hero with atmosphere · the menu or signature dishes · a gallery of the place · the story behind it · the people who cook · a dish of the week · what regulars say · opening hours and how to find it · booking or ordering · footer',
         notes: 'A map genuinely helps here — people need to find the place. Photography matters more than text.',
         keywords: ['restaurant', 'cafe', 'coffee', 'bar', 'bakery', 'pizzeria', 'bistro', 'kitchen', 'food', 'menu', 'diner', 'pub', 'sushi'],
     },
     portfolio: {
         label: 'portfolio / personal site of a creator',
-        sections: 'hero with the name and what they do, a grid of selected works, a short about, a way to get in touch, footer',
+        sections: 'hero with the name and what they do · a grid of selected works · one project told in depth · a short about · how they work · clients or places published · a way to get in touch · footer',
         notes: 'The work is the content. Large images, generous whitespace, very little copy. No map, no carousel unless the work is photography.',
         keywords: ['portfolio', 'photographer', 'designer', 'artist', 'illustrator', 'architect', 'freelance', 'showcase', 'works', 'creative'],
     },
     product: {
         label: 'SaaS / app / digital product',
-        sections: 'hero with the promise and a call to action, the main features, how it works, pricing, testimonials or logos, final call to action, footer',
+        sections: 'hero with the promise and a call to action · the main features · how it works · what it replaces · pricing · testimonials or logos · frequently asked questions · final call to action · footer',
         notes: 'Conversion-driven. Repeated call-to-action buttons. No map — the product has no address.',
         keywords: ['saas', 'app', 'platform', 'software', 'startup', 'dashboard', 'tool', 'api', 'crm', 'analytics', 'subscription'],
     },
     localBusiness: {
         label: 'local business / services',
-        sections: 'hero, the services offered, why choose us, gallery of past work, contact details with a map, footer',
+        sections: 'hero · the services offered · why choose us · gallery of past work · prices or a quote request · the team · what customers say · contact details with a map · footer',
         notes: 'Trust and reachability matter. A map is useful. Prices or a quote request often belong here.',
         keywords: ['salon', 'barber', 'clinic', 'dentist', 'gym', 'fitness', 'studio', 'repair', 'plumber', 'garage', 'law', 'agency', 'shop', 'store'],
     },
     event: {
         label: 'event / conference / wedding',
-        sections: 'hero with date and place, the programme or schedule, speakers or people involved, venue with a map, registration, footer',
+        sections: 'hero with date and place · the programme or schedule · speakers or people involved · what previous years looked like · venue with a map · tickets or registration · getting there and staying · footer',
         notes: 'The date and the call to register are the point. A countdown feel helps.',
         keywords: ['event', 'conference', 'wedding', 'festival', 'meetup', 'summit', 'workshop', 'concert', 'exhibition'],
     },
@@ -74,11 +80,17 @@ export function inferSiteKind(prompt) {
 export function describeSiteKind(kind) {
     return `THIS REQUEST LOOKS LIKE: ${kind.label}
 
-Sections that usually belong on such a page: ${kind.sections}.
+Sections that could belong on such a page: ${kind.sections}.
 ${kind.notes}
 
-These are suggestions, not a checklist. Include a section only when it earns its
-place for this specific subject, and feel free to invent one that is not listed.`;
+This is a menu, not a running order. It deliberately lists more than one page
+should carry: choose five to seven that earn their place for this particular
+subject, put them in whatever order tells the story best, and invent one if the
+subject calls for something that is not here.
+
+Do not simply work down the list. Two pages built from the same menu in the same
+sequence are the same page in different colours, and the visual brief above has
+already decided the shape this one should take.`;
 }
 
 export { SITE_KINDS };
