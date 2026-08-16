@@ -34,11 +34,17 @@ from the built file.
 |---|---|
 | `VITE_API_URL` | `https://dragcanvas.onrender.com` |
 | `VITE_PY_API_URL` | `https://dragcanvas-reports.onrender.com` |
+| `VITE_EXAMPLE_SITE_URL` | a genuinely published DragCanvas site |
 
-Both are addresses, both are public, and there must be nothing else here. Note
-the second one carries `-reports`: it is a different service from the first, and
-confusing the two makes the admin Statistics tab fail while everything else
-looks healthy.
+All three are addresses, all three are public, and there must be nothing else
+here. Note the second one carries `-reports`: it is a different service from the
+first, and confusing the two makes the admin Statistics tab fail while
+everything else looks healthy.
+
+The third is what the landing page turns into a QR code, so a visitor can open a
+real site on their phone. Left unset it falls back to this app's own address,
+which scans perfectly and proves nothing - point it at something a stranger
+could actually land on.
 
 Vite reads these at build time, so **changing one requires a rebuild** - saving
 it in the dashboard changes nothing on its own. Use *Deploys → Clear cache and
