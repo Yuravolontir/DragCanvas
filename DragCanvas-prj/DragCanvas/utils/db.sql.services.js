@@ -68,6 +68,35 @@ class SQLServices {
 }
 
 /**
+ * Run several statements as one unit, on one connection.
+ *
+ * `executeQuery` takes a connection from the pool per call, so a sequence of
+ * writes through it is a sequence of independent transactions: a failure
+ * halfway through leaves the earlier ones committed. Anything that has to be
+ * all-or-nothing needs the same client throughout, which is what this hands to
+ * `work` - deleting an account, for instance, where stopping halfway would
+ * leave a user with no projects or projects with no user.
+ *
+ * @param {(query: (text: string, params?: any[]) => Promise<any>) => Promise<any>} work
+ */
+export async function withTransaction(work) {
+    const pool = await sqlServices.connect();
+    const client = await pool.connect();
+
+    try {
+        await client.query('BEGIN');
+        const result = await work((text, params = []) => client.query(text, params));
+        await client.query('COMMIT');
+        return result;
+    } catch (error) {
+        await client.query('ROLLBACK');
+        throw error;
+    } finally {
+        client.release();
+    }
+}
+
+/**
  * Runs `work` only if no other process is already running it.
  *
  * Background jobs live inside the API process, so every instance of the server

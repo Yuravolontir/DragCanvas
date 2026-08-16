@@ -9,6 +9,7 @@ templateRouter
     .get('/all', verifyToken, requireAdmin, ctrl.getAllTemplates)   // admin: includes hidden
     .get('/:id', ctrl.getTemplateById)                              // public
     .post('/save', verifyToken, ctrl.saveTemplate)
+    .patch('/:id/visibility', verifyToken, requireAdmin, ctrl.setTemplateVisibility)
     .delete('/:id', verifyToken, requireAdmin, ctrl.deleteTemplate)
 
 export default templateRouter;

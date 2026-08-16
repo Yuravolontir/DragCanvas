@@ -55,6 +55,16 @@ export async function updateStatus(req, res) {
             return res.status(400).json(buildErrorResponse('targetID is required'));
         }
 
+        // Checked because leaving it out used to succeed: `newStatus` arrived
+        // undefined, went into the column as NULL, and IsActive became neither
+        // true nor false. verifyToken reads that as inactive, so a malformed
+        // request locked the account out - and answered "updated to inactive",
+        // which reads like it was asked for. updateRole already guards its own
+        // flag this way; this one did not.
+        if (typeof newStatus !== 'boolean') {
+            return res.status(400).json(buildErrorResponse('newStatus must be true or false'));
+        }
+
         const target = await UserMdl.getUserByIdFromDB(targetID);
         if (!target) {
             return res.status(404).json(buildErrorResponse('Target user not found'));
@@ -103,6 +113,55 @@ export async function updateRole(req, res) {
         invalidateUser(targetID);
         return res.status(200).json(buildSuccessResponse({
             message: `User role updated to ${makeAdmin ? 'admin' : 'regular user'}`,
+        }));
+    } catch (error) {
+        return res.status(500).json(buildErrorResponse(error.message));
+    }
+}
+
+/**
+ * Delete an account and everything it owned.
+ *
+ * The only irreversible action an administrator has, which is why it carries one
+ * guard the reversible ones do not need: a superadmin cannot be deleted at all.
+ * Deactivating the wrong person is a mistake you can undo yourself; deleting them
+ * is not.
+ */
+export async function deleteUser(req, res) {
+    try {
+        const targetId = Number(req.params.id);
+
+        if (!Number.isFinite(targetId)) {
+            return res.status(400).json(buildErrorResponse('A numeric user id is required'));
+        }
+
+        // Same reason as updateStatus and updateRole: with a single superadmin,
+        // removing your own access is an unrecoverable state - and here it is
+        // unrecoverable for good.
+        if (targetId === Number(req.user.userId)) {
+            return res.status(400).json(buildErrorResponse('You cannot delete your own account'));
+        }
+
+        const target = await UserMdl.getUserByIdFromDB(targetId);
+        if (!target) {
+            return res.status(404).json(buildErrorResponse('User not found'));
+        }
+        if (target.IsSuperAdmin) {
+            return res.status(403).json(buildErrorResponse('A superadmin account cannot be deleted'));
+        }
+
+        const removed = await UserMdl.deleteUserFromDB(targetId);
+        if (!removed) {
+            return res.status(404).json(buildErrorResponse('User not found'));
+        }
+
+        // Their token stays valid for up to seven days, so the cached "active
+        // user" verdict has to go with the row - otherwise verifyToken would keep
+        // waving through an account that no longer exists until the TTL expired.
+        invalidateUser(targetId);
+
+        return res.status(200).json(buildSuccessResponse({
+            message: `Account "${target.UserName}" and all of its data were deleted`,
         }));
     } catch (error) {
         return res.status(500).json(buildErrorResponse(error.message));

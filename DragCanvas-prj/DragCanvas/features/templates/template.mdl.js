@@ -45,6 +45,21 @@ export default class TemplateMdl {
         return rows[0]?.Template_ID ?? null;
     }
 
+    /**
+     * Show or hide a template in the public gallery.
+     *
+     * Takes the state it should end in rather than flipping whatever it finds.
+     * A toggle read-then-writes, so two administrators clicking at the same
+     * moment can leave it in the state neither of them chose; this cannot.
+     */
+    static async setTemplateVisibilityInDB(templateId, isActive) {
+        const result = await db.executeCommand(
+            'UPDATE "TBTemplates" SET "IsActive" = $2 WHERE "Template_ID" = $1',
+            [templateId, isActive]
+        );
+        return result.rowCount;
+    }
+
     /** Soft delete - hides the template instead of removing the row. */
     static async hideTemplateInDB(templateId) {
         const result = await db.executeCommand(

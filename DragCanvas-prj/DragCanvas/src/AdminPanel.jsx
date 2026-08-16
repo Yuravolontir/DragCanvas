@@ -162,25 +162,13 @@ export default function AdminPanel() {
     }
 
     try {
-      const response = await fetch('https://yuravolontir.bsite.net/api/Users/delete-user', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          targetID: userToDelete.User_ID,
-          adminID: currentUser.User_ID,
-          confirmDelete: true
-        })
-      });
+      // Who is doing the deleting comes from the token, so there is no adminID
+      // to send - and nothing the browser could claim about it would be believed.
+      const data = await apiFetch(`/api/users/${userToDelete.User_ID}`, { method: 'DELETE' });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setShowDeleteModal(false);
-        showAlertModal('User deleted successfully');
-        fetchUsers();
-      } else {
-        showAlertModal(data.error || 'Delete failed', 'error');
-      }
+      setShowDeleteModal(false);
+      showAlertModal(data.message || 'User deleted');
+      fetchUsers();
     } catch (err) {
       showAlertModal(err.message, 'error');
     }
@@ -258,15 +246,10 @@ const confirmRoleChange = async () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await
-  fetch('https://yuravolontir.bsite.net/api/Users');    //C#
-        const data = await response.json();
-        
-        console.log(data)
-        
-        if (!response.ok) {
-          throw new Error(data.error || 'Failed to fetch users');
-        }
+        // The Node service, not the legacy C# one. This is the endpoint that
+        // carries the authorisation work - admin-guarded, roles read live from
+        // the database - and unlike the old one it returns the real table.
+        const data = await apiFetch('/api/users');
 
         setUsers(data);
         setFilteredUsers(data);
@@ -283,9 +266,7 @@ const confirmRoleChange = async () => {
 
       // Fetch user statistics
       try {
-        const response = await
-  fetch(`https://yuravolontir.bsite.net/api/Users/${user.User_ID}`);   //C#
-        const data = await response.json();
+        const data = await apiFetch(`/api/users/${user.User_ID}/stats`);
         setUserStats(data);
       } catch (err) {
         console.error('Failed to fetch user stats:', err);
@@ -316,24 +297,16 @@ const confirmRoleChange = async () => {
  const toggleTemplateVisibility = async (templateId, currentStatus) =>
    {
       try {
-        const response = await
-          fetch(`https://yuravolontir.bsite.net/api/Users/templates/${templateId}/visibility`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              isActive: !currentStatus,
-              userId: currentUser.User_ID
-            })
-          });
+        // The state it should end in, not a flip of what we happen to have read.
+        // Two admins clicking at the same moment then cannot leave it in the
+        // state neither of them chose.
+        const data = await apiFetch(`/api/templates/${templateId}/visibility`, {
+          method: 'PATCH',
+          body: { isActive: !currentStatus },
+        });
 
-        if (response.ok) {
-          showAlertModal('Template visibility updated', 'success');
-          fetchTemplates();
-        } else {
-          const data = await response.json();
-          showAlertModal(data.error || 'Failed to update visibility',
-  'error');
-        }
+        showAlertModal(data.message || 'Template visibility updated', 'success');
+        fetchTemplates();
       } catch (err) {
         showAlertModal(err.message, 'error');
       }

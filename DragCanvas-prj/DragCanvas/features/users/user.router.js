@@ -13,5 +13,6 @@ userRouter
     .post('/update-status', verifyToken, requireAdmin, ctrl.updateStatus)
     .post('/update-role', verifyToken, requireAdmin, ctrl.updateRole)
     .post('/reset-password', verifyToken, requireAdmin, ctrl.resetPassword)
+    .delete('/:id', verifyToken, requireAdmin, ctrl.deleteUser)
 
 export default userRouter;
