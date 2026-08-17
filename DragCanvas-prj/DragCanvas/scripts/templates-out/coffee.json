@@ -22,9 +22,9 @@
         "0"
       ],
       "background": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
+        "r": 249,
+        "g": 245,
+        "b": 240,
         "a": 1
       },
       "color": {
@@ -46,10 +46,9 @@
     "nodes": [
       "navb01",
       "cont02",
-      "cont08",
-      "cont12",
-      "cont16",
-      "cont20"
+      "cont06",
+      "cont10",
+      "cont16"
     ],
     "linkedNodes": {}
   },
@@ -59,27 +58,27 @@
     },
     "isCanvas": false,
     "props": {
-      "variant": "dark",
-      "brand": "FORGE",
+      "variant": "light",
+      "brand": "Harbour Roasters",
       "links": [
         {
-          "text": "Timetable",
-          "href": "#timetable"
+          "text": "Subscribe",
+          "href": "#subscribe"
         },
         {
-          "text": "Coaches",
-          "href": "#coaches"
+          "text": "Origins",
+          "href": "#origins"
         },
         {
-          "text": "Membership",
-          "href": "#membership"
+          "text": "Visit",
+          "href": "#visit"
         }
       ],
-      "sticky": true,
+      "sticky": false,
       "textColor": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
+        "r": 45,
+        "g": 32,
+        "b": 24,
         "a": 1
       },
       "height": "56px",
@@ -105,9 +104,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "80",
+        "64",
         "48",
-        "56",
+        "40",
         "48"
       ],
       "margin": [
@@ -117,9 +116,9 @@
         "0"
       ],
       "background": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
+        "r": 249,
+        "g": 245,
+        "b": 240,
         "a": 1
       },
       "color": {
@@ -142,9 +141,7 @@
     "nodes": [
       "head03",
       "text04",
-      "butt05",
-      "spac06",
-      "stat07"
+      "butt05"
     ],
     "linkedNodes": {}
   },
@@ -154,15 +151,15 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "Show up. Lift. Leave.",
+      "text": "Roasted Tuesday, with you Thursday",
       "level": "1",
-      "fontSize": "56",
-      "fontWeight": "800",
+      "fontSize": "46",
+      "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 244,
-        "g": 246,
-        "b": 242,
+        "r": 45,
+        "g": 32,
+        "b": 24,
         "a": 1
       },
       "margin": [
@@ -187,23 +184,23 @@
     },
     "isCanvas": false,
     "props": {
-      "fontSize": "18",
+      "fontSize": "17",
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 141,
-        "g": 150,
-        "b": 134,
+        "r": 116,
+        "g": 99,
+        "b": 84,
         "a": 1
       },
       "margin": [
-        "14",
+        "12",
         "0",
         "24",
         "0"
       ],
       "shadow": 0,
-      "text": "Barbell club and conditioning, five in the morning to ten at night. No mirrors, no contracts."
+      "text": "One roastery, four farms, and a delivery that arrives before the last bag runs out."
     },
     "displayName": "Text",
     "custom": {
@@ -221,19 +218,19 @@
     "isCanvas": false,
     "props": {
       "background": {
-        "r": 196,
-        "g": 242,
-        "b": 75,
+        "r": 178,
+        "g": 92,
+        "b": 48,
         "a": 1
       },
       "color": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
       "buttonStyle": "full",
-      "text": "First class free",
+      "text": "Start a subscription",
       "margin": [
         "5",
         "0",
@@ -257,7 +254,7 @@
           "0"
         ],
         "shadow": 0,
-        "text": "First class free"
+        "text": "Start a subscription"
       }
     },
     "displayName": "Button",
@@ -269,74 +266,20 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac06": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "32"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "cont02",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "stat07": {
-    "type": {
-      "resolvedName": "Stats"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "5am",
-        "first class",
-        "340",
-        "members",
-        "12",
-        "coaches"
-      ],
-      "align": "center",
-      "accent": {
-        "r": 196,
-        "g": 242,
-        "b": 75,
-        "a": 1
-      },
-      "color": {
-        "r": 141,
-        "g": 150,
-        "b": 134,
-        "a": 1
-      }
-    },
-    "displayName": "Stats",
-    "custom": {
-      "displayName": "Stats"
-    },
-    "parent": "cont02",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont08": {
+  "cont06": {
     "type": {
       "resolvedName": "Container"
     },
     "isCanvas": true,
     "props": {
       "flexDirection": "column",
-      "alignItems": "flex-start",
+      "alignItems": "center",
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "56",
         "48",
-        "56",
+        "48",
+        "48",
         "48"
       ],
       "margin": [
@@ -346,9 +289,9 @@
         "0"
       ],
       "background": {
-        "r": 25,
-        "g": 29,
-        "b": 26,
+        "r": 238,
+        "g": 228,
+        "b": 216,
         "a": 1
       },
       "color": {
@@ -361,36 +304,36 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "timetable"
+      "anchor": "subscribe"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Timetable"
+      "displayName": "Subscribe"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head09",
-      "spac10",
-      "time11"
+      "head07",
+      "spac08",
+      "pric09"
     ],
     "linkedNodes": {}
   },
-  "head09": {
+  "head07": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "A day here",
+      "text": "How much coffee do you drink?",
       "level": "2",
-      "fontSize": "34",
+      "fontSize": "30",
       "fontWeight": "700",
-      "textAlign": "left",
+      "textAlign": "center",
       "color": {
-        "r": 244,
-        "g": 246,
-        "b": 242,
+        "r": 45,
+        "g": 32,
+        "b": 24,
         "a": 1
       },
       "margin": [
@@ -404,12 +347,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont08",
+    "parent": "cont06",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac10": {
+  "spac08": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -421,41 +364,195 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont08",
+    "parent": "cont06",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "time11": {
+  "pric09": {
+    "type": {
+      "resolvedName": "Pricing"
+    },
+    "isCanvas": false,
+    "props": {
+      "tiers": [
+        "A bag",
+        "₪64",
+        "every month",
+        "One bag",
+        "250g; Free delivery; Change or pause any time",
+        "Two bags",
+        "₪118",
+        "every month",
+        "Two bags",
+        "500g; Free delivery; Pick your roast",
+        "Office",
+        "₪420",
+        "every month",
+        "Talk to us",
+        "2kg; Weekly delivery; Grinder on loan"
+      ],
+      "featured": 2,
+      "accent": {
+        "r": 178,
+        "g": 92,
+        "b": 48,
+        "a": 1
+      },
+      "background": {
+        "r": 249,
+        "g": 245,
+        "b": 240,
+        "a": 1
+      },
+      "color": {
+        "r": 45,
+        "g": 32,
+        "b": 24,
+        "a": 1
+      }
+    },
+    "displayName": "Pricing",
+    "custom": {
+      "displayName": "Pricing"
+    },
+    "parent": "cont06",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont10": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "48",
+        "48",
+        "32",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 249,
+        "g": 245,
+        "b": 240,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto",
+      "anchor": "origins"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Origins"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head11",
+      "spac12",
+      "time13",
+      "divi14",
+      "quot15"
+    ],
+    "linkedNodes": {}
+  },
+  "head11": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Where it comes from",
+      "level": "2",
+      "fontSize": "30",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 45,
+        "g": 32,
+        "b": 24,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont10",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac12": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "20"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont10",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "time13": {
     "type": {
       "resolvedName": "Timeline"
     },
     "isCanvas": false,
     "props": {
       "steps": [
-        "05:00",
-        "Barbell fundamentals",
-        "Squat, press, pull. Coached, capped at eight.",
-        "12:30",
-        "Thirty minutes",
-        "Conditioning for people with a lunch break.",
-        "18:00",
-        "Olympic lifting",
-        "Snatch and clean, technique first.",
-        "20:00",
-        "Open gym",
-        "The room is yours. A coach is around."
+        "Jan",
+        "Harvest",
+        "Picked by hand at Finca La Esperanza, 1,600 metres.",
+        "Mar",
+        "Shipped",
+        "Six weeks at sea, which is slower and better than flying it.",
+        "Apr",
+        "Roasted",
+        "Small batches, Tuesdays, in a drum older than the shop."
       ],
       "accent": {
-        "r": 196,
-        "g": 242,
-        "b": 75,
+        "r": 178,
+        "g": 92,
+        "b": 48,
         "a": 1
       },
       "color": {
-        "r": 244,
-        "g": 246,
-        "b": 242,
+        "r": 45,
+        "g": 32,
+        "b": 24,
         "a": 1
       }
     },
@@ -463,150 +560,64 @@
     "custom": {
       "displayName": "Timeline"
     },
-    "parent": "cont08",
+    "parent": "cont10",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont12": {
+  "divi14": {
     "type": {
-      "resolvedName": "Container"
+      "resolvedName": "Divider"
     },
-    "isCanvas": true,
+    "isCanvas": false,
     "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "56",
-        "48",
-        "48",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
-        "a": 1
-      },
+      "thickness": "1",
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
+        "r": 45,
+        "g": 32,
+        "b": 24,
+        "a": 0.15
       },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "anchor": "coaches"
+      "inset": "0",
+      "spacing": "28"
     },
-    "displayName": "Container",
+    "displayName": "Divider",
     "custom": {
-      "displayName": "Coaches"
+      "displayName": "Divider"
     },
-    "parent": "ROOT",
+    "parent": "cont10",
     "hidden": false,
-    "nodes": [
-      "head13",
-      "spac14",
-      "team15"
-    ],
+    "nodes": [],
     "linkedNodes": {}
   },
-  "head13": {
+  "quot15": {
     "type": {
-      "resolvedName": "Heading"
+      "resolvedName": "Quote"
     },
     "isCanvas": false,
     "props": {
-      "text": "Who is on the floor",
-      "level": "2",
-      "fontSize": "34",
-      "fontWeight": "700",
-      "textAlign": "left",
+      "text": "The only subscription I have never once thought about cancelling.",
+      "attribution": "A subscriber, three years in",
+      "fontSize": "19",
+      "align": "left",
       "color": {
-        "r": 244,
-        "g": 246,
-        "b": 242,
+        "r": 45,
+        "g": 32,
+        "b": 24,
         "a": 1
       },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont12",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "spac14": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "24"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "cont12",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "team15": {
-    "type": {
-      "resolvedName": "TeamGrid"
-    },
-    "isCanvas": false,
-    "props": {
-      "people": [
-        "Adi Rom",
-        "Strength",
-        "https://images.pexels.com/photos/6628962/pexels-photo-6628962.jpeg?auto=compress&cs=tinysrgb&w=400",
-        "Yonatan Bar",
-        "Olympic lifting",
-        "https://images.pexels.com/photos/4464780/pexels-photo-4464780.jpeg?auto=compress&cs=tinysrgb&w=400",
-        "Shira Peled",
-        "Conditioning",
-        "https://images.pexels.com/photos/32610333/pexels-photo-32610333.jpeg?auto=compress&cs=tinysrgb&w=400"
-      ],
-      "columns": "3",
       "accent": {
-        "r": 25,
-        "g": 29,
-        "b": 26,
-        "a": 1
-      },
-      "color": {
-        "r": 244,
-        "g": 246,
-        "b": 242,
+        "r": 178,
+        "g": 92,
+        "b": 48,
         "a": 1
       }
     },
-    "displayName": "TeamGrid",
+    "displayName": "Quote",
     "custom": {
-      "displayName": "TeamGrid"
+      "displayName": "Quote"
     },
-    "parent": "cont12",
+    "parent": "cont10",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
@@ -618,13 +629,13 @@
     "isCanvas": true,
     "props": {
       "flexDirection": "column",
-      "alignItems": "center",
+      "alignItems": "flex-start",
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "56",
+        "24",
         "48",
-        "56",
+        "64",
         "48"
       ],
       "margin": [
@@ -634,9 +645,9 @@
         "0"
       ],
       "background": {
-        "r": 25,
-        "g": 29,
-        "b": 26,
+        "r": 249,
+        "g": 245,
+        "b": 240,
         "a": 1
       },
       "color": {
@@ -649,18 +660,19 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "membership"
+      "anchor": "visit"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Membership"
+      "displayName": "Visit"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
       "head17",
-      "spac18",
-      "pric19"
+      "list18",
+      "spac19",
+      "map20"
     ],
     "linkedNodes": {}
   },
@@ -670,15 +682,15 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "Membership",
+      "text": "The shop",
       "level": "2",
-      "fontSize": "34",
+      "fontSize": "26",
       "fontWeight": "700",
-      "textAlign": "center",
+      "textAlign": "left",
       "color": {
-        "r": 244,
-        "g": 246,
-        "b": 242,
+        "r": 45,
+        "g": 32,
+        "b": 24,
         "a": 1
       },
       "margin": [
@@ -697,13 +709,43 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac18": {
+  "list18": {
+    "type": {
+      "resolvedName": "List"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Weekdays 07:00 to 17:00",
+        "Saturday 08:00 to 14:00",
+        "Cupping every first Friday"
+      ],
+      "ordered": "no",
+      "fontSize": "16",
+      "gap": "8",
+      "color": {
+        "r": 116,
+        "g": 99,
+        "b": 84,
+        "a": 1
+      }
+    },
+    "displayName": "List",
+    "custom": {
+      "displayName": "List"
+    },
+    "parent": "cont16",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac19": {
     "type": {
       "resolvedName": "Spacer"
     },
     "isCanvas": false,
     "props": {
-      "height": "24"
+      "height": "16"
     },
     "displayName": "Spacer",
     "custom": {
@@ -714,149 +756,24 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "pric19": {
+  "map20": {
     "type": {
-      "resolvedName": "Pricing"
+      "resolvedName": "Map"
     },
     "isCanvas": false,
     "props": {
-      "tiers": [
-        "Drop in",
-        "₪70",
-        "per class",
-        "Come once",
-        "Any class; No commitment",
-        "Monthly",
-        "₪380",
-        "per month",
-        "Join monthly",
-        "Unlimited classes; Open gym; Cancel any time",
-        "Yearly",
-        "₪3,600",
-        "per year",
-        "Join yearly",
-        "Everything monthly; Two months free; Guest passes"
-      ],
-      "featured": 2,
-      "accent": {
-        "r": 196,
-        "g": 242,
-        "b": 75,
-        "a": 1
-      },
-      "background": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
-        "a": 1
-      },
-      "color": {
-        "r": 244,
-        "g": 246,
-        "b": 242,
-        "a": 1
-      }
+      "lat": 32.0553,
+      "lng": 34.7595,
+      "zoom": 15,
+      "height": "320px",
+      "width": "100%",
+      "label": "Harbour Roasters"
     },
-    "displayName": "Pricing",
+    "displayName": "Map",
     "custom": {
-      "displayName": "Pricing"
+      "displayName": "Map"
     },
     "parent": "cont16",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont20": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "48",
-        "48",
-        "72",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
-        "a": 1
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Close"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "ctab21"
-    ],
-    "linkedNodes": {}
-  },
-  "ctab21": {
-    "type": {
-      "resolvedName": "CTABanner"
-    },
-    "isCanvas": false,
-    "props": {
-      "title": "Come and try it",
-      "text": "First class is free and nobody will make you talk about your goals.",
-      "cta": "Book a slot",
-      "href": "#timetable",
-      "background": {
-        "r": 196,
-        "g": 242,
-        "b": 75,
-        "a": 1
-      },
-      "color": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
-        "a": 1
-      },
-      "buttonBackground": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
-        "a": 1
-      },
-      "buttonColor": {
-        "r": 196,
-        "g": 242,
-        "b": 75,
-        "a": 1
-      },
-      "radius": 16
-    },
-    "displayName": "CTABanner",
-    "custom": {
-      "displayName": "CTABanner"
-    },
-    "parent": "cont20",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

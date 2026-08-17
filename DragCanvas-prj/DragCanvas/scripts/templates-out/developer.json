@@ -22,9 +22,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 14,
+        "g": 16,
+        "b": 20,
         "a": 1
       },
       "color": {
@@ -46,9 +46,9 @@
     "nodes": [
       "navb01",
       "cont02",
-      "cont10",
+      "cont07",
       "cont23",
-      "cont30"
+      "cont31"
     ],
     "linkedNodes": {}
   },
@@ -58,27 +58,27 @@
     },
     "isCanvas": false,
     "props": {
-      "variant": "light",
-      "brand": "Casa Oliva",
+      "variant": "dark",
+      "brand": "omer.dev",
       "links": [
         {
-          "text": "Menu",
-          "href": "#menu"
+          "text": "Projects",
+          "href": "#projects"
         },
         {
-          "text": "Hours",
-          "href": "#hours"
+          "text": "Stack",
+          "href": "#stack"
         },
         {
-          "text": "Find us",
-          "href": "#find-us"
+          "text": "Contact",
+          "href": "#contact"
         }
       ],
       "sticky": false,
       "textColor": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
       "height": "56px",
@@ -104,7 +104,7 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "64",
+        "80",
         "48",
         "48",
         "48"
@@ -116,9 +116,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 14,
+        "g": 16,
+        "b": 20,
         "a": 1
       },
       "color": {
@@ -139,137 +139,34 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu03"
+      "head03",
+      "text04",
+      "spac05",
+      "soci06"
     ],
     "linkedNodes": {}
   },
-  "colu03": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "2",
-      "gap": "40",
-      "align": "center",
-      "stack": "yes"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Columns"
-    },
-    "parent": "cont02",
-    "hidden": false,
-    "nodes": [
-      "cont04",
-      "imag09"
-    ],
-    "linkedNodes": {}
-  },
-  "cont04": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Words"
-    },
-    "parent": "colu03",
-    "hidden": false,
-    "nodes": [
-      "badg05",
-      "head06",
-      "text07",
-      "butt08"
-    ],
-    "linkedNodes": {}
-  },
-  "badg05": {
-    "type": {
-      "resolvedName": "Badge"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Open for dinner",
-      "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "radius": 999
-    },
-    "displayName": "Badge",
-    "custom": {
-      "displayName": "Badge"
-    },
-    "parent": "cont04",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "head06": {
+  "head03": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "Slow food, small room",
+      "text": "I build the boring parts properly",
       "level": "1",
-      "fontSize": "46",
+      "fontSize": "48",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
+        "r": 233,
+        "g": 236,
+        "b": 241,
         "a": 1
       },
       "margin": [
-        "12",
         "0",
-        "10",
+        "0",
+        "0",
         "0"
       ]
     },
@@ -277,12 +174,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont04",
+    "parent": "cont02",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text07": {
+  "text04": {
     "type": {
       "resolvedName": "Text"
     },
@@ -292,196 +189,30 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
+        "r": 133,
+        "g": 141,
+        "b": 153,
         "a": 1
       },
       "margin": [
-        "0",
+        "14",
         "0",
         "0",
         "0"
       ],
       "shadow": 0,
-      "text": "Twenty-four covers, one sitting a night, and whatever the market had that morning."
+      "text": "Backend and infrastructure, mostly Node and Postgres. Ten years, four companies, one very long migration."
     },
     "displayName": "Text",
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont04",
+    "parent": "cont02",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "butt08": {
-    "type": {
-      "resolvedName": "Button"
-    },
-    "isCanvas": false,
-    "props": {
-      "background": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "buttonStyle": "full",
-      "text": "Book a table",
-      "margin": [
-        "5",
-        "0",
-        "5",
-        "0"
-      ],
-      "textComponent": {
-        "fontSize": "15",
-        "textAlign": "center",
-        "fontWeight": "600",
-        "color": {
-          "r": 92,
-          "g": 90,
-          "b": 90,
-          "a": 1
-        },
-        "margin": [
-          "0",
-          "0",
-          "0",
-          "0"
-        ],
-        "shadow": 0,
-        "text": "Book a table"
-      }
-    },
-    "displayName": "Button",
-    "custom": {
-      "displayName": "Button"
-    },
-    "parent": "cont04",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "imag09": {
-    "type": {
-      "resolvedName": "Image"
-    },
-    "isCanvas": false,
-    "props": {
-      "src": {
-        "src": "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=900",
-        "radius": 8,
-        "width": "100%"
-      },
-      "radius": 0,
-      "width": "auto",
-      "height": "auto",
-      "maxWidth": "100%"
-    },
-    "displayName": "Image",
-    "custom": {
-      "displayName": "Image"
-    },
-    "parent": "colu03",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont10": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "56",
-        "48",
-        "56",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "anchor": "menu"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Menu"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "head11",
-      "spac12",
-      "colu13"
-    ],
-    "linkedNodes": {}
-  },
-  "head11": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "This week",
-      "level": "2",
-      "fontSize": "32",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont10",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "spac12": {
+  "spac05": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -493,19 +224,159 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont10",
+    "parent": "cont02",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "colu13": {
+  "soci06": {
+    "type": {
+      "resolvedName": "SocialLinks"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "GitHub",
+        "https://github.com/",
+        "LinkedIn",
+        "https://linkedin.com/",
+        "Email",
+        "mailto:hi@omer.dev"
+      ],
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 0.07
+      },
+      "color": {
+        "r": 233,
+        "g": 236,
+        "b": 241,
+        "a": 1
+      },
+      "size": "14"
+    },
+    "displayName": "SocialLinks",
+    "custom": {
+      "displayName": "SocialLinks"
+    },
+    "parent": "cont02",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont07": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "32",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 14,
+        "g": 16,
+        "b": 20,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto",
+      "anchor": "projects"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Projects"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head08",
+      "spac09",
+      "colu10"
+    ],
+    "linkedNodes": {}
+  },
+  "head08": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Things I have shipped",
+      "level": "2",
+      "fontSize": "32",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 233,
+        "g": 236,
+        "b": 241,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont07",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac09": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "24"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont07",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "colu10": {
     "type": {
       "resolvedName": "Columns"
     },
     "isCanvas": true,
     "props": {
-      "count": "3",
-      "gap": "24",
+      "count": "2",
+      "gap": "20",
       "align": "stretch",
       "stack": "yes"
     },
@@ -513,13 +384,131 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont10",
+    "parent": "cont07",
     "hidden": false,
     "nodes": [
+      "cont11",
       "cont14",
       "cont17",
       "cont20"
     ],
+    "linkedNodes": {}
+  },
+  "cont11": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "24",
+        "24",
+        "24"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 23,
+        "g": 26,
+        "b": 32,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 10,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "ledger-sync"
+    },
+    "parent": "colu10",
+    "hidden": false,
+    "nodes": [
+      "head12",
+      "text13"
+    ],
+    "linkedNodes": {}
+  },
+  "head12": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "ledger-sync",
+      "level": "3",
+      "fontSize": "18",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 86,
+        "g": 204,
+        "b": 218,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont11",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text13": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 133,
+        "g": 141,
+        "b": 153,
+        "a": 1
+      },
+      "margin": [
+        "8",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Reconciles two accounting systems that disagree politely. 40k lines, no cron."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont11",
+    "hidden": false,
+    "nodes": [],
     "linkedNodes": {}
   },
   "cont14": {
@@ -534,9 +523,9 @@
       "fillSpace": "no",
       "padding": [
         "24",
-        "22",
         "24",
-        "22"
+        "24",
+        "24"
       ],
       "margin": [
         "0",
@@ -545,9 +534,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 23,
+        "g": 26,
+        "b": 32,
         "a": 1
       },
       "color": {
@@ -557,19 +546,19 @@
         "a": 1
       },
       "shadow": 0,
-      "radius": 8,
+      "radius": 10,
       "width": "100%",
       "height": "auto"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "To start"
+      "displayName": "pgqueue"
     },
-    "parent": "colu13",
+    "parent": "colu10",
     "hidden": false,
     "nodes": [
       "head15",
-      "list16"
+      "text16"
     ],
     "linkedNodes": {}
   },
@@ -579,15 +568,15 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "To start",
+      "text": "pgqueue",
       "level": "3",
       "fontSize": "18",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
+        "r": 86,
+        "g": 204,
+        "b": 218,
         "a": 1
       },
       "margin": [
@@ -606,30 +595,33 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "list16": {
+  "text16": {
     "type": {
-      "resolvedName": "List"
+      "resolvedName": "Text"
     },
     "isCanvas": false,
     "props": {
-      "items": [
-        "Bread, oil, salt",
-        "Anchovy and butter",
-        "Tomato, done simply"
-      ],
-      "ordered": "no",
       "fontSize": "15",
-      "gap": "10",
+      "textAlign": "left",
+      "fontWeight": "500",
       "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
+        "r": 133,
+        "g": 141,
+        "b": 153,
         "a": 1
-      }
+      },
+      "margin": [
+        "8",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "A job queue that is just Postgres. Because the fifth dependency is the expensive one."
     },
-    "displayName": "List",
+    "displayName": "Text",
     "custom": {
-      "displayName": "List"
+      "displayName": "Text"
     },
     "parent": "cont14",
     "hidden": false,
@@ -648,9 +640,9 @@
       "fillSpace": "no",
       "padding": [
         "24",
-        "22",
         "24",
-        "22"
+        "24",
+        "24"
       ],
       "margin": [
         "0",
@@ -659,9 +651,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 23,
+        "g": 26,
+        "b": 32,
         "a": 1
       },
       "color": {
@@ -671,19 +663,19 @@
         "a": 1
       },
       "shadow": 0,
-      "radius": 8,
+      "radius": 10,
       "width": "100%",
       "height": "auto"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Mains"
+      "displayName": "warmups"
     },
-    "parent": "colu13",
+    "parent": "colu10",
     "hidden": false,
     "nodes": [
       "head18",
-      "list19"
+      "text19"
     ],
     "linkedNodes": {}
   },
@@ -693,15 +685,15 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "Mains",
+      "text": "warmups",
       "level": "3",
       "fontSize": "18",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
+        "r": 86,
+        "g": 204,
+        "b": 218,
         "a": 1
       },
       "margin": [
@@ -720,30 +712,33 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "list19": {
+  "text19": {
     "type": {
-      "resolvedName": "List"
+      "resolvedName": "Text"
     },
     "isCanvas": false,
     "props": {
-      "items": [
-        "Lamb, slowly",
-        "Sea bream, whole",
-        "Aubergine, smoked"
-      ],
-      "ordered": "no",
       "fontSize": "15",
-      "gap": "10",
+      "textAlign": "left",
+      "fontWeight": "500",
       "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
+        "r": 133,
+        "g": 141,
+        "b": 153,
         "a": 1
-      }
+      },
+      "margin": [
+        "8",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Cuts cold starts on a serverless fleet from 900ms to 80ms."
     },
-    "displayName": "List",
+    "displayName": "Text",
     "custom": {
-      "displayName": "List"
+      "displayName": "Text"
     },
     "parent": "cont17",
     "hidden": false,
@@ -762,9 +757,9 @@
       "fillSpace": "no",
       "padding": [
         "24",
-        "22",
         "24",
-        "22"
+        "24",
+        "24"
       ],
       "margin": [
         "0",
@@ -773,9 +768,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 23,
+        "g": 26,
+        "b": 32,
         "a": 1
       },
       "color": {
@@ -785,19 +780,19 @@
         "a": 1
       },
       "shadow": 0,
-      "radius": 8,
+      "radius": 10,
       "width": "100%",
       "height": "auto"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "After"
+      "displayName": "tinyauth"
     },
-    "parent": "colu13",
+    "parent": "colu10",
     "hidden": false,
     "nodes": [
       "head21",
-      "list22"
+      "text22"
     ],
     "linkedNodes": {}
   },
@@ -807,15 +802,15 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "After",
+      "text": "tinyauth",
       "level": "3",
       "fontSize": "18",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
+        "r": 86,
+        "g": 204,
+        "b": 218,
         "a": 1
       },
       "margin": [
@@ -834,30 +829,33 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "list22": {
+  "text22": {
     "type": {
-      "resolvedName": "List"
+      "resolvedName": "Text"
     },
     "isCanvas": false,
     "props": {
-      "items": [
-        "Olive oil cake",
-        "Figs and cream",
-        "Coffee and something"
-      ],
-      "ordered": "no",
       "fontSize": "15",
-      "gap": "10",
+      "textAlign": "left",
+      "fontWeight": "500",
       "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
+        "r": 133,
+        "g": 141,
+        "b": 153,
         "a": 1
-      }
+      },
+      "margin": [
+        "8",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Session auth in 300 lines, for people who do not need a provider."
     },
-    "displayName": "List",
+    "displayName": "Text",
     "custom": {
-      "displayName": "List"
+      "displayName": "Text"
     },
     "parent": "cont20",
     "hidden": false,
@@ -875,9 +873,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "56",
         "48",
-        "32",
+        "48",
+        "48",
         "48"
       ],
       "margin": [
@@ -887,9 +885,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 23,
+        "g": 26,
+        "b": 32,
         "a": 1
       },
       "color": {
@@ -902,11 +900,11 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "hours"
+      "anchor": "stack"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Hours"
+      "displayName": "Stack"
     },
     "parent": "ROOT",
     "hidden": false,
@@ -961,9 +959,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 23,
+        "g": 26,
+        "b": 32,
         "a": 1
       },
       "color": {
@@ -979,7 +977,7 @@
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "When"
+      "displayName": "Know"
     },
     "parent": "colu24",
     "hidden": false,
@@ -995,15 +993,15 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "When we are open",
+      "text": "What I reach for",
       "level": "2",
-      "fontSize": "28",
+      "fontSize": "26",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
+        "r": 233,
+        "g": 236,
+        "b": 241,
         "a": 1
       },
       "margin": [
@@ -1029,17 +1027,17 @@
     "isCanvas": false,
     "props": {
       "items": [
-        "Tuesday to Saturday, 18:00",
-        "One sitting, seven o’clock",
-        "Closed Sunday and Monday"
+        "Node, TypeScript, Postgres",
+        "Terraform and too much YAML",
+        "Playwright, because it catches the real bugs"
       ],
       "ordered": "no",
       "fontSize": "16",
       "gap": "8",
       "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
+        "r": 133,
+        "g": 141,
+        "b": 153,
         "a": 1
       }
     },
@@ -1075,9 +1073,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 23,
+        "g": 26,
+        "b": 32,
         "a": 1
       },
       "color": {
@@ -1093,122 +1091,31 @@
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Said"
+      "displayName": "Learning"
     },
     "parent": "colu24",
     "hidden": false,
     "nodes": [
-      "test29"
+      "head29",
+      "list30"
     ],
     "linkedNodes": {}
   },
-  "test29": {
-    "type": {
-      "resolvedName": "Testimonial"
-    },
-    "isCanvas": false,
-    "props": {
-      "quote": "The menu is short because everything on it is worth eating.",
-      "author": "Ronit Adler",
-      "role": "Time Out Tel Aviv",
-      "avatar": "",
-      "align": "left",
-      "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "accent": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 0.6
-      }
-    },
-    "displayName": "Testimonial",
-    "custom": {
-      "displayName": "Testimonial"
-    },
-    "parent": "cont28",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont30": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "24",
-        "48",
-        "64",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "anchor": "find-us"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Find us"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "head31",
-      "spac32",
-      "map33"
-    ],
-    "linkedNodes": {}
-  },
-  "head31": {
+  "head29": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "Yehuda Halevi 21",
+      "text": "What I am learning",
       "level": "2",
-      "fontSize": "28",
+      "fontSize": "26",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
+        "r": 233,
+        "g": 236,
+        "b": 241,
         "a": 1
       },
       "margin": [
@@ -1222,46 +1129,132 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont30",
+    "parent": "cont28",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac32": {
+  "list30": {
     "type": {
-      "resolvedName": "Spacer"
+      "resolvedName": "List"
     },
     "isCanvas": false,
     "props": {
-      "height": "16"
+      "items": [
+        "Rust, slowly and badly",
+        "How to write a design document nobody dreads"
+      ],
+      "ordered": "no",
+      "fontSize": "16",
+      "gap": "8",
+      "color": {
+        "r": 133,
+        "g": 141,
+        "b": 153,
+        "a": 1
+      }
     },
-    "displayName": "Spacer",
+    "displayName": "List",
     "custom": {
-      "displayName": "Spacer"
+      "displayName": "List"
     },
-    "parent": "cont30",
+    "parent": "cont28",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "map33": {
+  "cont31": {
     "type": {
-      "resolvedName": "Map"
+      "resolvedName": "Container"
     },
-    "isCanvas": false,
+    "isCanvas": true,
     "props": {
-      "lat": 32.0629,
-      "lng": 34.7745,
-      "zoom": 15,
-      "height": "320px",
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "48",
+        "48",
+        "72",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 14,
+        "g": 16,
+        "b": 20,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
       "width": "100%",
-      "label": "Casa Oliva"
+      "height": "auto",
+      "anchor": "contact"
     },
-    "displayName": "Map",
+    "displayName": "Container",
     "custom": {
-      "displayName": "Map"
+      "displayName": "Contact"
     },
-    "parent": "cont30",
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "ctab32"
+    ],
+    "linkedNodes": {}
+  },
+  "ctab32": {
+    "type": {
+      "resolvedName": "CTABanner"
+    },
+    "isCanvas": false,
+    "props": {
+      "title": "Looking for someone?",
+      "text": "Available for contract work from October. Tell me what is broken.",
+      "cta": "Email me",
+      "href": "mailto:hi@omer.dev",
+      "background": {
+        "r": 86,
+        "g": 204,
+        "b": 218,
+        "a": 1
+      },
+      "color": {
+        "r": 14,
+        "g": 16,
+        "b": 20,
+        "a": 1
+      },
+      "buttonBackground": {
+        "r": 14,
+        "g": 16,
+        "b": 20,
+        "a": 1
+      },
+      "buttonColor": {
+        "r": 86,
+        "g": 204,
+        "b": 218,
+        "a": 1
+      },
+      "radius": 16
+    },
+    "displayName": "CTABanner",
+    "custom": {
+      "displayName": "CTABanner"
+    },
+    "parent": "cont31",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

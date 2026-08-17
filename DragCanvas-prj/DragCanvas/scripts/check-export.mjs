@@ -7,11 +7,15 @@
  */
 // exportToHtml — чистый ESM, запускается в Node без браузера
 const data = {
-  ROOT: { type: { resolvedName: 'Container' }, isCanvas: true, nodes: ['nav1', 'form1'],
+  ROOT: { type: { resolvedName: 'Container' }, isCanvas: true, nodes: ['nav1', 'menu1', 'form1'],
           props: { width: '800px', flexDirection: 'column', background: { r: 255, g: 255, b: 255, a: 1 } } },
   nav1: { type: { resolvedName: 'NavbarElement' }, nodes: [],
+          // #menu exists below; #missing deliberately does not, so both halves of
+          // the anchor rule are exercised by one fixture
           props: { variant: 'dark', brand: 'Casa Oliva', sticky: true,
-                   links: [{ text: 'Menu', href: '#menu' }, { text: 'Contact', href: '#contact' }] } },
+                   links: [{ text: 'Menu', href: '#menu' }, { text: 'Nowhere', href: '#missing' }] } },
+  menu1: { type: { resolvedName: 'Container' }, isCanvas: true, nodes: [],
+           props: { anchor: 'menu', width: '100%' } },
   form1: { type: { resolvedName: 'Form' }, nodes: [],
            props: { submitText: 'Send request', successMessage: 'Got it, thanks!',
                     radius: 10, accent: { r: 200, g: 80, b: 60, a: 1 },
@@ -28,7 +32,12 @@ const html = exportToHtml(data, 'Test', { projectId: 42, apiUrl: 'https://dragca
 const checks = [
   ['навбар отрисован',        html.includes('<nav')],
   ['бренд на месте',          html.includes('Casa Oliva')],
-  ['ссылки навбара',          html.includes('#menu') && html.includes('#contact')],
+  // A link to a section that exists stays a link; one to a section that does not
+  // renders as its label. A dead link invites the click and then does nothing,
+  // which is worse than plain text.
+  ['якорь секции проставлен',  html.includes('id="menu"')],
+  ['живая ссылка навбара',     html.includes('href="#menu"')],
+  ['мёртвая ссылка не ссылка', !html.includes('href="#missing"') && html.includes('>Nowhere<')],
   ['sticky применён',         html.includes('position: sticky')],
   ['форма отрисована',        html.includes('<form')],
   ['три поля',                (html.match(/<input |<textarea /g) || []).length >= 4],

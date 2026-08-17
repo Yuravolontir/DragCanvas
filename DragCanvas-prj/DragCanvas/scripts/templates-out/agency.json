@@ -1,0 +1,1021 @@
+{
+  "ROOT": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 250,
+        "g": 249,
+        "b": 248,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "App"
+    },
+    "hidden": false,
+    "nodes": [
+      "navb01",
+      "cont02",
+      "cont06",
+      "cont18",
+      "cont24"
+    ],
+    "linkedNodes": {}
+  },
+  "navb01": {
+    "type": {
+      "resolvedName": "NavbarElement"
+    },
+    "isCanvas": false,
+    "props": {
+      "variant": "light",
+      "brand": "FIELD",
+      "links": [
+        {
+          "text": "Work",
+          "href": "#work"
+        },
+        {
+          "text": "Studio",
+          "href": "#studio"
+        },
+        {
+          "text": "Brief",
+          "href": "#brief"
+        }
+      ],
+      "sticky": false,
+      "textColor": {
+        "r": 20,
+        "g": 20,
+        "b": 22,
+        "a": 1
+      },
+      "height": "56px",
+      "width": "100%"
+    },
+    "displayName": "NavbarElement",
+    "custom": {
+      "displayName": "Navbar"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont02": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "80",
+        "48",
+        "40",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 250,
+        "g": 249,
+        "b": 248,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Hero"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head03",
+      "text04",
+      "logo05"
+    ],
+    "linkedNodes": {}
+  },
+  "head03": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "We make the difficult part look obvious",
+      "level": "1",
+      "fontSize": "54",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 20,
+        "g": 20,
+        "b": 22,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont02",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text04": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "19",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 105,
+        "g": 103,
+        "b": 108,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "0",
+        "28",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Brand and product design for companies that have outgrown their first look."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont02",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "logo05": {
+    "type": {
+      "resolvedName": "LogoStrip"
+    },
+    "isCanvas": false,
+    "props": {
+      "logos": [
+        "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=200",
+        "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=200",
+        "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=200",
+        "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=200",
+        "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=200"
+      ],
+      "height": "28",
+      "gap": "40",
+      "grayscale": "yes"
+    },
+    "displayName": "LogoStrip",
+    "custom": {
+      "displayName": "LogoStrip"
+    },
+    "parent": "cont02",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont06": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 250,
+        "g": 249,
+        "b": 248,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto",
+      "anchor": "work"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Work"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head07",
+      "spac08",
+      "colu09"
+    ],
+    "linkedNodes": {}
+  },
+  "head07": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Recent work",
+      "level": "2",
+      "fontSize": "32",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 20,
+        "g": 20,
+        "b": 22,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont06",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac08": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "24"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont06",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "colu09": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "24",
+      "align": "stretch",
+      "stack": "yes"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont06",
+    "hidden": false,
+    "nodes": [
+      "cont10",
+      "cont14"
+    ],
+    "linkedNodes": {}
+  },
+  "cont10": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "22",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 238,
+        "g": 237,
+        "b": 235,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 12,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Kettle"
+    },
+    "parent": "colu09",
+    "hidden": false,
+    "nodes": [
+      "imag11",
+      "head12",
+      "text13"
+    ],
+    "linkedNodes": {}
+  },
+  "imag11": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": {
+        "src": "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "radius": 12,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont10",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head12": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Kettle",
+      "level": "3",
+      "fontSize": "20",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 20,
+        "g": 20,
+        "b": 22,
+        "a": 1
+      },
+      "margin": [
+        "16",
+        "22",
+        "4",
+        "22"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont10",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text13": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 105,
+        "g": 103,
+        "b": 108,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "22",
+        "0",
+        "22"
+      ],
+      "shadow": 0,
+      "text": "A brand that survives being printed small"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont10",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont14": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "22",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 238,
+        "g": 237,
+        "b": 235,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 12,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Fathom"
+    },
+    "parent": "colu09",
+    "hidden": false,
+    "nodes": [
+      "imag15",
+      "head16",
+      "text17"
+    ],
+    "linkedNodes": {}
+  },
+  "imag15": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": {
+        "src": "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "radius": 12,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont14",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head16": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Fathom",
+      "level": "3",
+      "fontSize": "20",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 20,
+        "g": 20,
+        "b": 22,
+        "a": 1
+      },
+      "margin": [
+        "16",
+        "22",
+        "4",
+        "22"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont14",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text17": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 105,
+        "g": 103,
+        "b": 108,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "22",
+        "0",
+        "22"
+      ],
+      "shadow": 0,
+      "text": "Turning a dense product into three screens"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont14",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont18": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "56",
+        "48",
+        "56",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 20,
+        "g": 20,
+        "b": 22,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto",
+      "anchor": "studio"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Studio"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head19",
+      "spac20",
+      "stat21",
+      "spac22",
+      "test23"
+    ],
+    "linkedNodes": {}
+  },
+  "head19": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Six people, one room",
+      "level": "2",
+      "fontSize": "32",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 250,
+        "g": 249,
+        "b": 248,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont18",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac20": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "20"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont18",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "stat21": {
+    "type": {
+      "resolvedName": "Stats"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "11",
+        "years",
+        "60+",
+        "projects",
+        "6",
+        "people"
+      ],
+      "align": "center",
+      "accent": {
+        "r": 214,
+        "g": 69,
+        "b": 46,
+        "a": 1
+      },
+      "color": {
+        "r": 180,
+        "g": 178,
+        "b": 182,
+        "a": 1
+      }
+    },
+    "displayName": "Stats",
+    "custom": {
+      "displayName": "Stats"
+    },
+    "parent": "cont18",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac22": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "28"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont18",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "test23": {
+    "type": {
+      "resolvedName": "Testimonial"
+    },
+    "isCanvas": false,
+    "props": {
+      "quote": "They asked better questions than our board did, and then answered them in pictures.",
+      "author": "Ronit Adler",
+      "role": "CEO, Kettle",
+      "avatar": "",
+      "align": "left",
+      "background": {
+        "r": 32,
+        "g": 32,
+        "b": 35,
+        "a": 1
+      },
+      "color": {
+        "r": 250,
+        "g": 249,
+        "b": 248,
+        "a": 1
+      },
+      "accent": {
+        "r": 214,
+        "g": 69,
+        "b": 46,
+        "a": 1
+      }
+    },
+    "displayName": "Testimonial",
+    "custom": {
+      "displayName": "Testimonial"
+    },
+    "parent": "cont18",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont24": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "56",
+        "48",
+        "72",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 250,
+        "g": 249,
+        "b": 248,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto",
+      "anchor": "brief"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Brief"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head25",
+      "text26",
+      "form27"
+    ],
+    "linkedNodes": {}
+  },
+  "head25": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Send us a brief",
+      "level": "2",
+      "fontSize": "30",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 20,
+        "g": 20,
+        "b": 22,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont24",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text26": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "16",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 105,
+        "g": 103,
+        "b": 108,
+        "a": 1
+      },
+      "margin": [
+        "10",
+        "0",
+        "20",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "A paragraph is plenty. We will tell you within a week whether we are the right studio."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont24",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "form27": {
+    "type": {
+      "resolvedName": "Form"
+    },
+    "isCanvas": false,
+    "props": {
+      "fields": [
+        {
+          "label": "Name",
+          "type": "text",
+          "placeholder": "Your name",
+          "required": true
+        },
+        {
+          "label": "Email",
+          "type": "email",
+          "placeholder": "you@example.com",
+          "required": true
+        },
+        {
+          "label": "Message",
+          "type": "textarea",
+          "placeholder": "How can we help?"
+        }
+      ],
+      "submitText": "Send the brief",
+      "successMessage": "Thank you — we will be in touch.",
+      "radius": 10,
+      "background": {
+        "r": 238,
+        "g": 237,
+        "b": 235,
+        "a": 1
+      },
+      "accent": {
+        "r": 214,
+        "g": 69,
+        "b": 46,
+        "a": 1
+      },
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Form",
+    "custom": {
+      "displayName": "Form"
+    },
+    "parent": "cont24",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  }
+}

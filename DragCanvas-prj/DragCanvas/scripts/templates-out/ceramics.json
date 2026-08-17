@@ -22,9 +22,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 246,
+        "g": 242,
+        "b": 234,
         "a": 1
       },
       "color": {
@@ -46,9 +46,9 @@
     "nodes": [
       "navb01",
       "cont02",
-      "cont10",
-      "cont23",
-      "cont30"
+      "cont05",
+      "cont19",
+      "cont23"
     ],
     "linkedNodes": {}
   },
@@ -59,26 +59,26 @@
     "isCanvas": false,
     "props": {
       "variant": "light",
-      "brand": "Casa Oliva",
+      "brand": "Clay & Co",
       "links": [
         {
-          "text": "Menu",
-          "href": "#menu"
+          "text": "Shop",
+          "href": "#shop"
         },
         {
-          "text": "Hours",
-          "href": "#hours"
+          "text": "Workshops",
+          "href": "#workshops"
         },
         {
-          "text": "Find us",
-          "href": "#find-us"
+          "text": "About",
+          "href": "#about"
         }
       ],
       "sticky": false,
       "textColor": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
+        "r": 58,
+        "g": 53,
+        "b": 44,
         "a": 1
       },
       "height": "56px",
@@ -106,7 +106,7 @@
       "padding": [
         "64",
         "48",
-        "48",
+        "40",
         "48"
       ],
       "margin": [
@@ -116,9 +116,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 246,
+        "g": 242,
+        "b": 234,
         "a": 1
       },
       "color": {
@@ -139,34 +139,153 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu03"
+      "head03",
+      "text04"
     ],
     "linkedNodes": {}
   },
-  "colu03": {
+  "head03": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Made slowly, by two people",
+      "level": "1",
+      "fontSize": "46",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 58,
+        "g": 53,
+        "b": 44,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont02",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text04": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 107,
+        "g": 99,
+        "b": 85,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Tableware thrown and glazed in a small studio. Every batch is a little different, which is rather the point."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont02",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont05": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 246,
+        "g": 242,
+        "b": 234,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto",
+      "anchor": "shop"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Shop"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "colu06"
+    ],
+    "linkedNodes": {}
+  },
+  "colu06": {
     "type": {
       "resolvedName": "Columns"
     },
     "isCanvas": true,
     "props": {
-      "count": "2",
-      "gap": "40",
-      "align": "center",
+      "count": "3",
+      "gap": "20",
+      "align": "stretch",
       "stack": "yes"
     },
     "displayName": "Columns",
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont02",
+    "parent": "cont05",
     "hidden": false,
     "nodes": [
-      "cont04",
-      "imag09"
+      "cont07",
+      "cont11",
+      "cont15"
     ],
     "linkedNodes": {}
   },
-  "cont04": {
+  "cont07": {
     "type": {
       "resolvedName": "Container"
     },
@@ -179,7 +298,7 @@
       "padding": [
         "0",
         "0",
-        "0",
+        "18",
         "0"
       ],
       "margin": [
@@ -189,9 +308,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 234,
+        "g": 226,
+        "b": 212,
         "a": 1
       },
       "color": {
@@ -201,184 +320,32 @@
         "a": 1
       },
       "shadow": 0,
-      "radius": 0,
+      "radius": 18,
       "width": "100%",
       "height": "auto"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Words"
+      "displayName": "Bowls"
     },
-    "parent": "colu03",
+    "parent": "colu06",
     "hidden": false,
     "nodes": [
-      "badg05",
-      "head06",
-      "text07",
-      "butt08"
+      "imag08",
+      "head09",
+      "text10"
     ],
     "linkedNodes": {}
   },
-  "badg05": {
-    "type": {
-      "resolvedName": "Badge"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Open for dinner",
-      "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "radius": 999
-    },
-    "displayName": "Badge",
-    "custom": {
-      "displayName": "Badge"
-    },
-    "parent": "cont04",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "head06": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Slow food, small room",
-      "level": "1",
-      "fontSize": "46",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "margin": [
-        "12",
-        "0",
-        "10",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont04",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text07": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "17",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "Twenty-four covers, one sitting a night, and whatever the market had that morning."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont04",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "butt08": {
-    "type": {
-      "resolvedName": "Button"
-    },
-    "isCanvas": false,
-    "props": {
-      "background": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "buttonStyle": "full",
-      "text": "Book a table",
-      "margin": [
-        "5",
-        "0",
-        "5",
-        "0"
-      ],
-      "textComponent": {
-        "fontSize": "15",
-        "textAlign": "center",
-        "fontWeight": "600",
-        "color": {
-          "r": 92,
-          "g": 90,
-          "b": 90,
-          "a": 1
-        },
-        "margin": [
-          "0",
-          "0",
-          "0",
-          "0"
-        ],
-        "shadow": 0,
-        "text": "Book a table"
-      }
-    },
-    "displayName": "Button",
-    "custom": {
-      "displayName": "Button"
-    },
-    "parent": "cont04",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "imag09": {
+  "imag08": {
     "type": {
       "resolvedName": "Image"
     },
     "isCanvas": false,
     "props": {
       "src": {
-        "src": "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=900",
-        "radius": 8,
+        "src": "https://images.pexels.com/photos/34004100/pexels-photo-34004100.jpeg?auto=compress&cs=tinysrgb&w=700",
+        "radius": 18,
         "width": "100%"
       },
       "radius": 0,
@@ -390,12 +357,78 @@
     "custom": {
       "displayName": "Image"
     },
-    "parent": "colu03",
+    "parent": "cont07",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont10": {
+  "head09": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Bowls",
+      "level": "3",
+      "fontSize": "18",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 58,
+        "g": 53,
+        "b": 44,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "18",
+        "4",
+        "18"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont07",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text10": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 111,
+        "g": 127,
+        "b": 92,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "18",
+        "0",
+        "18"
+      ],
+      "shadow": 0,
+      "text": "From ₪90"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont07",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont11": {
     "type": {
       "resolvedName": "Container"
     },
@@ -406,9 +439,295 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "56",
+        "0",
+        "0",
+        "18",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 234,
+        "g": 226,
+        "b": 212,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 18,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Mugs"
+    },
+    "parent": "colu06",
+    "hidden": false,
+    "nodes": [
+      "imag12",
+      "head13",
+      "text14"
+    ],
+    "linkedNodes": {}
+  },
+  "imag12": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": {
+        "src": "https://images.pexels.com/photos/8063833/pexels-photo-8063833.jpeg?auto=compress&cs=tinysrgb&w=700",
+        "radius": 18,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont11",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head13": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Mugs",
+      "level": "3",
+      "fontSize": "18",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 58,
+        "g": 53,
+        "b": 44,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "18",
+        "4",
+        "18"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont11",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text14": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 111,
+        "g": 127,
+        "b": 92,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "18",
+        "0",
+        "18"
+      ],
+      "shadow": 0,
+      "text": "From ₪70"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont11",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont15": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "18",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 234,
+        "g": 226,
+        "b": 212,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 18,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Plates"
+    },
+    "parent": "colu06",
+    "hidden": false,
+    "nodes": [
+      "imag16",
+      "head17",
+      "text18"
+    ],
+    "linkedNodes": {}
+  },
+  "imag16": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": {
+        "src": "https://images.pexels.com/photos/6693557/pexels-photo-6693557.jpeg?auto=compress&cs=tinysrgb&w=700",
+        "radius": 18,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head17": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Plates",
+      "level": "3",
+      "fontSize": "18",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 58,
+        "g": 53,
+        "b": 44,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "18",
+        "4",
+        "18"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text18": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 111,
+        "g": 127,
+        "b": 92,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "18",
+        "0",
+        "18"
+      ],
+      "shadow": 0,
+      "text": "From ₪110"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont19": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
         "48",
-        "56",
+        "48",
+        "48",
         "48"
       ],
       "margin": [
@@ -418,9 +737,9 @@
         "0"
       ],
       "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
+        "r": 234,
+        "g": 226,
+        "b": 212,
         "a": 1
       },
       "color": {
@@ -433,36 +752,36 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "menu"
+      "anchor": "workshops"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Menu"
+      "displayName": "Workshops"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head11",
-      "spac12",
-      "colu13"
+      "head20",
+      "spac21",
+      "time22"
     ],
     "linkedNodes": {}
   },
-  "head11": {
+  "head20": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "This week",
+      "text": "Saturdays at the wheel",
       "level": "2",
-      "fontSize": "32",
+      "fontSize": "30",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
+        "r": 58,
+        "g": 53,
+        "b": 44,
         "a": 1
       },
       "margin": [
@@ -476,390 +795,63 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont10",
+    "parent": "cont19",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac12": {
+  "spac21": {
     "type": {
       "resolvedName": "Spacer"
     },
     "isCanvas": false,
     "props": {
-      "height": "24"
+      "height": "20"
     },
     "displayName": "Spacer",
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont10",
+    "parent": "cont19",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "colu13": {
+  "time22": {
     "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "3",
-      "gap": "24",
-      "align": "stretch",
-      "stack": "yes"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Columns"
-    },
-    "parent": "cont10",
-    "hidden": false,
-    "nodes": [
-      "cont14",
-      "cont17",
-      "cont20"
-    ],
-    "linkedNodes": {}
-  },
-  "cont14": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "24",
-        "22",
-        "24",
-        "22"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 8,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "To start"
-    },
-    "parent": "colu13",
-    "hidden": false,
-    "nodes": [
-      "head15",
-      "list16"
-    ],
-    "linkedNodes": {}
-  },
-  "head15": {
-    "type": {
-      "resolvedName": "Heading"
+      "resolvedName": "Timeline"
     },
     "isCanvas": false,
     "props": {
-      "text": "To start",
-      "level": "3",
-      "fontSize": "18",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
+      "steps": [
+        "10:00",
+        "Centring",
+        "The hard part, and the only one that cannot be rushed.",
+        "11:30",
+        "Throwing",
+        "Two hours, three attempts, one bowl worth keeping.",
+        "14:00",
+        "Glazing",
+        "Pick a colour. We fire it and post it to you."
+      ],
+      "accent": {
+        "r": 111,
+        "g": 127,
+        "b": 92,
         "a": 1
       },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont14",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "list16": {
-    "type": {
-      "resolvedName": "List"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "Bread, oil, salt",
-        "Anchovy and butter",
-        "Tomato, done simply"
-      ],
-      "ordered": "no",
-      "fontSize": "15",
-      "gap": "10",
       "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
+        "r": 58,
+        "g": 53,
+        "b": 44,
         "a": 1
       }
     },
-    "displayName": "List",
+    "displayName": "Timeline",
     "custom": {
-      "displayName": "List"
+      "displayName": "Timeline"
     },
-    "parent": "cont14",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont17": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "24",
-        "22",
-        "24",
-        "22"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 8,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Mains"
-    },
-    "parent": "colu13",
-    "hidden": false,
-    "nodes": [
-      "head18",
-      "list19"
-    ],
-    "linkedNodes": {}
-  },
-  "head18": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Mains",
-      "level": "3",
-      "fontSize": "18",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont17",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "list19": {
-    "type": {
-      "resolvedName": "List"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "Lamb, slowly",
-        "Sea bream, whole",
-        "Aubergine, smoked"
-      ],
-      "ordered": "no",
-      "fontSize": "15",
-      "gap": "10",
-      "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
-        "a": 1
-      }
-    },
-    "displayName": "List",
-    "custom": {
-      "displayName": "List"
-    },
-    "parent": "cont17",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont20": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "24",
-        "22",
-        "24",
-        "22"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 8,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "After"
-    },
-    "parent": "colu13",
-    "hidden": false,
-    "nodes": [
-      "head21",
-      "list22"
-    ],
-    "linkedNodes": {}
-  },
-  "head21": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "After",
-      "level": "3",
-      "fontSize": "18",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont20",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "list22": {
-    "type": {
-      "resolvedName": "List"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "Olive oil cake",
-        "Figs and cream",
-        "Coffee and something"
-      ],
-      "ordered": "no",
-      "fontSize": "15",
-      "gap": "10",
-      "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
-        "a": 1
-      }
-    },
-    "displayName": "List",
-    "custom": {
-      "displayName": "List"
-    },
-    "parent": "cont20",
+    "parent": "cont19",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
@@ -875,9 +867,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "56",
         "48",
-        "32",
+        "48",
+        "64",
         "48"
       ],
       "margin": [
@@ -887,9 +879,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 246,
+        "g": 242,
+        "b": 234,
         "a": 1
       },
       "color": {
@@ -902,11 +894,11 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "hours"
+      "anchor": "about"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Hours"
+      "displayName": "About"
     },
     "parent": "ROOT",
     "hidden": false,
@@ -934,7 +926,7 @@
     "hidden": false,
     "nodes": [
       "cont25",
-      "cont28"
+      "cont30"
     ],
     "linkedNodes": {}
   },
@@ -961,9 +953,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 246,
+        "g": 242,
+        "b": 234,
         "a": 1
       },
       "color": {
@@ -979,13 +971,15 @@
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "When"
+      "displayName": "Who"
     },
     "parent": "colu24",
     "hidden": false,
     "nodes": [
       "head26",
-      "list27"
+      "text27",
+      "divi28",
+      "soci29"
     ],
     "linkedNodes": {}
   },
@@ -995,15 +989,15 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "When we are open",
+      "text": "The studio",
       "level": "2",
-      "fontSize": "28",
+      "fontSize": "26",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
+        "r": 58,
+        "g": 53,
+        "b": 44,
         "a": 1
       },
       "margin": [
@@ -1022,121 +1016,95 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "list27": {
+  "text27": {
     "type": {
-      "resolvedName": "List"
+      "resolvedName": "Text"
     },
     "isCanvas": false,
     "props": {
-      "items": [
-        "Tuesday to Saturday, 18:00",
-        "One sitting, seven o’clock",
-        "Closed Sunday and Monday"
-      ],
-      "ordered": "no",
       "fontSize": "16",
-      "gap": "8",
+      "textAlign": "left",
+      "fontWeight": "500",
       "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
+        "r": 107,
+        "g": 99,
+        "b": 85,
         "a": 1
-      }
+      },
+      "margin": [
+        "12",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Two potters, one kiln, and a shop open two days a week. We do not do wholesale and we do not do rush jobs."
     },
-    "displayName": "List",
+    "displayName": "Text",
     "custom": {
-      "displayName": "List"
+      "displayName": "Text"
     },
     "parent": "cont25",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont28": {
+  "divi28": {
     "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Said"
-    },
-    "parent": "colu24",
-    "hidden": false,
-    "nodes": [
-      "test29"
-    ],
-    "linkedNodes": {}
-  },
-  "test29": {
-    "type": {
-      "resolvedName": "Testimonial"
+      "resolvedName": "Divider"
     },
     "isCanvas": false,
     "props": {
-      "quote": "The menu is short because everything on it is worth eating.",
-      "author": "Ronit Adler",
-      "role": "Time Out Tel Aviv",
-      "avatar": "",
-      "align": "left",
+      "thickness": "1",
+      "color": {
+        "r": 58,
+        "g": 53,
+        "b": 44,
+        "a": 0.15
+      },
+      "inset": "0",
+      "spacing": "20"
+    },
+    "displayName": "Divider",
+    "custom": {
+      "displayName": "Divider"
+    },
+    "parent": "cont25",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "soci29": {
+    "type": {
+      "resolvedName": "SocialLinks"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Instagram",
+        "https://instagram.com/",
+        "Email",
+        "mailto:hello@clay.co"
+      ],
       "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.06
       },
       "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
+        "r": 58,
+        "g": 53,
+        "b": 44,
         "a": 1
       },
-      "accent": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 0.6
-      }
+      "size": "14"
     },
-    "displayName": "Testimonial",
+    "displayName": "SocialLinks",
     "custom": {
-      "displayName": "Testimonial"
+      "displayName": "SocialLinks"
     },
-    "parent": "cont28",
+    "parent": "cont25",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
@@ -1152,10 +1120,10 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "24",
-        "48",
-        "64",
-        "48"
+        "0",
+        "0",
+        "0",
+        "0"
       ],
       "margin": [
         "0",
@@ -1164,9 +1132,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 246,
+        "g": 242,
+        "b": 234,
         "a": 1
       },
       "color": {
@@ -1178,88 +1146,45 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto",
-      "anchor": "find-us"
+      "height": "auto"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Find us"
+      "displayName": "Quote"
     },
-    "parent": "ROOT",
+    "parent": "colu24",
     "hidden": false,
     "nodes": [
-      "head31",
-      "spac32",
-      "map33"
+      "quot31"
     ],
     "linkedNodes": {}
   },
-  "head31": {
+  "quot31": {
     "type": {
-      "resolvedName": "Heading"
+      "resolvedName": "Quote"
     },
     "isCanvas": false,
     "props": {
-      "text": "Yehuda Halevi 21",
-      "level": "2",
-      "fontSize": "28",
-      "fontWeight": "700",
-      "textAlign": "left",
+      "text": "The mug I bought four years ago is the one I still reach for.",
+      "attribution": "A customer",
+      "fontSize": "20",
+      "align": "left",
       "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
+        "r": 58,
+        "g": 53,
+        "b": 44,
         "a": 1
       },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
+      "accent": {
+        "r": 111,
+        "g": 127,
+        "b": 92,
+        "a": 1
+      }
     },
-    "displayName": "Heading",
+    "displayName": "Quote",
     "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont30",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "spac32": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "16"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "cont30",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "map33": {
-    "type": {
-      "resolvedName": "Map"
-    },
-    "isCanvas": false,
-    "props": {
-      "lat": 32.0629,
-      "lng": 34.7745,
-      "zoom": 15,
-      "height": "320px",
-      "width": "100%",
-      "label": "Casa Oliva"
-    },
-    "displayName": "Map",
-    "custom": {
-      "displayName": "Map"
+      "displayName": "Quote"
     },
     "parent": "cont30",
     "hidden": false,

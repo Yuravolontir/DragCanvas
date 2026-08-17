@@ -1,0 +1,863 @@
+{
+  "ROOT": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 12,
+        "g": 12,
+        "b": 14,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "App"
+    },
+    "hidden": false,
+    "nodes": [
+      "navb01",
+      "cont02",
+      "cont04",
+      "cont07",
+      "cont15",
+      "cont19"
+    ],
+    "linkedNodes": {}
+  },
+  "navb01": {
+    "type": {
+      "resolvedName": "NavbarElement"
+    },
+    "isCanvas": false,
+    "props": {
+      "variant": "dark",
+      "brand": "STILL",
+      "links": [
+        {
+          "text": "Work",
+          "href": "#work"
+        },
+        {
+          "text": "Rates",
+          "href": "#rates"
+        },
+        {
+          "text": "Book",
+          "href": "#book"
+        }
+      ],
+      "sticky": false,
+      "textColor": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "height": "56px",
+      "width": "100%"
+    },
+    "displayName": "NavbarElement",
+    "custom": {
+      "displayName": "Navbar"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont02": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 12,
+        "g": 12,
+        "b": 14,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Hero"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "vide03"
+    ],
+    "linkedNodes": {}
+  },
+  "vide03": {
+    "type": {
+      "resolvedName": "Video"
+    },
+    "isCanvas": false,
+    "props": {
+      "sourceType": "url",
+      "videoId": "",
+      "videoUrl": "",
+      "text": "Light, and what it does to a face"
+    },
+    "displayName": "Video",
+    "custom": {
+      "displayName": "Video"
+    },
+    "parent": "cont02",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont04": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "48",
+        "48",
+        "32",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 12,
+        "g": 12,
+        "b": 14,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Intro"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head05",
+      "text06"
+    ],
+    "linkedNodes": {}
+  },
+  "head05": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Light, and what it does to a face",
+      "level": "1",
+      "fontSize": "48",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 240,
+        "g": 238,
+        "b": 235,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont04",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text06": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 136,
+        "g": 134,
+        "b": 140,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "A studio in Florentin. Portraits, product, and the occasional wedding for people we like."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont04",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont07": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "16",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 12,
+        "g": 12,
+        "b": 14,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto",
+      "anchor": "work"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Work"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "colu08"
+    ],
+    "linkedNodes": {}
+  },
+  "colu08": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "3",
+      "gap": "14",
+      "align": "stretch",
+      "stack": "yes"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont07",
+    "hidden": false,
+    "nodes": [
+      "imag09",
+      "imag10",
+      "imag11",
+      "imag12",
+      "imag13",
+      "imag14"
+    ],
+    "linkedNodes": {}
+  },
+  "imag09": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": {
+        "src": "https://images.pexels.com/photos/29057425/pexels-photo-29057425.jpeg?auto=compress&cs=tinysrgb&w=700",
+        "radius": 2,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "colu08",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "imag10": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": {
+        "src": "https://images.pexels.com/photos/37233404/pexels-photo-37233404.jpeg?auto=compress&cs=tinysrgb&w=700",
+        "radius": 2,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "colu08",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "imag11": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": {
+        "src": "https://images.pexels.com/photos/16666883/pexels-photo-16666883.jpeg?auto=compress&cs=tinysrgb&w=700",
+        "radius": 2,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "colu08",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "imag12": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": {
+        "src": "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=700",
+        "radius": 2,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "colu08",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "imag13": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": {
+        "src": "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=700",
+        "radius": 2,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "colu08",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "imag14": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": {
+        "src": "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=700",
+        "radius": 2,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "colu08",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont15": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "56",
+        "48",
+        "56",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 28,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto",
+      "anchor": "rates"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Rates"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head16",
+      "spac17",
+      "pric18"
+    ],
+    "linkedNodes": {}
+  },
+  "head16": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Rates",
+      "level": "2",
+      "fontSize": "32",
+      "fontWeight": "700",
+      "textAlign": "center",
+      "color": {
+        "r": 240,
+        "g": 238,
+        "b": 235,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac17": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "24"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "pric18": {
+    "type": {
+      "resolvedName": "Pricing"
+    },
+    "isCanvas": false,
+    "props": {
+      "tiers": [
+        "Portrait",
+        "₪600",
+        "one hour",
+        "Book an hour",
+        "Twenty edited frames; Studio or location",
+        "Half day",
+        "₪1,900",
+        "four hours",
+        "Book a half day",
+        "Sixty frames; Two setups; Same-week delivery",
+        "Campaign",
+        "From ₪6,000",
+        "per project",
+        "Get a quote",
+        "Full crew; Art direction; Usage included"
+      ],
+      "featured": 2,
+      "accent": {
+        "r": 224,
+        "g": 168,
+        "b": 92,
+        "a": 1
+      },
+      "background": {
+        "r": 12,
+        "g": 12,
+        "b": 14,
+        "a": 1
+      },
+      "color": {
+        "r": 240,
+        "g": 238,
+        "b": 235,
+        "a": 1
+      }
+    },
+    "displayName": "Pricing",
+    "custom": {
+      "displayName": "Pricing"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont19": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "56",
+        "48",
+        "72",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 12,
+        "g": 12,
+        "b": 14,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto",
+      "anchor": "book"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Book"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head20",
+      "spac21",
+      "form22",
+      "spac23",
+      "link24"
+    ],
+    "linkedNodes": {}
+  },
+  "head20": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Tell us what you need",
+      "level": "2",
+      "fontSize": "30",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 240,
+        "g": 238,
+        "b": 235,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont19",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac21": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "20"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont19",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "form22": {
+    "type": {
+      "resolvedName": "Form"
+    },
+    "isCanvas": false,
+    "props": {
+      "fields": [
+        {
+          "label": "Name",
+          "type": "text",
+          "placeholder": "Your name",
+          "required": true
+        },
+        {
+          "label": "Email",
+          "type": "email",
+          "placeholder": "you@example.com",
+          "required": true
+        },
+        {
+          "label": "Message",
+          "type": "textarea",
+          "placeholder": "How can we help?"
+        }
+      ],
+      "submitText": "Send enquiry",
+      "successMessage": "Thank you — we will be in touch.",
+      "radius": 10,
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 28,
+        "a": 1
+      },
+      "accent": {
+        "r": 224,
+        "g": 168,
+        "b": 92,
+        "a": 1
+      },
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Form",
+    "custom": {
+      "displayName": "Form"
+    },
+    "parent": "cont19",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac23": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "20"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont19",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "link24": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "mailto:hello@still.studio",
+      "text": "Or just email us",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%",
+      "fontSize": "15"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont19",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  }
+}

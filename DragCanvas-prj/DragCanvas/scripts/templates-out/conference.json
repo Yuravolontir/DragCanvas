@@ -22,9 +22,9 @@
         "0"
       ],
       "background": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
+        "r": 15,
+        "g": 27,
+        "b": 52,
         "a": 1
       },
       "color": {
@@ -46,10 +46,12 @@
     "nodes": [
       "navb01",
       "cont02",
-      "cont08",
-      "cont12",
+      "cont07",
+      "cont11",
+      "spac15",
       "cont16",
-      "cont20"
+      "cont18",
+      "cont22"
     ],
     "linkedNodes": {}
   },
@@ -60,19 +62,19 @@
     "isCanvas": false,
     "props": {
       "variant": "dark",
-      "brand": "FORGE",
+      "brand": "Interface 26",
       "links": [
         {
-          "text": "Timetable",
-          "href": "#timetable"
+          "text": "Programme",
+          "href": "#programme"
         },
         {
-          "text": "Coaches",
-          "href": "#coaches"
+          "text": "Speakers",
+          "href": "#speakers"
         },
         {
-          "text": "Membership",
-          "href": "#membership"
+          "text": "Tickets",
+          "href": "#tickets"
         }
       ],
       "sticky": true,
@@ -101,13 +103,13 @@
     "isCanvas": true,
     "props": {
       "flexDirection": "column",
-      "alignItems": "flex-start",
+      "alignItems": "center",
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "80",
+        "72",
         "48",
-        "56",
+        "48",
         "48"
       ],
       "margin": [
@@ -117,9 +119,9 @@
         "0"
       ],
       "background": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
+        "r": 15,
+        "g": 27,
+        "b": 52,
         "a": 1
       },
       "color": {
@@ -140,35 +142,64 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head03",
-      "text04",
-      "butt05",
-      "spac06",
-      "stat07"
+      "badg03",
+      "head04",
+      "text05",
+      "butt06"
     ],
     "linkedNodes": {}
   },
-  "head03": {
+  "badg03": {
+    "type": {
+      "resolvedName": "Badge"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Haifa · 12–13 November",
+      "background": {
+        "r": 255,
+        "g": 194,
+        "b": 71,
+        "a": 1
+      },
+      "color": {
+        "r": 15,
+        "g": 27,
+        "b": 52,
+        "a": 1
+      },
+      "radius": 999
+    },
+    "displayName": "Badge",
+    "custom": {
+      "displayName": "Badge"
+    },
+    "parent": "cont02",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head04": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "Show up. Lift. Leave.",
+      "text": "Two days on how software feels",
       "level": "1",
-      "fontSize": "56",
-      "fontWeight": "800",
-      "textAlign": "left",
+      "fontSize": "50",
+      "fontWeight": "700",
+      "textAlign": "center",
       "color": {
-        "r": 244,
-        "g": 246,
-        "b": 242,
+        "r": 238,
+        "g": 243,
+        "b": 251,
         "a": 1
       },
       "margin": [
+        "16",
         "0",
-        "0",
-        "0",
+        "12",
         "0"
       ]
     },
@@ -181,29 +212,29 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "text04": {
+  "text05": {
     "type": {
       "resolvedName": "Text"
     },
     "isCanvas": false,
     "props": {
       "fontSize": "18",
-      "textAlign": "left",
+      "textAlign": "center",
       "fontWeight": "500",
       "color": {
-        "r": 141,
-        "g": 150,
-        "b": 134,
+        "r": 147,
+        "g": 167,
+        "b": 200,
         "a": 1
       },
       "margin": [
-        "14",
+        "0",
         "0",
         "24",
         "0"
       ],
       "shadow": 0,
-      "text": "Barbell club and conditioning, five in the morning to ten at night. No mirrors, no contracts."
+      "text": "Fourteen talks on interface, craft, and the people who ship it."
     },
     "displayName": "Text",
     "custom": {
@@ -214,26 +245,26 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "butt05": {
+  "butt06": {
     "type": {
       "resolvedName": "Button"
     },
     "isCanvas": false,
     "props": {
       "background": {
-        "r": 196,
-        "g": 242,
-        "b": 75,
+        "r": 255,
+        "g": 194,
+        "b": 71,
         "a": 1
       },
       "color": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
+        "r": 15,
+        "g": 27,
+        "b": 52,
         "a": 1
       },
       "buttonStyle": "full",
-      "text": "First class free",
+      "text": "Get a ticket",
       "margin": [
         "5",
         "0",
@@ -257,7 +288,7 @@
           "0"
         ],
         "shadow": 0,
-        "text": "First class free"
+        "text": "Get a ticket"
       }
     },
     "displayName": "Button",
@@ -269,61 +300,7 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac06": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "32"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "cont02",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "stat07": {
-    "type": {
-      "resolvedName": "Stats"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "5am",
-        "first class",
-        "340",
-        "members",
-        "12",
-        "coaches"
-      ],
-      "align": "center",
-      "accent": {
-        "r": 196,
-        "g": 242,
-        "b": 75,
-        "a": 1
-      },
-      "color": {
-        "r": 141,
-        "g": 150,
-        "b": 134,
-        "a": 1
-      }
-    },
-    "displayName": "Stats",
-    "custom": {
-      "displayName": "Stats"
-    },
-    "parent": "cont02",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont08": {
+  "cont07": {
     "type": {
       "resolvedName": "Container"
     },
@@ -346,9 +323,9 @@
         "0"
       ],
       "background": {
-        "r": 25,
-        "g": 29,
-        "b": 26,
+        "r": 22,
+        "g": 38,
+        "b": 74,
         "a": 1
       },
       "color": {
@@ -361,36 +338,36 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "timetable"
+      "anchor": "programme"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Timetable"
+      "displayName": "Programme"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head09",
-      "spac10",
-      "time11"
+      "head08",
+      "spac09",
+      "time10"
     ],
     "linkedNodes": {}
   },
-  "head09": {
+  "head08": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "A day here",
+      "text": "Day one",
       "level": "2",
-      "fontSize": "34",
+      "fontSize": "32",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 244,
-        "g": 246,
-        "b": 242,
+        "r": 238,
+        "g": 243,
+        "b": 251,
         "a": 1
       },
       "margin": [
@@ -404,12 +381,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont08",
+    "parent": "cont07",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac10": {
+  "spac09": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -421,41 +398,41 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont08",
+    "parent": "cont07",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "time11": {
+  "time10": {
     "type": {
       "resolvedName": "Timeline"
     },
     "isCanvas": false,
     "props": {
       "steps": [
-        "05:00",
-        "Barbell fundamentals",
-        "Squat, press, pull. Coached, capped at eight.",
-        "12:30",
-        "Thirty minutes",
-        "Conditioning for people with a lunch break.",
-        "18:00",
-        "Olympic lifting",
-        "Snatch and clean, technique first.",
-        "20:00",
-        "Open gym",
-        "The room is yours. A coach is around."
+        "09:30",
+        "What we mean by craft",
+        "Opening, and an argument worth having.",
+        "11:00",
+        "Designing for the second glance",
+        "The interface people use after the demo.",
+        "14:00",
+        "Shipping without a design team",
+        "How small teams keep it coherent anyway.",
+        "16:30",
+        "The long tail of a decision",
+        "What a default costs three years later."
       ],
       "accent": {
-        "r": 196,
-        "g": 242,
-        "b": 75,
+        "r": 255,
+        "g": 194,
+        "b": 71,
         "a": 1
       },
       "color": {
-        "r": 244,
-        "g": 246,
-        "b": 242,
+        "r": 238,
+        "g": 243,
+        "b": 251,
         "a": 1
       }
     },
@@ -463,12 +440,12 @@
     "custom": {
       "displayName": "Timeline"
     },
-    "parent": "cont08",
+    "parent": "cont07",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont12": {
+  "cont11": {
     "type": {
       "resolvedName": "Container"
     },
@@ -491,9 +468,9 @@
         "0"
       ],
       "background": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
+        "r": 15,
+        "g": 27,
+        "b": 52,
         "a": 1
       },
       "color": {
@@ -506,36 +483,36 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "coaches"
+      "anchor": "speakers"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Coaches"
+      "displayName": "Speakers"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head13",
-      "spac14",
-      "team15"
+      "head12",
+      "spac13",
+      "team14"
     ],
     "linkedNodes": {}
   },
-  "head13": {
+  "head12": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "Who is on the floor",
+      "text": "Who is talking",
       "level": "2",
-      "fontSize": "34",
+      "fontSize": "32",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 244,
-        "g": 246,
-        "b": 242,
+        "r": 238,
+        "g": 243,
+        "b": 251,
         "a": 1
       },
       "margin": [
@@ -549,12 +526,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont12",
+    "parent": "cont11",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac14": {
+  "spac13": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -566,39 +543,42 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont12",
+    "parent": "cont11",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "team15": {
+  "team14": {
     "type": {
       "resolvedName": "TeamGrid"
     },
     "isCanvas": false,
     "props": {
       "people": [
-        "Adi Rom",
-        "Strength",
-        "https://images.pexels.com/photos/6628962/pexels-photo-6628962.jpeg?auto=compress&cs=tinysrgb&w=400",
-        "Yonatan Bar",
-        "Olympic lifting",
-        "https://images.pexels.com/photos/4464780/pexels-photo-4464780.jpeg?auto=compress&cs=tinysrgb&w=400",
-        "Shira Peled",
-        "Conditioning",
-        "https://images.pexels.com/photos/32610333/pexels-photo-32610333.jpeg?auto=compress&cs=tinysrgb&w=400"
+        "Noa Bar",
+        "Interface, Monday",
+        "https://images.pexels.com/photos/29057425/pexels-photo-29057425.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "Ilan Weiss",
+        "Systems, Kettle",
+        "https://images.pexels.com/photos/37233404/pexels-photo-37233404.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "Dana Levi",
+        "Craft, independent",
+        "https://images.pexels.com/photos/16666883/pexels-photo-16666883.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "Omer Katz",
+        "Research, Fathom",
+        "https://images.pexels.com/photos/9275222/pexels-photo-9275222.jpeg?auto=compress&cs=tinysrgb&w=400"
       ],
-      "columns": "3",
+      "columns": "4",
       "accent": {
-        "r": 25,
-        "g": 29,
-        "b": 26,
+        "r": 22,
+        "g": 38,
+        "b": 74,
         "a": 1
       },
       "color": {
-        "r": 244,
-        "g": 246,
-        "b": 242,
+        "r": 238,
+        "g": 243,
+        "b": 251,
         "a": 1
       }
     },
@@ -606,12 +586,116 @@
     "custom": {
       "displayName": "TeamGrid"
     },
-    "parent": "cont12",
+    "parent": "cont11",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac15": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "8"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "ROOT",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
   "cont16": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 15,
+        "g": 27,
+        "b": 52,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Numbers"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "stat17"
+    ],
+    "linkedNodes": {}
+  },
+  "stat17": {
+    "type": {
+      "resolvedName": "Stats"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "14",
+        "talks",
+        "2",
+        "days",
+        "300",
+        "seats"
+      ],
+      "align": "center",
+      "accent": {
+        "r": 255,
+        "g": 194,
+        "b": 71,
+        "a": 1
+      },
+      "color": {
+        "r": 147,
+        "g": 167,
+        "b": 200,
+        "a": 1
+      }
+    },
+    "displayName": "Stats",
+    "custom": {
+      "displayName": "Stats"
+    },
+    "parent": "cont16",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont18": {
     "type": {
       "resolvedName": "Container"
     },
@@ -634,9 +718,9 @@
         "0"
       ],
       "background": {
-        "r": 25,
-        "g": 29,
-        "b": 26,
+        "r": 22,
+        "g": 38,
+        "b": 74,
         "a": 1
       },
       "color": {
@@ -649,36 +733,36 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "membership"
+      "anchor": "tickets"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Membership"
+      "displayName": "Tickets"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head17",
-      "spac18",
-      "pric19"
+      "head19",
+      "spac20",
+      "pric21"
     ],
     "linkedNodes": {}
   },
-  "head17": {
+  "head19": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "Membership",
+      "text": "Tickets",
       "level": "2",
-      "fontSize": "34",
+      "fontSize": "32",
       "fontWeight": "700",
       "textAlign": "center",
       "color": {
-        "r": 244,
-        "g": 246,
-        "b": 242,
+        "r": 238,
+        "g": 243,
+        "b": 251,
         "a": 1
       },
       "margin": [
@@ -692,12 +776,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont16",
+    "parent": "cont18",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac18": {
+  "spac20": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -709,51 +793,51 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont16",
+    "parent": "cont18",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "pric19": {
+  "pric21": {
     "type": {
       "resolvedName": "Pricing"
     },
     "isCanvas": false,
     "props": {
       "tiers": [
-        "Drop in",
-        "₪70",
-        "per class",
-        "Come once",
-        "Any class; No commitment",
-        "Monthly",
+        "Early",
+        "₪240",
+        "until August",
+        "Buy early",
+        "Both days; Lunch; Recordings",
+        "Standard",
         "₪380",
-        "per month",
-        "Join monthly",
-        "Unlimited classes; Open gym; Cancel any time",
-        "Yearly",
-        "₪3,600",
-        "per year",
-        "Join yearly",
-        "Everything monthly; Two months free; Guest passes"
+        "from September",
+        "Buy standard",
+        "Both days; Lunch; Recordings",
+        "Student",
+        "₪90",
+        "with an ID",
+        "Buy student",
+        "Both days; Bring the ID on the door"
       ],
-      "featured": 2,
+      "featured": 1,
       "accent": {
-        "r": 196,
-        "g": 242,
-        "b": 75,
+        "r": 255,
+        "g": 194,
+        "b": 71,
         "a": 1
       },
       "background": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
+        "r": 15,
+        "g": 27,
+        "b": 52,
         "a": 1
       },
       "color": {
-        "r": 244,
-        "g": 246,
-        "b": 242,
+        "r": 238,
+        "g": 243,
+        "b": 251,
         "a": 1
       }
     },
@@ -761,12 +845,12 @@
     "custom": {
       "displayName": "Pricing"
     },
-    "parent": "cont16",
+    "parent": "cont18",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont20": {
+  "cont22": {
     "type": {
       "resolvedName": "Container"
     },
@@ -779,7 +863,7 @@
       "padding": [
         "48",
         "48",
-        "72",
+        "64",
         "48"
       ],
       "margin": [
@@ -789,9 +873,9 @@
         "0"
       ],
       "background": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
+        "r": 15,
+        "g": 27,
+        "b": 52,
         "a": 1
       },
       "color": {
@@ -807,56 +891,85 @@
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Close"
+      "displayName": "Venue"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "ctab21"
+      "head23",
+      "spac24",
+      "map25"
     ],
     "linkedNodes": {}
   },
-  "ctab21": {
+  "head23": {
     "type": {
-      "resolvedName": "CTABanner"
+      "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "title": "Come and try it",
-      "text": "First class is free and nobody will make you talk about your goals.",
-      "cta": "Book a slot",
-      "href": "#timetable",
-      "background": {
-        "r": 196,
-        "g": 242,
-        "b": 75,
-        "a": 1
-      },
+      "text": "The venue",
+      "level": "2",
+      "fontSize": "26",
+      "fontWeight": "700",
+      "textAlign": "left",
       "color": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
+        "r": 238,
+        "g": 243,
+        "b": 251,
         "a": 1
       },
-      "buttonBackground": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
-        "a": 1
-      },
-      "buttonColor": {
-        "r": 196,
-        "g": 242,
-        "b": 75,
-        "a": 1
-      },
-      "radius": 16
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
     },
-    "displayName": "CTABanner",
+    "displayName": "Heading",
     "custom": {
-      "displayName": "CTABanner"
+      "displayName": "Heading"
     },
-    "parent": "cont20",
+    "parent": "cont22",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac24": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "16"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont22",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "map25": {
+    "type": {
+      "resolvedName": "Map"
+    },
+    "isCanvas": false,
+    "props": {
+      "lat": 32.794,
+      "lng": 34.9896,
+      "zoom": 14,
+      "height": "320px",
+      "width": "100%",
+      "label": "Haifa"
+    },
+    "displayName": "Map",
+    "custom": {
+      "displayName": "Map"
+    },
+    "parent": "cont22",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

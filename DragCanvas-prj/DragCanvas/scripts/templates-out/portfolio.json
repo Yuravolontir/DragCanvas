@@ -22,9 +22,9 @@
         "0"
       ],
       "background": {
-        "r": 253,
-        "g": 250,
-        "b": 245,
+        "r": 13,
+        "g": 13,
+        "b": 15,
         "a": 1
       },
       "color": {
@@ -47,8 +47,9 @@
       "navb01",
       "cont02",
       "cont05",
-      "cont07",
-      "cont14"
+      "cont11",
+      "cont13",
+      "cont20"
     ],
     "linkedNodes": {}
   },
@@ -58,27 +59,27 @@
     },
     "isCanvas": false,
     "props": {
-      "variant": "light",
-      "brand": "Wanderlog",
+      "variant": "dark",
+      "brand": "MARA KIM",
       "links": [
         {
-          "text": "Recent",
-          "href": "#recent"
+          "text": "Work",
+          "href": "#work"
         },
         {
           "text": "About",
           "href": "#about"
         },
         {
-          "text": "Subscribe",
-          "href": "#subscribe"
+          "text": "Contact",
+          "href": "#contact"
         }
       ],
       "sticky": false,
       "textColor": {
-        "r": 38,
-        "g": 34,
-        "b": 30,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
       "height": "56px",
@@ -104,9 +105,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "72",
+        "96",
         "48",
-        "40",
+        "56",
         "48"
       ],
       "margin": [
@@ -116,9 +117,9 @@
         "0"
       ],
       "background": {
-        "r": 253,
-        "g": 250,
-        "b": 245,
+        "r": 13,
+        "g": 13,
+        "b": 15,
         "a": 1
       },
       "color": {
@@ -150,15 +151,15 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "Slow routes, written down",
+      "text": "Portraits, mostly",
       "level": "1",
-      "fontSize": "50",
+      "fontSize": "58",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 38,
-        "g": 34,
-        "b": 30,
+        "r": 242,
+        "g": 240,
+        "b": 238,
         "a": 1
       },
       "margin": [
@@ -187,9 +188,9 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 120,
-        "g": 110,
-        "b": 98,
+        "r": 139,
+        "g": 138,
+        "b": 144,
         "a": 1
       },
       "margin": [
@@ -199,7 +200,7 @@
         "0"
       ],
       "shadow": 0,
-      "text": "Trains, ferries and long walks. Notes from the places in between the places people go."
+      "text": "Studio and location work for editorial and brands. Currently booking for spring."
     },
     "displayName": "Text",
     "custom": {
@@ -233,9 +234,9 @@
         "0"
       ],
       "background": {
-        "r": 253,
-        "g": 250,
-        "b": 245,
+        "r": 13,
+        "g": 13,
+        "b": 15,
         "a": 1
       },
       "color": {
@@ -248,50 +249,145 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "recent"
+      "anchor": "work"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Recent"
+      "displayName": "Work"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "caro06"
+      "colu06"
     ],
     "linkedNodes": {}
   },
-  "caro06": {
+  "colu06": {
     "type": {
-      "resolvedName": "Carousel"
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "20",
+      "align": "stretch",
+      "stack": "yes"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont05",
+    "hidden": false,
+    "nodes": [
+      "imag07",
+      "imag08",
+      "imag09",
+      "imag10"
+    ],
+    "linkedNodes": {}
+  },
+  "imag07": {
+    "type": {
+      "resolvedName": "Image"
     },
     "isCanvas": false,
     "props": {
-      "width": "100%",
-      "height": "420px",
-      "src1": "https://images.pexels.com/photos/1271619/pexels-photo-1271619.jpeg?auto=compress&cs=tinysrgb&w=1000",
-      "src2": "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1000",
-      "src3": "https://images.pexels.com/photos/2261477/pexels-photo-2261477.jpeg?auto=compress&cs=tinysrgb&w=1000",
-      "heading1": "The long way to Lisbon",
-      "heading2": "Winter in the Dolomites",
-      "heading3": "Down the Danube",
-      "label1": "Portugal",
-      "label2": "Italy",
-      "label3": "Hungary",
-      "p1": "Four days by rail when the flight was two hours.",
-      "p2": "Empty huts, cold mornings, better coffee than expected.",
-      "p3": "A ferry, a bicycle, and a week without a plan."
+      "src": {
+        "src": "https://images.pexels.com/photos/29057425/pexels-photo-29057425.jpeg?auto=compress&cs=tinysrgb&w=900",
+        "radius": 0,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
     },
-    "displayName": "Carousel",
+    "displayName": "Image",
     "custom": {
-      "displayName": "Carousel"
+      "displayName": "Image"
     },
-    "parent": "cont05",
+    "parent": "colu06",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont07": {
+  "imag08": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": {
+        "src": "https://images.pexels.com/photos/37233404/pexels-photo-37233404.jpeg?auto=compress&cs=tinysrgb&w=900",
+        "radius": 0,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "colu06",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "imag09": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": {
+        "src": "https://images.pexels.com/photos/16666883/pexels-photo-16666883.jpeg?auto=compress&cs=tinysrgb&w=900",
+        "radius": 0,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "colu06",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "imag10": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": {
+        "src": "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=900",
+        "radius": 0,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "colu06",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont11": {
     "type": {
       "resolvedName": "Container"
     },
@@ -302,7 +398,7 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "48",
+        "32",
         "48",
         "48",
         "48"
@@ -314,9 +410,91 @@
         "0"
       ],
       "background": {
-        "r": 240,
-        "g": 233,
-        "b": 222,
+        "r": 13,
+        "g": 13,
+        "b": 15,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Said"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "quot12"
+    ],
+    "linkedNodes": {}
+  },
+  "quot12": {
+    "type": {
+      "resolvedName": "Quote"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "She photographs people the way they hope they look on a good day, and somehow it is still them.",
+      "attribution": "Aperture Quarterly",
+      "fontSize": "24",
+      "align": "left",
+      "color": {
+        "r": 242,
+        "g": 240,
+        "b": 238,
+        "a": 1
+      },
+      "accent": {
+        "r": 228,
+        "g": 200,
+        "b": 138,
+        "a": 1
+      }
+    },
+    "displayName": "Quote",
+    "custom": {
+      "displayName": "Quote"
+    },
+    "parent": "cont11",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont13": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "56",
+        "48",
+        "56",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 22,
+        "g": 22,
+        "b": 25,
         "a": 1
       },
       "color": {
@@ -338,11 +516,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu08"
+      "colu14"
     ],
     "linkedNodes": {}
   },
-  "colu08": {
+  "colu14": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -357,15 +535,15 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont07",
+    "parent": "cont13",
     "hidden": false,
     "nodes": [
-      "cont09",
-      "cont12"
+      "cont15",
+      "cont18"
     ],
     "linkedNodes": {}
   },
-  "cont09": {
+  "cont15": {
     "type": {
       "resolvedName": "Container"
     },
@@ -388,9 +566,9 @@
         "0"
       ],
       "background": {
-        "r": 240,
-        "g": 233,
-        "b": 222,
+        "r": 22,
+        "g": 22,
+        "b": 25,
         "a": 1
       },
       "color": {
@@ -408,29 +586,29 @@
     "custom": {
       "displayName": "Bio"
     },
-    "parent": "colu08",
+    "parent": "colu14",
     "hidden": false,
     "nodes": [
-      "head10",
-      "text11"
+      "head16",
+      "text17"
     ],
     "linkedNodes": {}
   },
-  "head10": {
+  "head16": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "Who is writing",
+      "text": "Ten years, mostly indoors",
       "level": "2",
-      "fontSize": "28",
+      "fontSize": "30",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 38,
-        "g": 34,
-        "b": 30,
+        "r": 242,
+        "g": 240,
+        "b": 238,
         "a": 1
       },
       "margin": [
@@ -444,12 +622,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont09",
+    "parent": "cont15",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text11": {
+  "text17": {
     "type": {
       "resolvedName": "Text"
     },
@@ -459,30 +637,30 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 120,
-        "g": 110,
-        "b": 98,
+        "r": 139,
+        "g": 138,
+        "b": 144,
         "a": 1
       },
       "margin": [
-        "12",
+        "14",
         "0",
         "0",
         "0"
       ],
       "shadow": 0,
-      "text": "Ten years of taking the slower option and writing about what happened. No sponsored posts, no affiliate links."
+      "text": "Trained as a painter, which is why the light takes so long and the sitting is short. Based in Tel Aviv, works anywhere with a plug."
     },
     "displayName": "Text",
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont09",
+    "parent": "cont15",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont12": {
+  "cont18": {
     "type": {
       "resolvedName": "Container"
     },
@@ -505,9 +683,9 @@
         "0"
       ],
       "background": {
-        "r": 240,
-        "g": 233,
-        "b": 222,
+        "r": 22,
+        "g": 22,
+        "b": 25,
         "a": 1
       },
       "color": {
@@ -523,48 +701,46 @@
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Said"
+      "displayName": "Services"
     },
-    "parent": "colu08",
+    "parent": "colu14",
     "hidden": false,
     "nodes": [
-      "quot13"
+      "list19"
     ],
     "linkedNodes": {}
   },
-  "quot13": {
+  "list19": {
     "type": {
-      "resolvedName": "Quote"
+      "resolvedName": "List"
     },
     "isCanvas": false,
     "props": {
-      "text": "The only travel writing I read that makes the journey sound better than the destination.",
-      "attribution": "A reader",
-      "fontSize": "19",
-      "align": "left",
+      "items": [
+        "Editorial — half and full day",
+        "Brand and campaign",
+        "Personal — one hour, twenty frames"
+      ],
+      "ordered": "no",
+      "fontSize": "16",
+      "gap": "8",
       "color": {
-        "r": 38,
-        "g": 34,
-        "b": 30,
-        "a": 1
-      },
-      "accent": {
-        "r": 24,
-        "g": 108,
-        "b": 122,
+        "r": 139,
+        "g": 138,
+        "b": 144,
         "a": 1
       }
     },
-    "displayName": "Quote",
+    "displayName": "List",
     "custom": {
-      "displayName": "Quote"
+      "displayName": "List"
     },
-    "parent": "cont12",
+    "parent": "cont18",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont14": {
+  "cont20": {
     "type": {
       "resolvedName": "Container"
     },
@@ -575,7 +751,7 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "48",
+        "56",
         "48",
         "72",
         "48"
@@ -587,9 +763,9 @@
         "0"
       ],
       "background": {
-        "r": 253,
-        "g": 250,
-        "b": 245,
+        "r": 13,
+        "g": 13,
+        "b": 15,
         "a": 1
       },
       "color": {
@@ -602,38 +778,38 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "subscribe"
+      "anchor": "contact"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Subscribe"
+      "displayName": "Contact"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head15",
-      "spac16",
-      "form17",
-      "spac18",
-      "soci19"
+      "head21",
+      "spac22",
+      "form23",
+      "spac24",
+      "soci25"
     ],
     "linkedNodes": {}
   },
-  "head15": {
+  "head21": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "One letter a month",
+      "text": "Get in touch",
       "level": "2",
-      "fontSize": "28",
+      "fontSize": "30",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 38,
-        "g": 34,
-        "b": 30,
+        "r": 242,
+        "g": 240,
+        "b": 238,
         "a": 1
       },
       "margin": [
@@ -647,70 +823,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont14",
+    "parent": "cont20",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac16": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "16"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "cont14",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "form17": {
-    "type": {
-      "resolvedName": "Form"
-    },
-    "isCanvas": false,
-    "props": {
-      "fields": [
-        {
-          "label": "Email",
-          "type": "email",
-          "placeholder": "you@example.com",
-          "required": true
-        }
-      ],
-      "submitText": "Subscribe",
-      "successMessage": "Thanks — first letter arrives next month.",
-      "radius": 10,
-      "background": {
-        "r": 240,
-        "g": 233,
-        "b": 222,
-        "a": 1
-      },
-      "accent": {
-        "r": 24,
-        "g": 108,
-        "b": 122,
-        "a": 1
-      },
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Form",
-    "custom": {
-      "displayName": "Form"
-    },
-    "parent": "cont14",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "spac18": {
+  "spac22": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -722,12 +840,81 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont14",
+    "parent": "cont20",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci19": {
+  "form23": {
+    "type": {
+      "resolvedName": "Form"
+    },
+    "isCanvas": false,
+    "props": {
+      "fields": [
+        {
+          "label": "Name",
+          "type": "text",
+          "placeholder": "Your name",
+          "required": true
+        },
+        {
+          "label": "Email",
+          "type": "email",
+          "placeholder": "you@example.com",
+          "required": true
+        },
+        {
+          "label": "Message",
+          "type": "textarea",
+          "placeholder": "How can we help?"
+        }
+      ],
+      "submitText": "Send",
+      "successMessage": "Thank you — we will be in touch.",
+      "radius": 10,
+      "background": {
+        "r": 22,
+        "g": 22,
+        "b": 25,
+        "a": 1
+      },
+      "accent": {
+        "r": 228,
+        "g": 200,
+        "b": 138,
+        "a": 1
+      },
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Form",
+    "custom": {
+      "displayName": "Form"
+    },
+    "parent": "cont20",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac24": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "20"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont20",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "soci25": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -736,19 +923,19 @@
       "items": [
         "Instagram",
         "https://instagram.com/",
-        "RSS",
-        "https://example.com/feed"
+        "Behance",
+        "https://behance.net/"
       ],
       "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0.06
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 0.08
       },
       "color": {
-        "r": 38,
-        "g": 34,
-        "b": 30,
+        "r": 242,
+        "g": 240,
+        "b": 238,
         "a": 1
       },
       "size": "14"
@@ -757,7 +944,7 @@
     "custom": {
       "displayName": "SocialLinks"
     },
-    "parent": "cont14",
+    "parent": "cont20",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

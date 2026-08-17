@@ -46,9 +46,9 @@
     "nodes": [
       "navb01",
       "cont02",
-      "cont10",
-      "cont23",
-      "cont30"
+      "cont09",
+      "cont25",
+      "cont34"
     ],
     "linkedNodes": {}
   },
@@ -59,19 +59,19 @@
     "isCanvas": false,
     "props": {
       "variant": "light",
-      "brand": "Casa Oliva",
+      "brand": "Lehem",
       "links": [
         {
-          "text": "Menu",
-          "href": "#menu"
+          "text": "Bread",
+          "href": "#bread"
         },
         {
           "text": "Hours",
           "href": "#hours"
         },
         {
-          "text": "Find us",
-          "href": "#find-us"
+          "text": "Visit",
+          "href": "#visit"
         }
       ],
       "sticky": false,
@@ -106,7 +106,7 @@
       "padding": [
         "64",
         "48",
-        "48",
+        "40",
         "48"
       ],
       "margin": [
@@ -162,7 +162,7 @@
     "hidden": false,
     "nodes": [
       "cont04",
-      "imag09"
+      "imag08"
     ],
     "linkedNodes": {}
   },
@@ -212,52 +212,21 @@
     "parent": "colu03",
     "hidden": false,
     "nodes": [
-      "badg05",
-      "head06",
-      "text07",
-      "butt08"
+      "head05",
+      "text06",
+      "butt07"
     ],
     "linkedNodes": {}
   },
-  "badg05": {
-    "type": {
-      "resolvedName": "Badge"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Open for dinner",
-      "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "radius": 999
-    },
-    "displayName": "Badge",
-    "custom": {
-      "displayName": "Badge"
-    },
-    "parent": "cont04",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "head06": {
+  "head05": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "Slow food, small room",
+      "text": "Out of the oven at six",
       "level": "1",
-      "fontSize": "46",
+      "fontSize": "48",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
@@ -267,9 +236,9 @@
         "a": 1
       },
       "margin": [
-        "12",
         "0",
-        "10",
+        "0",
+        "0",
         "0"
       ]
     },
@@ -282,7 +251,7 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "text07": {
+  "text06": {
     "type": {
       "resolvedName": "Text"
     },
@@ -298,13 +267,13 @@
         "a": 1
       },
       "margin": [
+        "12",
         "0",
-        "0",
-        "0",
+        "20",
         "0"
       ],
       "shadow": 0,
-      "text": "Twenty-four covers, one sitting a night, and whatever the market had that morning."
+      "text": "Sourdough, challah and rye, baked overnight and sold until they are gone."
     },
     "displayName": "Text",
     "custom": {
@@ -315,7 +284,7 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "butt08": {
+  "butt07": {
     "type": {
       "resolvedName": "Button"
     },
@@ -334,7 +303,7 @@
         "a": 1
       },
       "buttonStyle": "full",
-      "text": "Book a table",
+      "text": "Order for tomorrow",
       "margin": [
         "5",
         "0",
@@ -358,7 +327,7 @@
           "0"
         ],
         "shadow": 0,
-        "text": "Book a table"
+        "text": "Order for tomorrow"
       }
     },
     "displayName": "Button",
@@ -370,15 +339,15 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "imag09": {
+  "imag08": {
     "type": {
       "resolvedName": "Image"
     },
     "isCanvas": false,
     "props": {
       "src": {
-        "src": "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=900",
-        "radius": 8,
+        "src": "https://images.pexels.com/photos/8633662/pexels-photo-8633662.jpeg?auto=compress&cs=tinysrgb&w=900",
+        "radius": 6,
         "width": "100%"
       },
       "radius": 0,
@@ -395,7 +364,7 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont10": {
+  "cont09": {
     "type": {
       "resolvedName": "Container"
     },
@@ -406,9 +375,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "56",
         "48",
-        "56",
+        "48",
+        "48",
         "48"
       ],
       "margin": [
@@ -418,8 +387,8 @@
         "0"
       ],
       "background": {
-        "r": 243,
-        "g": 230,
+        "r": 246,
+        "g": 226,
         "b": 211,
         "a": 1
       },
@@ -433,28 +402,28 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "menu"
+      "anchor": "bread"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Menu"
+      "displayName": "Bread"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head11",
-      "spac12",
-      "colu13"
+      "head10",
+      "spac11",
+      "colu12"
     ],
     "linkedNodes": {}
   },
-  "head11": {
+  "head10": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "This week",
+      "text": "What we bake",
       "level": "2",
       "fontSize": "32",
       "fontWeight": "700",
@@ -476,12 +445,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont10",
+    "parent": "cont09",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac12": {
+  "spac11": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -493,19 +462,19 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont10",
+    "parent": "cont09",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "colu13": {
+  "colu12": {
     "type": {
       "resolvedName": "Columns"
     },
     "isCanvas": true,
     "props": {
       "count": "3",
-      "gap": "24",
+      "gap": "20",
       "align": "stretch",
       "stack": "yes"
     },
@@ -513,16 +482,16 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont10",
+    "parent": "cont09",
     "hidden": false,
     "nodes": [
-      "cont14",
+      "cont13",
       "cont17",
-      "cont20"
+      "cont21"
     ],
     "linkedNodes": {}
   },
-  "cont14": {
+  "cont13": {
     "type": {
       "resolvedName": "Container"
     },
@@ -533,10 +502,10 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "24",
-        "22",
-        "24",
-        "22"
+        "0",
+        "0",
+        "20",
+        "0"
       ],
       "margin": [
         "0",
@@ -563,14 +532,40 @@
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "To start"
+      "displayName": "Sourdough"
     },
-    "parent": "colu13",
+    "parent": "colu12",
     "hidden": false,
     "nodes": [
+      "imag14",
       "head15",
-      "list16"
+      "text16"
     ],
+    "linkedNodes": {}
+  },
+  "imag14": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": {
+        "src": "https://images.pexels.com/photos/35993723/pexels-photo-35993723.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "radius": 8,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont13",
+    "hidden": false,
+    "nodes": [],
     "linkedNodes": {}
   },
   "head15": {
@@ -579,59 +574,62 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "To start",
+      "text": "Sourdough",
       "level": "3",
-      "fontSize": "18",
+      "fontSize": "19",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
+        "r": 42,
+        "g": 29,
+        "b": 19,
         "a": 1
       },
       "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
+        "16",
+        "18",
+        "6",
+        "18"
       ]
     },
     "displayName": "Heading",
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont14",
+    "parent": "cont13",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "list16": {
+  "text16": {
     "type": {
-      "resolvedName": "List"
+      "resolvedName": "Text"
     },
     "isCanvas": false,
     "props": {
-      "items": [
-        "Bread, oil, salt",
-        "Anchovy and butter",
-        "Tomato, done simply"
-      ],
-      "ordered": "no",
       "fontSize": "15",
-      "gap": "10",
+      "textAlign": "left",
+      "fontWeight": "500",
       "color": {
         "r": 109,
         "g": 90,
         "b": 69,
         "a": 1
-      }
+      },
+      "margin": [
+        "0",
+        "18",
+        "0",
+        "18"
+      ],
+      "shadow": 0,
+      "text": "Two days of fermentation, baked dark."
     },
-    "displayName": "List",
+    "displayName": "Text",
     "custom": {
-      "displayName": "List"
+      "displayName": "Text"
     },
-    "parent": "cont14",
+    "parent": "cont13",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
@@ -647,10 +645,10 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "24",
-        "22",
-        "24",
-        "22"
+        "0",
+        "0",
+        "20",
+        "0"
       ],
       "margin": [
         "0",
@@ -677,38 +675,64 @@
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Mains"
+      "displayName": "Challah"
     },
-    "parent": "colu13",
+    "parent": "colu12",
     "hidden": false,
     "nodes": [
-      "head18",
-      "list19"
+      "imag18",
+      "head19",
+      "text20"
     ],
     "linkedNodes": {}
   },
-  "head18": {
+  "imag18": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": {
+        "src": "https://images.pexels.com/photos/10202985/pexels-photo-10202985.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "radius": 8,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont17",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head19": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "Mains",
+      "text": "Challah",
       "level": "3",
-      "fontSize": "18",
+      "fontSize": "19",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
+        "r": 42,
+        "g": 29,
+        "b": 19,
         "a": 1
       },
       "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
+        "16",
+        "18",
+        "6",
+        "18"
       ]
     },
     "displayName": "Heading",
@@ -720,37 +744,40 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "list19": {
+  "text20": {
     "type": {
-      "resolvedName": "List"
+      "resolvedName": "Text"
     },
     "isCanvas": false,
     "props": {
-      "items": [
-        "Lamb, slowly",
-        "Sea bream, whole",
-        "Aubergine, smoked"
-      ],
-      "ordered": "no",
       "fontSize": "15",
-      "gap": "10",
+      "textAlign": "left",
+      "fontWeight": "500",
       "color": {
         "r": 109,
         "g": 90,
         "b": 69,
         "a": 1
-      }
+      },
+      "margin": [
+        "0",
+        "18",
+        "0",
+        "18"
+      ],
+      "shadow": 0,
+      "text": "Fridays only, ordered by Thursday noon."
     },
-    "displayName": "List",
+    "displayName": "Text",
     "custom": {
-      "displayName": "List"
+      "displayName": "Text"
     },
     "parent": "cont17",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont20": {
+  "cont21": {
     "type": {
       "resolvedName": "Container"
     },
@@ -761,10 +788,10 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "24",
-        "22",
-        "24",
-        "22"
+        "0",
+        "0",
+        "20",
+        "0"
       ],
       "margin": [
         "0",
@@ -791,80 +818,109 @@
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "After"
+      "displayName": "Rye"
     },
-    "parent": "colu13",
+    "parent": "colu12",
     "hidden": false,
     "nodes": [
-      "head21",
-      "list22"
+      "imag22",
+      "head23",
+      "text24"
     ],
     "linkedNodes": {}
   },
-  "head21": {
+  "imag22": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": {
+        "src": "https://images.pexels.com/photos/8633662/pexels-photo-8633662.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "radius": 8,
+        "width": "100%"
+      },
+      "radius": 0,
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont21",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head23": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "After",
+      "text": "Rye",
       "level": "3",
-      "fontSize": "18",
+      "fontSize": "19",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
+        "r": 42,
+        "g": 29,
+        "b": 19,
         "a": 1
       },
       "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
+        "16",
+        "18",
+        "6",
+        "18"
       ]
     },
     "displayName": "Heading",
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont20",
+    "parent": "cont21",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "list22": {
+  "text24": {
     "type": {
-      "resolvedName": "List"
+      "resolvedName": "Text"
     },
     "isCanvas": false,
     "props": {
-      "items": [
-        "Olive oil cake",
-        "Figs and cream",
-        "Coffee and something"
-      ],
-      "ordered": "no",
       "fontSize": "15",
-      "gap": "10",
+      "textAlign": "left",
+      "fontWeight": "500",
       "color": {
         "r": 109,
         "g": 90,
         "b": 69,
         "a": 1
-      }
+      },
+      "margin": [
+        "0",
+        "18",
+        "0",
+        "18"
+      ],
+      "shadow": 0,
+      "text": "Dense, sour, keeps all week."
     },
-    "displayName": "List",
+    "displayName": "Text",
     "custom": {
-      "displayName": "List"
+      "displayName": "Text"
     },
-    "parent": "cont20",
+    "parent": "cont21",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont23": {
+  "cont25": {
     "type": {
       "resolvedName": "Container"
     },
@@ -875,9 +931,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "56",
         "48",
-        "32",
+        "48",
+        "24",
         "48"
       ],
       "margin": [
@@ -911,11 +967,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu24"
+      "colu26"
     ],
     "linkedNodes": {}
   },
-  "colu24": {
+  "colu26": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -930,15 +986,15 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont23",
+    "parent": "cont25",
     "hidden": false,
     "nodes": [
-      "cont25",
-      "cont28"
+      "cont27",
+      "cont32"
     ],
     "linkedNodes": {}
   },
-  "cont25": {
+  "cont27": {
     "type": {
       "resolvedName": "Container"
     },
@@ -981,21 +1037,23 @@
     "custom": {
       "displayName": "When"
     },
-    "parent": "colu24",
+    "parent": "colu26",
     "hidden": false,
     "nodes": [
-      "head26",
-      "list27"
+      "head28",
+      "list29",
+      "divi30",
+      "text31"
     ],
     "linkedNodes": {}
   },
-  "head26": {
+  "head28": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "When we are open",
+      "text": "When to come",
       "level": "2",
       "fontSize": "28",
       "fontWeight": "700",
@@ -1017,20 +1075,20 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont25",
+    "parent": "cont27",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "list27": {
+  "list29": {
     "type": {
       "resolvedName": "List"
     },
     "isCanvas": false,
     "props": {
       "items": [
-        "Tuesday to Saturday, 18:00",
-        "One sitting, seven o’clock",
+        "Tuesday to Friday, 06:00 to sold out",
+        "Saturday, 06:00 to 13:00",
         "Closed Sunday and Monday"
       ],
       "ordered": "no",
@@ -1047,12 +1105,70 @@
     "custom": {
       "displayName": "List"
     },
-    "parent": "cont25",
+    "parent": "cont27",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont28": {
+  "divi30": {
+    "type": {
+      "resolvedName": "Divider"
+    },
+    "isCanvas": false,
+    "props": {
+      "thickness": "1",
+      "color": {
+        "r": 42,
+        "g": 29,
+        "b": 19,
+        "a": 0.15
+      },
+      "inset": "0",
+      "spacing": "20"
+    },
+    "displayName": "Divider",
+    "custom": {
+      "displayName": "Divider"
+    },
+    "parent": "cont27",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text31": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 109,
+        "g": 90,
+        "b": 69,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "The queue is longest at eight. It moves quickly."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont27",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont32": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1095,27 +1211,27 @@
     "custom": {
       "displayName": "Said"
     },
-    "parent": "colu24",
+    "parent": "colu26",
     "hidden": false,
     "nodes": [
-      "test29"
+      "test33"
     ],
     "linkedNodes": {}
   },
-  "test29": {
+  "test33": {
     "type": {
       "resolvedName": "Testimonial"
     },
     "isCanvas": false,
     "props": {
-      "quote": "The menu is short because everything on it is worth eating.",
-      "author": "Ronit Adler",
-      "role": "Time Out Tel Aviv",
+      "quote": "I have moved twice and still come back on Fridays.",
+      "author": "Tal Amir",
+      "role": "Regular since 2019",
       "avatar": "",
       "align": "left",
       "background": {
-        "r": 243,
-        "g": 230,
+        "r": 246,
+        "g": 226,
         "b": 211,
         "a": 1
       },
@@ -1129,19 +1245,19 @@
         "r": 255,
         "g": 255,
         "b": 255,
-        "a": 0.6
+        "a": 1
       }
     },
     "displayName": "Testimonial",
     "custom": {
       "displayName": "Testimonial"
     },
-    "parent": "cont28",
+    "parent": "cont32",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont30": {
+  "cont34": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1179,30 +1295,30 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "find-us"
+      "anchor": "visit"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Find us"
+      "displayName": "Visit"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head31",
-      "spac32",
-      "map33"
+      "head35",
+      "spac36",
+      "map37"
     ],
     "linkedNodes": {}
   },
-  "head31": {
+  "head35": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "Yehuda Halevi 21",
+      "text": "Yehuda Halevi 21, Tel Aviv",
       "level": "2",
-      "fontSize": "28",
+      "fontSize": "26",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
@@ -1222,12 +1338,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont30",
+    "parent": "cont34",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac32": {
+  "spac36": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -1239,12 +1355,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont30",
+    "parent": "cont34",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "map33": {
+  "map37": {
     "type": {
       "resolvedName": "Map"
     },
@@ -1255,13 +1371,13 @@
       "zoom": 15,
       "height": "320px",
       "width": "100%",
-      "label": "Casa Oliva"
+      "label": "Lehem"
     },
     "displayName": "Map",
     "custom": {
       "displayName": "Map"
     },
-    "parent": "cont30",
+    "parent": "cont34",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

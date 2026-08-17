@@ -22,9 +22,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 247,
+        "g": 250,
+        "b": 251,
         "a": 1
       },
       "color": {
@@ -47,8 +47,9 @@
       "navb01",
       "cont02",
       "cont10",
-      "cont23",
-      "cont30"
+      "cont26",
+      "cont30",
+      "cont34"
     ],
     "linkedNodes": {}
   },
@@ -59,26 +60,26 @@
     "isCanvas": false,
     "props": {
       "variant": "light",
-      "brand": "Casa Oliva",
+      "brand": "Meridian Dental",
       "links": [
         {
-          "text": "Menu",
-          "href": "#menu"
+          "text": "Treatments",
+          "href": "#treatments"
         },
         {
-          "text": "Hours",
-          "href": "#hours"
+          "text": "The team",
+          "href": "#team"
         },
         {
-          "text": "Find us",
-          "href": "#find-us"
+          "text": "Questions",
+          "href": "#questions"
         }
       ],
       "sticky": false,
       "textColor": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
+        "r": 23,
+        "g": 42,
+        "b": 48,
         "a": 1
       },
       "height": "56px",
@@ -106,7 +107,7 @@
       "padding": [
         "64",
         "48",
-        "48",
+        "40",
         "48"
       ],
       "margin": [
@@ -116,9 +117,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 247,
+        "g": 250,
+        "b": 251,
         "a": 1
       },
       "color": {
@@ -189,9 +190,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 247,
+        "g": 250,
+        "b": 251,
         "a": 1
       },
       "color": {
@@ -225,17 +226,17 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "Open for dinner",
+      "text": "Taking new patients",
       "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
+        "r": 232,
+        "g": 242,
+        "b": 245,
         "a": 1
       },
       "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
+        "r": 20,
+        "g": 128,
+        "b": 138,
         "a": 1
       },
       "radius": 999
@@ -255,15 +256,15 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "Slow food, small room",
+      "text": "Dentistry without the dread",
       "level": "1",
-      "fontSize": "46",
+      "fontSize": "44",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
+        "r": 23,
+        "g": 42,
+        "b": 48,
         "a": 1
       },
       "margin": [
@@ -292,9 +293,9 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
+        "r": 94,
+        "g": 114,
+        "b": 120,
         "a": 1
       },
       "margin": [
@@ -304,7 +305,7 @@
         "0"
       ],
       "shadow": 0,
-      "text": "Twenty-four covers, one sitting a night, and whatever the market had that morning."
+      "text": "Same dentist every visit, prices agreed before anything starts, and no upselling."
     },
     "displayName": "Text",
     "custom": {
@@ -322,9 +323,9 @@
     "isCanvas": false,
     "props": {
       "background": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
+        "r": 20,
+        "g": 128,
+        "b": 138,
         "a": 1
       },
       "color": {
@@ -334,7 +335,7 @@
         "a": 1
       },
       "buttonStyle": "full",
-      "text": "Book a table",
+      "text": "Book a check-up",
       "margin": [
         "5",
         "0",
@@ -358,7 +359,7 @@
           "0"
         ],
         "shadow": 0,
-        "text": "Book a table"
+        "text": "Book a check-up"
       }
     },
     "displayName": "Button",
@@ -377,8 +378,8 @@
     "isCanvas": false,
     "props": {
       "src": {
-        "src": "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=900",
-        "radius": 8,
+        "src": "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=900",
+        "radius": 12,
         "width": "100%"
       },
       "radius": 0,
@@ -406,9 +407,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "56",
+        "40",
         "48",
-        "56",
+        "48",
         "48"
       ],
       "margin": [
@@ -418,9 +419,9 @@
         "0"
       ],
       "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
+        "r": 247,
+        "g": 250,
+        "b": 251,
         "a": 1
       },
       "color": {
@@ -433,11 +434,11 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "menu"
+      "anchor": "treatments"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Menu"
+      "displayName": "Treatments"
     },
     "parent": "ROOT",
     "hidden": false,
@@ -454,15 +455,15 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "This week",
+      "text": "What we do",
       "level": "2",
       "fontSize": "32",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
+        "r": 23,
+        "g": 42,
+        "b": 48,
         "a": 1
       },
       "margin": [
@@ -505,7 +506,7 @@
     "isCanvas": true,
     "props": {
       "count": "3",
-      "gap": "24",
+      "gap": "20",
       "align": "stretch",
       "stack": "yes"
     },
@@ -517,8 +518,8 @@
     "hidden": false,
     "nodes": [
       "cont14",
-      "cont17",
-      "cont20"
+      "cont18",
+      "cont22"
     ],
     "linkedNodes": {}
   },
@@ -533,10 +534,10 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
+        "26",
         "24",
-        "22",
-        "24",
-        "22"
+        "26",
+        "24"
       ],
       "margin": [
         "0",
@@ -545,9 +546,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 232,
+        "g": 242,
+        "b": 245,
         "a": 1
       },
       "color": {
@@ -557,43 +558,75 @@
         "a": 1
       },
       "shadow": 0,
-      "radius": 8,
+      "radius": 12,
       "width": "100%",
       "height": "auto"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "To start"
+      "displayName": "Check-ups"
     },
     "parent": "colu13",
     "hidden": false,
     "nodes": [
-      "head15",
-      "list16"
+      "icon15",
+      "head16",
+      "text17"
     ],
     "linkedNodes": {}
   },
-  "head15": {
+  "icon15": {
+    "type": {
+      "resolvedName": "Icon"
+    },
+    "isCanvas": false,
+    "props": {
+      "name": "health_and_safety",
+      "size": "32",
+      "padded": "yes",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "background": {
+        "r": 20,
+        "g": 128,
+        "b": 138,
+        "a": 1
+      }
+    },
+    "displayName": "Icon",
+    "custom": {
+      "displayName": "Icon"
+    },
+    "parent": "cont14",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head16": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "To start",
+      "text": "Check-ups",
       "level": "3",
-      "fontSize": "18",
+      "fontSize": "19",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
+        "r": 23,
+        "g": 42,
+        "b": 48,
         "a": 1
       },
       "margin": [
+        "14",
         "0",
-        "0",
-        "0",
+        "6",
         "0"
       ]
     },
@@ -606,37 +639,40 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "list16": {
+  "text17": {
     "type": {
-      "resolvedName": "List"
+      "resolvedName": "Text"
     },
     "isCanvas": false,
     "props": {
-      "items": [
-        "Bread, oil, salt",
-        "Anchovy and butter",
-        "Tomato, done simply"
-      ],
-      "ordered": "no",
       "fontSize": "15",
-      "gap": "10",
+      "textAlign": "left",
+      "fontWeight": "500",
       "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
+        "r": 94,
+        "g": 114,
+        "b": 120,
         "a": 1
-      }
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Twenty minutes, twice a year, and usually nothing to do."
     },
-    "displayName": "List",
+    "displayName": "Text",
     "custom": {
-      "displayName": "List"
+      "displayName": "Text"
     },
     "parent": "cont14",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont17": {
+  "cont18": {
     "type": {
       "resolvedName": "Container"
     },
@@ -647,10 +683,10 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
+        "26",
         "24",
-        "22",
-        "24",
-        "22"
+        "26",
+        "24"
       ],
       "margin": [
         "0",
@@ -659,9 +695,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 232,
+        "g": 242,
+        "b": 245,
         "a": 1
       },
       "color": {
@@ -671,43 +707,75 @@
         "a": 1
       },
       "shadow": 0,
-      "radius": 8,
+      "radius": 12,
       "width": "100%",
       "height": "auto"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Mains"
+      "displayName": "Hygiene"
     },
     "parent": "colu13",
     "hidden": false,
     "nodes": [
-      "head18",
-      "list19"
+      "icon19",
+      "head20",
+      "text21"
     ],
     "linkedNodes": {}
   },
-  "head18": {
+  "icon19": {
+    "type": {
+      "resolvedName": "Icon"
+    },
+    "isCanvas": false,
+    "props": {
+      "name": "cleaning_services",
+      "size": "32",
+      "padded": "yes",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "background": {
+        "r": 20,
+        "g": 128,
+        "b": 138,
+        "a": 1
+      }
+    },
+    "displayName": "Icon",
+    "custom": {
+      "displayName": "Icon"
+    },
+    "parent": "cont18",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head20": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "Mains",
+      "text": "Hygiene",
       "level": "3",
-      "fontSize": "18",
+      "fontSize": "19",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
+        "r": 23,
+        "g": 42,
+        "b": 48,
         "a": 1
       },
       "margin": [
+        "14",
         "0",
-        "0",
-        "0",
+        "6",
         "0"
       ]
     },
@@ -715,42 +783,45 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont17",
+    "parent": "cont18",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "list19": {
+  "text21": {
     "type": {
-      "resolvedName": "List"
+      "resolvedName": "Text"
     },
     "isCanvas": false,
     "props": {
-      "items": [
-        "Lamb, slowly",
-        "Sea bream, whole",
-        "Aubergine, smoked"
-      ],
-      "ordered": "no",
       "fontSize": "15",
-      "gap": "10",
+      "textAlign": "left",
+      "fontWeight": "500",
       "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
+        "r": 94,
+        "g": 114,
+        "b": 120,
         "a": 1
-      }
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "A proper clean, and honest advice about the brushing."
     },
-    "displayName": "List",
+    "displayName": "Text",
     "custom": {
-      "displayName": "List"
+      "displayName": "Text"
     },
-    "parent": "cont17",
+    "parent": "cont18",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont20": {
+  "cont22": {
     "type": {
       "resolvedName": "Container"
     },
@@ -761,10 +832,10 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
+        "26",
         "24",
-        "22",
-        "24",
-        "22"
+        "26",
+        "24"
       ],
       "margin": [
         "0",
@@ -773,9 +844,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 232,
+        "g": 242,
+        "b": 245,
         "a": 1
       },
       "color": {
@@ -785,43 +856,75 @@
         "a": 1
       },
       "shadow": 0,
-      "radius": 8,
+      "radius": 12,
       "width": "100%",
       "height": "auto"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "After"
+      "displayName": "Repairs"
     },
     "parent": "colu13",
     "hidden": false,
     "nodes": [
-      "head21",
-      "list22"
+      "icon23",
+      "head24",
+      "text25"
     ],
     "linkedNodes": {}
   },
-  "head21": {
+  "icon23": {
+    "type": {
+      "resolvedName": "Icon"
+    },
+    "isCanvas": false,
+    "props": {
+      "name": "build",
+      "size": "32",
+      "padded": "yes",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "background": {
+        "r": 20,
+        "g": 128,
+        "b": 138,
+        "a": 1
+      }
+    },
+    "displayName": "Icon",
+    "custom": {
+      "displayName": "Icon"
+    },
+    "parent": "cont22",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head24": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "After",
+      "text": "Repairs",
       "level": "3",
-      "fontSize": "18",
+      "fontSize": "19",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
+        "r": 23,
+        "g": 42,
+        "b": 48,
         "a": 1
       },
       "margin": [
+        "14",
         "0",
-        "0",
-        "0",
+        "6",
         "0"
       ]
     },
@@ -829,42 +932,45 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont20",
+    "parent": "cont22",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "list22": {
+  "text25": {
     "type": {
-      "resolvedName": "List"
+      "resolvedName": "Text"
     },
     "isCanvas": false,
     "props": {
-      "items": [
-        "Olive oil cake",
-        "Figs and cream",
-        "Coffee and something"
-      ],
-      "ordered": "no",
       "fontSize": "15",
-      "gap": "10",
+      "textAlign": "left",
+      "fontWeight": "500",
       "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
+        "r": 94,
+        "g": 114,
+        "b": 120,
         "a": 1
-      }
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Fillings, crowns and the rest, quoted before we start."
     },
-    "displayName": "List",
+    "displayName": "Text",
     "custom": {
-      "displayName": "List"
+      "displayName": "Text"
     },
-    "parent": "cont20",
+    "parent": "cont22",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont23": {
+  "cont26": {
     "type": {
       "resolvedName": "Container"
     },
@@ -875,9 +981,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "56",
-        "48",
         "32",
+        "48",
+        "48",
         "48"
       ],
       "margin": [
@@ -887,9 +993,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 247,
+        "g": 250,
+        "b": 251,
         "a": 1
       },
       "color": {
@@ -902,108 +1008,36 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "hours"
+      "anchor": "team"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Hours"
+      "displayName": "Team"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu24"
+      "head27",
+      "spac28",
+      "team29"
     ],
     "linkedNodes": {}
   },
-  "colu24": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "2",
-      "gap": "40",
-      "align": "stretch",
-      "stack": "yes"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Columns"
-    },
-    "parent": "cont23",
-    "hidden": false,
-    "nodes": [
-      "cont25",
-      "cont28"
-    ],
-    "linkedNodes": {}
-  },
-  "cont25": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "When"
-    },
-    "parent": "colu24",
-    "hidden": false,
-    "nodes": [
-      "head26",
-      "list27"
-    ],
-    "linkedNodes": {}
-  },
-  "head26": {
+  "head27": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "When we are open",
+      "text": "Who you will see",
       "level": "2",
-      "fontSize": "28",
+      "fontSize": "30",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
+        "r": 23,
+        "g": 42,
+        "b": 48,
         "a": 1
       },
       "margin": [
@@ -1017,126 +1051,64 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont25",
+    "parent": "cont26",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "list27": {
+  "spac28": {
     "type": {
-      "resolvedName": "List"
+      "resolvedName": "Spacer"
     },
     "isCanvas": false,
     "props": {
-      "items": [
-        "Tuesday to Saturday, 18:00",
-        "One sitting, seven o’clock",
-        "Closed Sunday and Monday"
-      ],
-      "ordered": "no",
-      "fontSize": "16",
-      "gap": "8",
-      "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
-        "a": 1
-      }
+      "height": "20"
     },
-    "displayName": "List",
+    "displayName": "Spacer",
     "custom": {
-      "displayName": "List"
+      "displayName": "Spacer"
     },
-    "parent": "cont25",
+    "parent": "cont26",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont28": {
+  "team29": {
     "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Said"
-    },
-    "parent": "colu24",
-    "hidden": false,
-    "nodes": [
-      "test29"
-    ],
-    "linkedNodes": {}
-  },
-  "test29": {
-    "type": {
-      "resolvedName": "Testimonial"
+      "resolvedName": "TeamGrid"
     },
     "isCanvas": false,
     "props": {
-      "quote": "The menu is short because everything on it is worth eating.",
-      "author": "Ronit Adler",
-      "role": "Time Out Tel Aviv",
-      "avatar": "",
-      "align": "left",
-      "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
+      "people": [
+        "Dr Yael Shani",
+        "Dentist, 14 years",
+        "https://images.pexels.com/photos/29057425/pexels-photo-29057425.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "Dr Amit Peled",
+        "Dentist, 9 years",
+        "https://images.pexels.com/photos/37233404/pexels-photo-37233404.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "Liat Rom",
+        "Hygienist",
+        "https://images.pexels.com/photos/16666883/pexels-photo-16666883.jpeg?auto=compress&cs=tinysrgb&w=400"
+      ],
+      "columns": "3",
       "accent": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 0.6
+        "r": 232,
+        "g": 242,
+        "b": 245,
+        "a": 1
+      },
+      "color": {
+        "r": 23,
+        "g": 42,
+        "b": 48,
+        "a": 1
       }
     },
-    "displayName": "Testimonial",
+    "displayName": "TeamGrid",
     "custom": {
-      "displayName": "Testimonial"
+      "displayName": "TeamGrid"
     },
-    "parent": "cont28",
+    "parent": "cont26",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
@@ -1152,9 +1124,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "24",
         "48",
-        "64",
+        "48",
+        "48",
         "48"
       ],
       "margin": [
@@ -1164,9 +1136,9 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
+        "r": 232,
+        "g": 242,
+        "b": 245,
         "a": 1
       },
       "color": {
@@ -1179,18 +1151,18 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "find-us"
+      "anchor": "questions"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Find us"
+      "displayName": "Questions"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
       "head31",
       "spac32",
-      "map33"
+      "acco33"
     ],
     "linkedNodes": {}
   },
@@ -1200,15 +1172,15 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "Yehuda Halevi 21",
+      "text": "The things people do not like asking",
       "level": "2",
-      "fontSize": "28",
+      "fontSize": "30",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
+        "r": 23,
+        "g": 42,
+        "b": 48,
         "a": 1
       },
       "margin": [
@@ -1233,7 +1205,7 @@
     },
     "isCanvas": false,
     "props": {
-      "height": "16"
+      "height": "20"
     },
     "displayName": "Spacer",
     "custom": {
@@ -1244,24 +1216,163 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "map33": {
+  "acco33": {
+    "type": {
+      "resolvedName": "Accordion"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Will it hurt?",
+        "A check-up will not. For anything else we numb it properly and wait until it has worked.",
+        "What does it cost?",
+        "A check-up is ₪250. Anything else is quoted in writing before we begin.",
+        "I have not been in years.",
+        "Most of our new patients say that. Come in for a look and we will make a plan."
+      ],
+      "background": {
+        "r": 247,
+        "g": 250,
+        "b": 251,
+        "a": 1
+      },
+      "color": {
+        "r": 23,
+        "g": 42,
+        "b": 48,
+        "a": 1
+      },
+      "radius": 12
+    },
+    "displayName": "Accordion",
+    "custom": {
+      "displayName": "Accordion"
+    },
+    "parent": "cont30",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont34": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "48",
+        "64",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 247,
+        "g": 250,
+        "b": 251,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Find"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head35",
+      "spac36",
+      "map37"
+    ],
+    "linkedNodes": {}
+  },
+  "head35": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Where we are",
+      "level": "2",
+      "fontSize": "26",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 23,
+        "g": 42,
+        "b": 48,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont34",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac36": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "16"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont34",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "map37": {
     "type": {
       "resolvedName": "Map"
     },
     "isCanvas": false,
     "props": {
-      "lat": 32.0629,
-      "lng": 34.7745,
+      "lat": 32.0853,
+      "lng": 34.7818,
       "zoom": 15,
       "height": "320px",
       "width": "100%",
-      "label": "Casa Oliva"
+      "label": "Meridian Dental"
     },
     "displayName": "Map",
     "custom": {
       "displayName": "Map"
     },
-    "parent": "cont30",
+    "parent": "cont34",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

@@ -68,7 +68,7 @@ AVAILABLE ELEMENTS (use these EXACT type names, use ALL of them when appropriate
    Most pages open with a NavbarElement. Make the brand name relevant to the topic. Use 3-5 links.
 
 11. Heading (a title, with a real heading level):
-   Props: { "text": "Out of the oven at six", "level": "1"|"2"|"3"|"4", "fontSize": "44", "fontWeight": "800", "textAlign": "left", "color": {...} }
+   Props: { "text": "Out of the oven at six", "level": "1"|"2"|"3"|"4", "fontSize": "44", "fontWeight": "800", "textAlign": "left", "color": {...}, "margin": [0,0,0,0] }
    USE THIS FOR EVERY TITLE. Text is for prose. One level 1 per page, saying what
    the page is about; sections below it are level 2. Level and size are separate -
    a small section title is still a level 2.
@@ -85,11 +85,11 @@ AVAILABLE ELEMENTS (use these EXACT type names, use ALL of them when appropriate
    Props: { "thickness": "1", "color": {...}, "spacing": "24", "inset": "0" }
 
 15. List (bulleted or numbered):
-   Props: { "items": ["First", "Second"], "ordered": "no"|"yes", "fontSize": "16" }
+   Props: { "items": ["First", "Second"], "ordered": "no"|"yes", "fontSize": "16", "gap": "8", "color": {...} }
    A real list, not several Texts starting with a dash.
 
 16. Quote (a pull quote):
-   Props: { "text": "...", "attribution": "", "fontSize": "20" }
+   Props: { "text": "...", "attribution": "", "fontSize": "20", "align": "left"|"center", "color": {...}, "accent": {...} }
    A sentence lifted out of the copy. For a customer vouching for the business,
    use Testimonial instead.
 
@@ -98,40 +98,40 @@ AVAILABLE ELEMENTS (use these EXACT type names, use ALL of them when appropriate
    Use the symbol's own name: schedule, verified, local_shipping, restaurant.
 
 18. Badge (a small pill of text):
-   Props: { "text": "Most popular", "background": {...}, "color": {...} }
+   Props: { "text": "Most popular", "background": {...}, "color": {...}, "radius": 999 }
 
 19. Accordion (questions that open and close):
-   Props: { "items": ["Question?", "Answer.", "Next question?", "Its answer."] }
+   Props: { "items": ["Question?", "Answer.", "Next question?", "Its answer."], "background": {...}, "color": {...}, "radius": 10 }
    Alternating lines: question, then its answer. The natural home for an FAQ.
 
 20. Pricing (tiers in columns that line up):
-   Props: { "tiers": ["Starter","₪0","forever","Start free","One site; Community support",  "Studio","₪49","per month","Choose Studio","Ten sites; Custom domain"], "featured": 2, "accent": {...} }
+   Props: { "tiers": ["Starter","₪0","forever","Start free","One site; Community support",  "Studio","₪49","per month","Choose Studio","Ten sites; Custom domain"], "featured": 2, "accent": {...}, "background": {...}, "color": {...} }
    Five lines per tier: name, price, period, button, features separated by ";".
    "featured" is which tier stands out, counting from 1.
 
 21. Testimonial (somebody vouching for the business):
-   Props: { "quote": "...", "author": "Dana Levi", "role": "Owner", "avatar": "" }
+   Props: { "quote": "...", "author": "Dana Levi", "role": "Owner", "avatar": "", "align": "left"|"center", "background": {...}, "color": {...}, "accent": {...} }
 
 22. Stats (a row of numbers):
-   Props: { "items": ["1,200+", "sites published", "4 min", "from prompt to live"] }
+   Props: { "items": ["1,200+", "sites published", "4 min", "from prompt to live"], "align": "center", "accent": {...}, "color": {...} }
    Two lines each: the value, then what it counts.
 
 23. TeamGrid (the people):
-   Props: { "people": ["Dana Levi","Head baker","", "Omer Katz","Pastry",""], "columns": "3" }
+   Props: { "people": ["Dana Levi","Head baker","", "Omer Katz","Pastry",""], "columns": "3", "accent": {...}, "color": {...} }
    Three lines each: name, role, photo URL. Leave the URL empty for an initial.
 
 24. Timeline (steps in order, or a history):
-   Props: { "steps": ["1","Describe it","One sentence is enough", "2","Make it yours","Move blocks around"] }
+   Props: { "steps": ["1","Describe it","One sentence is enough", "2","Make it yours","Move blocks around"], "accent": {...}, "color": {...} }
    Three lines each: marker, title, detail.
 
 25. CTABanner (the ask, on a band of its own):
-   Props: { "title": "Ready to order?", "text": "", "cta": "Book a table", "href": "#contact", "background": {...} }
+   Props: { "title": "Ready to order?", "text": "", "cta": "Book a table", "href": "#contact", "background": {...}, "color": {...}, "buttonBackground": {...}, "buttonColor": {...}, "radius": 16 }
 
 26. LogoStrip (a row of logos at one height):
    Props: { "logos": ["https://...","https://..."], "height": "32" }
 
 27. SocialLinks (where else to find them):
-   Props: { "items": ["Instagram","https://instagram.com/x", "Facebook","https://facebook.com/x"] }
+   Props: { "items": ["Instagram","https://instagram.com/x", "Facebook","https://facebook.com/x"], "background": {...}, "color": {...}, "size": "14" }
    Two lines each: the name, then the address.
 
 REACH FOR THESE. A pricing table built out of Containers has nothing keeping its
