@@ -5,7 +5,7 @@ import { PHOTOS as P } from './_photos.mjs';
  * Local services — a trade that lives on trust and a quick quote.
  *
  * The whole page leads to one form. Everything above it exists to make sending
- * that form feel safe: the work shown, the price named, the reviews real.
+ * that form feel safe: the work shown, the process named, the price honest.
  */
 export default function services() {
   const b = createBuilder();
@@ -33,6 +33,12 @@ export default function services() {
   b.button(words, 'Get a quote', { background: AMBER, color: WHITE, buttonStyle: 'full' });
   b.image(top, P.joinery.bench(900), { radius: 10, width: '100%', height: '400px' });
 
+  // ── the joinery in three numbers ────────────────────────────────
+  const num = b.container(root, { background: PAPER, padding: ['32', '48', '8', '48'], width: '100%' }, 'Numbers');
+  b.stats(num, ['18', 'years at the bench', '6 wks', 'a kitchen, start to finish', '10 yr', 'guarantee, in writing'], {
+    accent: AMBER, color: MUTED,
+  });
+
   const work = b.container(root, { background: PAPER, padding: ['32', '48', '40', '48'], width: '100%', anchor: 'work' }, 'Work');
   b.heading(work, 'From the bench to the wall', { fontSize: '30', color: INK });
   b.spacer(work, '20');
@@ -43,7 +49,33 @@ export default function services() {
     b.badge(card, label, { background: WHITE, color: INK });
   }
 
-  const prices = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'prices' }, 'Prices');
+  // ── what the quote is worth ─────────────────────────────────────
+  const hold = b.container(root, { background: PAPER, padding: ['32', '48', '40', '48'], width: '100%' }, 'Hold');
+  b.heading(hold, 'What you can hold me to', { fontSize: '30', color: INK });
+  b.spacer(hold, '24');
+  const holdCols = b.columns(hold, { count: '3', gap: '20' });
+  for (const [name, symbol, copy] of [
+    ['Measured, not estimated', 'straighten', 'The tape decides the price. If a wall surprises us, the quote holds anyway.'],
+    ['Built in our shop', 'carpenter', 'Cut and finished twenty minutes away, not flat-packed three seas away.'],
+    ['Fixed for ten years', 'handshake', 'Hinges, runners and drawer bottoms, in writing. A squeak is my problem.'],
+  ]) {
+    const card = b.container(holdCols, { background: PANEL, padding: ['24', '22', '24', '22'], radius: 10 }, name);
+    b.icon(card, symbol, { color: PANEL, background: AMBER });
+    b.heading(card, name, { level: '3', fontSize: '18', color: INK, margin: ['14', '0', '6', '0'] });
+    b.text(card, copy, { fontSize: '15', color: MUTED });
+  }
+
+  // ── how a job actually runs ─────────────────────────────────────
+  const how = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%' }, 'Process');
+  b.heading(how, 'How a job runs', { fontSize: '30', color: INK });
+  b.spacer(how, '24');
+  b.timeline(how, [
+    'Day 1', 'The measure', 'An hour at yours with a tape and a coffee. The written quote follows within two days.',
+    'Week 2', 'The build', 'Cut and finished in the shop. Clients visit mid-build to see their kitchen in the raw.',
+    'Week 6', 'The fit', 'Two or three days in the house. We vacuum every evening and take the old units away.',
+  ], { accent: AMBER, color: INK });
+
+  const prices = b.container(root, { background: PAPER, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'prices' }, 'Prices');
   b.heading(prices, 'What things cost', { fontSize: '30', color: INK });
   b.text(prices, 'Rough guides. The quote is fixed once I have seen the room.', {
     fontSize: '15', color: MUTED, margin: ['8', '0', '20', '0'],
@@ -58,13 +90,40 @@ export default function services() {
   b.testimonial(prices, {
     quote: 'Turned up when he said, finished when he said, and cleaned up after himself. Twice now.',
     author: 'Miri Golan', role: 'Ramat Gan',
-    background: PAPER, color: INK, accent: rgba(255, 255, 255, 0.8),
+    background: PANEL, color: INK, accent: rgba(255, 255, 255, 0.8),
   });
 
-  const quote = b.container(root, { background: PAPER, padding: ['48', '48', '72', '48'], width: '100%', anchor: 'quote' }, 'Quote');
-  b.heading(quote, 'Tell me about the job', { fontSize: '30', color: INK });
-  b.spacer(quote, '18');
-  b.form(quote, {
+  // ── the questions every kitchen conversation reaches ────────────
+  const ask = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%' }, 'Questions');
+  const askSplit = b.columns(ask, { count: '2', gap: '40', ratio: '2:3', stack: 'yes' });
+  const askIntro = b.container(askSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Questions intro');
+  b.heading(askIntro, 'Before you ask', { fontSize: '30', color: INK });
+  b.text(askIntro, 'The three things every kitchen conversation reaches, usually in the first ten minutes.', {
+    fontSize: '15', color: MUTED, margin: ['12', '0', '0', '0'],
+  });
+  b.accordion(askSplit, [
+    'Can we stay in the house while it happens?',
+    'For wardrobes and stairs, yes — a day or two of dust sheets. For kitchens we work in halves, so the sink is only out for a day.',
+    'How fixed is the fixed quote?',
+    'Fixed. If the wall behind the units is worse than it looked, that is between me and the wall.',
+    'Do you do the whole kitchen — plumbing, stone?',
+    'The wood is mine. The stonemason and the electrician I have worked beside for a decade bill through the same quote.',
+  ], { background: PAPER, color: INK, radius: 10 });
+
+  // ── the form everything above was for ───────────────────────────
+  const quote = b.container(root, { background: PAPER, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'quote' }, 'Quote');
+  const quoteSplit = b.columns(quote, { count: '2', gap: '40', ratio: '3:2', stack: 'yes' });
+  const quoteCopy = b.container(quoteSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Quote copy');
+  b.heading(quoteCopy, 'Tell me about the job', { fontSize: '30', color: INK });
+  b.text(quoteCopy, 'A sentence is enough to start. The measure turns it into a number.', {
+    fontSize: '15', color: MUTED, margin: ['12', '0', '16', '0'],
+  });
+  b.list(quoteCopy, [
+    'One sentence about the room is enough',
+    'A photo helps, but the measure settles it',
+    'Rough ideas welcome — that is what the visit is for',
+  ], { color: MUTED, fontSize: '15' });
+  b.form(quoteSplit, {
     fields: [
       { label: 'Name', type: 'text', placeholder: 'Your name', required: true },
       { label: 'Phone', type: 'phone', placeholder: '05x', required: true },
@@ -72,6 +131,14 @@ export default function services() {
     ],
     submitText: 'Send', successMessage: 'Got it — I will call within a day.',
     accent: AMBER, background: PANEL,
+  });
+
+  const close = b.container(root, { background: PAPER, padding: ['24', '48', '72', '48'], width: '100%' }, 'Close');
+  b.ctaBanner(close, {
+    title: 'The awkward rooms are the best ones',
+    text: 'Odd corners, wonky walls, a staircase that has been wrong since 1962 — send one sentence about it.',
+    cta: 'Get a quote', href: '#quote',
+    background: AMBER, color: WHITE, buttonBackground: PAPER, buttonColor: INK,
   });
 
   b.footer(root, {

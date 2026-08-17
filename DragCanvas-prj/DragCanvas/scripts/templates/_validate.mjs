@@ -188,3 +188,48 @@ export function validateTemplate(t) {
   const hasFooter = Object.values(t.map).some((n) => n.custom?.displayName === 'Footer');
   if (!hasFooter) throw new Error(`${t.name}: has no footer`);
 }
+
+/**
+ * The elements that carry structure rather than just words.
+ *
+ * A page made of Heading, Text and Image is a page whose author reached for the
+ * three things every builder has. These are the ones this editor has that most
+ * do not, and a template exists to show somebody they are there - a customer who
+ * never sees an Accordion in a template will not go looking for one in the
+ * toolbar.
+ */
+const COMPOSED = new Set([
+  'Accordion', 'Carousel', 'CTABanner', 'Form', 'Icon', 'LogoStrip', 'Map',
+  'Pricing', 'Stats', 'TeamGrid', 'Testimonial', 'Timeline', 'Video', 'Quote',
+]);
+
+/**
+ * How much of the editor a template actually shows off.
+ *
+ * Measured before this existed: the gallery averaged 12.6 of 27 element types,
+ * 3.6 of the 14 composed ones, and 1.4 rows of columns per page - six sections
+ * of heading, paragraph, picture, one after another. Every one of those pages
+ * passed every other rule in this file, because nothing here could see the
+ * difference between a page and a list.
+ *
+ * Prose could not fix it either: the authoring guide has had a section on
+ * composition throughout, and templates written against it still came out flat.
+ * A number that fails the build is what binds.
+ */
+export function checkRichness(t) {
+  const nodes = Object.values(t.map);
+  const kinds = new Set(nodes.map((n) => n.type?.resolvedName));
+  const composed = [...kinds].filter((k) => COMPOSED.has(k));
+  const columns = nodes.filter((n) => n.type?.resolvedName === 'Columns');
+  const uneven = columns.filter((n) => String(n.props?.ratio || '').includes(':'));
+
+  const shortfalls = [];
+  if (kinds.size < 16) shortfalls.push(`${kinds.size} element types, needs 16`);
+  if (composed.length < 6) shortfalls.push(`${composed.length} composed elements, needs 6`);
+  if (columns.length < 3) shortfalls.push(`${columns.length} rows of columns, needs 3`);
+  // At least one row that is not two equal halves. Without this the rule above
+  // is satisfied by three more even splits, which is the layout being escaped.
+  if (uneven.length < 1) shortfalls.push('no row with a ratio, needs 1');
+
+  return shortfalls;
+}

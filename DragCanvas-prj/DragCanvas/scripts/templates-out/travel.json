@@ -46,10 +46,15 @@
     "nodes": [
       "navb01",
       "cont02",
-      "cont05",
       "cont07",
-      "cont14",
-      "cont20"
+      "cont09",
+      "cont11",
+      "cont27",
+      "cont31",
+      "cont38",
+      "cont44",
+      "cont51",
+      "cont53"
     ],
     "linkedNodes": {}
   },
@@ -147,12 +152,44 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head03",
-      "text04"
+      "badg03",
+      "head04",
+      "text05",
+      "butt06"
     ],
     "linkedNodes": {}
   },
-  "head03": {
+  "badg03": {
+    "type": {
+      "resolvedName": "Badge"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "One letter a month",
+      "background": {
+        "r": 240,
+        "g": 233,
+        "b": 222,
+        "a": 1
+      },
+      "color": {
+        "r": 24,
+        "g": 108,
+        "b": 122,
+        "a": 1
+      },
+      "radius": 999
+    },
+    "displayName": "Badge",
+    "custom": {
+      "displayName": "Badge"
+    },
+    "parent": "cont02",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head04": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -160,7 +197,7 @@
     "props": {
       "text": "Slow routes, written down",
       "level": "1",
-      "fontSize": "50",
+      "fontSize": "48",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
@@ -170,9 +207,9 @@
         "a": 1
       },
       "margin": [
+        "14",
         "0",
-        "0",
-        "0",
+        "10",
         "0"
       ]
     },
@@ -185,7 +222,7 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "text04": {
+  "text05": {
     "type": {
       "resolvedName": "Text"
     },
@@ -201,9 +238,9 @@
         "a": 0.82
       },
       "margin": [
-        "14",
         "0",
         "0",
+        "24",
         "0"
       ],
       "shadow": 0,
@@ -218,7 +255,62 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont05": {
+  "butt06": {
+    "type": {
+      "resolvedName": "Button"
+    },
+    "isCanvas": false,
+    "props": {
+      "background": {
+        "r": 24,
+        "g": 108,
+        "b": 122,
+        "a": 1
+      },
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "buttonStyle": "full",
+      "text": "Read the latest",
+      "margin": [
+        "8",
+        "0",
+        "8",
+        "0"
+      ],
+      "textComponent": {
+        "fontSize": "16",
+        "textAlign": "center",
+        "fontWeight": "600",
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 1
+        },
+        "margin": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "shadow": 0,
+        "text": "Read the latest"
+      }
+    },
+    "displayName": "Button",
+    "custom": {
+      "displayName": "Button"
+    },
+    "parent": "cont02",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont07": {
     "type": {
       "resolvedName": "Container"
     },
@@ -265,11 +357,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "caro06"
+      "caro08"
     ],
     "linkedNodes": {}
   },
-  "caro06": {
+  "caro08": {
     "type": {
       "resolvedName": "Carousel"
     },
@@ -300,12 +392,672 @@
     "custom": {
       "displayName": "Carousel"
     },
-    "parent": "cont05",
+    "parent": "cont07",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont07": {
+  "cont09": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "32",
+        "48",
+        "8",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 253,
+        "g": 250,
+        "b": 245,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Numbers"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "stat10"
+    ],
+    "linkedNodes": {}
+  },
+  "stat10": {
+    "type": {
+      "resolvedName": "Stats"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "64",
+        "routes, written up",
+        "11",
+        "years of the slow option",
+        "0",
+        "sponsored posts, ever"
+      ],
+      "align": "center",
+      "accent": {
+        "r": 24,
+        "g": 108,
+        "b": 122,
+        "a": 1
+      },
+      "color": {
+        "r": 120,
+        "g": 110,
+        "b": 98,
+        "a": 1
+      }
+    },
+    "displayName": "Stats",
+    "custom": {
+      "displayName": "Stats"
+    },
+    "parent": "cont09",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont11": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "32",
+        "48",
+        "40",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 253,
+        "g": 250,
+        "b": 245,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Rules"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head12",
+      "spac13",
+      "colu14"
+    ],
+    "linkedNodes": {}
+  },
+  "head12": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "What every letter holds to",
+      "level": "2",
+      "fontSize": "30",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 38,
+        "g": 34,
+        "b": 30,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont11",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac13": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "24"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont11",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "colu14": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "3",
+      "gap": "20",
+      "align": "stretch",
+      "stack": "yes"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont11",
+    "hidden": false,
+    "nodes": [
+      "cont15",
+      "cont19",
+      "cont23"
+    ],
+    "linkedNodes": {}
+  },
+  "cont15": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "22",
+        "24",
+        "22"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 240,
+        "g": 233,
+        "b": 222,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 10,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Slow by default"
+    },
+    "parent": "colu14",
+    "hidden": false,
+    "nodes": [
+      "icon16",
+      "head17",
+      "text18"
+    ],
+    "linkedNodes": {}
+  },
+  "icon16": {
+    "type": {
+      "resolvedName": "Icon"
+    },
+    "isCanvas": false,
+    "props": {
+      "name": "train",
+      "size": "32",
+      "padded": "yes",
+      "color": {
+        "r": 240,
+        "g": 233,
+        "b": 222,
+        "a": 1
+      },
+      "background": {
+        "r": 24,
+        "g": 108,
+        "b": 122,
+        "a": 1
+      }
+    },
+    "displayName": "Icon",
+    "custom": {
+      "displayName": "Icon"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head17": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Slow by default",
+      "level": "3",
+      "fontSize": "18",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 38,
+        "g": 34,
+        "b": 30,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "0",
+        "6",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text18": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 120,
+        "g": 110,
+        "b": 98,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Rail, ferry, foot. A flight is a last resort, not a starting point."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont19": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "22",
+        "24",
+        "22"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 240,
+        "g": 233,
+        "b": 222,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 10,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Practical, not dreamy"
+    },
+    "parent": "colu14",
+    "hidden": false,
+    "nodes": [
+      "icon20",
+      "head21",
+      "text22"
+    ],
+    "linkedNodes": {}
+  },
+  "icon20": {
+    "type": {
+      "resolvedName": "Icon"
+    },
+    "isCanvas": false,
+    "props": {
+      "name": "route",
+      "size": "32",
+      "padded": "yes",
+      "color": {
+        "r": 240,
+        "g": 233,
+        "b": 222,
+        "a": 1
+      },
+      "background": {
+        "r": 24,
+        "g": 108,
+        "b": 122,
+        "a": 1
+      }
+    },
+    "displayName": "Icon",
+    "custom": {
+      "displayName": "Icon"
+    },
+    "parent": "cont19",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head21": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Practical, not dreamy",
+      "level": "3",
+      "fontSize": "18",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 38,
+        "g": 34,
+        "b": 30,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "0",
+        "6",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont19",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text22": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 120,
+        "g": 110,
+        "b": 98,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Times, prices, and where the last bus actually leaves from."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont19",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont23": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "22",
+        "24",
+        "22"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 240,
+        "g": 233,
+        "b": 222,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 10,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Nothing sponsored"
+    },
+    "parent": "colu14",
+    "hidden": false,
+    "nodes": [
+      "icon24",
+      "head25",
+      "text26"
+    ],
+    "linkedNodes": {}
+  },
+  "icon24": {
+    "type": {
+      "resolvedName": "Icon"
+    },
+    "isCanvas": false,
+    "props": {
+      "name": "verified",
+      "size": "32",
+      "padded": "yes",
+      "color": {
+        "r": 240,
+        "g": 233,
+        "b": 222,
+        "a": 1
+      },
+      "background": {
+        "r": 24,
+        "g": 108,
+        "b": 122,
+        "a": 1
+      }
+    },
+    "displayName": "Icon",
+    "custom": {
+      "displayName": "Icon"
+    },
+    "parent": "cont23",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head25": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Nothing sponsored",
+      "level": "3",
+      "fontSize": "18",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 38,
+        "g": 34,
+        "b": 30,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "0",
+        "6",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont23",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text26": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 120,
+        "g": 110,
+        "b": 98,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "No press trips, no affiliate links. If a bed was free, the letter says so."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont23",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont27": {
     "type": {
       "resolvedName": "Container"
     },
@@ -342,6 +1094,147 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "How"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head28",
+      "spac29",
+      "time30"
+    ],
+    "linkedNodes": {}
+  },
+  "head28": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "How a trip becomes a letter",
+      "level": "2",
+      "fontSize": "30",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 38,
+        "g": 34,
+        "b": 30,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont27",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac29": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "24"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont27",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "time30": {
+    "type": {
+      "resolvedName": "Timeline"
+    },
+    "isCanvas": false,
+    "props": {
+      "steps": [
+        "Days 1–5",
+        "The trip itself",
+        "Notebook in the pocket, phone in the bag, nothing posted until it is over.",
+        "Week 2",
+        "The writing",
+        "Typed up while the details still smell of the train — prices, times, mistakes.",
+        "Month end",
+        "The letter",
+        "One route, a handful of photographs, and what we would do differently."
+      ],
+      "accent": {
+        "r": 24,
+        "g": 108,
+        "b": 122,
+        "a": 1
+      },
+      "color": {
+        "r": 38,
+        "g": 34,
+        "b": 30,
+        "a": 1
+      }
+    },
+    "displayName": "Timeline",
+    "custom": {
+      "displayName": "Timeline"
+    },
+    "parent": "cont27",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont31": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "48",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 253,
+        "g": 250,
+        "b": 245,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
       "height": "auto",
       "anchor": "about"
     },
@@ -352,11 +1245,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu08"
+      "colu32"
     ],
     "linkedNodes": {}
   },
-  "colu08": {
+  "colu32": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -371,15 +1264,15 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont07",
+    "parent": "cont31",
     "hidden": false,
     "nodes": [
-      "cont09",
-      "cont12"
+      "cont33",
+      "cont36"
     ],
     "linkedNodes": {}
   },
-  "cont09": {
+  "cont33": {
     "type": {
       "resolvedName": "Container"
     },
@@ -402,10 +1295,10 @@
         "0"
       ],
       "background": {
-        "r": 240,
-        "g": 233,
-        "b": 222,
-        "a": 1
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
       },
       "color": {
         "r": 0,
@@ -422,15 +1315,15 @@
     "custom": {
       "displayName": "Bio"
     },
-    "parent": "colu08",
+    "parent": "colu32",
     "hidden": false,
     "nodes": [
-      "head10",
-      "text11"
+      "head34",
+      "text35"
     ],
     "linkedNodes": {}
   },
-  "head10": {
+  "head34": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -458,12 +1351,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont09",
+    "parent": "cont33",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text11": {
+  "text35": {
     "type": {
       "resolvedName": "Text"
     },
@@ -485,18 +1378,18 @@
         "0"
       ],
       "shadow": 0,
-      "text": "Ten years of taking the slower option and writing about what happened. No sponsored posts, no affiliate links."
+      "text": "Ten years of taking the slower option and writing about what happened. No sponsored posts, no affiliate links, no photographs that are not mine."
     },
     "displayName": "Text",
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont09",
+    "parent": "cont33",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont12": {
+  "cont36": {
     "type": {
       "resolvedName": "Container"
     },
@@ -511,6 +1404,88 @@
         "0",
         "0",
         "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Said"
+    },
+    "parent": "colu32",
+    "hidden": false,
+    "nodes": [
+      "quot37"
+    ],
+    "linkedNodes": {}
+  },
+  "quot37": {
+    "type": {
+      "resolvedName": "Quote"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "The only travel writing I read that makes the journey sound better than the destination.",
+      "attribution": "A reader, three years in",
+      "fontSize": "19",
+      "align": "left",
+      "color": {
+        "r": 38,
+        "g": 34,
+        "b": 30,
+        "a": 1
+      },
+      "accent": {
+        "r": 24,
+        "g": 108,
+        "b": 122,
+        "a": 1
+      }
+    },
+    "displayName": "Quote",
+    "custom": {
+      "displayName": "Quote"
+    },
+    "parent": "cont36",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont38": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "48",
+        "48",
+        "48",
+        "48"
       ],
       "margin": [
         "0",
@@ -537,48 +1512,194 @@
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Said"
+      "displayName": "Questions"
     },
-    "parent": "colu08",
+    "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "quot13"
+      "colu39"
     ],
     "linkedNodes": {}
   },
-  "quot13": {
+  "colu39": {
     "type": {
-      "resolvedName": "Quote"
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "40",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "2:3"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont38",
+    "hidden": false,
+    "nodes": [
+      "cont40",
+      "acco43"
+    ],
+    "linkedNodes": {}
+  },
+  "cont40": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Questions intro"
+    },
+    "parent": "colu39",
+    "hidden": false,
+    "nodes": [
+      "head41",
+      "text42"
+    ],
+    "linkedNodes": {}
+  },
+  "head41": {
+    "type": {
+      "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "The only travel writing I read that makes the journey sound better than the destination.",
-      "attribution": "A reader",
-      "fontSize": "19",
-      "align": "left",
+      "text": "Asked, answered",
+      "level": "2",
+      "fontSize": "30",
+      "fontWeight": "700",
+      "textAlign": "left",
       "color": {
         "r": 38,
         "g": 34,
         "b": 30,
         "a": 1
       },
-      "accent": {
-        "r": 24,
-        "g": 108,
-        "b": 122,
-        "a": 1
-      }
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
     },
-    "displayName": "Quote",
+    "displayName": "Heading",
     "custom": {
-      "displayName": "Quote"
+      "displayName": "Heading"
     },
-    "parent": "cont12",
+    "parent": "cont40",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont14": {
+  "text42": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 120,
+        "g": 110,
+        "b": 98,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "The three questions that arrive by email every single week."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont40",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "acco43": {
+    "type": {
+      "resolvedName": "Accordion"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Can I follow the routes with children?",
+        "Most of them, yes. Where a route breaks with a pram or a bored nine-year-old, the letter says so plainly.",
+        "Do you ever fly?",
+        "Sometimes, and it is marked. Crossing an ocean by ship is a week I do not always have.",
+        "May I use your itineraries?",
+        "Take them. A credit is welcome if you are publishing, but they are written to be used."
+      ],
+      "background": {
+        "r": 253,
+        "g": 250,
+        "b": 245,
+        "a": 1
+      },
+      "color": {
+        "r": 38,
+        "g": 34,
+        "b": 30,
+        "a": 1
+      },
+      "radius": 10
+    },
+    "displayName": "Accordion",
+    "custom": {
+      "displayName": "Accordion"
+    },
+    "parent": "colu39",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont44": {
     "type": {
       "resolvedName": "Container"
     },
@@ -591,7 +1712,7 @@
       "padding": [
         "48",
         "48",
-        "72",
+        "32",
         "48"
       ],
       "margin": [
@@ -625,15 +1746,87 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head15",
-      "spac16",
-      "form17",
-      "spac18",
-      "soci19"
+      "colu45"
     ],
     "linkedNodes": {}
   },
-  "head15": {
+  "colu45": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "40",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "3:2"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont44",
+    "hidden": false,
+    "nodes": [
+      "cont46",
+      "form50"
+    ],
+    "linkedNodes": {}
+  },
+  "cont46": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Subscribe copy"
+    },
+    "parent": "colu45",
+    "hidden": false,
+    "nodes": [
+      "head47",
+      "text48",
+      "list49"
+    ],
+    "linkedNodes": {}
+  },
+  "head47": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -641,7 +1834,7 @@
     "props": {
       "text": "One letter a month",
       "level": "2",
-      "fontSize": "28",
+      "fontSize": "30",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
@@ -661,29 +1854,75 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont14",
+    "parent": "cont46",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac16": {
+  "text48": {
     "type": {
-      "resolvedName": "Spacer"
+      "resolvedName": "Text"
     },
     "isCanvas": false,
     "props": {
-      "height": "16"
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 120,
+        "g": 110,
+        "b": 98,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "16",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Sent on the last Friday. Unsubscribing is one click and no guilt trip."
     },
-    "displayName": "Spacer",
+    "displayName": "Text",
     "custom": {
-      "displayName": "Spacer"
+      "displayName": "Text"
     },
-    "parent": "cont14",
+    "parent": "cont46",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "form17": {
+  "list49": {
+    "type": {
+      "resolvedName": "List"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "The route, day by day",
+        "What it cost, honestly",
+        "One photograph worth keeping"
+      ],
+      "ordered": "no",
+      "fontSize": "15",
+      "gap": "8",
+      "color": {
+        "r": 120,
+        "g": 110,
+        "b": 98,
+        "a": 1
+      }
+    },
+    "displayName": "List",
+    "custom": {
+      "displayName": "List"
+    },
+    "parent": "cont46",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "form50": {
     "type": {
       "resolvedName": "Form"
     },
@@ -719,64 +1958,107 @@
     "custom": {
       "displayName": "Form"
     },
-    "parent": "cont14",
+    "parent": "colu45",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac18": {
+  "cont51": {
     "type": {
-      "resolvedName": "Spacer"
+      "resolvedName": "Container"
     },
-    "isCanvas": false,
+    "isCanvas": true,
     "props": {
-      "height": "20"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "cont14",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "soci19": {
-    "type": {
-      "resolvedName": "SocialLinks"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "Instagram",
-        "https://instagram.com/",
-        "RSS",
-        "https://example.com/feed"
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "48",
+        "72",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
       ],
       "background": {
+        "r": 253,
+        "g": 250,
+        "b": 245,
+        "a": 1
+      },
+      "color": {
         "r": 0,
         "g": 0,
         "b": 0,
-        "a": 0.06
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Close"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "ctab52"
+    ],
+    "linkedNodes": {}
+  },
+  "ctab52": {
+    "type": {
+      "resolvedName": "CTABanner"
+    },
+    "isCanvas": false,
+    "props": {
+      "title": "Take the slow way somewhere",
+      "text": "The Lisbon letter is the best introduction — four days by rail for the price of patience.",
+      "cta": "Read the Lisbon letter",
+      "href": "#recent",
+      "background": {
+        "r": 24,
+        "g": 108,
+        "b": 122,
+        "a": 1
       },
       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "buttonBackground": {
+        "r": 253,
+        "g": 250,
+        "b": 245,
+        "a": 1
+      },
+      "buttonColor": {
         "r": 38,
         "g": 34,
         "b": 30,
         "a": 1
       },
-      "size": "14"
+      "radius": 16
     },
-    "displayName": "SocialLinks",
+    "displayName": "CTABanner",
     "custom": {
-      "displayName": "SocialLinks"
+      "displayName": "CTABanner"
     },
-    "parent": "cont14",
+    "parent": "cont51",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont20": {
+  "cont53": {
     "type": {
       "resolvedName": "Container"
     },
@@ -822,12 +2104,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont21",
-      "soci24"
+      "cont54",
+      "soci57"
     ],
     "linkedNodes": {}
   },
-  "cont21": {
+  "cont54": {
     "type": {
       "resolvedName": "Container"
     },
@@ -870,15 +2152,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont20",
+    "parent": "cont53",
     "hidden": false,
     "nodes": [
-      "text22",
-      "text23"
+      "text55",
+      "text56"
     ],
     "linkedNodes": {}
   },
-  "text22": {
+  "text55": {
     "type": {
       "resolvedName": "Text"
     },
@@ -906,12 +2188,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont21",
+    "parent": "cont54",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text23": {
+  "text56": {
     "type": {
       "resolvedName": "Text"
     },
@@ -939,12 +2221,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont21",
+    "parent": "cont54",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci24": {
+  "soci57": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -975,7 +2257,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont20",
+    "parent": "cont53",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

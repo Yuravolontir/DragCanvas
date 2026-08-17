@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 
 /** Conference — the date, the programme, and how to get a ticket. */
@@ -26,6 +26,22 @@ export default function conference() {
     fontSize: '18', textAlign: 'center', color: rgba(255, 255, 255, 0.82), margin: ['0', '0', '24', '0'],
   });
   b.button(hero, 'Get a ticket', { background: GOLD, color: NAVY, buttonStyle: 'full' });
+
+  // ── three ways to spend the two days ───────────────────────────
+  const ways = b.container(root, { background: NAVY, padding: ['56', '48', '48', '48'], width: '100%' }, 'Formats');
+  b.heading(ways, 'Three rooms, three speeds', { fontSize: '32', color: BONE });
+  b.spacer(ways, '24');
+  const waysCols = b.columns(ways, { count: '3', gap: '20' });
+  for (const [room, symbol, copy] of [
+    ['Talks', 'campaign', 'Forty minutes and real questions after. No product pitches from the stage.'],
+    ['Workshops', 'handyman', 'Ninety minutes, twenty seats, one concrete thing to take home.'],
+    ['The hallway', 'forum', 'Coffee runs all day on purpose. Most collaborations here started in it.'],
+  ]) {
+    const card = b.container(waysCols, { background: PANEL, padding: ['24', '22', '24', '22'], radius: 12 }, room);
+    b.icon(card, symbol, { color: NAVY, background: GOLD });
+    b.heading(card, room, { level: '3', fontSize: '18', color: BONE, margin: ['14', '0', '6', '0'] });
+    b.text(card, copy, { fontSize: '15', color: MUTED });
+  }
 
   const prog = b.container(root, { background: PANEL, padding: ['56', '48', '56', '48'], width: '100%', anchor: 'programme' }, 'Programme');
   b.heading(prog, 'Day one', { fontSize: '32', color: BONE });
@@ -58,6 +74,13 @@ export default function conference() {
   const num = b.container(root, { background: NAVY, padding: ['0', '48', '48', '48'], width: '100%' }, 'Numbers');
   b.stats(num, ['14', 'talks', '2', 'days', '300', 'seats'], { accent: GOLD, color: MUTED });
 
+  const remember = b.container(root, { background: NAVY, padding: ['0', '48', '48', '48'], width: '100%' }, 'Last year');
+  b.testimonial(remember, {
+    quote: 'I came for one talk and left with two people I still review work with.',
+    author: 'Talia Gross', role: 'Attendee, Interface 25',
+    background: PANEL, color: BONE, accent: GOLD,
+  });
+
   const tick = b.container(root, { background: PANEL, padding: ['56', '48', '56', '48'], width: '100%', anchor: 'tickets', alignItems: 'center' }, 'Tickets');
   b.heading(tick, 'Tickets', { fontSize: '32', textAlign: 'center', color: BONE });
   b.spacer(tick, '24');
@@ -67,14 +90,39 @@ export default function conference() {
     'Student', '₪90', 'with an ID', 'Buy student', 'Both days; Bring the ID on the door',
   ], { featured: 1, accent: GOLD, background: NAVY, color: BONE });
 
-  const find = b.container(root, { background: NAVY, padding: ['48', '48', '64', '48'], width: '100%' }, 'Venue');
-  b.heading(find, 'The venue', { fontSize: '26', color: BONE });
-  b.spacer(find, '16');
-  b.map_(find, { lat: 32.7940, lng: 34.9896, zoom: 14, label: 'Haifa' });
+  // ── practical questions, then how to find the room ─────────────
+  const ask = b.container(root, { background: NAVY, padding: ['48', '48', '48', '48'], width: '100%' }, 'Questions');
+  const askSplit = b.columns(ask, { count: '2', gap: '40', ratio: '2:3', stack: 'yes' });
+  const askIntro = b.container(askSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Questions intro');
+  b.heading(askIntro, 'Before you book', { fontSize: '30', color: BONE });
+  b.text(askIntro, 'What people email us about in October, answered here so you do not have to.', {
+    fontSize: '15', color: MUTED, margin: ['12', '0', '0', '0'],
+  });
+  b.accordion(askSplit, [
+    'Are the talks recorded?',
+    'Yes. Every ticket holder gets the recordings by email within a week, workshops included.',
+    'Can I get an invoice for my employer?',
+    'Yes - tick the box at checkout and it arrives the same day, VAT broken out.',
+    'What if I cannot come after all?',
+    'Pass the ticket to a colleague any time, or ask for a refund up to two weeks before.',
+  ], { background: PANEL, color: BONE, radius: 12 });
+
+  const find = b.container(root, { background: NAVY, padding: ['16', '48', '64', '48'], width: '100%' }, 'Venue');
+  const venueSplit = b.columns(find, { count: '2', gap: '36', ratio: '2:3', stack: 'yes' });
+  const venueCopy = b.container(venueSplit, {
+    background: TRANSPARENT, width: '100%', justifyContent: 'center',
+  }, 'Venue copy');
+  b.heading(venueCopy, 'The venue', { fontSize: '26', color: BONE });
+  b.text(venueCopy, 'The old customs house in the port. Twelve minutes on foot from the train, and the coffee is better than any conference deserves.', {
+    fontSize: '15', color: MUTED, margin: ['12', '0', '16', '0'],
+  });
+  b.link(venueCopy, 'Hotels within walking distance', 'https://example.com', { color: GOLD, fontSize: '15' });
+  const venueMap = b.container(venueSplit, { background: TRANSPARENT, width: '100%' }, 'Venue map');
+  b.map_(venueMap, { lat: 32.7940, lng: 34.9896, zoom: 14, label: 'Haifa' });
 
   b.footer(root, {
     brand: 'Interface 26',
-    note: '14-15 March, Tel Aviv Port. Tickets include both days.',
+    note: '12–13 November, Haifa Port. Tickets include both days.',
     socials: ['Twitter', 'https://twitter.com/', 'Email', 'mailto:hello@interface.events'],
     background: PANEL, ink: BONE, muted: MUTED,
   });

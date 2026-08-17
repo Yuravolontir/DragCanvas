@@ -47,10 +47,16 @@
       "navb01",
       "cont02",
       "cont07",
-      "cont23",
-      "cont31",
-      "cont35",
-      "cont37"
+      "cont09",
+      "cont25",
+      "cont41",
+      "cont45",
+      "cont53",
+      "cont57",
+      "cont61",
+      "cont67",
+      "cont74",
+      "cont76"
     ],
     "linkedNodes": {}
   },
@@ -148,14 +154,44 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head03",
-      "text04",
-      "spac05",
+      "badg03",
+      "head04",
+      "text05",
       "soci06"
     ],
     "linkedNodes": {}
   },
-  "head03": {
+  "badg03": {
+    "type": {
+      "resolvedName": "Badge"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Contract from October",
+      "background": {
+        "r": 23,
+        "g": 26,
+        "b": 32,
+        "a": 1
+      },
+      "color": {
+        "r": 86,
+        "g": 204,
+        "b": 218,
+        "a": 1
+      },
+      "radius": 999
+    },
+    "displayName": "Badge",
+    "custom": {
+      "displayName": "Badge"
+    },
+    "parent": "cont02",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head04": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -173,9 +209,9 @@
         "a": 1
       },
       "margin": [
+        "16",
         "0",
-        "0",
-        "0",
+        "12",
         "0"
       ]
     },
@@ -188,7 +224,7 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "text04": {
+  "text05": {
     "type": {
       "resolvedName": "Text"
     },
@@ -204,9 +240,9 @@
         "a": 0.82
       },
       "margin": [
-        "14",
         "0",
         "0",
+        "24",
         "0"
       ],
       "shadow": 0,
@@ -215,23 +251,6 @@
     "displayName": "Text",
     "custom": {
       "displayName": "Text"
-    },
-    "parent": "cont02",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "spac05": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "24"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
     },
     "parent": "cont02",
     "hidden": false,
@@ -288,6 +307,93 @@
       "padding": [
         "32",
         "48",
+        "8",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 14,
+        "g": 16,
+        "b": 20,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Numbers"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "stat08"
+    ],
+    "linkedNodes": {}
+  },
+  "stat08": {
+    "type": {
+      "resolvedName": "Stats"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "10",
+        "years, four companies",
+        "40k",
+        "lines in the reconciler",
+        "80ms",
+        "the cold start, after the fix"
+      ],
+      "align": "center",
+      "accent": {
+        "r": 86,
+        "g": 204,
+        "b": 218,
+        "a": 1
+      },
+      "color": {
+        "r": 133,
+        "g": 141,
+        "b": 153,
+        "a": 1
+      }
+    },
+    "displayName": "Stats",
+    "custom": {
+      "displayName": "Stats"
+    },
+    "parent": "cont07",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont09": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "32",
+        "48",
         "48",
         "48"
       ],
@@ -322,13 +428,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head08",
-      "spac09",
-      "colu10"
+      "head10",
+      "spac11",
+      "colu12"
     ],
     "linkedNodes": {}
   },
-  "head08": {
+  "head10": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -356,12 +462,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont07",
+    "parent": "cont09",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac09": {
+  "spac11": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -373,12 +479,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont07",
+    "parent": "cont09",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "colu10": {
+  "colu12": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -393,17 +499,17 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont07",
+    "parent": "cont09",
     "hidden": false,
     "nodes": [
-      "cont11",
-      "cont14",
-      "cont17",
-      "cont20"
+      "cont13",
+      "cont16",
+      "cont19",
+      "cont22"
     ],
     "linkedNodes": {}
   },
-  "cont11": {
+  "cont13": {
     "type": {
       "resolvedName": "Container"
     },
@@ -446,15 +552,15 @@
     "custom": {
       "displayName": "ledger-sync"
     },
-    "parent": "colu10",
+    "parent": "colu12",
     "hidden": false,
     "nodes": [
-      "head12",
-      "text13"
+      "head14",
+      "text15"
     ],
     "linkedNodes": {}
   },
-  "head12": {
+  "head14": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -482,12 +588,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont11",
+    "parent": "cont13",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text13": {
+  "text15": {
     "type": {
       "resolvedName": "Text"
     },
@@ -515,12 +621,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont11",
+    "parent": "cont13",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont14": {
+  "cont16": {
     "type": {
       "resolvedName": "Container"
     },
@@ -563,15 +669,15 @@
     "custom": {
       "displayName": "pgqueue"
     },
-    "parent": "colu10",
+    "parent": "colu12",
     "hidden": false,
     "nodes": [
-      "head15",
-      "text16"
+      "head17",
+      "text18"
     ],
     "linkedNodes": {}
   },
-  "head15": {
+  "head17": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -599,12 +705,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont14",
+    "parent": "cont16",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text16": {
+  "text18": {
     "type": {
       "resolvedName": "Text"
     },
@@ -632,12 +738,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont14",
+    "parent": "cont16",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont17": {
+  "cont19": {
     "type": {
       "resolvedName": "Container"
     },
@@ -680,15 +786,15 @@
     "custom": {
       "displayName": "warmups"
     },
-    "parent": "colu10",
+    "parent": "colu12",
     "hidden": false,
     "nodes": [
-      "head18",
-      "text19"
+      "head20",
+      "text21"
     ],
     "linkedNodes": {}
   },
-  "head18": {
+  "head20": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -716,12 +822,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont17",
+    "parent": "cont19",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text19": {
+  "text21": {
     "type": {
       "resolvedName": "Text"
     },
@@ -749,12 +855,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont17",
+    "parent": "cont19",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont20": {
+  "cont22": {
     "type": {
       "resolvedName": "Container"
     },
@@ -797,15 +903,15 @@
     "custom": {
       "displayName": "tinyauth"
     },
-    "parent": "colu10",
+    "parent": "colu12",
     "hidden": false,
     "nodes": [
-      "head21",
-      "text22"
+      "head23",
+      "text24"
     ],
     "linkedNodes": {}
   },
-  "head21": {
+  "head23": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -833,12 +939,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont20",
+    "parent": "cont22",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text22": {
+  "text24": {
     "type": {
       "resolvedName": "Text"
     },
@@ -866,12 +972,585 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont20",
+    "parent": "cont22",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont23": {
+  "cont25": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "32",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 14,
+        "g": 16,
+        "b": 20,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "How"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head26",
+      "spac27",
+      "colu28"
+    ],
+    "linkedNodes": {}
+  },
+  "head26": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "How the work is done",
+      "level": "2",
+      "fontSize": "30",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 233,
+        "g": 236,
+        "b": 241,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont25",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac27": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "24"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont25",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "colu28": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "3",
+      "gap": "20",
+      "align": "stretch",
+      "stack": "yes"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont25",
+    "hidden": false,
+    "nodes": [
+      "cont29",
+      "cont33",
+      "cont37"
+    ],
+    "linkedNodes": {}
+  },
+  "cont29": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "22",
+        "24",
+        "22"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 23,
+        "g": 26,
+        "b": 32,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 10,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Observe before fixing"
+    },
+    "parent": "colu28",
+    "hidden": false,
+    "nodes": [
+      "icon30",
+      "head31",
+      "text32"
+    ],
+    "linkedNodes": {}
+  },
+  "icon30": {
+    "type": {
+      "resolvedName": "Icon"
+    },
+    "isCanvas": false,
+    "props": {
+      "name": "monitor_heart",
+      "size": "32",
+      "padded": "yes",
+      "color": {
+        "r": 14,
+        "g": 16,
+        "b": 20,
+        "a": 1
+      },
+      "background": {
+        "r": 86,
+        "g": 204,
+        "b": 218,
+        "a": 1
+      }
+    },
+    "displayName": "Icon",
+    "custom": {
+      "displayName": "Icon"
+    },
+    "parent": "cont29",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head31": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Observe before fixing",
+      "level": "3",
+      "fontSize": "18",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 233,
+        "g": 236,
+        "b": 241,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "0",
+        "6",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont29",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text32": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 133,
+        "g": 141,
+        "b": 153,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "A dashboard exists before a fix is attempted. Most bugs die of visibility."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont29",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont33": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "22",
+        "24",
+        "22"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 23,
+        "g": 26,
+        "b": 32,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 10,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Small interfaces"
+    },
+    "parent": "colu28",
+    "hidden": false,
+    "nodes": [
+      "icon34",
+      "head35",
+      "text36"
+    ],
+    "linkedNodes": {}
+  },
+  "icon34": {
+    "type": {
+      "resolvedName": "Icon"
+    },
+    "isCanvas": false,
+    "props": {
+      "name": "extension",
+      "size": "32",
+      "padded": "yes",
+      "color": {
+        "r": 14,
+        "g": 16,
+        "b": 20,
+        "a": 1
+      },
+      "background": {
+        "r": 86,
+        "g": 204,
+        "b": 218,
+        "a": 1
+      }
+    },
+    "displayName": "Icon",
+    "custom": {
+      "displayName": "Icon"
+    },
+    "parent": "cont33",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head35": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Small interfaces",
+      "level": "3",
+      "fontSize": "18",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 233,
+        "g": 236,
+        "b": 241,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "0",
+        "6",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont33",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text36": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 133,
+        "g": 141,
+        "b": 153,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Boundaries drawn on purpose. The fifth dependency is always the expensive one."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont33",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont37": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "22",
+        "24",
+        "22"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 23,
+        "g": 26,
+        "b": 32,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 10,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Boring on purpose"
+    },
+    "parent": "colu28",
+    "hidden": false,
+    "nodes": [
+      "icon38",
+      "head39",
+      "text40"
+    ],
+    "linkedNodes": {}
+  },
+  "icon38": {
+    "type": {
+      "resolvedName": "Icon"
+    },
+    "isCanvas": false,
+    "props": {
+      "name": "verified_user",
+      "size": "32",
+      "padded": "yes",
+      "color": {
+        "r": 14,
+        "g": 16,
+        "b": 20,
+        "a": 1
+      },
+      "background": {
+        "r": 86,
+        "g": 204,
+        "b": 218,
+        "a": 1
+      }
+    },
+    "displayName": "Icon",
+    "custom": {
+      "displayName": "Icon"
+    },
+    "parent": "cont37",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head39": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Boring on purpose",
+      "level": "3",
+      "fontSize": "18",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 233,
+        "g": 236,
+        "b": 241,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "0",
+        "6",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont37",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text40": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 133,
+        "g": 141,
+        "b": 153,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Provisioned in Terraform, reviewed by a second person, no heroics at 2am."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont37",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont41": {
     "type": {
       "resolvedName": "Container"
     },
@@ -908,6 +1587,147 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "The migration"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head42",
+      "spac43",
+      "time44"
+    ],
+    "linkedNodes": {}
+  },
+  "head42": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "The migration that taught me most",
+      "level": "2",
+      "fontSize": "30",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 233,
+        "g": 236,
+        "b": 241,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont41",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac43": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "24"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont41",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "time44": {
+    "type": {
+      "resolvedName": "Timeline"
+    },
+    "isCanvas": false,
+    "props": {
+      "steps": [
+        "Month 0",
+        "The audit",
+        "Eleven services writing to two databases that disagreed politely about money.",
+        "Month 9",
+        "The dual-write",
+        "Both systems fed from one queue. Every discrepancy filed weekly, until there were none.",
+        "Month 20",
+        "The cutover",
+        "A Sunday, a flag flip, and a queue that drained itself empty by Monday."
+      ],
+      "accent": {
+        "r": 86,
+        "g": 204,
+        "b": 218,
+        "a": 1
+      },
+      "color": {
+        "r": 233,
+        "g": 236,
+        "b": 241,
+        "a": 1
+      }
+    },
+    "displayName": "Timeline",
+    "custom": {
+      "displayName": "Timeline"
+    },
+    "parent": "cont41",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont45": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "48",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 14,
+        "g": 16,
+        "b": 20,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
       "height": "auto",
       "anchor": "stack"
     },
@@ -918,11 +1738,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu24"
+      "colu46"
     ],
     "linkedNodes": {}
   },
-  "colu24": {
+  "colu46": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -937,15 +1757,15 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont23",
+    "parent": "cont45",
     "hidden": false,
     "nodes": [
-      "cont25",
-      "cont28"
+      "cont47",
+      "cont50"
     ],
     "linkedNodes": {}
   },
-  "cont25": {
+  "cont47": {
     "type": {
       "resolvedName": "Container"
     },
@@ -968,10 +1788,10 @@
         "0"
       ],
       "background": {
-        "r": 23,
-        "g": 26,
-        "b": 32,
-        "a": 1
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
       },
       "color": {
         "r": 0,
@@ -988,15 +1808,15 @@
     "custom": {
       "displayName": "Know"
     },
-    "parent": "colu24",
+    "parent": "colu46",
     "hidden": false,
     "nodes": [
-      "head26",
-      "list27"
+      "head48",
+      "list49"
     ],
     "linkedNodes": {}
   },
-  "head26": {
+  "head48": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1024,12 +1844,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont25",
+    "parent": "cont47",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "list27": {
+  "list49": {
     "type": {
       "resolvedName": "List"
     },
@@ -1054,12 +1874,12 @@
     "custom": {
       "displayName": "List"
     },
-    "parent": "cont25",
+    "parent": "cont47",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont28": {
+  "cont50": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1082,10 +1902,10 @@
         "0"
       ],
       "background": {
-        "r": 23,
-        "g": 26,
-        "b": 32,
-        "a": 1
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
       },
       "color": {
         "r": 0,
@@ -1102,15 +1922,15 @@
     "custom": {
       "displayName": "Learning"
     },
-    "parent": "colu24",
+    "parent": "colu46",
     "hidden": false,
     "nodes": [
-      "head29",
-      "list30"
+      "head51",
+      "list52"
     ],
     "linkedNodes": {}
   },
-  "head29": {
+  "head51": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1138,12 +1958,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont28",
+    "parent": "cont50",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "list30": {
+  "list52": {
     "type": {
       "resolvedName": "List"
     },
@@ -1167,12 +1987,12 @@
     "custom": {
       "displayName": "List"
     },
-    "parent": "cont28",
+    "parent": "cont50",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont31": {
+  "cont53": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1183,7 +2003,7 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
-        "56",
+        "16",
         "48",
         "56",
         "48"
@@ -1218,13 +2038,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head32",
-      "text33",
-      "caro34"
+      "head54",
+      "text55",
+      "caro56"
     ],
     "linkedNodes": {}
   },
-  "head32": {
+  "head54": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1252,12 +2072,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont31",
+    "parent": "cont53",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text33": {
+  "text55": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1285,12 +2105,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont31",
+    "parent": "cont53",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "caro34": {
+  "caro56": {
     "type": {
       "resolvedName": "Carousel"
     },
@@ -1321,12 +2141,182 @@
     "custom": {
       "displayName": "Project gallery"
     },
-    "parent": "cont31",
+    "parent": "cont53",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont35": {
+  "cont57": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "center",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "48",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 23,
+        "g": 26,
+        "b": 32,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Rates"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head58",
+      "text59",
+      "pric60"
+    ],
+    "linkedNodes": {}
+  },
+  "head58": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "What the time costs",
+      "level": "2",
+      "fontSize": "30",
+      "fontWeight": "700",
+      "textAlign": "center",
+      "color": {
+        "r": 233,
+        "g": 236,
+        "b": 241,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont57",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text59": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "center",
+      "fontWeight": "500",
+      "color": {
+        "r": 133,
+        "g": 141,
+        "b": 153,
+        "a": 1
+      },
+      "margin": [
+        "10",
+        "0",
+        "24",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Contract from October. Advisory slots open a month earlier."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont57",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "pric60": {
+    "type": {
+      "resolvedName": "Pricing"
+    },
+    "isCanvas": false,
+    "props": {
+      "tiers": [
+        "Contract",
+        "₪1,600",
+        "per day",
+        "Check October",
+        "Three months minimum; Your stack, your repo; On site one day a week",
+        "Mostly yours",
+        "₪19k",
+        "three days a week",
+        "Hold the days",
+        "The long-haul work; The boring parts, properly; A month’s notice either way",
+        "Advisory",
+        "₪900",
+        "ninety minutes",
+        "Book a session",
+        "A read of your architecture; Hard questions, kindly; Written up after"
+      ],
+      "featured": 1,
+      "accent": {
+        "r": 86,
+        "g": 204,
+        "b": 218,
+        "a": 1
+      },
+      "background": {
+        "r": 14,
+        "g": 16,
+        "b": 20,
+        "a": 1
+      },
+      "color": {
+        "r": 233,
+        "g": 236,
+        "b": 241,
+        "a": 1
+      }
+    },
+    "displayName": "Pricing",
+    "custom": {
+      "displayName": "Pricing"
+    },
+    "parent": "cont57",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont61": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1339,7 +2329,235 @@
       "padding": [
         "48",
         "48",
-        "72",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 14,
+        "g": 16,
+        "b": 20,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Questions"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "colu62"
+    ],
+    "linkedNodes": {}
+  },
+  "colu62": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "40",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "2:3"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont61",
+    "hidden": false,
+    "nodes": [
+      "cont63",
+      "acco66"
+    ],
+    "linkedNodes": {}
+  },
+  "cont63": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Questions intro"
+    },
+    "parent": "colu62",
+    "hidden": false,
+    "nodes": [
+      "head64",
+      "text65"
+    ],
+    "linkedNodes": {}
+  },
+  "head64": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "The usual questions",
+      "level": "2",
+      "fontSize": "30",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 233,
+        "g": 236,
+        "b": 241,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont63",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text65": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 133,
+        "g": 141,
+        "b": 153,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "The three every first email asks, answered once here instead."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont63",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "acco66": {
+    "type": {
+      "resolvedName": "Accordion"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Can you start before October?",
+        "Advisory slots open in September. Hands-on work starts in October, non-negotiably after the current contract ends.",
+        "Do you do frontend?",
+        "Enough React to be dangerous, not enough to sell it. I pair well with someone who does it for a living.",
+        "On site or remote?",
+        "Remote, mostly. One day a week on site if it is in the country — the whiteboard still earns its keep."
+      ],
+      "background": {
+        "r": 23,
+        "g": 26,
+        "b": 32,
+        "a": 1
+      },
+      "color": {
+        "r": 233,
+        "g": 236,
+        "b": 241,
+        "a": 1
+      },
+      "radius": 10
+    },
+    "displayName": "Accordion",
+    "custom": {
+      "displayName": "Accordion"
+    },
+    "parent": "colu62",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont67": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "48",
+        "48",
+        "32",
         "48"
       ],
       "margin": [
@@ -1373,18 +2591,298 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "ctab36"
+      "colu68"
     ],
     "linkedNodes": {}
   },
-  "ctab36": {
+  "colu68": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "40",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "3:2"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont67",
+    "hidden": false,
+    "nodes": [
+      "cont69",
+      "form73"
+    ],
+    "linkedNodes": {}
+  },
+  "cont69": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Contact copy"
+    },
+    "parent": "colu68",
+    "hidden": false,
+    "nodes": [
+      "head70",
+      "text71",
+      "list72"
+    ],
+    "linkedNodes": {}
+  },
+  "head70": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Tell me what is broken",
+      "level": "2",
+      "fontSize": "30",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 233,
+        "g": 236,
+        "b": 241,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont69",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text71": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 133,
+        "g": 141,
+        "b": 153,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "16",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "One honest paragraph beats a polished brief. Replies within a day."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont69",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "list72": {
+    "type": {
+      "resolvedName": "List"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "What is broken, in one paragraph",
+        "The deadline, honestly",
+        "Where the repo lives — later is fine"
+      ],
+      "ordered": "no",
+      "fontSize": "15",
+      "gap": "8",
+      "color": {
+        "r": 133,
+        "g": 141,
+        "b": 153,
+        "a": 1
+      }
+    },
+    "displayName": "List",
+    "custom": {
+      "displayName": "List"
+    },
+    "parent": "cont69",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "form73": {
+    "type": {
+      "resolvedName": "Form"
+    },
+    "isCanvas": false,
+    "props": {
+      "fields": [
+        {
+          "label": "Name",
+          "type": "text",
+          "placeholder": "Your name",
+          "required": true
+        },
+        {
+          "label": "Email",
+          "type": "email",
+          "placeholder": "you@company.com",
+          "required": true
+        },
+        {
+          "label": "What is broken",
+          "type": "textarea",
+          "placeholder": "One honest paragraph"
+        }
+      ],
+      "submitText": "Send",
+      "successMessage": "Got it. I reply within a day.",
+      "radius": 10,
+      "background": {
+        "r": 23,
+        "g": 26,
+        "b": 32,
+        "a": 1
+      },
+      "accent": {
+        "r": 86,
+        "g": 204,
+        "b": 218,
+        "a": 1
+      },
+      "width": "100%",
+      "height": "auto",
+      "color": {
+        "r": 233,
+        "g": 236,
+        "b": 241,
+        "a": 1
+      }
+    },
+    "displayName": "Form",
+    "custom": {
+      "displayName": "Form"
+    },
+    "parent": "colu68",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont74": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "48",
+        "72",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 14,
+        "g": 16,
+        "b": 20,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Close"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "ctab75"
+    ],
+    "linkedNodes": {}
+  },
+  "ctab75": {
     "type": {
       "resolvedName": "CTABanner"
     },
     "isCanvas": false,
     "props": {
       "title": "Looking for someone?",
-      "text": "Available for contract work from October. Tell me what is broken.",
+      "text": "Available for contract work from October. Advisory sooner. Tell me what is broken.",
       "cta": "Email me",
       "href": "mailto:hi@omer.dev",
       "background": {
@@ -1417,12 +2915,12 @@
     "custom": {
       "displayName": "CTABanner"
     },
-    "parent": "cont35",
+    "parent": "cont74",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont37": {
+  "cont76": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1468,12 +2966,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont38",
-      "soci41"
+      "cont77",
+      "soci80"
     ],
     "linkedNodes": {}
   },
-  "cont38": {
+  "cont77": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1516,15 +3014,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont37",
+    "parent": "cont76",
     "hidden": false,
     "nodes": [
-      "text39",
-      "text40"
+      "text78",
+      "text79"
     ],
     "linkedNodes": {}
   },
-  "text39": {
+  "text78": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1552,12 +3050,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont38",
+    "parent": "cont77",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text40": {
+  "text79": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1585,12 +3083,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont38",
+    "parent": "cont77",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci41": {
+  "soci80": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -1621,7 +3119,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont37",
+    "parent": "cont76",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

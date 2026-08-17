@@ -47,10 +47,14 @@
       "navb01",
       "cont02",
       "cont08",
-      "cont12",
-      "cont18",
-      "cont22",
-      "cont24"
+      "cont24",
+      "cont28",
+      "cont34",
+      "cont36",
+      "cont42",
+      "cont46",
+      "cont53",
+      "cont55"
     ],
     "linkedNodes": {}
   },
@@ -344,7 +348,7 @@
       "padding": [
         "56",
         "48",
-        "56",
+        "48",
         "48"
       ],
       "margin": [
@@ -354,9 +358,9 @@
         "0"
       ],
       "background": {
-        "r": 25,
-        "g": 29,
-        "b": 26,
+        "r": 16,
+        "g": 18,
+        "b": 17,
         "a": 1
       },
       "color": {
@@ -368,19 +372,18 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto",
-      "anchor": "timetable"
+      "height": "auto"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Timetable"
+      "displayName": "Included"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
       "head09",
       "spac10",
-      "time11"
+      "colu11"
     ],
     "linkedNodes": {}
   },
@@ -390,7 +393,7 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "A day here",
+      "text": "What the membership covers",
       "level": "2",
       "fontSize": "34",
       "fontWeight": "700",
@@ -434,7 +437,581 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "time11": {
+  "colu11": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "3",
+      "gap": "20",
+      "align": "stretch",
+      "stack": "yes"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont08",
+    "hidden": false,
+    "nodes": [
+      "cont12",
+      "cont16",
+      "cont20"
+    ],
+    "linkedNodes": {}
+  },
+  "cont12": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "22",
+        "24",
+        "22"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 25,
+        "g": 29,
+        "b": 26,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 12,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Coached classes"
+    },
+    "parent": "colu11",
+    "hidden": false,
+    "nodes": [
+      "icon13",
+      "head14",
+      "text15"
+    ],
+    "linkedNodes": {}
+  },
+  "icon13": {
+    "type": {
+      "resolvedName": "Icon"
+    },
+    "isCanvas": false,
+    "props": {
+      "name": "fitness_center",
+      "size": "32",
+      "padded": "yes",
+      "color": {
+        "r": 16,
+        "g": 18,
+        "b": 17,
+        "a": 1
+      },
+      "background": {
+        "r": 196,
+        "g": 242,
+        "b": 75,
+        "a": 1
+      }
+    },
+    "displayName": "Icon",
+    "custom": {
+      "displayName": "Icon"
+    },
+    "parent": "cont12",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head14": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Coached classes",
+      "level": "3",
+      "fontSize": "18",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 244,
+        "g": 246,
+        "b": 242,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "0",
+        "6",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont12",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text15": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 141,
+        "g": 150,
+        "b": 134,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Every class on the timetable, capped at eight so form gets checked."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont12",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont16": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "22",
+        "24",
+        "22"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 25,
+        "g": 29,
+        "b": 26,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 12,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Open gym"
+    },
+    "parent": "colu11",
+    "hidden": false,
+    "nodes": [
+      "icon17",
+      "head18",
+      "text19"
+    ],
+    "linkedNodes": {}
+  },
+  "icon17": {
+    "type": {
+      "resolvedName": "Icon"
+    },
+    "isCanvas": false,
+    "props": {
+      "name": "schedule",
+      "size": "32",
+      "padded": "yes",
+      "color": {
+        "r": 16,
+        "g": 18,
+        "b": 17,
+        "a": 1
+      },
+      "background": {
+        "r": 196,
+        "g": 242,
+        "b": 75,
+        "a": 1
+      }
+    },
+    "displayName": "Icon",
+    "custom": {
+      "displayName": "Icon"
+    },
+    "parent": "cont16",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head18": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Open gym",
+      "level": "3",
+      "fontSize": "18",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 244,
+        "g": 246,
+        "b": 242,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "0",
+        "6",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont16",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text19": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 141,
+        "g": 150,
+        "b": 134,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Full access, five in the morning to ten at night, coaches around."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont16",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont20": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "22",
+        "24",
+        "22"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 25,
+        "g": 29,
+        "b": 26,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 12,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Your programming"
+    },
+    "parent": "colu11",
+    "hidden": false,
+    "nodes": [
+      "icon21",
+      "head22",
+      "text23"
+    ],
+    "linkedNodes": {}
+  },
+  "icon21": {
+    "type": {
+      "resolvedName": "Icon"
+    },
+    "isCanvas": false,
+    "props": {
+      "name": "edit_note",
+      "size": "32",
+      "padded": "yes",
+      "color": {
+        "r": 16,
+        "g": 18,
+        "b": 17,
+        "a": 1
+      },
+      "background": {
+        "r": 196,
+        "g": 242,
+        "b": 75,
+        "a": 1
+      }
+    },
+    "displayName": "Icon",
+    "custom": {
+      "displayName": "Icon"
+    },
+    "parent": "cont20",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head22": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Your programming",
+      "level": "3",
+      "fontSize": "18",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 244,
+        "g": 246,
+        "b": 242,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "0",
+        "6",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont20",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text23": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 141,
+        "g": 150,
+        "b": 134,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "A written plan for the days without a class, reviewed each month."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont20",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont24": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "56",
+        "48",
+        "56",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 25,
+        "g": 29,
+        "b": 26,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto",
+      "anchor": "timetable"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Timetable"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head25",
+      "spac26",
+      "time27"
+    ],
+    "linkedNodes": {}
+  },
+  "head25": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "A day here",
+      "level": "2",
+      "fontSize": "34",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 244,
+        "g": 246,
+        "b": 242,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont24",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac26": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "24"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont24",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "time27": {
     "type": {
       "resolvedName": "Timeline"
     },
@@ -471,12 +1048,12 @@
     "custom": {
       "displayName": "Timeline"
     },
-    "parent": "cont08",
+    "parent": "cont24",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont12": {
+  "cont28": {
     "type": {
       "resolvedName": "Container"
     },
@@ -523,15 +1100,15 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head13",
-      "spac14",
-      "team15",
-      "spac16",
-      "caro17"
+      "head29",
+      "spac30",
+      "team31",
+      "spac32",
+      "caro33"
     ],
     "linkedNodes": {}
   },
-  "head13": {
+  "head29": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -559,12 +1136,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont12",
+    "parent": "cont28",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac14": {
+  "spac30": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -576,12 +1153,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont12",
+    "parent": "cont28",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "team15": {
+  "team31": {
     "type": {
       "resolvedName": "TeamGrid"
     },
@@ -616,12 +1193,12 @@
     "custom": {
       "displayName": "TeamGrid"
     },
-    "parent": "cont12",
+    "parent": "cont28",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac16": {
+  "spac32": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -633,12 +1210,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont12",
+    "parent": "cont28",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "caro17": {
+  "caro33": {
     "type": {
       "resolvedName": "Carousel"
     },
@@ -669,12 +1246,329 @@
     "custom": {
       "displayName": "Inside FORGE"
     },
-    "parent": "cont12",
+    "parent": "cont28",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont18": {
+  "cont34": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "16",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 16,
+        "g": 18,
+        "b": 17,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Member"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "test35"
+    ],
+    "linkedNodes": {}
+  },
+  "test35": {
+    "type": {
+      "resolvedName": "Testimonial"
+    },
+    "isCanvas": false,
+    "props": {
+      "quote": "I came for the barbell class and stayed because somebody finally told me what to do on the other days.",
+      "author": "Roni Adler",
+      "role": "Member since 2023",
+      "avatar": "",
+      "align": "left",
+      "background": {
+        "r": 25,
+        "g": 29,
+        "b": 26,
+        "a": 1
+      },
+      "color": {
+        "r": 244,
+        "g": 246,
+        "b": 242,
+        "a": 1
+      },
+      "accent": {
+        "r": 196,
+        "g": 242,
+        "b": 75,
+        "a": 1
+      }
+    },
+    "displayName": "Testimonial",
+    "custom": {
+      "displayName": "Testimonial"
+    },
+    "parent": "cont34",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont36": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "48",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 25,
+        "g": 29,
+        "b": 26,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Questions"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "colu37"
+    ],
+    "linkedNodes": {}
+  },
+  "colu37": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "40",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "2:3"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont36",
+    "hidden": false,
+    "nodes": [
+      "cont38",
+      "acco41"
+    ],
+    "linkedNodes": {}
+  },
+  "cont38": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Questions intro"
+    },
+    "parent": "colu37",
+    "hidden": false,
+    "nodes": [
+      "head39",
+      "text40"
+    ],
+    "linkedNodes": {}
+  },
+  "head39": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Before the first class",
+      "level": "2",
+      "fontSize": "30",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 244,
+        "g": 246,
+        "b": 242,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont38",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text40": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 141,
+        "g": 150,
+        "b": 134,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Nobody expects experience. Here is what people ask anyway."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont38",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "acco41": {
+    "type": {
+      "resolvedName": "Accordion"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "I have never lifted. Is that a problem?",
+        "No. The fundamentals class assumes nothing, and the bar starts empty until your form says otherwise.",
+        "What should I bring?",
+        "Flat shoes, a towel, water. Everything else - bars, plates, chalk - is on the floor.",
+        "Can I pause the membership?",
+        "Yes, for up to two months a year, from your phone, no phone call required."
+      ],
+      "background": {
+        "r": 16,
+        "g": 18,
+        "b": 17,
+        "a": 1
+      },
+      "color": {
+        "r": 244,
+        "g": 246,
+        "b": 242,
+        "a": 1
+      },
+      "radius": 12
+    },
+    "displayName": "Accordion",
+    "custom": {
+      "displayName": "Accordion"
+    },
+    "parent": "colu37",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont42": {
     "type": {
       "resolvedName": "Container"
     },
@@ -721,13 +1615,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head19",
-      "spac20",
-      "pric21"
+      "head43",
+      "spac44",
+      "pric45"
     ],
     "linkedNodes": {}
   },
-  "head19": {
+  "head43": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -755,12 +1649,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont18",
+    "parent": "cont42",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac20": {
+  "spac44": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -772,12 +1666,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont18",
+    "parent": "cont42",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "pric21": {
+  "pric45": {
     "type": {
       "resolvedName": "Pricing"
     },
@@ -824,12 +1718,12 @@
     "custom": {
       "displayName": "Pricing"
     },
-    "parent": "cont18",
+    "parent": "cont42",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont22": {
+  "cont46": {
     "type": {
       "resolvedName": "Container"
     },
@@ -841,6 +1735,286 @@
       "fillSpace": "no",
       "padding": [
         "48",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 16,
+        "g": 18,
+        "b": 17,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Book"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "colu47"
+    ],
+    "linkedNodes": {}
+  },
+  "colu47": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "40",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "3:2"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont46",
+    "hidden": false,
+    "nodes": [
+      "cont48",
+      "form52"
+    ],
+    "linkedNodes": {}
+  },
+  "cont48": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Book copy"
+    },
+    "parent": "colu47",
+    "hidden": false,
+    "nodes": [
+      "head49",
+      "text50",
+      "list51"
+    ],
+    "linkedNodes": {}
+  },
+  "head49": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Take the free class",
+      "level": "2",
+      "fontSize": "30",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 244,
+        "g": 246,
+        "b": 242,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont48",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text50": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 141,
+        "g": 150,
+        "b": 134,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "16",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Pick a slot from the timetable and put your name down. A coach confirms the same day."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont48",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "list51": {
+    "type": {
+      "resolvedName": "List"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Arrive ten minutes early to borrow shoes",
+        "Tell the coach about any old injuries",
+        "The first squat is with an empty bar, always"
+      ],
+      "ordered": "no",
+      "fontSize": "15",
+      "gap": "8",
+      "color": {
+        "r": 141,
+        "g": 150,
+        "b": 134,
+        "a": 1
+      }
+    },
+    "displayName": "List",
+    "custom": {
+      "displayName": "List"
+    },
+    "parent": "cont48",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "form52": {
+    "type": {
+      "resolvedName": "Form"
+    },
+    "isCanvas": false,
+    "props": {
+      "fields": [
+        {
+          "label": "Name",
+          "type": "text",
+          "placeholder": "Your name",
+          "required": true
+        },
+        {
+          "label": "Email",
+          "type": "email",
+          "placeholder": "you@example.com",
+          "required": true
+        },
+        {
+          "label": "Class",
+          "type": "text",
+          "placeholder": "e.g. Barbell fundamentals, Tuesday 05:00"
+        }
+      ],
+      "submitText": "Book the class",
+      "successMessage": "Booked. A coach will confirm by email today.",
+      "radius": 10,
+      "background": {
+        "r": 25,
+        "g": 29,
+        "b": 26,
+        "a": 1
+      },
+      "accent": {
+        "r": 196,
+        "g": 242,
+        "b": 75,
+        "a": 1
+      },
+      "width": "100%",
+      "height": "auto",
+      "color": {
+        "r": 244,
+        "g": 246,
+        "b": 242,
+        "a": 1
+      }
+    },
+    "displayName": "Form",
+    "custom": {
+      "displayName": "Form"
+    },
+    "parent": "colu47",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont53": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
         "48",
         "72",
         "48"
@@ -875,11 +2049,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "ctab23"
+      "ctab54"
     ],
     "linkedNodes": {}
   },
-  "ctab23": {
+  "ctab54": {
     "type": {
       "resolvedName": "CTABanner"
     },
@@ -888,7 +2062,7 @@
       "title": "Come and try it",
       "text": "First class is free and nobody will make you talk about your goals.",
       "cta": "Book a slot",
-      "href": "#timetable",
+      "href": "#book",
       "background": {
         "r": 196,
         "g": 242,
@@ -919,12 +2093,12 @@
     "custom": {
       "displayName": "CTABanner"
     },
-    "parent": "cont22",
+    "parent": "cont53",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont24": {
+  "cont55": {
     "type": {
       "resolvedName": "Container"
     },
@@ -970,12 +2144,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont25",
-      "soci28"
+      "cont56",
+      "soci59"
     ],
     "linkedNodes": {}
   },
-  "cont25": {
+  "cont56": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1018,15 +2192,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont24",
+    "parent": "cont55",
     "hidden": false,
     "nodes": [
-      "text26",
-      "text27"
+      "text57",
+      "text58"
     ],
     "linkedNodes": {}
   },
-  "text26": {
+  "text57": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1054,12 +2228,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont25",
+    "parent": "cont56",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text27": {
+  "text58": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1087,12 +2261,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont25",
+    "parent": "cont56",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci28": {
+  "soci59": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -1123,7 +2297,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont24",
+    "parent": "cont55",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

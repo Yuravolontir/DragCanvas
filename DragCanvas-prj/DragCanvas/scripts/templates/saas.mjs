@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 
 /**
@@ -73,6 +73,22 @@ export default function saas() {
     src3: P.saas.standup(1200), heading3: 'Skip the status meeting', label3: 'Automate', p3: 'A useful weekly digest assembled from real activity.',
   }, 'NovaFlow product tour');
 
+  // ── the meeting it replaces ────────────────────────────────────
+  const digest = b.container(root, {
+    background: INK, padding: ['0', '48', '64', '48'], width: '100%',
+  }, 'Digest');
+  const split = b.columns(digest, { count: '2', gap: '36', ratio: '3:2', stack: 'yes' });
+  const photoSide = b.container(split, { background: TRANSPARENT, width: '100%' }, 'Digest photo');
+  b.image(photoSide, P.saas.desks(1000), { width: '100%', height: '420px', objectFit: 'cover', radius: 12 });
+  const copySide = b.container(split, {
+    background: TRANSPARENT, width: '100%', justifyContent: 'center', padding: ['0', '0', '0', '8'],
+  }, 'Digest copy');
+  b.heading(copySide, 'The Monday meeting, written instead', { fontSize: '26', color: WHITE });
+  b.text(copySide, 'Every Friday the digest goes out: what shipped, what slipped, and the one decision that is still open. It is assembled from the board, so nobody has to write a status update again.', {
+    fontSize: '15', color: MUTED, margin: ['12', '0', '16', '0'],
+  });
+  b.link(copySide, 'See a real digest', 'https://example.com', { color: INDIGO, fontSize: '15' });
+
   // ── what it costs ──────────────────────────────────────────────
   const price = b.container(root, {
     background: CARD, padding: ['64', '48', '64', '48'], width: '100%', anchor: 'pricing', alignItems: 'center',
@@ -89,9 +105,15 @@ export default function saas() {
   const faq = b.container(root, {
     background: INK, padding: ['64', '48', '48', '48'], width: '100%', anchor: 'questions',
   }, 'Questions');
-  b.heading(faq, 'Before you ask', { fontSize: '34', color: WHITE });
-  b.spacer(faq, '24');
-  b.accordion(faq, [
+  const faqSplit = b.columns(faq, { count: '2', gap: '40', ratio: '2:3', stack: 'yes' });
+  const faqIntro = b.container(faqSplit, {
+    background: TRANSPARENT, width: '100%', justifyContent: 'center',
+  }, 'Questions intro');
+  b.heading(faqIntro, 'Before you ask', { fontSize: '34', color: WHITE });
+  b.text(faqIntro, 'The three questions every team asks on day one, answered without a sales call.', {
+    fontSize: '15', color: MUTED, margin: ['12', '0', '0', '0'],
+  });
+  b.accordion(faqSplit, [
     'Can I move my data out?',
     'Yes, as JSON or CSV, whenever you like. It is your work.',
     'What happens when the free tier runs out?',

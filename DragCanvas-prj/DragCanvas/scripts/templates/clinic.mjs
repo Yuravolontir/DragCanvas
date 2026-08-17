@@ -28,6 +28,12 @@ export default function clinic() {
   b.button(words, 'Book a check-up', { background: TEAL, color: WHITE, buttonStyle: 'full' });
   b.image(top, P.clinic.hygienist(900), { radius: 12, width: '100%', height: '400px' });
 
+  // ── the practice in three numbers ──────────────────────────────
+  const num = b.container(root, { background: MIST, padding: ['32', '48', '8', '48'], width: '100%' }, 'Numbers');
+  b.stats(num, ['14', 'years on this street', '2,300', 'patients who come back', '₪250', 'a check-up, no surprises'], {
+    accent: TEAL, color: MUTED,
+  });
+
   const treat = b.container(root, { background: MIST, padding: ['40', '48', '48', '48'], width: '100%', anchor: 'treatments' }, 'Treatments');
   b.heading(treat, 'What we do', { fontSize: '32', color: INK });
   b.spacer(treat, '24');
@@ -52,6 +58,25 @@ export default function clinic() {
     'Liat Rom', 'Hygienist', P.faces.white(400),
   ], { columns: '3', accent: PANEL, color: INK });
 
+  // ── what it costs, in writing ──────────────────────────────────
+  const cost = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%', alignItems: 'center' }, 'Prices');
+  b.heading(cost, 'The prices, on the website', { fontSize: '30', textAlign: 'center', color: INK });
+  b.text(cost, 'Nobody should have to ask. Anything beyond these is quoted in writing before it starts.', {
+    fontSize: '15', textAlign: 'center', color: MUTED, margin: ['10', '0', '24', '0'],
+  });
+  b.pricing(cost, [
+    'Check-up', '₪250', 'twenty minutes', 'Book it', 'Examination; X-rays if needed; A written plan',
+    'Hygiene', '₪180', 'per visit', 'Book it', 'Full clean; Brushing advice; Twice a year is enough',
+    'Whitening', '₪900', 'one course', 'Ask us', 'Assessment first; Not for everyone; Results in writing',
+  ], { featured: 1, accent: TEAL, background: MIST, color: INK });
+
+  const said = b.container(root, { background: MIST, padding: ['48', '48', '48', '48'], width: '100%' }, 'Said');
+  b.testimonial(said, {
+    quote: 'I had not been to a dentist in six years. They did not lecture me once, and the plan was on paper before anything hurt.',
+    author: 'Michal Arad', role: 'Patient since 2024',
+    background: PANEL, color: INK, accent: TEAL,
+  });
+
   const q = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'questions' }, 'Questions');
   b.heading(q, 'The things people do not like asking', { fontSize: '30', color: INK });
   b.spacer(q, '20');
@@ -64,10 +89,38 @@ export default function clinic() {
     'Most of our new patients say that. Come in for a look and we will make a plan.',
   ], { background: MIST, color: INK, radius: 12 });
 
-  const find = b.container(root, { background: MIST, padding: ['40', '48', '64', '48'], width: '100%' }, 'Find');
-  b.heading(find, 'Where we are', { fontSize: '26', color: INK });
-  b.spacer(find, '16');
-  b.map_(find, { lat: 32.0853, lng: 34.7818, zoom: 15, label: 'Meridian Dental' });
+  // ── booking, then the door ─────────────────────────────────────
+  const book = b.container(root, { background: MIST, padding: ['48', '48', '48', '48'], width: '100%' }, 'Book');
+  const bookSplit = b.columns(book, { count: '2', gap: '40', ratio: '3:2', stack: 'yes' });
+  const bookCopy = b.container(bookSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Book copy');
+  b.heading(bookCopy, 'Book the first look', { fontSize: '30', color: INK });
+  b.text(bookCopy, 'A first visit is a check-up and a conversation. Nothing happens in it that you did not agree to first.', {
+    fontSize: '15', color: MUTED, margin: ['12', '0', '16', '0'],
+  });
+  b.list(bookCopy, [
+    'Bring your insurance card if you have one',
+    'Mornings suit most people - say so and we will find one',
+    'Nervous patients: tell us at booking, not in the chair',
+  ], { color: MUTED, fontSize: '15' });
+  b.form(bookSplit, {
+    fields: [
+      { label: 'Name', type: 'text', placeholder: 'Your name', required: true },
+      { label: 'Phone', type: 'tel', placeholder: 'Where to reach you', required: true },
+      { label: 'When suits you', type: 'text', placeholder: 'e.g. weekday mornings' },
+    ],
+    submitText: 'Request a time', successMessage: 'Asked. We will ring you today with two slots.',
+    background: PANEL, accent: TEAL, color: INK,
+  });
+
+  const find = b.container(root, { background: MIST, padding: ['16', '48', '64', '48'], width: '100%' }, 'Find');
+  const findSplit = b.columns(find, { count: '2', gap: '36', ratio: '2:3', stack: 'yes' });
+  const findCopy = b.container(findSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Find copy');
+  b.heading(findCopy, 'Where we are', { fontSize: '26', color: INK });
+  b.text(findCopy, 'Two floors above the pharmacy on Meridian Street. There is parking in the back, and the lift is on the right of the entrance.', {
+    fontSize: '15', color: MUTED, margin: ['12', '0', '0', '0'],
+  });
+  const findMap = b.container(findSplit, { background: TRANSPARENT, width: '100%' }, 'Find map');
+  b.map_(findMap, { lat: 32.0853, lng: 34.7818, zoom: 15, label: 'Meridian Dental' });
 
   b.footer(root, {
     brand: 'Meridian Dental',

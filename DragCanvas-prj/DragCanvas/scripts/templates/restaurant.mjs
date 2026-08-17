@@ -35,6 +35,26 @@ export default function restaurant() {
   b.button(words, 'Book a table', { background: TERRA, color: WHITE, buttonStyle: 'full' });
   b.image(top, P.restaurant.tasting(900), { radius: 8, width: '100%', height: '420px' });
 
+  // ── the room in three numbers ──────────────────────────────────
+  const num = b.container(root, { background: CREAM, padding: ['40', '48', '8', '48'], width: '100%' }, 'Numbers');
+  b.stats(num, ['24', 'covers, no more', '1', 'sitting, at seven', '5pm', 'the market closes, we start'], {
+    accent: TERRA, color: MUTED,
+  });
+
+  // ── what the kitchen holds to ──────────────────────────────────
+  const hold = b.container(root, { background: CREAM, padding: ['32', '48', '40', '48'], width: '100%' }, 'Hold');
+  const holdCols = b.columns(hold, { count: '3', gap: '20' });
+  for (const [name, symbol, copy] of [
+    ['Bought that morning', 'storefront', 'The menu is written after the market, not before it.'],
+    ['Cooked over wood', 'local_fire_department', 'One oven, one fire, and nothing that needs a timer.'],
+    ['Served when ready', 'schedule', 'Plates arrive when they should, in the order the kitchen can do them best.'],
+  ]) {
+    const card = b.container(holdCols, { background: PANEL, padding: ['22', '20', '22', '20'], radius: 8 }, name);
+    b.icon(card, symbol, { color: PANEL, background: TERRA });
+    b.heading(card, name, { level: '3', fontSize: '17', color: INK, margin: ['12', '0', '6', '0'] });
+    b.text(card, copy, { fontSize: '14', color: MUTED });
+  }
+
   const menu = b.container(root, { background: PANEL, padding: ['56', '48', '56', '48'], width: '100%', anchor: 'menu' }, 'Menu');
   b.heading(menu, 'This week', { fontSize: '32', color: INK });
   b.spacer(menu, '24');
@@ -63,10 +83,49 @@ export default function restaurant() {
     background: PANEL, color: INK, accent: rgba(255, 255, 255, 0.6),
   });
 
-  const find = b.container(root, { background: CREAM, padding: ['24', '48', '64', '48'], width: '100%', anchor: 'find-us' }, 'Find us');
-  b.heading(find, 'Yehuda Halevi 21', { fontSize: '28', color: INK });
-  b.spacer(find, '16');
-  b.map_(find, { lat: 32.0629, lng: 34.7745, zoom: 15, label: 'Casa Oliva' });
+  // ── how a night runs, then the booking questions ───────────────
+  const night = b.container(root, { background: PANEL, padding: ['32', '48', '32', '48'], width: '100%' }, 'A night');
+  b.heading(night, 'How a night runs', { fontSize: '28', color: INK });
+  b.spacer(night, '20');
+  b.timeline(night, [
+    '18:00', 'The door opens', 'Aperitivo at the counter while the oven settles.',
+    '19:00', 'Everyone sits', 'One sitting, nine dishes, explained before they start.',
+    '21:30', 'The long end', 'Kitchen closes, the room decides when the night ends.',
+  ], { accent: TERRA, color: INK });
+
+  const ask = b.container(root, { background: PANEL, padding: ['24', '48', '48', '48'], width: '100%' }, 'Questions');
+  const askSplit = b.columns(ask, { count: '2', gap: '40', ratio: '2:3', stack: 'yes' });
+  const askIntro = b.container(askSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Questions intro');
+  b.heading(askIntro, 'Before you book', { fontSize: '28', color: INK });
+  b.text(askIntro, 'A small room raises small questions. Here are the ones we get on the phone.', {
+    fontSize: '15', color: MUTED, margin: ['12', '0', '0', '0'],
+  });
+  b.accordion(askSplit, [
+    'Can you cook around an allergy?',
+    'Yes, if you tell us two days ahead. The menu is short enough to bend around one table.',
+    'We are six. Is that possible?',
+    'The room does it once a night. Book early and take the long table by the window.',
+    'How long does the evening take?',
+    'About three hours. This is not a place to eat before somewhere else.',
+  ], { background: CREAM, color: INK, radius: 8 });
+
+  const find = b.container(root, { background: CREAM, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'find-us' }, 'Find us');
+  const findSplit = b.columns(find, { count: '2', gap: '36', ratio: '2:3', stack: 'yes' });
+  const findCopy = b.container(findSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Find copy');
+  b.heading(findCopy, 'Yehuda Halevi 21', { fontSize: '28', color: INK });
+  b.text(findCopy, 'Between the tailor and the bicycle shop. Look for the olive tree in the yard - the door is under it.', {
+    fontSize: '15', color: MUTED, margin: ['12', '0', '0', '0'],
+  });
+  const findMap = b.container(findSplit, { background: TRANSPARENT, width: '100%' }, 'Find map');
+  b.map_(findMap, { lat: 32.0629, lng: 34.7745, zoom: 15, label: 'Casa Oliva' });
+
+  const close = b.container(root, { background: CREAM, padding: ['24', '48', '72', '48'], width: '100%' }, 'Close');
+  b.ctaBanner(close, {
+    title: 'The table is small on purpose',
+    text: 'Twenty-four covers, one sitting, booked about a week out. Ring, or walk past and look at the tree.',
+    cta: 'Book a table', href: 'tel:+97235000000',
+    background: TERRA, color: WHITE, buttonBackground: CREAM, buttonColor: INK,
+  });
 
   b.footer(root, {
     brand: 'Casa Oliva',

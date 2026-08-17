@@ -17,7 +17,7 @@ import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 import pg from 'pg';
 
-import { validateTemplate } from './templates/_validate.mjs';
+import { validateTemplate, checkRichness } from './templates/_validate.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dry = process.argv.includes('--dry');
@@ -41,6 +41,20 @@ for (const file of files) {
 // ---------- validate ----------
 
 for (const t of templates) validateTemplate(t);
+
+// Reported together rather than thrown one at a time: this is a standard the
+// whole gallery is held to, and seeing which twelve fall short is more use than
+// being told about the first.
+const thin = templates
+  .map((t) => [t.name, checkRichness(t)])
+  .filter(([, shortfalls]) => shortfalls.length);
+
+if (thin.length) {
+  console.error(`\n${thin.length} template(s) do not show enough of the editor:\n`);
+  for (const [name, shortfalls] of thin) console.error(`  ${name}\n    ${shortfalls.join('\n    ')}`);
+  console.error('');
+  process.exit(1);
+}
 
 // ---------- what the set covers ----------
 

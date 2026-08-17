@@ -51,10 +51,11 @@
       "cont25",
       "cont27",
       "cont29",
-      "cont33",
       "cont37",
-      "cont39",
-      "cont41"
+      "cont41",
+      "cont47",
+      "cont49",
+      "cont51"
     ],
     "linkedNodes": {}
   },
@@ -1100,6 +1101,298 @@
     "isCanvas": true,
     "props": {
       "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "48",
+        "64",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 2,
+        "g": 6,
+        "b": 23,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Digest"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "colu30"
+    ],
+    "linkedNodes": {}
+  },
+  "colu30": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "36",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "3:2"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont29",
+    "hidden": false,
+    "nodes": [
+      "cont31",
+      "cont33"
+    ],
+    "linkedNodes": {}
+  },
+  "cont31": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Digest photo"
+    },
+    "parent": "colu30",
+    "hidden": false,
+    "nodes": [
+      "imag32"
+    ],
+    "linkedNodes": {}
+  },
+  "imag32": {
+    "type": {
+      "resolvedName": "Image"
+    },
+    "isCanvas": false,
+    "props": {
+      "src": "https://images.pexels.com/photos/6804068/pexels-photo-6804068.jpeg?auto=compress&cs=tinysrgb&w=1000",
+      "radius": 12,
+      "width": "100%",
+      "height": "420px",
+      "maxWidth": "100%",
+      "objectFit": "cover"
+    },
+    "displayName": "Image",
+    "custom": {
+      "displayName": "Image"
+    },
+    "parent": "cont31",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont33": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "8"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Digest copy"
+    },
+    "parent": "colu30",
+    "hidden": false,
+    "nodes": [
+      "head34",
+      "text35",
+      "link36"
+    ],
+    "linkedNodes": {}
+  },
+  "head34": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "The Monday meeting, written instead",
+      "level": "2",
+      "fontSize": "26",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont33",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text35": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 148,
+        "g": 163,
+        "b": 184,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "16",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Every Friday the digest goes out: what shipped, what slipped, and the one decision that is still open. It is assembled from the board, so nobody has to write a status update again."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont33",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "link36": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "https://example.com",
+      "text": "See a real digest",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%",
+      "color": {
+        "r": 99,
+        "g": 102,
+        "b": 241,
+        "a": 1
+      },
+      "fontSize": "15"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont33",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont37": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
       "alignItems": "center",
       "justifyContent": "flex-start",
       "fillSpace": "no",
@@ -1140,13 +1433,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head30",
-      "spac31",
-      "pric32"
+      "head38",
+      "spac39",
+      "pric40"
     ],
     "linkedNodes": {}
   },
-  "head30": {
+  "head38": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1174,12 +1467,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont29",
+    "parent": "cont37",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac31": {
+  "spac39": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -1191,12 +1484,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont29",
+    "parent": "cont37",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "pric32": {
+  "pric40": {
     "type": {
       "resolvedName": "Pricing"
     },
@@ -1243,12 +1536,12 @@
     "custom": {
       "displayName": "Pricing"
     },
-    "parent": "cont29",
+    "parent": "cont37",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont33": {
+  "cont41": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1295,13 +1588,86 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head34",
-      "spac35",
-      "acco36"
+      "colu42"
     ],
     "linkedNodes": {}
   },
-  "head34": {
+  "colu42": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "40",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "2:3"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont41",
+    "hidden": false,
+    "nodes": [
+      "cont43",
+      "acco46"
+    ],
+    "linkedNodes": {}
+  },
+  "cont43": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Questions intro"
+    },
+    "parent": "colu42",
+    "hidden": false,
+    "nodes": [
+      "head44",
+      "text45"
+    ],
+    "linkedNodes": {}
+  },
+  "head44": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1329,29 +1695,45 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont33",
+    "parent": "cont43",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac35": {
+  "text45": {
     "type": {
-      "resolvedName": "Spacer"
+      "resolvedName": "Text"
     },
     "isCanvas": false,
     "props": {
-      "height": "24"
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 148,
+        "g": 163,
+        "b": 184,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "The three questions every team asks on day one, answered without a sales call."
     },
-    "displayName": "Spacer",
+    "displayName": "Text",
     "custom": {
-      "displayName": "Spacer"
+      "displayName": "Text"
     },
-    "parent": "cont33",
+    "parent": "cont43",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "acco36": {
+  "acco46": {
     "type": {
       "resolvedName": "Accordion"
     },
@@ -1383,12 +1765,12 @@
     "custom": {
       "displayName": "Accordion"
     },
-    "parent": "cont33",
+    "parent": "colu42",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont37": {
+  "cont47": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1434,11 +1816,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "test38"
+      "test48"
     ],
     "linkedNodes": {}
   },
-  "test38": {
+  "test48": {
     "type": {
       "resolvedName": "Testimonial"
     },
@@ -1472,12 +1854,12 @@
     "custom": {
       "displayName": "Testimonial"
     },
-    "parent": "cont37",
+    "parent": "cont47",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont39": {
+  "cont49": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1523,11 +1905,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "ctab40"
+      "ctab50"
     ],
     "linkedNodes": {}
   },
-  "ctab40": {
+  "ctab50": {
     "type": {
       "resolvedName": "CTABanner"
     },
@@ -1567,12 +1949,12 @@
     "custom": {
       "displayName": "CTABanner"
     },
-    "parent": "cont39",
+    "parent": "cont49",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont41": {
+  "cont51": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1618,12 +2000,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont42",
-      "soci45"
+      "cont52",
+      "soci55"
     ],
     "linkedNodes": {}
   },
-  "cont42": {
+  "cont52": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1666,15 +2048,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont41",
+    "parent": "cont51",
     "hidden": false,
     "nodes": [
-      "text43",
-      "text44"
+      "text53",
+      "text54"
     ],
     "linkedNodes": {}
   },
-  "text43": {
+  "text53": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1702,12 +2084,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont42",
+    "parent": "cont52",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text44": {
+  "text54": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1735,12 +2117,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont42",
+    "parent": "cont52",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci45": {
+  "soci55": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -1771,7 +2153,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont41",
+    "parent": "cont51",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

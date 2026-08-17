@@ -47,12 +47,15 @@
       "navb01",
       "cont02",
       "cont07",
-      "cont13",
-      "spac17",
-      "cont18",
-      "cont20",
-      "cont24",
-      "cont28"
+      "cont23",
+      "cont29",
+      "spac33",
+      "cont34",
+      "cont36",
+      "cont38",
+      "cont42",
+      "cont48",
+      "cont56"
     ],
     "linkedNodes": {}
   },
@@ -321,7 +324,7 @@
       "padding": [
         "56",
         "48",
-        "56",
+        "48",
         "48"
       ],
       "margin": [
@@ -331,9 +334,9 @@
         "0"
       ],
       "background": {
-        "r": 22,
-        "g": 38,
-        "b": 74,
+        "r": 15,
+        "g": 27,
+        "b": 52,
         "a": 1
       },
       "color": {
@@ -345,21 +348,18 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto",
-      "anchor": "programme"
+      "height": "auto"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Programme"
+      "displayName": "Formats"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
       "head08",
       "spac09",
-      "time10",
-      "spac11",
-      "caro12"
+      "colu10"
     ],
     "linkedNodes": {}
   },
@@ -369,7 +369,7 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "Day one",
+      "text": "Three rooms, three speeds",
       "level": "2",
       "fontSize": "32",
       "fontWeight": "700",
@@ -413,7 +413,583 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "time10": {
+  "colu10": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "3",
+      "gap": "20",
+      "align": "stretch",
+      "stack": "yes"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont07",
+    "hidden": false,
+    "nodes": [
+      "cont11",
+      "cont15",
+      "cont19"
+    ],
+    "linkedNodes": {}
+  },
+  "cont11": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "22",
+        "24",
+        "22"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 22,
+        "g": 38,
+        "b": 74,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 12,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Talks"
+    },
+    "parent": "colu10",
+    "hidden": false,
+    "nodes": [
+      "icon12",
+      "head13",
+      "text14"
+    ],
+    "linkedNodes": {}
+  },
+  "icon12": {
+    "type": {
+      "resolvedName": "Icon"
+    },
+    "isCanvas": false,
+    "props": {
+      "name": "campaign",
+      "size": "32",
+      "padded": "yes",
+      "color": {
+        "r": 15,
+        "g": 27,
+        "b": 52,
+        "a": 1
+      },
+      "background": {
+        "r": 255,
+        "g": 194,
+        "b": 71,
+        "a": 1
+      }
+    },
+    "displayName": "Icon",
+    "custom": {
+      "displayName": "Icon"
+    },
+    "parent": "cont11",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head13": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Talks",
+      "level": "3",
+      "fontSize": "18",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 238,
+        "g": 243,
+        "b": 251,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "0",
+        "6",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont11",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text14": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 147,
+        "g": 167,
+        "b": 200,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Forty minutes and real questions after. No product pitches from the stage."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont11",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont15": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "22",
+        "24",
+        "22"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 22,
+        "g": 38,
+        "b": 74,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 12,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Workshops"
+    },
+    "parent": "colu10",
+    "hidden": false,
+    "nodes": [
+      "icon16",
+      "head17",
+      "text18"
+    ],
+    "linkedNodes": {}
+  },
+  "icon16": {
+    "type": {
+      "resolvedName": "Icon"
+    },
+    "isCanvas": false,
+    "props": {
+      "name": "handyman",
+      "size": "32",
+      "padded": "yes",
+      "color": {
+        "r": 15,
+        "g": 27,
+        "b": 52,
+        "a": 1
+      },
+      "background": {
+        "r": 255,
+        "g": 194,
+        "b": 71,
+        "a": 1
+      }
+    },
+    "displayName": "Icon",
+    "custom": {
+      "displayName": "Icon"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head17": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Workshops",
+      "level": "3",
+      "fontSize": "18",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 238,
+        "g": 243,
+        "b": 251,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "0",
+        "6",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text18": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 147,
+        "g": 167,
+        "b": 200,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Ninety minutes, twenty seats, one concrete thing to take home."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont15",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont19": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "24",
+        "22",
+        "24",
+        "22"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 22,
+        "g": 38,
+        "b": 74,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 12,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "The hallway"
+    },
+    "parent": "colu10",
+    "hidden": false,
+    "nodes": [
+      "icon20",
+      "head21",
+      "text22"
+    ],
+    "linkedNodes": {}
+  },
+  "icon20": {
+    "type": {
+      "resolvedName": "Icon"
+    },
+    "isCanvas": false,
+    "props": {
+      "name": "forum",
+      "size": "32",
+      "padded": "yes",
+      "color": {
+        "r": 15,
+        "g": 27,
+        "b": 52,
+        "a": 1
+      },
+      "background": {
+        "r": 255,
+        "g": 194,
+        "b": 71,
+        "a": 1
+      }
+    },
+    "displayName": "Icon",
+    "custom": {
+      "displayName": "Icon"
+    },
+    "parent": "cont19",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head21": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "The hallway",
+      "level": "3",
+      "fontSize": "18",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 238,
+        "g": 243,
+        "b": 251,
+        "a": 1
+      },
+      "margin": [
+        "14",
+        "0",
+        "6",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont19",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text22": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 147,
+        "g": 167,
+        "b": 200,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Coffee runs all day on purpose. Most collaborations here started in it."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont19",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont23": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "56",
+        "48",
+        "56",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 22,
+        "g": 38,
+        "b": 74,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto",
+      "anchor": "programme"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Programme"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head24",
+      "spac25",
+      "time26",
+      "spac27",
+      "caro28"
+    ],
+    "linkedNodes": {}
+  },
+  "head24": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Day one",
+      "level": "2",
+      "fontSize": "32",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 238,
+        "g": 243,
+        "b": 251,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont23",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "spac25": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "24"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont23",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "time26": {
     "type": {
       "resolvedName": "Timeline"
     },
@@ -450,12 +1026,12 @@
     "custom": {
       "displayName": "Timeline"
     },
-    "parent": "cont07",
+    "parent": "cont23",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac11": {
+  "spac27": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -467,12 +1043,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont07",
+    "parent": "cont23",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "caro12": {
+  "caro28": {
     "type": {
       "resolvedName": "Carousel"
     },
@@ -503,12 +1079,12 @@
     "custom": {
       "displayName": "Conference moments"
     },
-    "parent": "cont07",
+    "parent": "cont23",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont13": {
+  "cont29": {
     "type": {
       "resolvedName": "Container"
     },
@@ -555,13 +1131,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head14",
-      "spac15",
-      "team16"
+      "head30",
+      "spac31",
+      "team32"
     ],
     "linkedNodes": {}
   },
-  "head14": {
+  "head30": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -589,12 +1165,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont13",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac15": {
+  "spac31": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -606,12 +1182,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont13",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "team16": {
+  "team32": {
     "type": {
       "resolvedName": "TeamGrid"
     },
@@ -649,12 +1225,12 @@
     "custom": {
       "displayName": "TeamGrid"
     },
-    "parent": "cont13",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac17": {
+  "spac33": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -671,7 +1247,7 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont18": {
+  "cont34": {
     "type": {
       "resolvedName": "Container"
     },
@@ -717,11 +1293,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "stat19"
+      "stat35"
     ],
     "linkedNodes": {}
   },
-  "stat19": {
+  "stat35": {
     "type": {
       "resolvedName": "Stats"
     },
@@ -753,12 +1329,101 @@
     "custom": {
       "displayName": "Stats"
     },
-    "parent": "cont18",
+    "parent": "cont34",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont20": {
+  "cont36": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 15,
+        "g": 27,
+        "b": 52,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Last year"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "test37"
+    ],
+    "linkedNodes": {}
+  },
+  "test37": {
+    "type": {
+      "resolvedName": "Testimonial"
+    },
+    "isCanvas": false,
+    "props": {
+      "quote": "I came for one talk and left with two people I still review work with.",
+      "author": "Talia Gross",
+      "role": "Attendee, Interface 25",
+      "avatar": "",
+      "align": "left",
+      "background": {
+        "r": 22,
+        "g": 38,
+        "b": 74,
+        "a": 1
+      },
+      "color": {
+        "r": 238,
+        "g": 243,
+        "b": 251,
+        "a": 1
+      },
+      "accent": {
+        "r": 255,
+        "g": 194,
+        "b": 71,
+        "a": 1
+      }
+    },
+    "displayName": "Testimonial",
+    "custom": {
+      "displayName": "Testimonial"
+    },
+    "parent": "cont36",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont38": {
     "type": {
       "resolvedName": "Container"
     },
@@ -805,13 +1470,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head21",
-      "spac22",
-      "pric23"
+      "head39",
+      "spac40",
+      "pric41"
     ],
     "linkedNodes": {}
   },
-  "head21": {
+  "head39": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -839,12 +1504,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont20",
+    "parent": "cont38",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac22": {
+  "spac40": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -856,12 +1521,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont20",
+    "parent": "cont38",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "pric23": {
+  "pric41": {
     "type": {
       "resolvedName": "Pricing"
     },
@@ -908,12 +1573,12 @@
     "custom": {
       "displayName": "Pricing"
     },
-    "parent": "cont20",
+    "parent": "cont38",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont24": {
+  "cont42": {
     "type": {
       "resolvedName": "Container"
     },
@@ -925,6 +1590,234 @@
       "fillSpace": "no",
       "padding": [
         "48",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 15,
+        "g": 27,
+        "b": 52,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Questions"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "colu43"
+    ],
+    "linkedNodes": {}
+  },
+  "colu43": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "40",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "2:3"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont42",
+    "hidden": false,
+    "nodes": [
+      "cont44",
+      "acco47"
+    ],
+    "linkedNodes": {}
+  },
+  "cont44": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Questions intro"
+    },
+    "parent": "colu43",
+    "hidden": false,
+    "nodes": [
+      "head45",
+      "text46"
+    ],
+    "linkedNodes": {}
+  },
+  "head45": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Before you book",
+      "level": "2",
+      "fontSize": "30",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 238,
+        "g": 243,
+        "b": 251,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Heading"
+    },
+    "parent": "cont44",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text46": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 147,
+        "g": 167,
+        "b": 200,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "What people email us about in October, answered here so you do not have to."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Text"
+    },
+    "parent": "cont44",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "acco47": {
+    "type": {
+      "resolvedName": "Accordion"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Are the talks recorded?",
+        "Yes. Every ticket holder gets the recordings by email within a week, workshops included.",
+        "Can I get an invoice for my employer?",
+        "Yes - tick the box at checkout and it arrives the same day, VAT broken out.",
+        "What if I cannot come after all?",
+        "Pass the ticket to a colleague any time, or ask for a refund up to two weeks before."
+      ],
+      "background": {
+        "r": 22,
+        "g": 38,
+        "b": 74,
+        "a": 1
+      },
+      "color": {
+        "r": 238,
+        "g": 243,
+        "b": 251,
+        "a": 1
+      },
+      "radius": 12
+    },
+    "displayName": "Accordion",
+    "custom": {
+      "displayName": "Accordion"
+    },
+    "parent": "colu43",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont48": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "16",
         "48",
         "64",
         "48"
@@ -959,13 +1852,87 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head25",
-      "spac26",
-      "map27"
+      "colu49"
     ],
     "linkedNodes": {}
   },
-  "head25": {
+  "colu49": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "36",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "2:3"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Columns"
+    },
+    "parent": "cont48",
+    "hidden": false,
+    "nodes": [
+      "cont50",
+      "cont54"
+    ],
+    "linkedNodes": {}
+  },
+  "cont50": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Venue copy"
+    },
+    "parent": "colu49",
+    "hidden": false,
+    "nodes": [
+      "head51",
+      "text52",
+      "link53"
+    ],
+    "linkedNodes": {}
+  },
+  "head51": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -993,29 +1960,123 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont24",
+    "parent": "cont50",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac26": {
+  "text52": {
     "type": {
-      "resolvedName": "Spacer"
+      "resolvedName": "Text"
     },
     "isCanvas": false,
     "props": {
-      "height": "16"
+      "fontSize": "15",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 147,
+        "g": 167,
+        "b": 200,
+        "a": 1
+      },
+      "margin": [
+        "12",
+        "0",
+        "16",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "The old customs house in the port. Twelve minutes on foot from the train, and the coffee is better than any conference deserves."
     },
-    "displayName": "Spacer",
+    "displayName": "Text",
     "custom": {
-      "displayName": "Spacer"
+      "displayName": "Text"
     },
-    "parent": "cont24",
+    "parent": "cont50",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "map27": {
+  "link53": {
+    "type": {
+      "resolvedName": "Link"
+    },
+    "isCanvas": false,
+    "props": {
+      "href": "https://example.com",
+      "text": "Hotels within walking distance",
+      "width": "auto",
+      "height": "auto",
+      "maxWidth": "100%",
+      "color": {
+        "r": 255,
+        "g": 194,
+        "b": 71,
+        "a": 1
+      },
+      "fontSize": "15"
+    },
+    "displayName": "Link",
+    "custom": {
+      "displayName": "Link"
+    },
+    "parent": "cont50",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont54": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Venue map"
+    },
+    "parent": "colu49",
+    "hidden": false,
+    "nodes": [
+      "map55"
+    ],
+    "linkedNodes": {}
+  },
+  "map55": {
     "type": {
       "resolvedName": "Map"
     },
@@ -1032,12 +2093,12 @@
     "custom": {
       "displayName": "Map"
     },
-    "parent": "cont24",
+    "parent": "cont54",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont28": {
+  "cont56": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1083,12 +2144,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont29",
-      "soci32"
+      "cont57",
+      "soci60"
     ],
     "linkedNodes": {}
   },
-  "cont29": {
+  "cont57": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1131,15 +2192,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont28",
+    "parent": "cont56",
     "hidden": false,
     "nodes": [
-      "text30",
-      "text31"
+      "text58",
+      "text59"
     ],
     "linkedNodes": {}
   },
-  "text30": {
+  "text58": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1167,12 +2228,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont29",
+    "parent": "cont57",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text31": {
+  "text59": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1194,18 +2255,18 @@
         "0"
       ],
       "shadow": 0,
-      "text": "14-15 March, Tel Aviv Port. Tickets include both days."
+      "text": "12–13 November, Haifa Port. Tickets include both days."
     },
     "displayName": "Text",
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont29",
+    "parent": "cont57",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci32": {
+  "soci60": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -1236,7 +2297,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont28",
+    "parent": "cont56",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
