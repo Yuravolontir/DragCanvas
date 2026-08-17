@@ -1,4 +1,5 @@
-import { createBuilder, px, rgba, WHITE } from './_builder.mjs';
+import { createBuilder, rgba, WHITE } from './_builder.mjs';
+import { PHOTOS as P } from './_photos.mjs';
 
 /** Design agency — case studies, the logos that vouch for them, and a brief form. */
 export default function agency() {
@@ -16,23 +17,23 @@ export default function agency() {
     { text: 'Brief', href: '#brief' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: PAPER, padding: ['80', '48', '40', '48'], width: '100%', backgroundImage: px(3184338, 1600), overlay: rgba(20, 20, 22, 0.68) }, 'Hero');
-  b.heading(hero, 'We make the difficult part look obvious', { level: '1', fontSize: '54', color: INK });
+  const hero = b.container(root, { background: PAPER, padding: ['80', '48', '40', '48'], width: '100%', backgroundImage: P.agency.facade(1600), overlay: rgba(20, 20, 22, 0.68) }, 'Hero');
+  b.heading(hero, 'We make the difficult part look obvious', { level: '1', fontSize: '54', color: PAPER });
   b.text(hero, 'Brand and product design for companies that have outgrown their first look.', {
-    fontSize: '19', color: MUTED, margin: ['14', '0', '28', '0'],
+    fontSize: '19', color: rgba(255, 255, 255, 0.82), margin: ['14', '0', '28', '0'],
   });
-  b.logoStrip(hero, [px(3184291, 200), px(3184338, 200), px(3184465, 200), px(3184418, 200), px(262978, 200)], { height: '28' });
+  b.logoStrip(hero, ['Kettle', 'Fathom', 'Monday', 'Northwind', 'Sable'], { height: '28', color: PAPER });
 
   const work = b.container(root, { background: PAPER, padding: ['40', '48', '48', '48'], width: '100%', anchor: 'work' }, 'Work');
   b.heading(work, 'Recent work', { fontSize: '32', color: INK });
   b.spacer(work, '24');
   const cases = b.columns(work, { count: '2', gap: '24' });
   for (const [client, what, img] of [
-    ['Kettle', 'A brand that survives being printed small', px(1779487, 800)],
-    ['Fathom', 'Turning a dense product into three screens', px(3184291, 800)],
+    ['Kettle', 'A brand that survives being printed small', P.agency.proofs(800)],
+    ['Fathom', 'Turning a dense product into three screens', P.agency.monitor(800)],
   ]) {
     const card = b.container(cases, { background: PANEL, padding: ['0', '0', '22', '0'], radius: 12 }, client);
-    b.image(card, img, { radius: 12, width: '100%' });
+    b.image(card, img, { radius: 12, width: '100%', height: '260px' });
     b.heading(card, client, { level: '3', fontSize: '20', color: INK, margin: ['16', '22', '4', '22'] });
     b.text(card, what, { fontSize: '15', color: MUTED, margin: ['0', '22', '0', '22'] });
   }
@@ -55,5 +56,12 @@ export default function agency() {
   });
   b.form(brief, { submitText: 'Send the brief', accent: RED, background: PANEL });
 
-  return { name: 'Design Agency — FIELD', category: 'Business', thumb: px(3184338), map: b.map };
+  b.footer(root, {
+    brand: 'FIELD',
+    note: 'Design and art direction. Tel Aviv and remote.',
+    socials: ['Instagram', 'https://instagram.com/', 'Behance', 'https://behance.net/', 'Email', 'mailto:studio@field.co'],
+    background: INK, ink: PAPER, muted: MUTED,
+  });
+
+  return { name: 'Design Agency — FIELD', category: 'Business', thumb: P.agency.studio(600), map: b.map };
 }

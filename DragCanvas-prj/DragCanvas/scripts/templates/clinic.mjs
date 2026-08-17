@@ -1,4 +1,5 @@
-import { createBuilder, px, rgba, WHITE } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { PHOTOS as P } from './_photos.mjs';
 
 /** Dental clinic — reassurance, then the practical facts, then the questions people are afraid to ask. */
 export default function clinic() {
@@ -16,16 +17,16 @@ export default function clinic() {
     { text: 'Questions', href: '#questions' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: MIST, padding: ['64', '48', '40', '48'], width: '100%', backgroundImage: px(3184291, 1600), overlay: rgba(23, 42, 48, 0.62) }, 'Hero');
+  const hero = b.container(root, { background: MIST, padding: ['64', '48', '40', '48'], width: '100%', backgroundImage: P.clinic.surgery(1600), overlay: rgba(23, 42, 48, 0.62) }, 'Hero');
   const top = b.columns(hero, { count: '2', gap: '40', align: 'center' });
-  const words = b.container(top, { background: MIST, padding: ['0', '0', '0', '0'] }, 'Words');
+  const words = b.container(top, { background: TRANSPARENT, padding: ['0', '0', '0', '0'] }, 'Words');
   b.badge(words, 'Taking new patients', { background: PANEL, color: TEAL });
-  b.heading(words, 'Dentistry without the dread', { level: '1', fontSize: '44', color: INK, margin: ['12', '0', '10', '0'] });
+  b.heading(words, 'Dentistry without the dread', { level: '1', fontSize: '44', color: MIST, margin: ['12', '0', '10', '0'] });
   b.text(words, 'Same dentist every visit, prices agreed before anything starts, and no upselling.', {
-    fontSize: '17', color: MUTED,
+    fontSize: '17', color: rgba(255, 255, 255, 0.82),
   });
   b.button(words, 'Book a check-up', { background: TEAL, color: WHITE, buttonStyle: 'full' });
-  b.image(top, px(3184291, 900), { radius: 12, width: '100%' });
+  b.image(top, P.clinic.hygienist(900), { radius: 12, width: '100%', height: '400px' });
 
   const treat = b.container(root, { background: MIST, padding: ['40', '48', '48', '48'], width: '100%', anchor: 'treatments' }, 'Treatments');
   b.heading(treat, 'What we do', { fontSize: '32', color: INK });
@@ -46,9 +47,9 @@ export default function clinic() {
   b.heading(team, 'Who you will see', { fontSize: '30', color: INK });
   b.spacer(team, '20');
   b.teamGrid(team, [
-    'Dr Yael Shani', 'Dentist, 14 years', px(29057425, 400),
-    'Dr Amit Peled', 'Dentist, 9 years', px(37233404, 400),
-    'Liat Rom', 'Hygienist', px(16666883, 400),
+    'Dr Yael Shani', 'Dentist, 14 years', P.faces.grey(400),
+    'Dr Amit Peled', 'Dentist, 9 years', P.faces.turtleneck(400),
+    'Liat Rom', 'Hygienist', P.faces.white(400),
   ], { columns: '3', accent: PANEL, color: INK });
 
   const q = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'questions' }, 'Questions');
@@ -68,5 +69,12 @@ export default function clinic() {
   b.spacer(find, '16');
   b.map_(find, { lat: 32.0853, lng: 34.7818, zoom: 15, label: 'Meridian Dental' });
 
-  return { name: 'Dental Clinic — Meridian', category: 'Business', thumb: px(3184465), map: b.map };
+  b.footer(root, {
+    brand: 'Meridian Dental',
+    note: 'Emergencies seen the same day. Most insurers accepted.',
+    socials: ['Phone', 'tel:+97239000000', 'Email', 'mailto:clinic@meridian.co'],
+    background: INK, ink: MIST, muted: PANEL,
+  });
+
+  return { name: 'Dental Clinic — Meridian', category: 'Business', thumb: P.clinic.chair(600), map: b.map };
 }

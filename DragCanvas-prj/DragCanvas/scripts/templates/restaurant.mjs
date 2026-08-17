@@ -1,4 +1,5 @@
-import { createBuilder, px, rgba, WHITE } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { PHOTOS as P } from './_photos.mjs';
 
 /**
  * Restaurant — Casa Oliva (replaces template 14)
@@ -23,16 +24,16 @@ export default function restaurant() {
     { text: 'Find us', href: '#find-us' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: CREAM, padding: ['64', '48', '48', '48'], width: '100%', backgroundImage: px(262978, 1600), overlay: rgba(42, 29, 19, 0.6) }, 'Hero');
+  const hero = b.container(root, { background: CREAM, padding: ['64', '48', '48', '48'], width: '100%', backgroundImage: P.restaurant.room(1600), overlay: rgba(42, 29, 19, 0.6) }, 'Hero');
   const top = b.columns(hero, { count: '2', gap: '40', align: 'center' });
-  const words = b.container(top, { background: CREAM, padding: ['0', '0', '0', '0'] }, 'Words');
+  const words = b.container(top, { background: TRANSPARENT, padding: ['0', '0', '0', '0'] }, 'Words');
   b.badge(words, 'Open for dinner', { background: PANEL, color: TERRA });
-  b.heading(words, 'Slow food, small room', { level: '1', fontSize: '46', color: INK, margin: ['12', '0', '10', '0'] });
+  b.heading(words, 'Slow food, small room', { level: '1', fontSize: '46', color: CREAM, margin: ['12', '0', '10', '0'] });
   b.text(words, 'Twenty-four covers, one sitting a night, and whatever the market had that morning.', {
-    fontSize: '17', color: MUTED,
+    fontSize: '17', color: rgba(255, 255, 255, 0.82),
   });
   b.button(words, 'Book a table', { background: TERRA, color: WHITE, buttonStyle: 'full' });
-  b.image(top, px(262978, 900), { radius: 8, width: '100%' });
+  b.image(top, P.restaurant.tasting(900), { radius: 8, width: '100%', height: '420px' });
 
   const menu = b.container(root, { background: PANEL, padding: ['56', '48', '56', '48'], width: '100%', anchor: 'menu' }, 'Menu');
   b.heading(menu, 'This week', { fontSize: '32', color: INK });
@@ -67,5 +68,12 @@ export default function restaurant() {
   b.spacer(find, '16');
   b.map_(find, { lat: 32.0629, lng: 34.7745, zoom: 15, label: 'Casa Oliva' });
 
-  return { id: 14, name: 'Restaurant — Casa Oliva', category: 'Business', thumb: px(262978), map: b.map };
+  b.footer(root, {
+    brand: 'Casa Oliva',
+    note: 'Dinner Tuesday to Saturday. Booking advised.',
+    socials: ['Instagram', 'https://instagram.com/', 'Phone', 'tel:+97235000000'],
+    background: INK, ink: CREAM, muted: PANEL,
+  });
+
+  return { id: 14, name: 'Restaurant — Casa Oliva', category: 'Business', thumb: P.restaurant.pasta(600), map: b.map };
 }

@@ -52,7 +52,8 @@
       "cont27",
       "cont31",
       "cont35",
-      "cont37"
+      "cont37",
+      "cont39"
     ],
     "linkedNodes": {}
   },
@@ -135,7 +136,7 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "backgroundImage": "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "backgroundImage": "https://images.pexels.com/photos/6805161/pexels-photo-6805161.jpeg?auto=compress&cs=tinysrgb&w=1600",
       "overlay": {
         "r": 2,
         "g": 6,
@@ -303,14 +304,20 @@
     "isCanvas": false,
     "props": {
       "logos": [
-        "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=200",
-        "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=200",
-        "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=200",
-        "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=200"
+        "Kettle",
+        "Fathom",
+        "Northwind",
+        "Sable"
       ],
       "height": "26",
       "gap": "40",
-      "grayscale": "yes"
+      "grayscale": "yes",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      }
     },
     "displayName": "LogoStrip",
     "custom": {
@@ -1474,6 +1481,210 @@
       "displayName": "CTABanner"
     },
     "parent": "cont37",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont39": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "48",
+        "40",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 30,
+        "g": 41,
+        "b": 59,
+        "a": 1
+      },
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont40",
+      "soci43"
+    ],
+    "linkedNodes": {}
+  },
+  "cont40": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer text"
+    },
+    "parent": "cont39",
+    "hidden": false,
+    "nodes": [
+      "text41",
+      "text42"
+    ],
+    "linkedNodes": {}
+  },
+  "text41": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "NovaFlow"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Footer brand"
+    },
+    "parent": "cont40",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text42": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 148,
+        "g": 163,
+        "b": 184,
+        "a": 1
+      },
+      "margin": [
+        "6",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Made by a small team. No card needed to start."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Small print"
+    },
+    "parent": "cont40",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "soci43": {
+    "type": {
+      "resolvedName": "SocialLinks"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Twitter",
+        "https://twitter.com/",
+        "GitHub",
+        "https://github.com/"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.06
+      },
+      "color": {
+        "r": 148,
+        "g": 163,
+        "b": 184,
+        "a": 1
+      },
+      "size": "20",
+      "gap": "18"
+    },
+    "displayName": "SocialLinks",
+    "custom": {
+      "displayName": "Footer links"
+    },
+    "parent": "cont39",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

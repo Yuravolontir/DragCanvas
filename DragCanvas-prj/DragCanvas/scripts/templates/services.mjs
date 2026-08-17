@@ -1,4 +1,5 @@
-import { createBuilder, px, rgba, WHITE } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { PHOTOS as P } from './_photos.mjs';
 
 /**
  * Local services — a trade that lives on trust and a quick quote.
@@ -21,24 +22,24 @@ export default function services() {
     { text: 'Quote', href: '#quote' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: PAPER, padding: ['64', '48', '40', '48'], width: '100%', backgroundImage: px(1571460, 1600), overlay: rgba(28, 30, 30, 0.66) }, 'Hero');
+  const hero = b.container(root, { background: PAPER, padding: ['64', '48', '40', '48'], width: '100%', backgroundImage: P.joinery.shop(1600), overlay: rgba(28, 30, 30, 0.66) }, 'Hero');
   const top = b.columns(hero, { count: '2', gap: '40', align: 'center' });
-  const words = b.container(top, { background: PAPER, padding: ['0', '0', '0', '0'] }, 'Words');
+  const words = b.container(top, { background: TRANSPARENT, padding: ['0', '0', '0', '0'] }, 'Words');
   b.badge(words, 'Booking three weeks ahead', { background: PANEL, color: AMBER });
-  b.heading(words, 'Fitted properly, first time', { level: '1', fontSize: '44', color: INK, margin: ['12', '0', '10', '0'] });
+  b.heading(words, 'Fitted properly, first time', { level: '1', fontSize: '44', color: PAPER, margin: ['12', '0', '10', '0'] });
   b.text(words, 'Kitchens, wardrobes and stairs. One joiner, no subcontractors, and a written quote before anything is cut.', {
-    fontSize: '17', color: MUTED,
+    fontSize: '17', color: rgba(255, 255, 255, 0.82),
   });
   b.button(words, 'Get a quote', { background: AMBER, color: WHITE, buttonStyle: 'full' });
-  b.image(top, px(1571460, 900), { radius: 10, width: '100%' });
+  b.image(top, P.joinery.bench(900), { radius: 10, width: '100%', height: '400px' });
 
   const work = b.container(root, { background: PAPER, padding: ['32', '48', '40', '48'], width: '100%', anchor: 'work' }, 'Work');
-  b.heading(work, 'Before and after', { fontSize: '30', color: INK });
+  b.heading(work, 'From the bench to the wall', { fontSize: '30', color: INK });
   b.spacer(work, '20');
   const ba = b.columns(work, { count: '2', gap: '20' });
-  for (const [label, img] of [['Before', px(276724, 800)], ['After', px(1080721, 800)]]) {
+  for (const [label, img] of [['In the workshop', P.joinery.saw(800)], ['In your house', P.interiors.kitchen(800)]]) {
     const card = b.container(ba, { background: PANEL, padding: ['0', '0', '16', '0'], radius: 10 }, label);
-    b.image(card, img, { radius: 10, width: '100%' });
+    b.image(card, img, { radius: 10, width: '100%', height: '300px' });
     b.badge(card, label, { background: WHITE, color: INK });
   }
 
@@ -73,5 +74,12 @@ export default function services() {
     accent: AMBER, background: PANEL,
   });
 
-  return { name: 'Local Services — Northside Joinery', category: 'Business', thumb: px(1571460), map: b.map };
+  b.footer(root, {
+    brand: 'Northside Joinery',
+    note: 'Kitchens, wardrobes and one-off pieces. Free quotes.',
+    socials: ['Phone', 'tel:+97245000000', 'Email', 'mailto:work@northside.co'],
+    background: INK, ink: PAPER, muted: PANEL,
+  });
+
+  return { name: 'Local Services — Northside Joinery', category: 'Business', thumb: P.joinery.fitting(600), map: b.map };
 }

@@ -1,4 +1,5 @@
-import { createBuilder, px, rgba, WHITE } from './_builder.mjs';
+import { createBuilder, rgba, WHITE } from './_builder.mjs';
+import { PHOTOS as P } from './_photos.mjs';
 
 /**
  * SaaS Landing — NovaFlow (replaces template 12)
@@ -28,7 +29,7 @@ export default function saas() {
   // ── the promise ────────────────────────────────────────────────
   const hero = b.container(root, {
     background: INK, padding: ['80', '48', '64', '48'], alignItems: 'center', width: '100%',
-    backgroundImage: px(3184291, 1600), overlay: rgba(2, 6, 23, 0.82),
+    backgroundImage: P.saas.floor(1600), overlay: rgba(2, 6, 23, 0.82),
   }, 'Hero');
   b.heading(hero, 'Ship the work, not the status update', {
     level: '1', fontSize: '52', fontWeight: '800', textAlign: 'center', color: WHITE,
@@ -38,7 +39,7 @@ export default function saas() {
   });
   b.button(hero, 'Start free', { background: INDIGO, color: WHITE, buttonStyle: 'full' });
   b.spacer(hero, '12');
-  b.logoStrip(hero, [px(3184291, 200), px(3184338, 200), px(3184465, 200), px(3184418, 200)], { height: '26' });
+  b.logoStrip(hero, ['Kettle', 'Fathom', 'Northwind', 'Sable'], { height: '26', color: WHITE });
 
   // ── what it does ───────────────────────────────────────────────
   const features = b.container(root, {
@@ -106,11 +107,18 @@ export default function saas() {
     background: INDIGO, color: WHITE, buttonBackground: WHITE, buttonColor: INDIGO,
   });
 
+  b.footer(root, {
+    brand: 'NovaFlow',
+    note: 'Made by a small team. No card needed to start.',
+    socials: ['Twitter', 'https://twitter.com/', 'GitHub', 'https://github.com/'],
+    background: CARD, ink: WHITE, muted: MUTED,
+  });
+
   return {
     id: 12,
     name: 'SaaS Landing — NovaFlow',
     category: 'Landing Page',
-    thumb: px(3184291),
+    thumb: P.saas.pairing(600),
     map: b.map,
   };
 }

@@ -16,6 +16,9 @@ const rgba = (r, g, b, a = 1) => ({ r, g, b, a });
 
 const WHITE = rgba(255, 255, 255);
 
+/** For blocks that sit on a photograph and must not hide it. */
+const TRANSPARENT = rgba(0, 0, 0, 0);
+
 export function createBuilder() {
   const map = {};
   let counter = 0;
@@ -255,11 +258,45 @@ export function createBuilder() {
       width: '100%', height: 'auto', ...props,
     }, { label });
 
+  /**
+   * The closing band.
+   *
+   * Every template had a last section and then simply stopped, which reads as a
+   * page that failed to finish loading. A footer is the thing that says the page
+   * ended on purpose. Kept to one row - a name, a line of small print, and the
+   * social links - because a template's footer is scaffolding for somebody
+   * else's, not a sitemap of a site that does not exist yet.
+   */
+  const footer = (parent, { brand, note, socials = [], background, ink, muted }) => {
+    const bar = container(parent, {
+      background,
+      color: ink,
+      padding: ['40', '48', '40', '48'],
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    }, 'Footer');
+
+    const left = container(bar, {
+      background: TRANSPARENT,
+      width: 'auto',
+      alignItems: 'flex-start',
+    }, 'Footer text');
+    text(left, brand, { fontSize: '17', fontWeight: '700', color: ink }, 'Footer brand');
+    text(left, note, { fontSize: '13', color: muted, margin: ['6', '0', '0', '0'] }, 'Small print');
+
+    if (socials.length) {
+      socialLinks(bar, socials, { color: muted, size: '20', gap: '18' }, 'Footer links');
+    }
+
+    return bar;
+  };
+
   return {
     map, root, node, container, text, button, image, video, link, carousel,
     heading, columns, spacer, divider, list, quote, icon, badge, accordion,
     pricing, testimonial, stats, teamGrid, timeline, ctaBanner, logoStrip,
-    socialLinks, navbar, map_, form,
+    socialLinks, navbar, map_, form, footer,
   };
 }
 
@@ -271,4 +308,4 @@ export function navLinks(b, parent, items, colorNote) {
   }
 }
 
-export { px, rgba, WHITE };
+export { px, rgba, WHITE, TRANSPARENT };

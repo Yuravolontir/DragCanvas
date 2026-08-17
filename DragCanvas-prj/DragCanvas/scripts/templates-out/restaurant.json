@@ -48,7 +48,8 @@
       "cont02",
       "cont10",
       "cont23",
-      "cont30"
+      "cont30",
+      "cont34"
     ],
     "linkedNodes": {}
   },
@@ -196,10 +197,10 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
       },
       "color": {
         "r": 0,
@@ -268,9 +269,9 @@
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
+        "r": 251,
+        "g": 243,
+        "b": 233,
         "a": 1
       },
       "margin": [
@@ -299,10 +300,10 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
-        "a": 1
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 0.82
       },
       "margin": [
         "0",
@@ -383,10 +384,10 @@
     },
     "isCanvas": false,
     "props": {
-      "src": "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "src": "https://images.pexels.com/photos/1327393/pexels-photo-1327393.jpeg?auto=compress&cs=tinysrgb&w=900",
       "radius": 8,
       "width": "100%",
-      "height": "auto",
+      "height": "420px",
       "maxWidth": "100%"
     },
     "displayName": "Image",
@@ -1265,6 +1266,210 @@
       "displayName": "Map"
     },
     "parent": "cont30",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont34": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "48",
+        "40",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 42,
+        "g": 29,
+        "b": 19,
+        "a": 1
+      },
+      "color": {
+        "r": 251,
+        "g": 243,
+        "b": 233,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont35",
+      "soci38"
+    ],
+    "linkedNodes": {}
+  },
+  "cont35": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer text"
+    },
+    "parent": "cont34",
+    "hidden": false,
+    "nodes": [
+      "text36",
+      "text37"
+    ],
+    "linkedNodes": {}
+  },
+  "text36": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 251,
+        "g": 243,
+        "b": 233,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Casa Oliva"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Footer brand"
+    },
+    "parent": "cont35",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text37": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 243,
+        "g": 230,
+        "b": 211,
+        "a": 1
+      },
+      "margin": [
+        "6",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Dinner Tuesday to Saturday. Booking advised."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Small print"
+    },
+    "parent": "cont35",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "soci38": {
+    "type": {
+      "resolvedName": "SocialLinks"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Instagram",
+        "https://instagram.com/",
+        "Phone",
+        "tel:+97235000000"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.06
+      },
+      "color": {
+        "r": 243,
+        "g": 230,
+        "b": 211,
+        "a": 1
+      },
+      "size": "20",
+      "gap": "18"
+    },
+    "displayName": "SocialLinks",
+    "custom": {
+      "displayName": "Footer links"
+    },
+    "parent": "cont34",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

@@ -49,7 +49,8 @@
       "cont10",
       "cont26",
       "cont30",
-      "cont34"
+      "cont34",
+      "cont38"
     ],
     "linkedNodes": {}
   },
@@ -132,7 +133,7 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "backgroundImage": "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "backgroundImage": "https://images.pexels.com/photos/6502623/pexels-photo-6502623.jpeg?auto=compress&cs=tinysrgb&w=1600",
       "overlay": {
         "r": 23,
         "g": 42,
@@ -197,10 +198,10 @@
         "0"
       ],
       "background": {
-        "r": 247,
-        "g": 250,
-        "b": 251,
-        "a": 1
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
       },
       "color": {
         "r": 0,
@@ -269,9 +270,9 @@
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 23,
-        "g": 42,
-        "b": 48,
+        "r": 247,
+        "g": 250,
+        "b": 251,
         "a": 1
       },
       "margin": [
@@ -300,10 +301,10 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 94,
-        "g": 114,
-        "b": 120,
-        "a": 1
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 0.82
       },
       "margin": [
         "0",
@@ -384,10 +385,10 @@
     },
     "isCanvas": false,
     "props": {
-      "src": "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "src": "https://images.pexels.com/photos/7800666/pexels-photo-7800666.jpeg?auto=compress&cs=tinysrgb&w=900",
       "radius": 12,
       "width": "100%",
-      "height": "auto",
+      "height": "400px",
       "maxWidth": "100%"
     },
     "displayName": "Image",
@@ -1085,13 +1086,13 @@
       "people": [
         "Dr Yael Shani",
         "Dentist, 14 years",
-        "https://images.pexels.com/photos/29057425/pexels-photo-29057425.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "https://images.pexels.com/photos/30004325/pexels-photo-30004325.jpeg?auto=compress&cs=tinysrgb&w=400",
         "Dr Amit Peled",
         "Dentist, 9 years",
-        "https://images.pexels.com/photos/37233404/pexels-photo-37233404.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "https://images.pexels.com/photos/10816007/pexels-photo-10816007.jpeg?auto=compress&cs=tinysrgb&w=400",
         "Liat Rom",
         "Hygienist",
-        "https://images.pexels.com/photos/16666883/pexels-photo-16666883.jpeg?auto=compress&cs=tinysrgb&w=400"
+        "https://images.pexels.com/photos/29852895/pexels-photo-29852895.jpeg?auto=compress&cs=tinysrgb&w=400"
       ],
       "columns": "3",
       "accent": {
@@ -1376,6 +1377,210 @@
       "displayName": "Map"
     },
     "parent": "cont34",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont38": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "48",
+        "40",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 23,
+        "g": 42,
+        "b": 48,
+        "a": 1
+      },
+      "color": {
+        "r": 247,
+        "g": 250,
+        "b": 251,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont39",
+      "soci42"
+    ],
+    "linkedNodes": {}
+  },
+  "cont39": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer text"
+    },
+    "parent": "cont38",
+    "hidden": false,
+    "nodes": [
+      "text40",
+      "text41"
+    ],
+    "linkedNodes": {}
+  },
+  "text40": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 247,
+        "g": 250,
+        "b": 251,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Meridian Dental"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Footer brand"
+    },
+    "parent": "cont39",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text41": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 232,
+        "g": 242,
+        "b": 245,
+        "a": 1
+      },
+      "margin": [
+        "6",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Emergencies seen the same day. Most insurers accepted."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Small print"
+    },
+    "parent": "cont39",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "soci42": {
+    "type": {
+      "resolvedName": "SocialLinks"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Phone",
+        "tel:+97239000000",
+        "Email",
+        "mailto:clinic@meridian.co"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.06
+      },
+      "color": {
+        "r": 232,
+        "g": 242,
+        "b": 245,
+        "a": 1
+      },
+      "size": "20",
+      "gap": "18"
+    },
+    "displayName": "SocialLinks",
+    "custom": {
+      "displayName": "Footer links"
+    },
+    "parent": "cont38",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

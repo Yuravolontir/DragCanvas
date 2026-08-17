@@ -1,4 +1,5 @@
-import { createBuilder, px, rgba, WHITE } from './_builder.mjs';
+import { createBuilder, rgba, WHITE } from './_builder.mjs';
+import { PHOTOS as P } from './_photos.mjs';
 
 /**
  * Travel Blog — Wanderlog (replaces template 16)
@@ -21,18 +22,18 @@ export default function travel() {
     { text: 'Subscribe', href: '#subscribe' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: PAPER, padding: ['72', '48', '40', '48'], width: '100%', backgroundImage: px(1271619, 1600), overlay: rgba(38, 34, 30, 0.55) }, 'Hero');
-  b.heading(hero, 'Slow routes, written down', { level: '1', fontSize: '50', color: INK });
+  const hero = b.container(root, { background: PAPER, padding: ['72', '48', '40', '48'], width: '100%', backgroundImage: P.travel.ridge(1600), overlay: rgba(38, 34, 30, 0.55) }, 'Hero');
+  b.heading(hero, 'Slow routes, written down', { level: '1', fontSize: '50', color: PAPER });
   b.text(hero, 'Trains, ferries and long walks. Notes from the places in between the places people go.', {
-    fontSize: '18', color: MUTED, margin: ['14', '0', '0', '0'],
+    fontSize: '18', color: rgba(255, 255, 255, 0.82), margin: ['14', '0', '0', '0'],
   });
 
   const recent = b.container(root, { background: PAPER, padding: ['24', '48', '48', '48'], width: '100%', anchor: 'recent' }, 'Recent');
   b.carousel(recent, {
-    width: '100%', height: '420px',
-    src1: px(1271619, 1000), heading1: 'The long way to Lisbon', label1: 'Portugal', p1: 'Four days by rail when the flight was two hours.',
-    src2: px(3184291, 1000), heading2: 'Winter in the Dolomites', label2: 'Italy', p2: 'Empty huts, cold mornings, better coffee than expected.',
-    src3: px(2261477, 1000), heading3: 'Down the Danube', label3: 'Hungary', p3: 'A ferry, a bicycle, and a week without a plan.',
+    width: '100%', height: '420px', accent: SEA,
+    src1: P.travel.window(1000), heading1: 'The long way to Lisbon', label1: 'Portugal', p1: 'Four days by rail when the flight was two hours.',
+    src2: P.travel.mountains(1000), heading2: 'Winter in the Dolomites', label2: 'Italy', p2: 'Empty huts, cold mornings, better coffee than expected.',
+    src3: P.travel.volcano(1000), heading3: 'Down the Danube', label3: 'Hungary', p3: 'A ferry, a bicycle, and a week without a plan.',
   });
 
   const about = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'about' }, 'About');
@@ -58,5 +59,12 @@ export default function travel() {
   b.spacer(sub, '20');
   b.socialLinks(sub, ['Instagram', 'https://instagram.com/', 'RSS', 'https://example.com/feed'], { color: INK });
 
-  return { id: 16, name: 'Travel Blog — Wanderlog', category: 'Landing Page', thumb: px(1271619), map: b.map };
+  b.footer(root, {
+    brand: 'Wanderlog',
+    note: 'One long trip a month, written up slowly.',
+    socials: ['Instagram', 'https://instagram.com/', 'RSS', 'https://example.com/feed'],
+    background: INK, ink: PAPER, muted: PANEL,
+  });
+
+  return { id: 16, name: 'Travel Blog — Wanderlog', category: 'Landing Page', thumb: P.travel.alpine(600), map: b.map };
 }

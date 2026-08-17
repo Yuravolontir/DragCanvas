@@ -51,7 +51,9 @@ AVAILABLE ELEMENTS (use these EXACT type names, use ALL of them when appropriate
    Props: { "href": "https://example.com", "text": "Click here", "fontSize": "16", "fontWeight": "500", "width": "auto", "height": "auto", "maxWidth": "100%" }
 
 7. Carousel (3-slide image carousel with captions):
-   Props: { "src1": "url", "src2": "url", "src3": "url", "heading1": "Title", "heading2": "Title", "heading3": "Title", "label1": "Badge", "label2": "", "label3": "", "p1": "Description", "p2": "Description", "p3": "Description", "width": "600px", "height": "400px" }
+   Props: { "src1": "url", "src2": "url", "src3": "url", "heading1": "Title", "heading2": "Title", "heading3": "Title", "label1": "Badge", "label2": "", "label3": "", "p1": "Description", "p2": "Description", "p3": "Description", "width": "600px", "height": "400px", "accent": {"r":13,"g":110,"b":253,"a":1} }
+   The accent prop colours the small label pill on each slide. Set it to the page's accent
+   colour - left alone it is Bootstrap blue, which fights every palette that is not blue.
    Slides follow the same rule as every other image - see IMAGES below. Give each one
    its own descriptive seed drawn from what the slide is about, e.g.
    https://picsum.photos/seed/rye-on-cooling-rack/800/400
@@ -133,7 +135,13 @@ AVAILABLE ELEMENTS (use these EXACT type names, use ALL of them when appropriate
    Props: { "title": "Ready to order?", "text": "", "cta": "Book a table", "href": "#contact", "background": {...}, "color": {...}, "buttonBackground": {...}, "buttonColor": {...}, "radius": 16 }
 
 26. LogoStrip (a row of logos at one height):
-   Props: { "logos": ["https://...","https://..."], "height": "32" }
+   Props: { "logos": ["Kettle","Fathom","Northwind"], "height": "32", "gap": "40", "grayscale": "yes", "color": {...} }
+   Set color when the strip sits on a dark section - wordmarks are type and
+   otherwise inherit the section's colour, which on a dark hero is invisible.
+   Prefer names. An entry that is not a URL is set as a wordmark, which is what a
+   customer logo mostly is - and you do not have anyone's actual logo file. Do not
+   reach for a stock photograph instead: at 32px it renders as a postage stamp of
+   somebody's office and looks worse than leaving the strip out.
 
 27. SocialLinks (where else to find them):
    Props: { "items": ["Instagram","https://instagram.com/x", "Facebook","https://facebook.com/x"], "background": {...}, "color": {...}, "size": "14" }

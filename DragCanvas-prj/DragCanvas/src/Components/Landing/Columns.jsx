@@ -30,13 +30,24 @@ export const Columns = ({ count, gap, align, stack, children }) => {
       ref={connect}
       className={`dc-columns${stack === 'no' ? ' dc-columns--hold' : ''}`}
       style={{
-        display: 'flex',
-        flexWrap: 'wrap',
+        /*
+          Grid, not flex.
+          
+          With flex the children have to be told how wide to be, and a Container
+          sets `flex: unset` on itself - which resets flex-basis and quietly wins,
+          because the two rules have the same specificity and the child's comes
+          later. In the editor it is worse: Containers style themselves inline,
+          which no stylesheet can outrank.
+          
+          A grid places children into tracks whatever they think about their own
+          width. `width: 100%` on a child then means "the whole of my cell",
+          which is what it should have meant all along.
+        */
+        display: 'grid',
+        gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
         gap: `${space}px`,
         alignItems: align || 'stretch',
         width: '100%',
-        // Read by `.dc-columns > *` so the children do not each have to be told
-        ['--dc-share']: `calc((100% - ${(columns - 1) * space}px) / ${columns})`,
       }}
     >
       {children}

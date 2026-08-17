@@ -48,7 +48,8 @@
       "cont02",
       "cont10",
       "cont20",
-      "cont26"
+      "cont26",
+      "cont30"
     ],
     "linkedNodes": {}
   },
@@ -131,7 +132,7 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "backgroundImage": "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "backgroundImage": "https://images.pexels.com/photos/6790066/pexels-photo-6790066.jpeg?auto=compress&cs=tinysrgb&w=1600",
       "overlay": {
         "r": 28,
         "g": 30,
@@ -196,10 +197,10 @@
         "0"
       ],
       "background": {
-        "r": 250,
-        "g": 250,
-        "b": 249,
-        "a": 1
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
       },
       "color": {
         "r": 0,
@@ -268,9 +269,9 @@
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 28,
-        "g": 30,
-        "b": 30,
+        "r": 250,
+        "g": 250,
+        "b": 249,
         "a": 1
       },
       "margin": [
@@ -299,10 +300,10 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 104,
-        "g": 108,
-        "b": 108,
-        "a": 1
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 0.82
       },
       "margin": [
         "0",
@@ -383,10 +384,10 @@
     },
     "isCanvas": false,
     "props": {
-      "src": "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "src": "https://images.pexels.com/photos/313776/pexels-photo-313776.jpeg?auto=compress&cs=tinysrgb&w=900",
       "radius": 10,
       "width": "100%",
-      "height": "auto",
+      "height": "400px",
       "maxWidth": "100%"
     },
     "displayName": "Image",
@@ -457,7 +458,7 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "Before and after",
+      "text": "From the bench to the wall",
       "level": "2",
       "fontSize": "30",
       "fontWeight": "700",
@@ -565,7 +566,7 @@
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Before"
+      "displayName": "In the workshop"
     },
     "parent": "colu13",
     "hidden": false,
@@ -581,10 +582,10 @@
     },
     "isCanvas": false,
     "props": {
-      "src": "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "src": "https://images.pexels.com/photos/5711703/pexels-photo-5711703.jpeg?auto=compress&cs=tinysrgb&w=800",
       "radius": 10,
       "width": "100%",
-      "height": "auto",
+      "height": "300px",
       "maxWidth": "100%"
     },
     "displayName": "Image",
@@ -602,7 +603,7 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "Before",
+      "text": "In the workshop",
       "background": {
         "r": 255,
         "g": 255,
@@ -667,7 +668,7 @@
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "After"
+      "displayName": "In your house"
     },
     "parent": "colu13",
     "hidden": false,
@@ -686,7 +687,7 @@
       "src": "https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=800",
       "radius": 10,
       "width": "100%",
-      "height": "auto",
+      "height": "300px",
       "maxWidth": "100%"
     },
     "displayName": "Image",
@@ -704,7 +705,7 @@
     },
     "isCanvas": false,
     "props": {
-      "text": "After",
+      "text": "In your house",
       "background": {
         "r": 255,
         "g": 255,
@@ -1095,6 +1096,210 @@
       "displayName": "Form"
     },
     "parent": "cont26",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont30": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "48",
+        "40",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 28,
+        "g": 30,
+        "b": 30,
+        "a": 1
+      },
+      "color": {
+        "r": 250,
+        "g": 250,
+        "b": 249,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont31",
+      "soci34"
+    ],
+    "linkedNodes": {}
+  },
+  "cont31": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer text"
+    },
+    "parent": "cont30",
+    "hidden": false,
+    "nodes": [
+      "text32",
+      "text33"
+    ],
+    "linkedNodes": {}
+  },
+  "text32": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 250,
+        "g": 250,
+        "b": 249,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Northside Joinery"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Footer brand"
+    },
+    "parent": "cont31",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text33": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 240,
+        "g": 240,
+        "b": 238,
+        "a": 1
+      },
+      "margin": [
+        "6",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Kitchens, wardrobes and one-off pieces. Free quotes."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Small print"
+    },
+    "parent": "cont31",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "soci34": {
+    "type": {
+      "resolvedName": "SocialLinks"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Phone",
+        "tel:+97245000000",
+        "Email",
+        "mailto:work@northside.co"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.06
+      },
+      "color": {
+        "r": 240,
+        "g": 240,
+        "b": 238,
+        "a": 1
+      },
+      "size": "20",
+      "gap": "18"
+    },
+    "displayName": "SocialLinks",
+    "custom": {
+      "displayName": "Footer links"
+    },
+    "parent": "cont30",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

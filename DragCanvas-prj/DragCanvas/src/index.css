@@ -353,20 +353,12 @@ body {
 /*
  * ── Columns ──────────────────────────────────────────────────
  *
- * The children of a Columns element are ordinary elements that know nothing
- * about being in a column, so their width is set from here rather than by each
- * of them. `--dc-share` is written by the component from its count and gap.
- *
- * Stacking on a narrow screen is the default: percentage columns that keep their
- * width on a phone are the most common way a built page breaks.
+ * The component lays its children out with a grid, so their widths are the
+ * grid's business and nothing here has to fight a child's own styles. All that
+ * is left is the stack on a narrow screen.
  */
-.dc-columns > * {
-  flex: 0 1 var(--dc-share, 100%);
-  min-width: 0;
-}
-
 @media (max-width: 768px) {
-  .dc-columns:not(.dc-columns--hold) > * {
-    flex-basis: 100%;
+  .dc-columns:not(.dc-columns--hold) {
+    grid-template-columns: minmax(0, 1fr) !important;
   }
 }

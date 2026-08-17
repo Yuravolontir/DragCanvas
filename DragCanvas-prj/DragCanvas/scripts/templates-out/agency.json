@@ -48,7 +48,8 @@
       "cont02",
       "cont06",
       "cont18",
-      "cont24"
+      "cont24",
+      "cont28"
     ],
     "linkedNodes": {}
   },
@@ -131,7 +132,7 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "backgroundImage": "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "backgroundImage": "https://images.pexels.com/photos/2582933/pexels-photo-2582933.jpeg?auto=compress&cs=tinysrgb&w=1600",
       "overlay": {
         "r": 20,
         "g": 20,
@@ -164,9 +165,9 @@
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
+        "r": 250,
+        "g": 249,
+        "b": 248,
         "a": 1
       },
       "margin": [
@@ -195,10 +196,10 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 105,
-        "g": 103,
-        "b": 108,
-        "a": 1
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 0.82
       },
       "margin": [
         "14",
@@ -225,15 +226,21 @@
     "isCanvas": false,
     "props": {
       "logos": [
-        "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=200",
-        "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=200",
-        "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=200",
-        "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=200",
-        "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=200"
+        "Kettle",
+        "Fathom",
+        "Monday",
+        "Northwind",
+        "Sable"
       ],
       "height": "28",
       "gap": "40",
-      "grayscale": "yes"
+      "grayscale": "yes",
+      "color": {
+        "r": 250,
+        "g": 249,
+        "b": 248,
+        "a": 1
+      }
     },
     "displayName": "LogoStrip",
     "custom": {
@@ -428,10 +435,10 @@
     },
     "isCanvas": false,
     "props": {
-      "src": "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "src": "https://images.pexels.com/photos/4348193/pexels-photo-4348193.jpeg?auto=compress&cs=tinysrgb&w=800",
       "radius": 12,
       "width": "100%",
-      "height": "auto",
+      "height": "260px",
       "maxWidth": "100%"
     },
     "displayName": "Image",
@@ -567,10 +574,10 @@
     },
     "isCanvas": false,
     "props": {
-      "src": "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "src": "https://images.pexels.com/photos/1714202/pexels-photo-1714202.jpeg?auto=compress&cs=tinysrgb&w=800",
       "radius": 12,
       "width": "100%",
-      "height": "auto",
+      "height": "260px",
       "maxWidth": "100%"
     },
     "displayName": "Image",
@@ -1013,6 +1020,212 @@
       "displayName": "Form"
     },
     "parent": "cont24",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont28": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "48",
+        "40",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 20,
+        "g": 20,
+        "b": 22,
+        "a": 1
+      },
+      "color": {
+        "r": 250,
+        "g": 249,
+        "b": 248,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont29",
+      "soci32"
+    ],
+    "linkedNodes": {}
+  },
+  "cont29": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer text"
+    },
+    "parent": "cont28",
+    "hidden": false,
+    "nodes": [
+      "text30",
+      "text31"
+    ],
+    "linkedNodes": {}
+  },
+  "text30": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 250,
+        "g": 249,
+        "b": 248,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "FIELD"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Footer brand"
+    },
+    "parent": "cont29",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text31": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 105,
+        "g": 103,
+        "b": 108,
+        "a": 1
+      },
+      "margin": [
+        "6",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Design and art direction. Tel Aviv and remote."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Small print"
+    },
+    "parent": "cont29",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "soci32": {
+    "type": {
+      "resolvedName": "SocialLinks"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Instagram",
+        "https://instagram.com/",
+        "Behance",
+        "https://behance.net/",
+        "Email",
+        "mailto:studio@field.co"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.06
+      },
+      "color": {
+        "r": 105,
+        "g": 103,
+        "b": 108,
+        "a": 1
+      },
+      "size": "20",
+      "gap": "18"
+    },
+    "displayName": "SocialLinks",
+    "custom": {
+      "displayName": "Footer links"
+    },
+    "parent": "cont28",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

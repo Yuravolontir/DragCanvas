@@ -6,6 +6,13 @@ import { ToolbarItem } from './Toolbar/ToolbarItem';
   export const CarouselSettings = () => {
     return (
       <React.Fragment>
+        <ToolbarSection title="Appearance" props={['accent']} summary={({ accent }) => (
+          <div className="fw-bold" style={{ color: accent && `rgba(${accent.r}, ${accent.g}, ${accent.b}, ${accent.a ?? 1})` }}>
+            Label colour
+          </div>
+        )}>
+          <ToolbarItem full={true} propKey="accent" type="color" label="Slide label" />
+        </ToolbarSection>
         <ToolbarSection title="Slide 1">
           <ToolbarItem full={true} propKey="src1" type="text"
   label="Image URL" />

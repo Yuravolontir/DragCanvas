@@ -1,4 +1,5 @@
-import { createBuilder, px, rgba, WHITE } from './_builder.mjs';
+import { createBuilder, rgba, WHITE } from './_builder.mjs';
+import { PHOTOS as P } from './_photos.mjs';
 
 /**
  * Fitness Studio — FORGE (replaces template 15)
@@ -22,14 +23,14 @@ export default function fitness() {
     { text: 'Membership', href: '#membership' },
   ], { variant: 'dark', sticky: true });
 
-  const hero = b.container(root, { background: INK, padding: ['80', '48', '56', '48'], width: '100%', backgroundImage: px(6628962, 1600), overlay: rgba(16, 18, 17, 0.7) }, 'Hero');
+  const hero = b.container(root, { background: INK, padding: ['80', '48', '56', '48'], width: '100%', backgroundImage: P.fitness.deadlift(1600), overlay: rgba(16, 18, 17, 0.7) }, 'Hero');
   b.heading(hero, 'Show up. Lift. Leave.', { level: '1', fontSize: '56', fontWeight: '800', color: BONE });
   b.text(hero, 'Barbell club and conditioning, five in the morning to ten at night. No mirrors, no contracts.', {
-    fontSize: '18', color: MUTED, margin: ['14', '0', '24', '0'],
+    fontSize: '18', color: rgba(255, 255, 255, 0.82), margin: ['14', '0', '24', '0'],
   });
-  b.button(hero, 'First class free', { background: LIME, color: INK, buttonStyle: 'full' });
+  b.button(hero, 'First class free', { background: LIME, color: BONE, buttonStyle: 'full' });
   b.spacer(hero, '32');
-  b.stats(hero, ['5am', 'first class', '340', 'members', '12', 'coaches'], { accent: LIME, color: MUTED });
+  b.stats(hero, ['5am', 'first class', '340', 'members', '12', 'coaches'], { accent: LIME, color: rgba(255, 255, 255, 0.82) });
 
   const when = b.container(root, { background: PANEL, padding: ['56', '48', '56', '48'], width: '100%', anchor: 'timetable' }, 'Timetable');
   b.heading(when, 'A day here', { fontSize: '34', color: BONE });
@@ -45,9 +46,9 @@ export default function fitness() {
   b.heading(who, 'Who is on the floor', { fontSize: '34', color: BONE });
   b.spacer(who, '24');
   b.teamGrid(who, [
-    'Adi Rom', 'Strength', px(6628962, 400),
-    'Yonatan Bar', 'Olympic lifting', px(4464780, 400),
-    'Shira Peled', 'Conditioning', px(32610333, 400),
+    'Adi Rom', 'Strength', P.faces.warm(400),
+    'Yonatan Bar', 'Olympic lifting', P.faces.violet(400),
+    'Shira Peled', 'Conditioning', P.faces.teal(400),
   ], { columns: '3', accent: PANEL, color: BONE });
 
   const cost = b.container(root, { background: PANEL, padding: ['56', '48', '56', '48'], width: '100%', anchor: 'membership', alignItems: 'center' }, 'Membership');
@@ -67,5 +68,12 @@ export default function fitness() {
     background: LIME, color: INK, buttonBackground: INK, buttonColor: LIME,
   });
 
-  return { id: 15, name: 'Fitness Studio — FORGE', category: 'Business', thumb: px(2261477), map: b.map };
+  b.footer(root, {
+    brand: 'FORGE',
+    note: 'Open 05:30 to 22:00. First session is free.',
+    socials: ['Instagram', 'https://instagram.com/', 'Phone', 'tel:+97230000000'],
+    background: PANEL, ink: BONE, muted: MUTED,
+  });
+
+  return { id: 15, name: 'Fitness Studio — FORGE', category: 'Business', thumb: P.fitness.rack(600), map: b.map };
 }

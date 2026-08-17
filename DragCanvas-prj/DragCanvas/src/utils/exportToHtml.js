@@ -266,21 +266,23 @@ const converters = {
     const columns = Number(props.count) || 2;
     const gap = Number(props.gap) || 24;
 
+    // Grid rather than flex: a Container emits `flex: unset`, which resets
+    // flex-basis and wins on order, so flex children of a Columns were never
+    // sized at all. Grid tracks do not care what a child says about its width.
     cssRules.push(`.${className} {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(${columns}, minmax(0, 1fr));
   gap: ${gap}px;
   align-items: ${props.align || 'stretch'};
   width: 100%;
 }
 
 .${className} > * {
-  flex: 0 1 calc((100% - ${(columns - 1) * gap}px) / ${columns});
   min-width: 0;
 }`);
 
     if (props.stack !== 'no') {
-      mobileRules.push(`  .${className} > * {\n    flex-basis: 100%;\n  }`);
+      mobileRules.push(`  .${className} {\n    grid-template-columns: minmax(0, 1fr);\n  }`);
     }
 
     let childrenHtml = '';
@@ -810,7 +812,7 @@ ${items}
   justify-content: center;
   gap: ${Number(props.gap) || 40}px;
   width: 100%;
-}
+${rgbaToString(props.color) ? `  color: ${rgbaToString(props.color)};\n` : ''}}
 
 .${className} img {
   height: ${Number(props.height) || 32}px;
@@ -819,10 +821,25 @@ ${items}
   ${props.grayscale === 'no' ? '' : 'filter: grayscale(1);\n  opacity: 0.65;\n  transition: filter 200ms ease, opacity 200ms ease;'}
 }
 
+.${className} span {
+  font-size: ${Math.round((Number(props.height) || 32) * 0.62)}px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  ${props.grayscale === 'no' ? '' : 'opacity: 0.75;\n  transition: opacity 200ms ease;'}
+}
+
+${props.grayscale === 'no' ? '' : `.${className} span:hover {\n  opacity: 1;\n}`}
+
 ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n  opacity: 1;\n}`}`);
 
+    // A line that is not a URL is a name, and is set as a wordmark. See the
+    // LogoStrip component for why that is the more useful reading.
     const html = logos
-      .map(src => `      <img src="${escapeAttribute(resolveImageSrc(src))}" alt="">`)
+      .map(entry => (/^(https?:\/\/|data:|\/)/i.test(String(entry).trim())
+        ? `      <img src="${escapeAttribute(resolveImageSrc(entry))}" alt="">`
+        : `      <span>${escapeHtmlText(String(entry))}</span>`))
       .join('\n');
 
     return `    <div class="${className}">\n${html}\n    </div>\n`;
@@ -1047,7 +1064,7 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
   font-size: 12px;
   font-weight: 600;
   border-radius: 999px;
-  background: #0d6efd;
+  background: ${rgbaToString(props.accent) || '#0d6efd'};
 }`);
 
     let slides = '';

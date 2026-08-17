@@ -1,4 +1,5 @@
-import { createBuilder, px, rgba, WHITE } from './_builder.mjs';
+import { createBuilder, rgba, WHITE } from './_builder.mjs';
+import { PHOTOS as P } from './_photos.mjs';
 
 /** Coffee roastery — a subscription, and the story of where the beans came from. */
 export default function coffee() {
@@ -16,10 +17,10 @@ export default function coffee() {
     { text: 'Visit', href: '#visit' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: PAPER, padding: ['64', '48', '40', '48'], width: '100%', backgroundImage: px(302899, 1600), overlay: rgba(45, 32, 24, 0.62) }, 'Hero');
-  b.heading(hero, 'Roasted Tuesday, with you Thursday', { level: '1', fontSize: '46', color: INK });
+  const hero = b.container(root, { background: PAPER, padding: ['64', '48', '40', '48'], width: '100%', backgroundImage: P.coffee.counter(1600), overlay: rgba(45, 32, 24, 0.62) }, 'Hero');
+  b.heading(hero, 'Roasted Tuesday, with you Thursday', { level: '1', fontSize: '46', color: PAPER });
   b.text(hero, 'One roastery, four farms, and a delivery that arrives before the last bag runs out.', {
-    fontSize: '17', color: MUTED, margin: ['12', '0', '24', '0'],
+    fontSize: '17', color: rgba(255, 255, 255, 0.82), margin: ['12', '0', '24', '0'],
   });
   b.button(hero, 'Start a subscription', { background: RUST, color: WHITE, buttonStyle: 'full' });
 
@@ -53,5 +54,12 @@ export default function coffee() {
   b.spacer(visit, '16');
   b.map_(visit, { lat: 32.0553, lng: 34.7595, zoom: 15, label: 'Harbour Roasters' });
 
-  return { name: 'Coffee Roastery — Harbour', category: 'Business', thumb: px(302899), map: b.map };
+  b.footer(root, {
+    brand: 'Harbour Roastery',
+    note: 'Roasted on Tuesdays, shipped on Wednesdays.',
+    socials: ['Instagram', 'https://instagram.com/', 'Email', 'mailto:hello@harbour.coffee'],
+    background: INK, ink: PAPER, muted: PANEL,
+  });
+
+  return { name: 'Coffee Roastery — Harbour', category: 'Business', thumb: P.coffee.pour(600), map: b.map };
 }

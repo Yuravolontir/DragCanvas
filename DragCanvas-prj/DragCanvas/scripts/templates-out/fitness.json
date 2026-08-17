@@ -49,7 +49,8 @@
       "cont08",
       "cont12",
       "cont16",
-      "cont20"
+      "cont20",
+      "cont22"
     ],
     "linkedNodes": {}
   },
@@ -132,7 +133,7 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "backgroundImage": "https://images.pexels.com/photos/6628962/pexels-photo-6628962.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "backgroundImage": "https://images.pexels.com/photos/2261477/pexels-photo-2261477.jpeg?auto=compress&cs=tinysrgb&w=1600",
       "overlay": {
         "r": 16,
         "g": 18,
@@ -198,10 +199,10 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 141,
-        "g": 150,
-        "b": 134,
-        "a": 1
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 0.82
       },
       "margin": [
         "14",
@@ -234,9 +235,9 @@
         "a": 1
       },
       "color": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
+        "r": 244,
+        "g": 246,
+        "b": 242,
         "a": 1
       },
       "buttonStyle": "full",
@@ -315,10 +316,10 @@
         "a": 1
       },
       "color": {
-        "r": 141,
-        "g": 150,
-        "b": 134,
-        "a": 1
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 0.82
       }
     },
     "displayName": "Stats",
@@ -587,13 +588,13 @@
       "people": [
         "Adi Rom",
         "Strength",
-        "https://images.pexels.com/photos/6628962/pexels-photo-6628962.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "https://images.pexels.com/photos/12311572/pexels-photo-12311572.jpeg?auto=compress&cs=tinysrgb&w=400",
         "Yonatan Bar",
         "Olympic lifting",
-        "https://images.pexels.com/photos/4464780/pexels-photo-4464780.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "https://images.pexels.com/photos/9092311/pexels-photo-9092311.jpeg?auto=compress&cs=tinysrgb&w=400",
         "Shira Peled",
         "Conditioning",
-        "https://images.pexels.com/photos/32610333/pexels-photo-32610333.jpeg?auto=compress&cs=tinysrgb&w=400"
+        "https://images.pexels.com/photos/26872232/pexels-photo-26872232.jpeg?auto=compress&cs=tinysrgb&w=400"
       ],
       "columns": "3",
       "accent": {
@@ -864,6 +865,210 @@
       "displayName": "CTABanner"
     },
     "parent": "cont20",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont22": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "48",
+        "40",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 25,
+        "g": 29,
+        "b": 26,
+        "a": 1
+      },
+      "color": {
+        "r": 244,
+        "g": 246,
+        "b": 242,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont23",
+      "soci26"
+    ],
+    "linkedNodes": {}
+  },
+  "cont23": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer text"
+    },
+    "parent": "cont22",
+    "hidden": false,
+    "nodes": [
+      "text24",
+      "text25"
+    ],
+    "linkedNodes": {}
+  },
+  "text24": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 244,
+        "g": 246,
+        "b": 242,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "FORGE"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Footer brand"
+    },
+    "parent": "cont23",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text25": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 141,
+        "g": 150,
+        "b": 134,
+        "a": 1
+      },
+      "margin": [
+        "6",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Open 05:30 to 22:00. First session is free."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Small print"
+    },
+    "parent": "cont23",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "soci26": {
+    "type": {
+      "resolvedName": "SocialLinks"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Instagram",
+        "https://instagram.com/",
+        "Phone",
+        "tel:+97230000000"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.06
+      },
+      "color": {
+        "r": 141,
+        "g": 150,
+        "b": 134,
+        "a": 1
+      },
+      "size": "20",
+      "gap": "18"
+    },
+    "displayName": "SocialLinks",
+    "custom": {
+      "displayName": "Footer links"
+    },
+    "parent": "cont22",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

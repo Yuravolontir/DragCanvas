@@ -1,4 +1,5 @@
-import { createBuilder, px, rgba, WHITE } from './_builder.mjs';
+import { createBuilder, rgba, WHITE } from './_builder.mjs';
+import { PHOTOS as P } from './_photos.mjs';
 
 /** Developer portfolio — projects, what they know, and how to reach them. Sparse on purpose. */
 export default function developer() {
@@ -16,10 +17,10 @@ export default function developer() {
     { text: 'Contact', href: '#contact' },
   ], { variant: 'dark' });
 
-  const hero = b.container(root, { background: INK, padding: ['80', '48', '48', '48'], width: '100%', backgroundImage: px(1181671, 1600), overlay: rgba(14, 16, 20, 0.8) }, 'Hero');
+  const hero = b.container(root, { background: INK, padding: ['80', '48', '48', '48'], width: '100%', backgroundImage: P.developer.editor(1600), overlay: rgba(14, 16, 20, 0.8) }, 'Hero');
   b.heading(hero, 'I build the boring parts properly', { level: '1', fontSize: '48', color: BONE });
   b.text(hero, 'Backend and infrastructure, mostly Node and Postgres. Ten years, four companies, one very long migration.', {
-    fontSize: '17', color: MUTED, margin: ['14', '0', '0', '0'],
+    fontSize: '17', color: rgba(255, 255, 255, 0.82), margin: ['14', '0', '0', '0'],
   });
   b.spacer(hero, '24');
   b.socialLinks(hero, ['GitHub', 'https://github.com/', 'LinkedIn', 'https://linkedin.com/', 'Email', 'mailto:hi@omer.dev'], {
@@ -62,5 +63,12 @@ export default function developer() {
     background: CYAN, color: INK, buttonBackground: INK, buttonColor: CYAN,
   });
 
-  return { name: 'Developer Portfolio — omer.dev', category: 'Portfolio', thumb: px(1181671), map: b.map };
+  b.footer(root, {
+    brand: 'omer.dev',
+    note: 'Backend and infrastructure. Open to contract work.',
+    socials: ['GitHub', 'https://github.com/', 'LinkedIn', 'https://linkedin.com/'],
+    background: PANEL, ink: BONE, muted: MUTED,
+  });
+
+  return { name: 'Developer Portfolio — omer.dev', category: 'Portfolio', thumb: P.developer.terminal(600), map: b.map };
 }

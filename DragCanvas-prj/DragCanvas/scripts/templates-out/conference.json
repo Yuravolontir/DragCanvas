@@ -51,7 +51,8 @@
       "spac15",
       "cont16",
       "cont18",
-      "cont22"
+      "cont22",
+      "cont26"
     ],
     "linkedNodes": {}
   },
@@ -134,7 +135,7 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "backgroundImage": "https://images.pexels.com/photos/9275222/pexels-photo-9275222.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "backgroundImage": "https://images.pexels.com/photos/29708258/pexels-photo-29708258.jpeg?auto=compress&cs=tinysrgb&w=1600",
       "overlay": {
         "r": 15,
         "g": 27,
@@ -229,10 +230,10 @@
       "textAlign": "center",
       "fontWeight": "500",
       "color": {
-        "r": 147,
-        "g": 167,
-        "b": 200,
-        "a": 1
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 0.82
       },
       "margin": [
         "0",
@@ -564,16 +565,16 @@
       "people": [
         "Noa Bar",
         "Interface, Monday",
-        "https://images.pexels.com/photos/29057425/pexels-photo-29057425.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "https://images.pexels.com/photos/31869537/pexels-photo-31869537.jpeg?auto=compress&cs=tinysrgb&w=400",
         "Ilan Weiss",
         "Systems, Kettle",
-        "https://images.pexels.com/photos/37233404/pexels-photo-37233404.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "https://images.pexels.com/photos/18032391/pexels-photo-18032391.jpeg?auto=compress&cs=tinysrgb&w=400",
         "Dana Levi",
         "Craft, independent",
-        "https://images.pexels.com/photos/16666883/pexels-photo-16666883.jpeg?auto=compress&cs=tinysrgb&w=400",
+        "https://images.pexels.com/photos/29852852/pexels-photo-29852852.jpeg?auto=compress&cs=tinysrgb&w=400",
         "Omer Katz",
         "Research, Fathom",
-        "https://images.pexels.com/photos/9275222/pexels-photo-9275222.jpeg?auto=compress&cs=tinysrgb&w=400"
+        "https://images.pexels.com/photos/29995581/pexels-photo-29995581.jpeg?auto=compress&cs=tinysrgb&w=400"
       ],
       "columns": "4",
       "accent": {
@@ -977,6 +978,210 @@
       "displayName": "Map"
     },
     "parent": "cont22",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont26": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "48",
+        "40",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 22,
+        "g": 38,
+        "b": 74,
+        "a": 1
+      },
+      "color": {
+        "r": 238,
+        "g": 243,
+        "b": 251,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont27",
+      "soci30"
+    ],
+    "linkedNodes": {}
+  },
+  "cont27": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer text"
+    },
+    "parent": "cont26",
+    "hidden": false,
+    "nodes": [
+      "text28",
+      "text29"
+    ],
+    "linkedNodes": {}
+  },
+  "text28": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 238,
+        "g": 243,
+        "b": 251,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Interface 26"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Footer brand"
+    },
+    "parent": "cont27",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text29": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 147,
+        "g": 167,
+        "b": 200,
+        "a": 1
+      },
+      "margin": [
+        "6",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "14-15 March, Tel Aviv Port. Tickets include both days."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Small print"
+    },
+    "parent": "cont27",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "soci30": {
+    "type": {
+      "resolvedName": "SocialLinks"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Twitter",
+        "https://twitter.com/",
+        "Email",
+        "mailto:hello@interface.events"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.06
+      },
+      "color": {
+        "r": 147,
+        "g": 167,
+        "b": 200,
+        "a": 1
+      },
+      "size": "20",
+      "gap": "18"
+    },
+    "displayName": "SocialLinks",
+    "custom": {
+      "displayName": "Footer links"
+    },
+    "parent": "cont26",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

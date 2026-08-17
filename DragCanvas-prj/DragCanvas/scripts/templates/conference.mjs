@@ -1,4 +1,5 @@
-import { createBuilder, px, rgba, WHITE } from './_builder.mjs';
+import { createBuilder, rgba, WHITE } from './_builder.mjs';
+import { PHOTOS as P } from './_photos.mjs';
 
 /** Conference — the date, the programme, and how to get a ticket. */
 export default function conference() {
@@ -16,13 +17,13 @@ export default function conference() {
     { text: 'Tickets', href: '#tickets' },
   ], { variant: 'dark', sticky: true });
 
-  const hero = b.container(root, { background: NAVY, padding: ['72', '48', '48', '48'], width: '100%', alignItems: 'center', backgroundImage: px(9275222, 1600), overlay: rgba(15, 27, 52, 0.72) }, 'Hero');
+  const hero = b.container(root, { background: NAVY, padding: ['72', '48', '48', '48'], width: '100%', alignItems: 'center', backgroundImage: P.conference.stage(1600), overlay: rgba(15, 27, 52, 0.72) }, 'Hero');
   b.badge(hero, 'Haifa · 12–13 November', { background: GOLD, color: NAVY });
   b.heading(hero, 'Two days on how software feels', {
     level: '1', fontSize: '50', textAlign: 'center', color: BONE, margin: ['16', '0', '12', '0'],
   });
   b.text(hero, 'Fourteen talks on interface, craft, and the people who ship it.', {
-    fontSize: '18', textAlign: 'center', color: MUTED, margin: ['0', '0', '24', '0'],
+    fontSize: '18', textAlign: 'center', color: rgba(255, 255, 255, 0.82), margin: ['0', '0', '24', '0'],
   });
   b.button(hero, 'Get a ticket', { background: GOLD, color: NAVY, buttonStyle: 'full' });
 
@@ -40,10 +41,10 @@ export default function conference() {
   b.heading(speak, 'Who is talking', { fontSize: '32', color: BONE });
   b.spacer(speak, '24');
   b.teamGrid(speak, [
-    'Noa Bar', 'Interface, Monday', px(29057425, 400),
-    'Ilan Weiss', 'Systems, Kettle', px(37233404, 400),
-    'Dana Levi', 'Craft, independent', px(16666883, 400),
-    'Omer Katz', 'Research, Fathom', px(9275222, 400),
+    'Noa Bar', 'Interface, Monday', P.faces.dark(400),
+    'Ilan Weiss', 'Systems, Kettle', P.faces.beard(400),
+    'Dana Levi', 'Craft, independent', P.faces.short(400),
+    'Omer Katz', 'Research, Fathom', P.faces.navy(400),
   ], { columns: '4', accent: PANEL, color: BONE });
 
   b.spacer(root, '8');
@@ -64,5 +65,12 @@ export default function conference() {
   b.spacer(find, '16');
   b.map_(find, { lat: 32.7940, lng: 34.9896, zoom: 14, label: 'Haifa' });
 
-  return { name: 'Conference — Interface 26', category: 'Event', thumb: px(9275222), map: b.map };
+  b.footer(root, {
+    brand: 'Interface 26',
+    note: '14-15 March, Tel Aviv Port. Tickets include both days.',
+    socials: ['Twitter', 'https://twitter.com/', 'Email', 'mailto:hello@interface.events'],
+    background: PANEL, ink: BONE, muted: MUTED,
+  });
+
+  return { name: 'Conference — Interface 26', category: 'Event', thumb: P.conference.hall(600), map: b.map };
 }

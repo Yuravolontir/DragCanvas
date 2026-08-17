@@ -48,7 +48,8 @@
       "cont02",
       "cont06",
       "cont10",
-      "cont16"
+      "cont16",
+      "cont21"
     ],
     "linkedNodes": {}
   },
@@ -131,7 +132,7 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "backgroundImage": "https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "backgroundImage": "https://images.pexels.com/photos/1855214/pexels-photo-1855214.jpeg?auto=compress&cs=tinysrgb&w=1600",
       "overlay": {
         "r": 45,
         "g": 32,
@@ -164,9 +165,9 @@
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 45,
-        "g": 32,
-        "b": 24,
+        "r": 249,
+        "g": 245,
+        "b": 240,
         "a": 1
       },
       "margin": [
@@ -195,10 +196,10 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 116,
-        "g": 99,
-        "b": 84,
-        "a": 1
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 0.82
       },
       "margin": [
         "12",
@@ -781,6 +782,210 @@
       "displayName": "Map"
     },
     "parent": "cont16",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont21": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "48",
+        "40",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 45,
+        "g": 32,
+        "b": 24,
+        "a": 1
+      },
+      "color": {
+        "r": 249,
+        "g": 245,
+        "b": 240,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont22",
+      "soci25"
+    ],
+    "linkedNodes": {}
+  },
+  "cont22": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer text"
+    },
+    "parent": "cont21",
+    "hidden": false,
+    "nodes": [
+      "text23",
+      "text24"
+    ],
+    "linkedNodes": {}
+  },
+  "text23": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 249,
+        "g": 245,
+        "b": 240,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Harbour Roastery"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Footer brand"
+    },
+    "parent": "cont22",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text24": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 238,
+        "g": 228,
+        "b": 216,
+        "a": 1
+      },
+      "margin": [
+        "6",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Roasted on Tuesdays, shipped on Wednesdays."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Small print"
+    },
+    "parent": "cont22",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "soci25": {
+    "type": {
+      "resolvedName": "SocialLinks"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Instagram",
+        "https://instagram.com/",
+        "Email",
+        "mailto:hello@harbour.coffee"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.06
+      },
+      "color": {
+        "r": 238,
+        "g": 228,
+        "b": 216,
+        "a": 1
+      },
+      "size": "20",
+      "gap": "18"
+    },
+    "displayName": "SocialLinks",
+    "custom": {
+      "displayName": "Footer links"
+    },
+    "parent": "cont21",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

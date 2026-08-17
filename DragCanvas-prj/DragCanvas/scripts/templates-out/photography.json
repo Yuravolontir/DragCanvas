@@ -49,7 +49,8 @@
       "cont04",
       "cont07",
       "cont15",
-      "cont19"
+      "cont19",
+      "cont25"
     ],
     "linkedNodes": {}
   },
@@ -152,8 +153,8 @@
     "props": {
       "sourceType": "url",
       "videoId": "",
-      "videoUrl": "https://videos.pexels.com/video-files/6516822/6516822-hd_1280_720_30fps.mp4",
-      "text": "Light, and what it does to a face"
+      "videoUrl": "https://videos.pexels.com/video-files/7206150/7206150-hd_1920_1080_25fps.mp4",
+      "text": ""
     },
     "displayName": "Video",
     "custom": {
@@ -365,10 +366,10 @@
     },
     "isCanvas": false,
     "props": {
-      "src": "https://images.pexels.com/photos/29057425/pexels-photo-29057425.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "src": "https://images.pexels.com/photos/23991042/pexels-photo-23991042.jpeg?auto=compress&cs=tinysrgb&w=700",
       "radius": 2,
       "width": "100%",
-      "height": "auto",
+      "height": "300px",
       "maxWidth": "100%"
     },
     "displayName": "Image",
@@ -386,10 +387,10 @@
     },
     "isCanvas": false,
     "props": {
-      "src": "https://images.pexels.com/photos/37233404/pexels-photo-37233404.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "src": "https://images.pexels.com/photos/14257415/pexels-photo-14257415.jpeg?auto=compress&cs=tinysrgb&w=700",
       "radius": 2,
       "width": "100%",
-      "height": "auto",
+      "height": "300px",
       "maxWidth": "100%"
     },
     "displayName": "Image",
@@ -407,10 +408,10 @@
     },
     "isCanvas": false,
     "props": {
-      "src": "https://images.pexels.com/photos/16666883/pexels-photo-16666883.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "src": "https://images.pexels.com/photos/5611592/pexels-photo-5611592.jpeg?auto=compress&cs=tinysrgb&w=700",
       "radius": 2,
       "width": "100%",
-      "height": "auto",
+      "height": "300px",
       "maxWidth": "100%"
     },
     "displayName": "Image",
@@ -428,10 +429,10 @@
     },
     "isCanvas": false,
     "props": {
-      "src": "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "src": "https://images.pexels.com/photos/29085930/pexels-photo-29085930.jpeg?auto=compress&cs=tinysrgb&w=700",
       "radius": 2,
       "width": "100%",
-      "height": "auto",
+      "height": "300px",
       "maxWidth": "100%"
     },
     "displayName": "Image",
@@ -449,10 +450,10 @@
     },
     "isCanvas": false,
     "props": {
-      "src": "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "src": "https://images.pexels.com/photos/20029576/pexels-photo-20029576.jpeg?auto=compress&cs=tinysrgb&w=700",
       "radius": 2,
       "width": "100%",
-      "height": "auto",
+      "height": "300px",
       "maxWidth": "100%"
     },
     "displayName": "Image",
@@ -470,10 +471,10 @@
     },
     "isCanvas": false,
     "props": {
-      "src": "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "src": "https://images.pexels.com/photos/34921744/pexels-photo-34921744.jpeg?auto=compress&cs=tinysrgb&w=700",
       "radius": 2,
       "width": "100%",
-      "height": "auto",
+      "height": "300px",
       "maxWidth": "100%"
     },
     "displayName": "Image",
@@ -832,6 +833,210 @@
       "displayName": "Link"
     },
     "parent": "cont19",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont25": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "48",
+        "40",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 28,
+        "a": 1
+      },
+      "color": {
+        "r": 240,
+        "g": 238,
+        "b": 235,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont26",
+      "soci29"
+    ],
+    "linkedNodes": {}
+  },
+  "cont26": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer text"
+    },
+    "parent": "cont25",
+    "hidden": false,
+    "nodes": [
+      "text27",
+      "text28"
+    ],
+    "linkedNodes": {}
+  },
+  "text27": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 240,
+        "g": 238,
+        "b": 235,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "STILL"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Footer brand"
+    },
+    "parent": "cont26",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text28": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 136,
+        "g": 134,
+        "b": 140,
+        "a": 1
+      },
+      "margin": [
+        "6",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "A studio in Florentin. Bookings two weeks out."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Small print"
+    },
+    "parent": "cont26",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "soci29": {
+    "type": {
+      "resolvedName": "SocialLinks"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Instagram",
+        "https://instagram.com/",
+        "Email",
+        "mailto:book@still.photo"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.06
+      },
+      "color": {
+        "r": 136,
+        "g": 134,
+        "b": 140,
+        "a": 1
+      },
+      "size": "20",
+      "gap": "18"
+    },
+    "displayName": "SocialLinks",
+    "custom": {
+      "displayName": "Footer links"
+    },
+    "parent": "cont25",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

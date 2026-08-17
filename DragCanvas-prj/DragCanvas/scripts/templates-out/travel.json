@@ -48,7 +48,8 @@
       "cont02",
       "cont05",
       "cont07",
-      "cont14"
+      "cont14",
+      "cont20"
     ],
     "linkedNodes": {}
   },
@@ -131,7 +132,7 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "backgroundImage": "https://images.pexels.com/photos/1271619/pexels-photo-1271619.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "backgroundImage": "https://images.pexels.com/photos/9805720/pexels-photo-9805720.jpeg?auto=compress&cs=tinysrgb&w=1600",
       "overlay": {
         "r": 38,
         "g": 34,
@@ -163,9 +164,9 @@
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
-        "r": 38,
-        "g": 34,
-        "b": 30,
+        "r": 253,
+        "g": 250,
+        "b": 245,
         "a": 1
       },
       "margin": [
@@ -194,10 +195,10 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 120,
-        "g": 110,
-        "b": 98,
-        "a": 1
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 0.82
       },
       "margin": [
         "14",
@@ -276,9 +277,9 @@
     "props": {
       "width": "100%",
       "height": "420px",
-      "src1": "https://images.pexels.com/photos/1271619/pexels-photo-1271619.jpeg?auto=compress&cs=tinysrgb&w=1000",
-      "src2": "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1000",
-      "src3": "https://images.pexels.com/photos/2261477/pexels-photo-2261477.jpeg?auto=compress&cs=tinysrgb&w=1000",
+      "src1": "https://images.pexels.com/photos/13522524/pexels-photo-13522524.jpeg?auto=compress&cs=tinysrgb&w=1000",
+      "src2": "https://images.pexels.com/photos/29719488/pexels-photo-29719488.jpeg?auto=compress&cs=tinysrgb&w=1000",
+      "src3": "https://images.pexels.com/photos/11680560/pexels-photo-11680560.jpeg?auto=compress&cs=tinysrgb&w=1000",
       "heading1": "The long way to Lisbon",
       "heading2": "Winter in the Dolomites",
       "heading3": "Down the Danube",
@@ -287,7 +288,13 @@
       "label3": "Hungary",
       "p1": "Four days by rail when the flight was two hours.",
       "p2": "Empty huts, cold mornings, better coffee than expected.",
-      "p3": "A ferry, a bicycle, and a week without a plan."
+      "p3": "A ferry, a bicycle, and a week without a plan.",
+      "accent": {
+        "r": 24,
+        "g": 108,
+        "b": 122,
+        "a": 1
+      }
     },
     "displayName": "Carousel",
     "custom": {
@@ -765,6 +772,210 @@
       "displayName": "SocialLinks"
     },
     "parent": "cont14",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont20": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "row",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "48",
+        "40",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 38,
+        "g": 34,
+        "b": 30,
+        "a": 1
+      },
+      "color": {
+        "r": 253,
+        "g": 250,
+        "b": 245,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont21",
+      "soci24"
+    ],
+    "linkedNodes": {}
+  },
+  "cont21": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "auto",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Footer text"
+    },
+    "parent": "cont20",
+    "hidden": false,
+    "nodes": [
+      "text22",
+      "text23"
+    ],
+    "linkedNodes": {}
+  },
+  "text22": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "17",
+      "textAlign": "left",
+      "fontWeight": "700",
+      "color": {
+        "r": 253,
+        "g": 250,
+        "b": 245,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Wanderlog"
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Footer brand"
+    },
+    "parent": "cont21",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "text23": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "13",
+      "textAlign": "left",
+      "fontWeight": "500",
+      "color": {
+        "r": 240,
+        "g": 233,
+        "b": 222,
+        "a": 1
+      },
+      "margin": [
+        "6",
+        "0",
+        "0",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "One long trip a month, written up slowly."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Small print"
+    },
+    "parent": "cont21",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "soci24": {
+    "type": {
+      "resolvedName": "SocialLinks"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Instagram",
+        "https://instagram.com/",
+        "RSS",
+        "https://example.com/feed"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.06
+      },
+      "color": {
+        "r": 240,
+        "g": 233,
+        "b": 222,
+        "a": 1
+      },
+      "size": "20",
+      "gap": "18"
+    },
+    "displayName": "SocialLinks",
+    "custom": {
+      "displayName": "Footer links"
+    },
+    "parent": "cont20",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
