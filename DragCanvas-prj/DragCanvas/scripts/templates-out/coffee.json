@@ -48,8 +48,8 @@
       "cont02",
       "cont06",
       "cont10",
-      "cont16",
-      "cont21"
+      "cont18",
+      "cont23"
     ],
     "linkedNodes": {}
   },
@@ -240,19 +240,19 @@
       "buttonStyle": "full",
       "text": "Start a subscription",
       "margin": [
-        "5",
+        "8",
         "0",
-        "5",
+        "8",
         "0"
       ],
       "textComponent": {
-        "fontSize": "15",
+        "fontSize": "16",
         "textAlign": "center",
         "fontWeight": "600",
         "color": {
-          "r": 92,
-          "g": 90,
-          "b": 90,
+          "r": 255,
+          "g": 255,
+          "b": 255,
           "a": 1
         },
         "margin": [
@@ -479,8 +479,10 @@
       "head11",
       "spac12",
       "time13",
-      "divi14",
-      "quot15"
+      "spac14",
+      "caro15",
+      "divi16",
+      "quot17"
     ],
     "linkedNodes": {}
   },
@@ -573,7 +575,60 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "divi14": {
+  "spac14": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "28"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont10",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "caro15": {
+    "type": {
+      "resolvedName": "Carousel"
+    },
+    "isCanvas": false,
+    "props": {
+      "width": "704px",
+      "height": "400px",
+      "src1": "https://images.pexels.com/photos/5373256/pexels-photo-5373256.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "src2": "https://images.pexels.com/photos/7601665/pexels-photo-7601665.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "src3": "https://images.pexels.com/photos/4916548/pexels-photo-4916548.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "heading1": "The bar",
+      "heading2": "Four farms",
+      "heading3": "Stay a while",
+      "label1": "Visit",
+      "label2": "Origins",
+      "label3": "Harbour",
+      "p1": "Espresso, filter and the day’s roast at the long counter.",
+      "p2": "Every bag names the farm, harvest and roast date.",
+      "p3": "A quiet table, a window, and coffee made without hurry.",
+      "accent": {
+        "r": 178,
+        "g": 92,
+        "b": 48,
+        "a": 1
+      }
+    },
+    "displayName": "Carousel",
+    "custom": {
+      "displayName": "Roastery gallery"
+    },
+    "parent": "cont10",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "divi16": {
     "type": {
       "resolvedName": "Divider"
     },
@@ -598,7 +653,7 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "quot15": {
+  "quot17": {
     "type": {
       "resolvedName": "Quote"
     },
@@ -630,7 +685,7 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont16": {
+  "cont18": {
     "type": {
       "resolvedName": "Container"
     },
@@ -677,14 +732,14 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head17",
-      "list18",
-      "spac19",
-      "map20"
+      "head19",
+      "list20",
+      "spac21",
+      "map22"
     ],
     "linkedNodes": {}
   },
-  "head17": {
+  "head19": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -712,12 +767,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont16",
+    "parent": "cont18",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "list18": {
+  "list20": {
     "type": {
       "resolvedName": "List"
     },
@@ -742,12 +797,12 @@
     "custom": {
       "displayName": "List"
     },
-    "parent": "cont16",
+    "parent": "cont18",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac19": {
+  "spac21": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -759,12 +814,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont16",
+    "parent": "cont18",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "map20": {
+  "map22": {
     "type": {
       "resolvedName": "Map"
     },
@@ -781,12 +836,12 @@
     "custom": {
       "displayName": "Map"
     },
-    "parent": "cont16",
+    "parent": "cont18",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont21": {
+  "cont23": {
     "type": {
       "resolvedName": "Container"
     },
@@ -832,12 +887,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont22",
-      "soci25"
+      "cont24",
+      "soci27"
     ],
     "linkedNodes": {}
   },
-  "cont22": {
+  "cont24": {
     "type": {
       "resolvedName": "Container"
     },
@@ -880,15 +935,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont21",
+    "parent": "cont23",
     "hidden": false,
     "nodes": [
-      "text23",
-      "text24"
+      "text25",
+      "text26"
     ],
     "linkedNodes": {}
   },
-  "text23": {
+  "text25": {
     "type": {
       "resolvedName": "Text"
     },
@@ -916,12 +971,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont22",
+    "parent": "cont24",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text24": {
+  "text26": {
     "type": {
       "resolvedName": "Text"
     },
@@ -949,12 +1004,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont22",
+    "parent": "cont24",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci25": {
+  "soci27": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -985,7 +1040,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont21",
+    "parent": "cont23",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

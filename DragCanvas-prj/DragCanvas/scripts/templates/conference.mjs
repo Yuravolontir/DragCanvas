@@ -36,6 +36,13 @@ export default function conference() {
     '14:00', 'Shipping without a design team', 'How small teams keep it coherent anyway.',
     '16:30', 'The long tail of a decision', 'What a default costs three years later.',
   ], { accent: GOLD, color: BONE });
+  b.spacer(prog, '28');
+  b.carousel(prog, {
+    width: '704px', height: '400px', accent: GOLD,
+    src1: P.conference.panel(1200), heading1: 'Useful disagreement', label1: 'Panel', p1: 'Four practitioners compare what held up after launch.',
+    src2: P.conference.crowd(1200), heading2: 'A room that participates', label2: 'Audience', p2: 'Questions are part of every session, not an afterthought.',
+    src3: P.conference.talk(1200), heading3: 'Small-room sessions', label3: 'Workshop', p3: 'Concrete critique with enough time to finish the thought.',
+  }, 'Conference moments');
 
   const speak = b.container(root, { background: NAVY, padding: ['56', '48', '48', '48'], width: '100%', anchor: 'speakers' }, 'Speakers');
   b.heading(speak, 'Who is talking', { fontSize: '32', color: BONE });

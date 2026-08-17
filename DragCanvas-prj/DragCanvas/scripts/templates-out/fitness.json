@@ -48,9 +48,9 @@
       "cont02",
       "cont08",
       "cont12",
-      "cont16",
-      "cont20",
-      "cont22"
+      "cont18",
+      "cont22",
+      "cont24"
     ],
     "linkedNodes": {}
   },
@@ -235,27 +235,27 @@
         "a": 1
       },
       "color": {
-        "r": 244,
-        "g": 246,
-        "b": 242,
+        "r": 16,
+        "g": 18,
+        "b": 17,
         "a": 1
       },
       "buttonStyle": "full",
       "text": "First class free",
       "margin": [
-        "5",
+        "8",
         "0",
-        "5",
+        "8",
         "0"
       ],
       "textComponent": {
-        "fontSize": "15",
+        "fontSize": "16",
         "textAlign": "center",
         "fontWeight": "600",
         "color": {
-          "r": 92,
-          "g": 90,
-          "b": 90,
+          "r": 255,
+          "g": 255,
+          "b": 255,
           "a": 1
         },
         "margin": [
@@ -525,7 +525,9 @@
     "nodes": [
       "head13",
       "spac14",
-      "team15"
+      "team15",
+      "spac16",
+      "caro17"
     ],
     "linkedNodes": {}
   },
@@ -619,7 +621,60 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont16": {
+  "spac16": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "32"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont12",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "caro17": {
+    "type": {
+      "resolvedName": "Carousel"
+    },
+    "isCanvas": false,
+    "props": {
+      "width": "704px",
+      "height": "400px",
+      "src1": "https://images.pexels.com/photos/6628962/pexels-photo-6628962.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "src2": "https://images.pexels.com/photos/4464780/pexels-photo-4464780.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "src3": "https://images.pexels.com/photos/32610333/pexels-photo-32610333.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "heading1": "Strength floor",
+      "heading2": "Conditioning",
+      "heading3": "Open gym",
+      "label1": "Train",
+      "label2": "Move",
+      "label3": "Practice",
+      "p1": "Platforms, racks and enough room to move safely.",
+      "p2": "Short sessions, measured work, no random punishment.",
+      "p3": "Your programme, with a coach nearby when you need one.",
+      "accent": {
+        "r": 196,
+        "g": 242,
+        "b": 75,
+        "a": 1
+      }
+    },
+    "displayName": "Carousel",
+    "custom": {
+      "displayName": "Inside FORGE"
+    },
+    "parent": "cont12",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont18": {
     "type": {
       "resolvedName": "Container"
     },
@@ -666,13 +721,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head17",
-      "spac18",
-      "pric19"
+      "head19",
+      "spac20",
+      "pric21"
     ],
     "linkedNodes": {}
   },
-  "head17": {
+  "head19": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -700,12 +755,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont16",
+    "parent": "cont18",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac18": {
+  "spac20": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -717,12 +772,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont16",
+    "parent": "cont18",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "pric19": {
+  "pric21": {
     "type": {
       "resolvedName": "Pricing"
     },
@@ -769,12 +824,12 @@
     "custom": {
       "displayName": "Pricing"
     },
-    "parent": "cont16",
+    "parent": "cont18",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont20": {
+  "cont22": {
     "type": {
       "resolvedName": "Container"
     },
@@ -820,11 +875,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "ctab21"
+      "ctab23"
     ],
     "linkedNodes": {}
   },
-  "ctab21": {
+  "ctab23": {
     "type": {
       "resolvedName": "CTABanner"
     },
@@ -864,12 +919,12 @@
     "custom": {
       "displayName": "CTABanner"
     },
-    "parent": "cont20",
+    "parent": "cont22",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont22": {
+  "cont24": {
     "type": {
       "resolvedName": "Container"
     },
@@ -915,12 +970,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont23",
-      "soci26"
+      "cont25",
+      "soci28"
     ],
     "linkedNodes": {}
   },
-  "cont23": {
+  "cont25": {
     "type": {
       "resolvedName": "Container"
     },
@@ -963,15 +1018,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont22",
+    "parent": "cont24",
     "hidden": false,
     "nodes": [
-      "text24",
-      "text25"
+      "text26",
+      "text27"
     ],
     "linkedNodes": {}
   },
-  "text24": {
+  "text26": {
     "type": {
       "resolvedName": "Text"
     },
@@ -999,12 +1054,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont23",
+    "parent": "cont25",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text25": {
+  "text27": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1032,12 +1087,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont23",
+    "parent": "cont25",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci26": {
+  "soci28": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -1068,7 +1123,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont22",
+    "parent": "cont24",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

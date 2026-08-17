@@ -14,7 +14,7 @@
  */
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import pg from 'pg';
 
 import { validateTemplate } from './templates/_validate.mjs';
@@ -29,7 +29,9 @@ const files = fs.readdirSync(dir).filter((f) => f.endsWith('.mjs') && !f.startsW
 
 const templates = [];
 for (const file of files) {
-  const mod = await import(path.join(dir, file));
+  // Node's ESM loader requires a file:// URL on Windows; importing C:\\... is
+  // parsed as the unsupported URL scheme "c:".
+  const mod = await import(pathToFileURL(path.join(dir, file)).href);
   if (typeof mod.default !== 'function') {
     throw new Error(`${file}: expected a default-exported function`);
   }

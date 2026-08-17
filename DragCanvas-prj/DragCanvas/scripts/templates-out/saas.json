@@ -50,10 +50,11 @@
       "spac24",
       "cont25",
       "cont27",
-      "cont31",
-      "cont35",
+      "cont29",
+      "cont33",
       "cont37",
-      "cont39"
+      "cont39",
+      "cont41"
     ],
     "linkedNodes": {}
   },
@@ -246,19 +247,19 @@
       "buttonStyle": "full",
       "text": "Start free",
       "margin": [
-        "5",
+        "8",
         "0",
-        "5",
+        "8",
         "0"
       ],
       "textComponent": {
-        "fontSize": "15",
+        "fontSize": "16",
         "textAlign": "center",
         "fontWeight": "600",
         "color": {
-          "r": 92,
-          "g": 90,
-          "b": 90,
+          "r": 255,
+          "g": 255,
+          "b": 255,
           "a": 1
         },
         "margin": [
@@ -1013,6 +1014,92 @@
     "isCanvas": true,
     "props": {
       "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "48",
+        "64",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 2,
+        "g": 6,
+        "b": 23,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Product tour"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "caro28"
+    ],
+    "linkedNodes": {}
+  },
+  "caro28": {
+    "type": {
+      "resolvedName": "Carousel"
+    },
+    "isCanvas": false,
+    "props": {
+      "width": "704px",
+      "height": "400px",
+      "src1": "https://images.pexels.com/photos/1181461/pexels-photo-1181461.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "src2": "https://images.pexels.com/photos/7988116/pexels-photo-7988116.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "src3": "https://images.pexels.com/photos/12902857/pexels-photo-12902857.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "heading1": "One calm board",
+      "heading2": "Work together",
+      "heading3": "Skip the status meeting",
+      "label1": "Plan",
+      "label2": "Collaborate",
+      "label3": "Automate",
+      "p1": "See what is moving, blocked and actually finished.",
+      "p2": "Decisions and updates stay beside the work they changed.",
+      "p3": "A useful weekly digest assembled from real activity.",
+      "accent": {
+        "r": 99,
+        "g": 102,
+        "b": 241,
+        "a": 1
+      }
+    },
+    "displayName": "Carousel",
+    "custom": {
+      "displayName": "NovaFlow product tour"
+    },
+    "parent": "cont27",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont29": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
       "alignItems": "center",
       "justifyContent": "flex-start",
       "fillSpace": "no",
@@ -1053,13 +1140,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head28",
-      "spac29",
-      "pric30"
+      "head30",
+      "spac31",
+      "pric32"
     ],
     "linkedNodes": {}
   },
-  "head28": {
+  "head30": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1087,12 +1174,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont27",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac29": {
+  "spac31": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -1104,12 +1191,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont27",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "pric30": {
+  "pric32": {
     "type": {
       "resolvedName": "Pricing"
     },
@@ -1156,12 +1243,12 @@
     "custom": {
       "displayName": "Pricing"
     },
-    "parent": "cont27",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont31": {
+  "cont33": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1208,13 +1295,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head32",
-      "spac33",
-      "acco34"
+      "head34",
+      "spac35",
+      "acco36"
     ],
     "linkedNodes": {}
   },
-  "head32": {
+  "head34": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1242,12 +1329,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont31",
+    "parent": "cont33",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac33": {
+  "spac35": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -1259,12 +1346,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont31",
+    "parent": "cont33",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "acco34": {
+  "acco36": {
     "type": {
       "resolvedName": "Accordion"
     },
@@ -1296,12 +1383,12 @@
     "custom": {
       "displayName": "Accordion"
     },
-    "parent": "cont31",
+    "parent": "cont33",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont35": {
+  "cont37": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1347,11 +1434,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "test36"
+      "test38"
     ],
     "linkedNodes": {}
   },
-  "test36": {
+  "test38": {
     "type": {
       "resolvedName": "Testimonial"
     },
@@ -1385,12 +1472,12 @@
     "custom": {
       "displayName": "Testimonial"
     },
-    "parent": "cont35",
+    "parent": "cont37",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont37": {
+  "cont39": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1436,11 +1523,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "ctab38"
+      "ctab40"
     ],
     "linkedNodes": {}
   },
-  "ctab38": {
+  "ctab40": {
     "type": {
       "resolvedName": "CTABanner"
     },
@@ -1480,12 +1567,12 @@
     "custom": {
       "displayName": "CTABanner"
     },
-    "parent": "cont37",
+    "parent": "cont39",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont39": {
+  "cont41": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1531,12 +1618,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont40",
-      "soci43"
+      "cont42",
+      "soci45"
     ],
     "linkedNodes": {}
   },
-  "cont40": {
+  "cont42": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1579,15 +1666,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont39",
+    "parent": "cont41",
     "hidden": false,
     "nodes": [
-      "text41",
-      "text42"
+      "text43",
+      "text44"
     ],
     "linkedNodes": {}
   },
-  "text41": {
+  "text43": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1615,12 +1702,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont40",
+    "parent": "cont42",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text42": {
+  "text44": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1648,12 +1735,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont40",
+    "parent": "cont42",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci43": {
+  "soci45": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -1684,7 +1771,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont39",
+    "parent": "cont41",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

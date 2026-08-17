@@ -41,6 +41,13 @@ export default function coffee() {
     'Mar', 'Shipped', 'Six weeks at sea, which is slower and better than flying it.',
     'Apr', 'Roasted', 'Small batches, Tuesdays, in a drum older than the shop.',
   ], { accent: RUST, color: INK });
+  b.spacer(orig, '28');
+  b.carousel(orig, {
+    width: '704px', height: '400px', accent: RUST,
+    src1: P.coffee.bar(1200), heading1: 'The bar', label1: 'Visit', p1: 'Espresso, filter and the day’s roast at the long counter.',
+    src2: P.coffee.shelves(1200), heading2: 'Four farms', label2: 'Origins', p2: 'Every bag names the farm, harvest and roast date.',
+    src3: P.coffee.table(1200), heading3: 'Stay a while', label3: 'Harbour', p3: 'A quiet table, a window, and coffee made without hurry.',
+  }, 'Roastery gallery');
   b.divider(orig, { color: rgba(45, 32, 24, 0.15), spacing: '28' });
   b.quote(orig, 'The only subscription I have never once thought about cancelling.', {
     attribution: 'A subscriber, three years in', fontSize: '19', color: INK, accent: RUST,

@@ -55,6 +55,18 @@ export default function developer() {
     color: MUTED, fontSize: '16',
   });
 
+  const notes = b.container(root, { background: INK, padding: ['56', '48', '56', '48'], width: '100%' }, 'Work notes');
+  b.heading(notes, 'Inside the work', { fontSize: '28', color: BONE });
+  b.text(notes, 'A few frames from recent systems, reviews and migrations.', {
+    color: MUTED, margin: ['8', '0', '22', '0'],
+  });
+  b.carousel(notes, {
+    width: '704px', height: '400px', accent: CYAN,
+    src1: P.developer.terminal(1200), heading1: 'Observe first', label1: 'Runtime', p1: 'Make the failure visible before trying to make it disappear.',
+    src2: P.developer.review(1200), heading2: 'Review the boundary', label2: 'Code', p2: 'Small interfaces, explicit ownership, fewer surprises.',
+    src3: P.developer.trace(1200), heading3: 'Leave a trail', label3: 'Debugging', p3: 'Logs that explain what the system believed at the time.',
+  }, 'Project gallery');
+
   const contact = b.container(root, { background: INK, padding: ['48', '48', '72', '48'], width: '100%', anchor: 'contact' }, 'Contact');
   b.ctaBanner(contact, {
     title: 'Looking for someone?',

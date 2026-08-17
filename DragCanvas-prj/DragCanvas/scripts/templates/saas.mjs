@@ -65,6 +65,14 @@ export default function saas() {
     accent: INDIGO, color: MUTED,
   });
 
+  const product = b.container(root, { background: INK, padding: ['0', '48', '64', '48'], width: '100%' }, 'Product tour');
+  b.carousel(product, {
+    width: '704px', height: '400px', accent: INDIGO,
+    src1: P.saas.screen(1200), heading1: 'One calm board', label1: 'Plan', p1: 'See what is moving, blocked and actually finished.',
+    src2: P.saas.pairing(1200), heading2: 'Work together', label2: 'Collaborate', p2: 'Decisions and updates stay beside the work they changed.',
+    src3: P.saas.standup(1200), heading3: 'Skip the status meeting', label3: 'Automate', p3: 'A useful weekly digest assembled from real activity.',
+  }, 'NovaFlow product tour');
+
   // ── what it costs ──────────────────────────────────────────────
   const price = b.container(root, {
     background: CARD, padding: ['64', '48', '64', '48'], width: '100%', anchor: 'pricing', alignItems: 'center',

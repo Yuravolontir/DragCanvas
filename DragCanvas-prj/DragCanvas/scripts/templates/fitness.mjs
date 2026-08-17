@@ -28,7 +28,7 @@ export default function fitness() {
   b.text(hero, 'Barbell club and conditioning, five in the morning to ten at night. No mirrors, no contracts.', {
     fontSize: '18', color: rgba(255, 255, 255, 0.82), margin: ['14', '0', '24', '0'],
   });
-  b.button(hero, 'First class free', { background: LIME, color: BONE, buttonStyle: 'full' });
+  b.button(hero, 'First class free', { background: LIME, color: INK, buttonStyle: 'full' });
   b.spacer(hero, '32');
   b.stats(hero, ['5am', 'first class', '340', 'members', '12', 'coaches'], { accent: LIME, color: rgba(255, 255, 255, 0.82) });
 
@@ -50,6 +50,13 @@ export default function fitness() {
     'Yonatan Bar', 'Olympic lifting', P.faces.violet(400),
     'Shira Peled', 'Conditioning', P.faces.teal(400),
   ], { columns: '3', accent: PANEL, color: BONE });
+  b.spacer(who, '32');
+  b.carousel(who, {
+    width: '704px', height: '400px', accent: LIME,
+    src1: P.fitness.barbell(1200), heading1: 'Strength floor', label1: 'Train', p1: 'Platforms, racks and enough room to move safely.',
+    src2: P.fitness.stack(1200), heading2: 'Conditioning', label2: 'Move', p2: 'Short sessions, measured work, no random punishment.',
+    src3: P.fitness.rack(1200), heading3: 'Open gym', label3: 'Practice', p3: 'Your programme, with a coach nearby when you need one.',
+  }, 'Inside FORGE');
 
   const cost = b.container(root, { background: PANEL, padding: ['56', '48', '56', '48'], width: '100%', anchor: 'membership', alignItems: 'center' }, 'Membership');
   b.heading(cost, 'Membership', { fontSize: '34', textAlign: 'center', color: BONE });

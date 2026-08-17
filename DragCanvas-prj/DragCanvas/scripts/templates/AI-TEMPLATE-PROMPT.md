@@ -420,7 +420,26 @@ no "Company Name".
 
 **Six to nine sections**, including the navbar and the footer. Choose what the
 subject actually needs — a restaurant needs a menu and opening hours, a SaaS
-needs pricing and an FAQ. Do not put every element on every page.
+needs pricing and an FAQ.
+
+**Do not try to use all 27 elements.** Fifteen or so is a good page; reaching for
+all of them forces the same skeleton onto every subject, which is the single
+fastest way to make six templates that are one template in six colours. A
+restaurant has no business carrying a pricing table, and a photographer has no
+FAQ about deployment.
+
+**Every line of copy is about this business and no other.** Section headings
+included. If a heading would read equally well on a dental clinic, a conference
+and a bakery — "Built around the parts that matter", "How it works", "Why choose
+us" — it is filler, and filler is what makes a template look generated. Three
+cards get three different thoughts, not the same three bullets repeated.
+
+**Never copy the names in this prompt.** Dana Levi, Omer Katz, Kettle, Fathom,
+Northwind and `hello@example.com` are illustrations of the format. Invent your
+own, fitting the subject and the place.
+
+**Never mention DragCanvas, elements, props or JSON in the copy.** The visitor is
+reading a bakery's website, not a note about how it was built.
 
 **Say what the picture shows.** If the card is captioned "Rye" the photograph
 has to be rye. Mismatched captions are worse than no captions.

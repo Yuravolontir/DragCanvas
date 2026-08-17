@@ -345,19 +345,19 @@
       "buttonStyle": "full",
       "text": "Book a check-up",
       "margin": [
-        "5",
+        "8",
         "0",
-        "5",
+        "8",
         "0"
       ],
       "textComponent": {
-        "fontSize": "15",
+        "fontSize": "16",
         "textAlign": "center",
         "fontWeight": "600",
         "color": {
-          "r": 92,
-          "g": 90,
-          "b": 90,
+          "r": 255,
+          "g": 255,
+          "b": 255,
           "a": 1
         },
         "margin": [

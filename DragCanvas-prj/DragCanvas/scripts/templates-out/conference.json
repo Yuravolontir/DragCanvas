@@ -47,12 +47,12 @@
       "navb01",
       "cont02",
       "cont07",
-      "cont11",
-      "spac15",
-      "cont16",
+      "cont13",
+      "spac17",
       "cont18",
-      "cont22",
-      "cont26"
+      "cont20",
+      "cont24",
+      "cont28"
     ],
     "linkedNodes": {}
   },
@@ -274,19 +274,19 @@
       "buttonStyle": "full",
       "text": "Get a ticket",
       "margin": [
-        "5",
+        "8",
         "0",
-        "5",
+        "8",
         "0"
       ],
       "textComponent": {
-        "fontSize": "15",
+        "fontSize": "16",
         "textAlign": "center",
         "fontWeight": "600",
         "color": {
-          "r": 92,
-          "g": 90,
-          "b": 90,
+          "r": 255,
+          "g": 255,
+          "b": 255,
           "a": 1
         },
         "margin": [
@@ -357,7 +357,9 @@
     "nodes": [
       "head08",
       "spac09",
-      "time10"
+      "time10",
+      "spac11",
+      "caro12"
     ],
     "linkedNodes": {}
   },
@@ -453,7 +455,60 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont11": {
+  "spac11": {
+    "type": {
+      "resolvedName": "Spacer"
+    },
+    "isCanvas": false,
+    "props": {
+      "height": "28"
+    },
+    "displayName": "Spacer",
+    "custom": {
+      "displayName": "Spacer"
+    },
+    "parent": "cont07",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "caro12": {
+    "type": {
+      "resolvedName": "Carousel"
+    },
+    "isCanvas": false,
+    "props": {
+      "width": "704px",
+      "height": "400px",
+      "src1": "https://images.pexels.com/photos/8348468/pexels-photo-8348468.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "src2": "https://images.pexels.com/photos/31129059/pexels-photo-31129059.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "src3": "https://images.pexels.com/photos/3321796/pexels-photo-3321796.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "heading1": "Useful disagreement",
+      "heading2": "A room that participates",
+      "heading3": "Small-room sessions",
+      "label1": "Panel",
+      "label2": "Audience",
+      "label3": "Workshop",
+      "p1": "Four practitioners compare what held up after launch.",
+      "p2": "Questions are part of every session, not an afterthought.",
+      "p3": "Concrete critique with enough time to finish the thought.",
+      "accent": {
+        "r": 255,
+        "g": 194,
+        "b": 71,
+        "a": 1
+      }
+    },
+    "displayName": "Carousel",
+    "custom": {
+      "displayName": "Conference moments"
+    },
+    "parent": "cont07",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont13": {
     "type": {
       "resolvedName": "Container"
     },
@@ -500,13 +555,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head12",
-      "spac13",
-      "team14"
+      "head14",
+      "spac15",
+      "team16"
     ],
     "linkedNodes": {}
   },
-  "head12": {
+  "head14": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -534,12 +589,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont11",
+    "parent": "cont13",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac13": {
+  "spac15": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -551,12 +606,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont11",
+    "parent": "cont13",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "team14": {
+  "team16": {
     "type": {
       "resolvedName": "TeamGrid"
     },
@@ -594,12 +649,12 @@
     "custom": {
       "displayName": "TeamGrid"
     },
-    "parent": "cont11",
+    "parent": "cont13",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac15": {
+  "spac17": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -616,7 +671,7 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont16": {
+  "cont18": {
     "type": {
       "resolvedName": "Container"
     },
@@ -662,11 +717,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "stat17"
+      "stat19"
     ],
     "linkedNodes": {}
   },
-  "stat17": {
+  "stat19": {
     "type": {
       "resolvedName": "Stats"
     },
@@ -698,12 +753,12 @@
     "custom": {
       "displayName": "Stats"
     },
-    "parent": "cont16",
+    "parent": "cont18",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont18": {
+  "cont20": {
     "type": {
       "resolvedName": "Container"
     },
@@ -750,13 +805,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head19",
-      "spac20",
-      "pric21"
+      "head21",
+      "spac22",
+      "pric23"
     ],
     "linkedNodes": {}
   },
-  "head19": {
+  "head21": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -784,12 +839,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont18",
+    "parent": "cont20",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac20": {
+  "spac22": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -801,12 +856,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont18",
+    "parent": "cont20",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "pric21": {
+  "pric23": {
     "type": {
       "resolvedName": "Pricing"
     },
@@ -853,12 +908,12 @@
     "custom": {
       "displayName": "Pricing"
     },
-    "parent": "cont18",
+    "parent": "cont20",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont22": {
+  "cont24": {
     "type": {
       "resolvedName": "Container"
     },
@@ -904,13 +959,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head23",
-      "spac24",
-      "map25"
+      "head25",
+      "spac26",
+      "map27"
     ],
     "linkedNodes": {}
   },
-  "head23": {
+  "head25": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -938,12 +993,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont22",
+    "parent": "cont24",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac24": {
+  "spac26": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -955,12 +1010,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont22",
+    "parent": "cont24",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "map25": {
+  "map27": {
     "type": {
       "resolvedName": "Map"
     },
@@ -977,12 +1032,12 @@
     "custom": {
       "displayName": "Map"
     },
-    "parent": "cont22",
+    "parent": "cont24",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont26": {
+  "cont28": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1028,12 +1083,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont27",
-      "soci30"
+      "cont29",
+      "soci32"
     ],
     "linkedNodes": {}
   },
-  "cont27": {
+  "cont29": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1076,15 +1131,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont26",
+    "parent": "cont28",
     "hidden": false,
     "nodes": [
-      "text28",
-      "text29"
+      "text30",
+      "text31"
     ],
     "linkedNodes": {}
   },
-  "text28": {
+  "text30": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1112,12 +1167,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont27",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text29": {
+  "text31": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1145,12 +1200,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont27",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci30": {
+  "soci32": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -1181,7 +1236,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont26",
+    "parent": "cont28",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
