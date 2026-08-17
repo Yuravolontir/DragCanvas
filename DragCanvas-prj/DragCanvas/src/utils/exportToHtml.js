@@ -1,3 +1,4 @@
+import { columnTracks } from './columnTracks.js';
 import { pairUp, groupLines } from './elementData.js';
 
 /**
@@ -271,7 +272,7 @@ const converters = {
     // sized at all. Grid tracks do not care what a child says about its width.
     cssRules.push(`.${className} {
   display: grid;
-  grid-template-columns: repeat(${columns}, minmax(0, 1fr));
+  grid-template-columns: ${columnTracks(columns, props.ratio)};
   gap: ${gap}px;
   align-items: ${props.align || 'stretch'};
   width: 100%;

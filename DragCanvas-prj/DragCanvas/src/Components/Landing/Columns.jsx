@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNode } from '@craftjs/core';
 import { ColumnsSettings } from './ColumnsSettings';
+import { columnTracks } from '../../utils/columnTracks.js';
 
 /**
  * Side-by-side columns that know how to stop being side by side.
@@ -20,7 +21,7 @@ import { ColumnsSettings } from './ColumnsSettings';
  * so a fourth element dropped into a three-column row wraps onto a second line
  * instead of silently squeezing the other three.
  */
-export const Columns = ({ count, gap, align, stack, children }) => {
+export const Columns = ({ count, gap, align, stack, ratio, children }) => {
   const { connectors: { connect } } = useNode();
   const columns = Number(count) || 2;
   const space = Number(gap) || 24;
@@ -44,7 +45,7 @@ export const Columns = ({ count, gap, align, stack, children }) => {
           which is what it should have meant all along.
         */
         display: 'grid',
-        gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
+        gridTemplateColumns: columnTracks(columns, ratio),
         gap: `${space}px`,
         alignItems: align || 'stretch',
         width: '100%',
@@ -58,6 +59,7 @@ export const Columns = ({ count, gap, align, stack, children }) => {
 Columns.craft = {
   displayName: 'Columns',
   props: {
+    ratio: '',
     count: '3',
     gap: '24',
     align: 'stretch',

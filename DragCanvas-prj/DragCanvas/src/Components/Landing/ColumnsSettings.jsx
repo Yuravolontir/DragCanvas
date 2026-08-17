@@ -12,6 +12,13 @@ export const ColumnsSettings = () => {
           <ToolbarRadio value="3" label="3" />
           <ToolbarRadio value="4" label="4" />
         </ToolbarItem>
+        {/*
+          Blank means even columns, which is what this did and only did. A ratio
+          is how a hero becomes a wide column of words beside a narrow picture
+          rather than two equal halves.
+        */}
+        <ToolbarItem full={true} propKey="ratio" type="text"
+          label="Ratio — 2:1, 1:2, 1:1:2 (blank for even)" />
         <ToolbarItem full={true} propKey="gap" type="slider" label="Gap" min={0} max={80} />
         <ToolbarItem propKey="align" type="radio" label="Align">
           <ToolbarRadio value="flex-start" label="Top" />
