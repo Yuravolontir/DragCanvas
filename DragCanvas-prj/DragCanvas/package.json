@@ -13,7 +13,8 @@
     "check:catalogue": "node scripts/check-ai-catalogue.mjs",
     "check:export": "node scripts/check-export.mjs",
     "templates:build": "node scripts/generate-templates.mjs",
-    "templates:dry": "node scripts/generate-templates.mjs --dry"
+    "templates:dry": "node scripts/generate-templates.mjs --dry",
+    "check:template": "node scripts/check-template.mjs"
   },
   "dependencies": {
     "@craftjs/core": "^0.2.12",

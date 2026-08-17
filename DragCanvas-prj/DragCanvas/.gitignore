@@ -30,3 +30,6 @@ dist-ssr
 
 # Editor backups (VSCode, etc.)
 .history/
+
+# Previews written by scripts/check-template.mjs
+*.preview.html
