@@ -1,3 +1,5 @@
+import { pairUp, groupLines } from './elementData.js';
+
 /**
  * Convert Craft.js serialized data to clean HTML with inline CSS
  */
@@ -203,6 +205,651 @@ const converters = {
     return `  <div${idAttr} class="${className}">\n${childrenHtml}  </div>\n`;
   },
 
+  /**
+   * A heading, at the level it says it is.
+   *
+   * The level decides the tag and nothing else; the size is a separate property.
+   * Tying them together is how a page ends up choosing its structure by how large
+   * somebody wanted the letters, which is what produced a document of thirty
+   * <h2> elements and no <h1>.
+   */
+  Heading: (node) => {
+    const props = node.props || {};
+    const className = generateClass('heading');
+    const level = Math.min(Math.max(Number(props.level) || 2, 1), 6);
+
+    const styles = {
+      width: '100%',
+      margin: spacingToCss(props.margin),
+      color: rgbaToString(props.color),
+      fontSize: `${props.fontSize || 32}px`,
+      fontWeight: props.fontWeight || '700',
+      textAlign: props.textAlign || 'left',
+      lineHeight: '1.15',
+      letterSpacing: '-0.02em',
+    };
+
+    cssRules.push(`.${className} {\n${stylesToCss(styles)}\n}`);
+
+    // Headings shrink on a phone; 48px of headline leaves no room for anything else
+    const big = Number(props.fontSize) || 32;
+    if (big > 30) {
+      mobileRules.push(`  .${className} {\n    font-size: ${Math.round(big * 0.62)}px;\n  }`);
+    }
+
+    let text = escapeHtmlText(props.text || 'Heading');
+    text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+    return `    <h${level} class="${className}">${text}</h${level}>\n`;
+  },
+
+  /**
+   * Columns, and the stacking that keeps them usable on a phone.
+   *
+   * The share each child takes is written once on the row as a custom property
+   * and read by a `> *` rule, because the children are arbitrary elements that
+   * know nothing about being in a column.
+   */
+  Columns: (node, data, depth = 0) => {
+    const props = node.props || {};
+    const className = generateClass('columns');
+    const columns = Number(props.count) || 2;
+    const gap = Number(props.gap) || 24;
+
+    cssRules.push(`.${className} {
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${gap}px;
+  align-items: ${props.align || 'stretch'};
+  width: 100%;
+}
+
+.${className} > * {
+  flex: 0 1 calc((100% - ${(columns - 1) * gap}px) / ${columns});
+  min-width: 0;
+}`);
+
+    if (props.stack !== 'no') {
+      mobileRules.push(`  .${className} > * {\n    flex-basis: 100%;\n  }`);
+    }
+
+    let childrenHtml = '';
+    for (const childNodeId of getChildIds(node)) {
+      childrenHtml += convertNode(childNodeId, data, depth + 1);
+    }
+
+    return `  <div class="${className}">\n${childrenHtml}  </div>\n`;
+  },
+
+  /** Deliberate empty space, so a gap does not have to belong to its neighbour. */
+  Spacer: (node) => {
+    const className = generateClass('spacer');
+    cssRules.push(`.${className} {\n  width: 100%;\n  height: ${Number(node.props?.height) || 48}px;\n  flex-shrink: 0;\n}`);
+    return `    <div class="${className}" aria-hidden="true"></div>\n`;
+  },
+
+  /** A rule between two things. */
+  Divider: (node) => {
+    const props = node.props || {};
+    const className = generateClass('divider');
+    const colour = rgbaToString(props.color) || 'rgba(0,0,0,0.12)';
+
+    cssRules.push(`.${className} {
+  width: 100%;
+  padding: ${Number(props.spacing) || 24}px ${Number(props.inset) || 0}px;
+}
+
+.${className} hr {
+  border: none;
+  border-top: ${Number(props.thickness) || 1}px solid ${colour};
+  margin: 0;
+}`);
+
+    return `    <div class="${className}"><hr></div>\n`;
+  },
+
+  /**
+   * A map, in a page that has no JavaScript.
+   *
+   * There was no converter for this at all, so every published site quietly lost
+   * its map - the element is in the toolbox and in the resolver, and the export
+   * simply skipped it. Found by the coverage test rather than by anyone noticing,
+   * which is the point of that test.
+   *
+   * The editor draws it with Leaflet. Reproducing that in the export would mean a
+   * script and a stylesheet from someone else's CDN on every published page, for
+   * a static picture of a location. OpenStreetMap's embed is an iframe: no
+   * script, nothing to load from a third party at runtime beyond the tiles
+   * themselves, and it still pans and zooms.
+   */
+  Map: (node) => {
+    const props = node.props || {};
+    const className = generateClass('map');
+    const lat = Number(props.lat) || 32.0853;
+    const lng = Number(props.lng) || 34.7818;
+    // A rough bounding box around the point; the zoom prop decides how tight
+    const span = Math.max(0.002, 0.4 / Math.pow(1.6, (Number(props.zoom) || 13) - 8));
+    const bbox = [lng - span, lat - span / 2, lng + span, lat + span / 2].join('%2C');
+
+    cssRules.push(`.${className} {
+  width: ${props.width || '100%'};
+  height: ${props.height || '300px'};
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.${className} iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}`);
+
+    const label = escapeAttribute(props.label || 'Location');
+    return `    <div class="${className}">
+      <iframe title="${label}" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&amp;layer=mapnik&amp;marker=${lat}%2C${lng}"></iframe>
+    </div>\n`;
+  },
+
+  /** A real list, so four items read as four items and not four paragraphs. */
+  List: (node) => {
+    const props = node.props || {};
+    const className = generateClass('list');
+    const ordered = props.ordered === 'yes';
+    const items = Array.isArray(props.items) ? props.items : [];
+
+    cssRules.push(`.${className} {
+  margin: 0;
+  padding-left: 1.4em;
+  list-style: ${ordered ? 'decimal' : 'disc'};
+  display: flex;
+  flex-direction: column;
+  gap: ${Number(props.gap) || 8}px;
+  font-size: ${Number(props.fontSize) || 16}px;
+  color: ${rgbaToString(props.color) || 'inherit'};
+  line-height: 1.6;
+}`);
+
+    const tag = ordered ? 'ol' : 'ul';
+    const lis = items.map(item => `      <li>${escapeHtmlText(String(item))}</li>`).join('\n');
+    return `    <${tag} class="${className}">\n${lis}\n    </${tag}>\n`;
+  },
+
+  /** A pull quote, published as the blockquote it is. */
+  Quote: (node) => {
+    const props = node.props || {};
+    const className = generateClass('quote');
+    const centred = props.align === 'center';
+
+    cssRules.push(`.${className} {
+  margin: 0;
+  padding: ${centred ? '4px 0' : '4px 0 4px 20px'};
+  ${centred ? '' : `border-left: 3px solid ${rgbaToString(props.accent) || '#0040e0'};`}
+  text-align: ${props.align || 'left'};
+  font-size: ${Number(props.fontSize) || 20}px;
+  line-height: 1.5;
+  font-style: italic;
+  color: ${rgbaToString(props.color) || 'inherit'};
+}
+
+.${className} footer {
+  margin-top: 10px;
+  font-size: 0.72em;
+  font-style: normal;
+  opacity: 0.7;
+}`);
+
+    const attribution = props.attribution
+      ? `\n      <footer>&mdash; ${escapeHtmlText(props.attribution)}</footer>`
+      : '';
+    return `    <blockquote class="${className}">${escapeHtmlText(props.text || '')}${attribution}\n    </blockquote>\n`;
+  },
+
+  /**
+   * One Material symbol.
+   *
+   * The published page needs the icon font, which the editor gets from the
+   * document head. It is requested here too, once, for pages that carry an icon.
+   */
+  Icon: (node) => {
+    const props = node.props || {};
+    const className = generateClass('icon');
+    const box = Number(props.size) || 32;
+    const padded = props.padded === 'yes';
+
+    if (!cssRules.some(rule => rule.includes('Material+Symbols+Outlined'))) {
+      cssRules.unshift(`@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');`);
+    }
+
+    cssRules.push(`.${className} {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  ${padded ? `width: ${box * 2}px;\n  height: ${box * 2}px;\n  border-radius: 50%;` : ''}
+  background: ${padded ? (rgbaToString(props.background) || 'transparent') : 'transparent'};
+  color: ${rgbaToString(props.color) || 'inherit'};
+}
+
+.${className} span {
+  font-family: 'Material Symbols Outlined';
+  font-size: ${box}px;
+  line-height: 1;
+}`);
+
+    return `    <span class="${className}"><span>${escapeHtmlText(props.name || 'star')}</span></span>\n`;
+  },
+
+  /** A small pill of text. */
+  Badge: (node) => {
+    const props = node.props || {};
+    const className = generateClass('badge');
+
+    cssRules.push(`.${className} {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: ${props.radius ?? 999}px;
+  background: ${rgbaToString(props.background) || '#eef0ff'};
+  color: ${rgbaToString(props.color) || '#0040e0'};
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+}`);
+
+    return `    <span class="${className}">${escapeHtmlText(props.text || 'Badge')}</span>\n`;
+  },
+
+  /**
+   * Questions that open and close, with no JavaScript.
+   *
+   * `<details>` does this in the browser. Reproducing it with a script would mean
+   * every published page carrying code whose only job is to toggle a class, and
+   * a page that needs no script cannot break because one failed to load.
+   */
+  Accordion: (node) => {
+    const props = node.props || {};
+    const className = generateClass('accordion');
+    const entries = pairUp(props.items);
+
+    cssRules.push(`.${className} {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.${className} details {
+  background: ${rgbaToString(props.background) || '#f4f3f2'};
+  color: ${rgbaToString(props.color) || 'inherit'};
+  border-radius: ${props.radius ?? 10}px;
+  padding: 14px 18px;
+}
+
+.${className} summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.${className} .answer {
+  margin-top: 10px;
+  opacity: 0.85;
+  line-height: 1.6;
+}`);
+
+    const html = entries.map(([q, a]) => `      <details>
+        <summary>${escapeHtmlText(q)}</summary>
+        <div class="answer">${escapeHtmlText(a)}</div>
+      </details>`).join('\n');
+
+    return `    <div class="${className}">\n${html}\n    </div>\n`;
+  },
+
+  /** Tiers in a grid, so the columns line up and the buttons share a baseline. */
+  Pricing: (node) => {
+    const props = node.props || {};
+    const className = generateClass('pricing');
+    const records = groupLines(props.tiers, 5);
+    const accent = rgbaToString(props.accent) || '#0040e0';
+    const highlight = Number(props.featured);
+
+    cssRules.push(`.${className} {
+  display: grid;
+  grid-template-columns: repeat(${Math.max(records.length, 1)}, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
+  align-items: stretch;
+}
+
+.${className} .tier {
+  display: flex;
+  flex-direction: column;
+  padding: 26px;
+  border-radius: 14px;
+  background: ${rgbaToString(props.background) || '#ffffff'};
+  color: ${rgbaToString(props.color) || 'inherit'};
+  border: 2px solid rgba(0,0,0,0.08);
+}
+
+.${className} .tier.featured {
+  border-color: ${accent};
+  box-shadow: 0 18px 40px -20px rgba(0,0,0,0.35);
+}
+
+.${className} .name { font-size: 15px; font-weight: 600; opacity: 0.7; }
+.${className} .price { font-size: 38px; font-weight: 800; letter-spacing: -0.02em; margin-top: 6px; }
+.${className} .period { font-size: 13px; opacity: 0.6; }
+.${className} ul { list-style: none; padding: 0; margin: 18px 0 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+.${className} .cta { margin-top: auto; padding-top: 20px; }
+.${className} .cta span {
+  display: block;
+  text-align: center;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  border: 2px solid ${accent};
+  color: ${accent};
+}
+.${className} .tier.featured .cta span { background: ${accent}; color: #fff; }`);
+
+    mobileRules.push(`  .${className} {\n    grid-template-columns: minmax(0, 1fr);\n  }`);
+
+    const tiers = records.map(([name, price, period, cta, features], i) => {
+      const items = String(features || '').split(';').filter(Boolean)
+        .map(f => `          <li>${escapeHtmlText(f.trim())}</li>`).join('\n');
+      return `      <div class="tier${i + 1 === highlight ? ' featured' : ''}">
+        <span class="name">${escapeHtmlText(name)}</span>
+        <span class="price">${escapeHtmlText(price)}</span>
+        <span class="period">${escapeHtmlText(period)}</span>
+        <ul>
+${items}
+        </ul>
+        <span class="cta"><span>${escapeHtmlText(cta)}</span></span>
+      </div>`;
+    }).join('\n');
+
+    return `    <div class="${className}">\n${tiers}\n    </div>\n`;
+  },
+
+  /** Somebody vouching for the thing, with a face attached. */
+  Testimonial: (node) => {
+    const props = node.props || {};
+    const className = generateClass('testimonial');
+
+    cssRules.push(`.${className} {
+  margin: 0;
+  padding: 28px;
+  border-radius: 14px;
+  background: ${rgbaToString(props.background) || '#ffffff'};
+  color: ${rgbaToString(props.color) || 'inherit'};
+  border: 1px solid rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+.${className} blockquote { margin: 0; font-size: 18px; line-height: 1.6; }
+.${className} figcaption { display: flex; align-items: center; gap: 12px; }
+.${className} img, .${className} .initial {
+  width: 44px; height: 44px; border-radius: 50%; object-fit: cover; display: block;
+}
+.${className} .initial {
+  display: grid; place-items: center; font-weight: 700;
+  background: ${rgbaToString(props.accent) || '#eef0ff'};
+}
+.${className} .who { display: flex; flex-direction: column; line-height: 1.3; }
+.${className} .name { font-weight: 700; font-size: 15px; }
+.${className} .role { font-size: 13px; opacity: 0.65; }`);
+
+    const face = props.avatar
+      ? `<img src="${escapeAttribute(resolveImageSrc(props.avatar))}" alt="">`
+      : `<span class="initial">${escapeHtmlText((props.author || '?').trim().charAt(0).toUpperCase())}</span>`;
+
+    return `    <figure class="${className}">
+      <blockquote>${escapeHtmlText(props.quote || '')}</blockquote>
+      <figcaption>
+        ${face}
+        <span class="who">
+          <span class="name">${escapeHtmlText(props.author || '')}</span>
+          <span class="role">${escapeHtmlText(props.role || '')}</span>
+        </span>
+      </figcaption>
+    </figure>\n`;
+  },
+
+  /** A row of numbers worth saying out loud. */
+  Stats: (node) => {
+    const props = node.props || {};
+    const className = generateClass('stats');
+    const records = groupLines(props.items, 2);
+
+    cssRules.push(`.${className} {
+  display: grid;
+  grid-template-columns: repeat(${Math.max(records.length, 1)}, minmax(0, 1fr));
+  gap: 24px;
+  width: 100%;
+  text-align: ${props.align || 'center'};
+}
+
+.${className} .value {
+  display: block;
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: ${rgbaToString(props.accent) || 'inherit'};
+}
+
+.${className} .label {
+  display: block;
+  font-size: 14px;
+  opacity: 0.7;
+  margin-top: 4px;
+  color: ${rgbaToString(props.color) || 'inherit'};
+}`);
+
+    mobileRules.push(`  .${className} {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }`);
+
+    const html = records.map(([value, label]) => `      <div>
+        <span class="value">${escapeHtmlText(value)}</span>
+        <span class="label">${escapeHtmlText(label)}</span>
+      </div>`).join('\n');
+
+    return `    <div class="${className}">\n${html}\n    </div>\n`;
+  },
+
+  /** The people behind the thing. */
+  TeamGrid: (node) => {
+    const props = node.props || {};
+    const className = generateClass('teamgrid');
+    const records = groupLines(props.people, 3);
+
+    cssRules.push(`.${className} {
+  display: grid;
+  grid-template-columns: repeat(${Number(props.columns) || 3}, minmax(0, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.${className} figure {
+  margin: 0; text-align: center; display: flex; flex-direction: column;
+  align-items: center; gap: 12px;
+  color: ${rgbaToString(props.color) || 'inherit'};
+}
+
+.${className} img, .${className} .initial {
+  width: 96px; height: 96px; border-radius: 50%; object-fit: cover; display: block;
+}
+.${className} .initial {
+  display: grid; place-items: center; font-size: 32px; font-weight: 700;
+  background: ${rgbaToString(props.accent) || '#eef0ff'};
+}
+.${className} .name { display: block; font-weight: 700; font-size: 16px; }
+.${className} .role { display: block; font-size: 13px; opacity: 0.65; }`);
+
+    mobileRules.push(`  .${className} {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }`);
+
+    const html = records.map(([name, role, photo]) => {
+      const face = photo
+        ? `<img src="${escapeAttribute(resolveImageSrc(photo))}" alt="">`
+        : `<span class="initial">${escapeHtmlText((name || '?').trim().charAt(0).toUpperCase())}</span>`;
+      return `      <figure>
+        ${face}
+        <figcaption>
+          <span class="name">${escapeHtmlText(name)}</span>
+          <span class="role">${escapeHtmlText(role)}</span>
+        </figcaption>
+      </figure>`;
+    }).join('\n');
+
+    return `    <div class="${className}">\n${html}\n    </div>\n`;
+  },
+
+  /** Steps in order, or a history. */
+  Timeline: (node) => {
+    const props = node.props || {};
+    const className = generateClass('timeline');
+    const records = groupLines(props.steps, 3);
+    const accent = rgbaToString(props.accent) || '#0040e0';
+
+    cssRules.push(`.${className} {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  color: ${rgbaToString(props.color) || 'inherit'};
+}
+
+.${className} .step { display: flex; gap: 18px; align-items: stretch; }
+.${className} .rail { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.${className} .marker {
+  width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+  background: ${accent}; color: #fff; font-weight: 700; font-size: 14px; flex-shrink: 0;
+}
+.${className} .tail { flex: 1; width: 2px; background: ${accent}; opacity: 0.25; min-height: 24px; }
+.${className} .title { display: block; font-weight: 700; font-size: 17px; }
+.${className} .detail { display: block; font-size: 14px; opacity: 0.7; line-height: 1.6; margin-top: 4px; }
+.${className} .body { padding-bottom: 28px; }
+.${className} .step:last-child .body { padding-bottom: 0; }`);
+
+    const html = records.map(([marker, title, detail], i) => `      <div class="step">
+        <div class="rail">
+          <span class="marker">${escapeHtmlText(marker)}</span>
+          ${i < records.length - 1 ? '<span class="tail"></span>' : ''}
+        </div>
+        <div class="body">
+          <span class="title">${escapeHtmlText(title)}</span>
+          <span class="detail">${escapeHtmlText(detail)}</span>
+        </div>
+      </div>`).join('\n');
+
+    return `    <div class="${className}">\n${html}\n    </div>\n`;
+  },
+
+  /** The ask, on a band of its own. */
+  CTABanner: (node) => {
+    const props = node.props || {};
+    const className = generateClass('ctabanner');
+
+    cssRules.push(`.${className} {
+  width: 100%;
+  padding: 48px 32px;
+  border-radius: ${props.radius ?? 16}px;
+  background: ${rgbaToString(props.background) || '#0040e0'};
+  color: ${rgbaToString(props.color) || '#ffffff'};
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.${className} .title { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+.${className} .sub { font-size: 16px; opacity: 0.85; max-width: 46ch; }
+.${className} a {
+  margin-top: 12px;
+  display: inline-block;
+  padding: 14px 30px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  background: ${rgbaToString(props.buttonBackground) || '#ffffff'};
+  color: ${rgbaToString(props.buttonColor) || '#0040e0'};
+}`);
+
+    mobileRules.push(`  .${className} {\n    padding: 32px 20px;\n  }\n\n  .${className} .title {\n    font-size: 24px;\n  }`);
+
+    const sub = props.text ? `\n      <span class="sub">${escapeHtmlText(props.text)}</span>` : '';
+    return `    <div class="${className}">
+      <span class="title">${escapeHtmlText(props.title || '')}</span>${sub}
+      <a href="${escapeAttribute(props.href || '#')}">${escapeHtmlText(props.cta || '')}</a>
+    </div>\n`;
+  },
+
+  /** A row of logos, matched on height rather than width. */
+  LogoStrip: (node) => {
+    const props = node.props || {};
+    const className = generateClass('logostrip');
+    const logos = Array.isArray(props.logos) ? props.logos : [];
+
+    cssRules.push(`.${className} {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: ${Number(props.gap) || 40}px;
+  width: 100%;
+}
+
+.${className} img {
+  height: ${Number(props.height) || 32}px;
+  width: auto;
+  display: block;
+  ${props.grayscale === 'no' ? '' : 'filter: grayscale(1);\n  opacity: 0.65;\n  transition: filter 200ms ease, opacity 200ms ease;'}
+}
+
+${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n  opacity: 1;\n}`}`);
+
+    const html = logos
+      .map(src => `      <img src="${escapeAttribute(resolveImageSrc(src))}" alt="">`)
+      .join('\n');
+
+    return `    <div class="${className}">\n${html}\n    </div>\n`;
+  },
+
+  /** Where else to find them. */
+  SocialLinks: (node) => {
+    const props = node.props || {};
+    const className = generateClass('sociallinks');
+    const records = groupLines(props.items, 2);
+
+    cssRules.push(`.${className} {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+}
+
+.${className} a {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: ${Number(props.size) || 14}px;
+  font-weight: 600;
+  text-decoration: none;
+  background: ${rgbaToString(props.background) || 'rgba(0,0,0,0.06)'};
+  color: ${rgbaToString(props.color) || 'inherit'};
+}`);
+
+    const html = records
+      .map(([label, href]) => `      <a href="${escapeAttribute(href || '#')}" rel="noopener">${escapeHtmlText(label)}</a>`)
+      .join('\n');
+
+    return `    <div class="${className}">\n${html}\n    </div>\n`;
+  },
+
   Text: (node) => {
     const props = node.props || {};
     const className = generateClass('text');
@@ -233,7 +880,17 @@ const converters = {
     text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
 
-    return `    <h2 class="${className}">${text}</h2>\n`;
+    /**
+     * A paragraph, not a heading.
+     *
+     * This returned <h2> for every Text element - body copy, captions, image
+     * labels, all of it. A page with thirty text blocks shipped thirty
+     * second-level headings and no <h1>: no subject for a search engine, and
+     * every sentence announced as a heading to anyone navigating by them.
+     *
+     * Titles use the Heading element, which carries a level.
+     */
+    return `    <p class="${className}">${text}</p>\n`;
   },
 
   Button: (node) => {

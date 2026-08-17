@@ -17,31 +17,31 @@ const SITE_KINDS = {
     restaurant: {
         label: 'restaurant / cafe / bar',
         sections: 'hero with atmosphere · the menu or signature dishes · a gallery of the place · the story behind it · the people who cook · a dish of the week · what regulars say · opening hours and how to find it · booking or ordering · footer',
-        notes: 'A map genuinely helps here — people need to find the place. Photography matters more than text.',
+        notes: 'A map genuinely helps here — people need to find the place. Photography matters more than text. Opening hours suit a Timeline or a List; a menu suits Columns of Text.',
         keywords: ['restaurant', 'cafe', 'coffee', 'bar', 'bakery', 'pizzeria', 'bistro', 'kitchen', 'food', 'menu', 'diner', 'pub', 'sushi'],
     },
     portfolio: {
         label: 'portfolio / personal site of a creator',
         sections: 'hero with the name and what they do · a grid of selected works · one project told in depth · a short about · how they work · clients or places published · a way to get in touch · footer',
-        notes: 'The work is the content. Large images, generous whitespace, very little copy. No map, no carousel unless the work is photography.',
+        notes: 'The work is the content. Large images, generous whitespace, very little copy. A Quote can carry the one line of positioning. No map, no carousel unless the work is photography.',
         keywords: ['portfolio', 'photographer', 'designer', 'artist', 'illustrator', 'architect', 'freelance', 'showcase', 'works', 'creative'],
     },
     product: {
         label: 'SaaS / app / digital product',
         sections: 'hero with the promise and a call to action · the main features · how it works · what it replaces · pricing · testimonials or logos · frequently asked questions · final call to action · footer',
-        notes: 'Conversion-driven. Repeated call-to-action buttons. No map — the product has no address.',
+        notes: 'Conversion-driven. Pricing and Accordion both belong here, and a CTABanner near the end. Stats and LogoStrip carry the credibility. No map — the product has no address.',
         keywords: ['saas', 'app', 'platform', 'software', 'startup', 'dashboard', 'tool', 'api', 'crm', 'analytics', 'subscription'],
     },
     localBusiness: {
         label: 'local business / services',
         sections: 'hero · the services offered · why choose us · gallery of past work · prices or a quote request · the team · what customers say · contact details with a map · footer',
-        notes: 'Trust and reachability matter. A map is useful. Prices or a quote request often belong here.',
+        notes: 'Trust and reachability matter. A map is useful. Testimonial and TeamGrid are what build the trust; Pricing suits a fixed price list.',
         keywords: ['salon', 'barber', 'clinic', 'dentist', 'gym', 'fitness', 'studio', 'repair', 'plumber', 'garage', 'law', 'agency', 'shop', 'store'],
     },
     event: {
         label: 'event / conference / wedding',
         sections: 'hero with date and place · the programme or schedule · speakers or people involved · what previous years looked like · venue with a map · tickets or registration · getting there and staying · footer',
-        notes: 'The date and the call to register are the point. A countdown feel helps.',
+        notes: 'The date and the call to register are the point. A Timeline is the natural shape for a schedule, TeamGrid for the speakers, CTABanner for registering.',
         keywords: ['event', 'conference', 'wedding', 'festival', 'meetup', 'summit', 'workshop', 'concert', 'exhibition'],
     },
     content: {

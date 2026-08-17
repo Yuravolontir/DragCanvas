@@ -44,6 +44,23 @@ function CreateNewProject() {
             Carousel: Landing.Carousel,
             Map: Landing.Map,
             NavbarElement: Landing.NavbarElement,
+            Heading: Landing.Heading,
+            Columns: Landing.Columns,
+            Spacer: Landing.Spacer,
+            Divider: Landing.Divider,
+            List: Landing.List,
+            Quote: Landing.Quote,
+            Icon: Landing.Icon,
+            Badge: Landing.Badge,
+            Accordion: Landing.Accordion,
+            Pricing: Landing.Pricing,
+            Testimonial: Landing.Testimonial,
+            Stats: Landing.Stats,
+            TeamGrid: Landing.TeamGrid,
+            Timeline: Landing.Timeline,
+            CTABanner: Landing.CTABanner,
+            LogoStrip: Landing.LogoStrip,
+            SocialLinks: Landing.SocialLinks,
           }}
           enabled={false}
           onRender={Landing.RenderNode}

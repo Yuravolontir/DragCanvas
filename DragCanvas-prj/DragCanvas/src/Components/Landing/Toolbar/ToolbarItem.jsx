@@ -24,7 +24,44 @@ export const ToolbarItem = ({
   return (
     <GridLegacy item xs={full ? 12 : 6}>
       <div className="mb-2">
-        {['text', 'color', 'bg', 'number'].includes(type) ? (
+        {type === 'lines' ? (
+          /*
+            A list of short strings, edited as one per line.
+            
+            Several of the newer elements hold a list - list items, FAQ entries,
+            the features under a pricing tier - and the alternative is a repeater
+            with add and remove buttons, which is a great deal of machinery for
+            four lines of text. The prop stays an array; only the editing is flat.
+          */
+          <>
+            {props.label ? (
+              <h4 className="text-sm text-light-gray-2">{props.label}</h4>
+            ) : null}
+            <textarea
+              rows={Math.max(3, (Array.isArray(value) ? value.length : 1) + 1)}
+              defaultValue={Array.isArray(value) ? value.join('\n') : (value || '')}
+              onBlur={(e) => {
+                setProp((props) => {
+                  props[propKey] = e.target.value
+                    .split('\n')
+                    .map((line) => line.trim())
+                    .filter(Boolean);
+                }, 500);
+              }}
+              style={{
+                width: '100%',
+                background: 'var(--surface-dim)',
+                color: 'var(--on-surface)',
+                border: '1px solid var(--outline-light)',
+                borderRadius: 6,
+                padding: '8px 10px',
+                fontSize: 12,
+                fontFamily: 'inherit',
+                resize: 'vertical',
+              }}
+            />
+          </>
+        ) : ['text', 'color', 'bg', 'number'].includes(type) ? (
           <ToolbarTextInput
             {...props}
             type={type}

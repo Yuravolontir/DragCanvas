@@ -67,25 +67,97 @@ AVAILABLE ELEMENTS (use these EXACT type names, use ALL of them when appropriate
    inventing one costs the visitor a navigation item.
    Most pages open with a NavbarElement. Make the brand name relevant to the topic. Use 3-5 links.
 
+11. Heading (a title, with a real heading level):
+   Props: { "text": "Out of the oven at six", "level": "1"|"2"|"3"|"4", "fontSize": "44", "fontWeight": "800", "textAlign": "left", "color": {...} }
+   USE THIS FOR EVERY TITLE. Text is for prose. One level 1 per page, saying what
+   the page is about; sections below it are level 2. Level and size are separate -
+   a small section title is still a level 2.
+
+12. Columns (side-by-side, stacks on a phone):
+   Props: { "count": "2"|"3"|"4", "gap": "24", "align": "stretch"|"center", "stack": "yes" }
+   Children become the columns. Use this instead of Containers with width:"33%",
+   which stay narrow on a phone instead of stacking.
+
+13. Spacer (empty vertical space):
+   Props: { "height": "48" }
+
+14. Divider (a rule between things):
+   Props: { "thickness": "1", "color": {...}, "spacing": "24", "inset": "0" }
+
+15. List (bulleted or numbered):
+   Props: { "items": ["First", "Second"], "ordered": "no"|"yes", "fontSize": "16" }
+   A real list, not several Texts starting with a dash.
+
+16. Quote (a pull quote):
+   Props: { "text": "...", "attribution": "", "fontSize": "20" }
+   A sentence lifted out of the copy. For a customer vouching for the business,
+   use Testimonial instead.
+
+17. Icon (one Material symbol):
+   Props: { "name": "bolt", "size": "32", "padded": "yes", "color": {...}, "background": {...} }
+   Use the symbol's own name: schedule, verified, local_shipping, restaurant.
+
+18. Badge (a small pill of text):
+   Props: { "text": "Most popular", "background": {...}, "color": {...} }
+
+19. Accordion (questions that open and close):
+   Props: { "items": ["Question?", "Answer.", "Next question?", "Its answer."] }
+   Alternating lines: question, then its answer. The natural home for an FAQ.
+
+20. Pricing (tiers in columns that line up):
+   Props: { "tiers": ["Starter","₪0","forever","Start free","One site; Community support",  "Studio","₪49","per month","Choose Studio","Ten sites; Custom domain"], "featured": 2, "accent": {...} }
+   Five lines per tier: name, price, period, button, features separated by ";".
+   "featured" is which tier stands out, counting from 1.
+
+21. Testimonial (somebody vouching for the business):
+   Props: { "quote": "...", "author": "Dana Levi", "role": "Owner", "avatar": "" }
+
+22. Stats (a row of numbers):
+   Props: { "items": ["1,200+", "sites published", "4 min", "from prompt to live"] }
+   Two lines each: the value, then what it counts.
+
+23. TeamGrid (the people):
+   Props: { "people": ["Dana Levi","Head baker","", "Omer Katz","Pastry",""], "columns": "3" }
+   Three lines each: name, role, photo URL. Leave the URL empty for an initial.
+
+24. Timeline (steps in order, or a history):
+   Props: { "steps": ["1","Describe it","One sentence is enough", "2","Make it yours","Move blocks around"] }
+   Three lines each: marker, title, detail.
+
+25. CTABanner (the ask, on a band of its own):
+   Props: { "title": "Ready to order?", "text": "", "cta": "Book a table", "href": "#contact", "background": {...} }
+
+26. LogoStrip (a row of logos at one height):
+   Props: { "logos": ["https://...","https://..."], "height": "32" }
+
+27. SocialLinks (where else to find them):
+   Props: { "items": ["Instagram","https://instagram.com/x", "Facebook","https://facebook.com/x"] }
+   Two lines each: the name, then the address.
+
+REACH FOR THESE. A pricing table built out of Containers has nothing keeping its
+columns aligned; an FAQ built out of Texts does not open. If one of the elements
+above is what the section is, use it - assembling the same thing by hand is what
+makes a page look put together rather than designed.
+
 PATTERNS YOU CAN DRAW ON (a vocabulary, not a checklist - pick what suits the subject):
 
 - HERO SECTION: Full-width dark Container with a Video (videoUrl:"VIDEO_PLACEHOLDER_1" with text overlay) or large Text (fontSize:"48", fontWeight:"700") + subtitle Text + Button. Add dramatic shadow.
 
 - NAVBAR: usually the first section. Use "dark" or "primary" variant. Make it sticky: true for single-page sites.
 
-- GALLERY/SHOWCASE: Row Container with 3 card Containers, each with Image + Text + Button. Use radius:12 and shadow:30 for card effect.
+- GALLERY/SHOWCASE: a Columns with three card Containers, each with Image + Heading + Text. Use radius:12 and shadow:30 for the card effect.
 
 - VIDEO HERO: Use Video with videoUrl:"VIDEO_PLACEHOLDER_1" and a text overlay for a cinematic hero section.
 
 - CAROUSEL SECTION: full-width Carousel with images, headings and descriptions. Worth it when there are several things to show in sequence - a photographer's series, a product range. Skip it otherwise.
 
-- SPLIT SECTIONS: Row Container with Image on one side (width:"50%") and Text content on the other (width:"50%"). Alternate left/right.
+- SPLIT SECTIONS: a Columns with count:"2" - Image on one side, Heading + Text on the other. Alternate which side the image is on. Do not set width:"50%" by hand; that is what stops working on a phone.
 
 - CTA SECTIONS: Colored background Container with centered Text + Button(s). Use contrasting background colors.
 
 - MAP SECTION: only when the subject has a physical address people need to find (a cafe, a clinic, a venue). An app or a portfolio has nowhere to point at.
 
-- FEATURE CARDS: Row Container with 3-4 card Containers (background white, shadow:25, radius:12) each containing Image + Text + Text description.
+- FEATURE CARDS: a Columns with 3-4 card Containers (background white, shadow:25, radius:12), each containing an Icon + Heading level 3 + Text.
 
 - CONTACT SECTION: a short heading, one line of reassurance and a Form. For a
   local business, a restaurant or a freelancer this is usually the last section
@@ -103,6 +175,10 @@ DESIGN RULES:
 - Use shadow (20-50) on cards for depth
 - Use radius:12 for rounded cards and images
 - Create visual hierarchy: large headings (fontSize:"32"-"48"), medium subtext (fontSize:"18"-"22"), small body (fontSize:"14"-"16")
+- Titles are Heading elements, prose is Text. A page needs exactly one Heading at
+  level 1. Using Text for a title publishes it as a paragraph, and a page whose
+  headings are all paragraphs has no structure at all for a search engine or a
+  screen reader
 IMAGES - this rule has no exceptions, and it decides whether the page looks designed
 or thrown together:
 
