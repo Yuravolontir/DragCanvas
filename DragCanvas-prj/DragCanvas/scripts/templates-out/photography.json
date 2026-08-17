@@ -152,7 +152,7 @@
     "props": {
       "sourceType": "url",
       "videoId": "",
-      "videoUrl": "",
+      "videoUrl": "https://videos.pexels.com/video-files/6516822/6516822-hd_1280_720_30fps.mp4",
       "text": "Light, and what it does to a face"
     },
     "displayName": "Video",
@@ -365,13 +365,9 @@
     },
     "isCanvas": false,
     "props": {
-      "src": {
-        "src": "https://images.pexels.com/photos/29057425/pexels-photo-29057425.jpeg?auto=compress&cs=tinysrgb&w=700",
-        "radius": 2,
-        "width": "100%"
-      },
-      "radius": 0,
-      "width": "auto",
+      "src": "https://images.pexels.com/photos/29057425/pexels-photo-29057425.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "radius": 2,
+      "width": "100%",
       "height": "auto",
       "maxWidth": "100%"
     },
@@ -390,13 +386,9 @@
     },
     "isCanvas": false,
     "props": {
-      "src": {
-        "src": "https://images.pexels.com/photos/37233404/pexels-photo-37233404.jpeg?auto=compress&cs=tinysrgb&w=700",
-        "radius": 2,
-        "width": "100%"
-      },
-      "radius": 0,
-      "width": "auto",
+      "src": "https://images.pexels.com/photos/37233404/pexels-photo-37233404.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "radius": 2,
+      "width": "100%",
       "height": "auto",
       "maxWidth": "100%"
     },
@@ -415,13 +407,9 @@
     },
     "isCanvas": false,
     "props": {
-      "src": {
-        "src": "https://images.pexels.com/photos/16666883/pexels-photo-16666883.jpeg?auto=compress&cs=tinysrgb&w=700",
-        "radius": 2,
-        "width": "100%"
-      },
-      "radius": 0,
-      "width": "auto",
+      "src": "https://images.pexels.com/photos/16666883/pexels-photo-16666883.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "radius": 2,
+      "width": "100%",
       "height": "auto",
       "maxWidth": "100%"
     },
@@ -440,13 +428,9 @@
     },
     "isCanvas": false,
     "props": {
-      "src": {
-        "src": "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=700",
-        "radius": 2,
-        "width": "100%"
-      },
-      "radius": 0,
-      "width": "auto",
+      "src": "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "radius": 2,
+      "width": "100%",
       "height": "auto",
       "maxWidth": "100%"
     },
@@ -465,13 +449,9 @@
     },
     "isCanvas": false,
     "props": {
-      "src": {
-        "src": "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=700",
-        "radius": 2,
-        "width": "100%"
-      },
-      "radius": 0,
-      "width": "auto",
+      "src": "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "radius": 2,
+      "width": "100%",
       "height": "auto",
       "maxWidth": "100%"
     },
@@ -490,13 +470,9 @@
     },
     "isCanvas": false,
     "props": {
-      "src": {
-        "src": "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=700",
-        "radius": 2,
-        "width": "100%"
-      },
-      "radius": 0,
-      "width": "auto",
+      "src": "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "radius": 2,
+      "width": "100%",
       "height": "auto",
       "maxWidth": "100%"
     },

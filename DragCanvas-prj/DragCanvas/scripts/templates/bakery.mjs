@@ -16,7 +16,7 @@ export default function bakery() {
     { text: 'Visit', href: '#visit' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: CREAM, padding: ['64', '48', '40', '48'], width: '100%' }, 'Hero');
+  const hero = b.container(root, { background: CREAM, padding: ['64', '48', '40', '48'], width: '100%', backgroundImage: px(8633662, 1600), overlay: rgba(42, 29, 19, 0.55) }, 'Hero');
   const top = b.columns(hero, { count: '2', gap: '40', align: 'center' });
   const words = b.container(top, { background: CREAM, padding: ['0', '0', '0', '0'] }, 'Words');
   b.heading(words, 'Out of the oven at six', { level: '1', fontSize: '48', color: INK });
@@ -24,7 +24,7 @@ export default function bakery() {
     fontSize: '17', color: MUTED, margin: ['12', '0', '20', '0'],
   });
   b.button(words, 'Order for tomorrow', { background: TERRA, color: WHITE, buttonStyle: 'full' });
-  b.image(top, { src: px(8633662, 900), radius: 6, width: '100%' });
+  b.image(top, px(8633662, 900), { radius: 6, width: '100%' });
 
   const bread = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'bread' }, 'Bread');
   b.heading(bread, 'What we bake', { fontSize: '32', color: INK });
@@ -36,7 +36,7 @@ export default function bakery() {
     ['Rye', 'Dense, sour, keeps all week.', px(8633662, 600)],
   ]) {
     const card = b.container(cols, { background: CREAM, padding: ['0', '0', '20', '0'], radius: 8 }, name);
-    b.image(card, { src: img, radius: 8, width: '100%' });
+    b.image(card, img, { radius: 8, width: '100%' });
     b.heading(card, name, { level: '3', fontSize: '19', color: INK, margin: ['16', '18', '6', '18'] });
     b.text(card, note, { fontSize: '15', color: MUTED, margin: ['0', '18', '0', '18'] });
   }

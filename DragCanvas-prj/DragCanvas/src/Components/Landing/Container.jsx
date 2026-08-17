@@ -10,6 +10,10 @@ const defaultProps = {
   padding: ['0', '0', '0', '0'],
   margin: ['0', '0', '0', '0'],
   background: { r: 255, g: 255, b: 255, a: 1 },
+  backgroundImage: '',
+  // Laid over the photograph, under the text. A hero with white type on an
+  // unscrimmed photo is legible until the day somebody swaps the photo.
+  overlay: { r: 0, g: 0, b: 0, a: 0.45 },
   color: { r: 0, g: 0, b: 0, a: 1 },
   shadow: 0,
   radius: 0,
@@ -34,6 +38,8 @@ export const Container = (props) => {
     shadow,
     radius,
     anchor,
+    backgroundImage,
+    overlay,
     children,
   } = props;
   return (
@@ -43,7 +49,19 @@ export const Container = (props) => {
         justifyContent,
         flexDirection,
         alignItems,
-        background: `rgba(${Object.values(background)})`,
+        /*
+          A photograph behind a section, with a scrim over it.
+          
+          Written as two layered backgrounds rather than an <img>, so the text
+          stays in normal flow and nothing has to be absolutely positioned. The
+          gradient is a flat colour expressed as a gradient because CSS will not
+          stack a plain colour over an image in one property.
+        */
+        background: backgroundImage
+          ? `linear-gradient(rgba(${Object.values(overlay || { r: 0, g: 0, b: 0, a: 0.45 })}), rgba(${Object.values(overlay || { r: 0, g: 0, b: 0, a: 0.45 })})), url(${backgroundImage})`
+          : `rgba(${Object.values(background)})`,
+        backgroundSize: backgroundImage ? 'cover' : undefined,
+        backgroundPosition: backgroundImage ? 'center' : undefined,
         color: `rgba(${Object.values(color)})`,
         padding: `${padding[0]}px ${padding[1]}px ${padding[2]}px ${padding[3]}px`,
         margin: `${margin[0]}px ${margin[1]}px ${margin[2]}px ${margin[3]}px`,

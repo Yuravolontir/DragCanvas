@@ -23,7 +23,7 @@ export default function restaurant() {
     { text: 'Find us', href: '#find-us' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: CREAM, padding: ['64', '48', '48', '48'], width: '100%' }, 'Hero');
+  const hero = b.container(root, { background: CREAM, padding: ['64', '48', '48', '48'], width: '100%', backgroundImage: px(262978, 1600), overlay: rgba(42, 29, 19, 0.6) }, 'Hero');
   const top = b.columns(hero, { count: '2', gap: '40', align: 'center' });
   const words = b.container(top, { background: CREAM, padding: ['0', '0', '0', '0'] }, 'Words');
   b.badge(words, 'Open for dinner', { background: PANEL, color: TERRA });
@@ -32,7 +32,7 @@ export default function restaurant() {
     fontSize: '17', color: MUTED,
   });
   b.button(words, 'Book a table', { background: TERRA, color: WHITE, buttonStyle: 'full' });
-  b.image(top, { src: px(262978, 900), radius: 8, width: '100%' });
+  b.image(top, px(262978, 900), { radius: 8, width: '100%' });
 
   const menu = b.container(root, { background: PANEL, padding: ['56', '48', '56', '48'], width: '100%', anchor: 'menu' }, 'Menu');
   b.heading(menu, 'This week', { fontSize: '32', color: INK });

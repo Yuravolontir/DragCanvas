@@ -124,6 +124,14 @@ const converters = {
     const isRoot = nodeId === 'ROOT';
     const className = generateClass('container');
 
+    // A photograph behind the section, with a scrim over it for the text. Two
+    // stacked backgrounds rather than an <img>, so nothing needs positioning.
+    const bgImage = String(props.backgroundImage || '').trim();
+    const scrim = rgbaToString(props.overlay) || 'rgba(0,0,0,0.45)';
+    const background = bgImage
+      ? `linear-gradient(${scrim}, ${scrim}), url('${resolveImageSrc(bgImage)}')`
+      : rgbaToString(props.background);
+
     const styles = {
       display: 'flex',
       flexDirection: props.flexDirection || 'column',
@@ -133,7 +141,9 @@ const converters = {
       height: props.height || 'auto',
       padding: spacingToCss(props.padding),
       margin: isRoot ? '0 auto' : spacingToCss(props.margin),
-      background: rgbaToString(props.background),
+      background,
+      backgroundSize: bgImage ? 'cover' : undefined,
+      backgroundPosition: bgImage ? 'center' : undefined,
       color: rgbaToString(props.color),
       borderRadius: `${props.radius || 0}px`,
       boxShadow: props.shadow > 0

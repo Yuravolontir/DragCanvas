@@ -16,7 +16,7 @@ export default function ceramics() {
     { text: 'About', href: '#about' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: SAND, padding: ['64', '48', '40', '48'], width: '100%' }, 'Hero');
+  const hero = b.container(root, { background: SAND, padding: ['64', '48', '40', '48'], width: '100%', backgroundImage: px(34004100, 1600), overlay: rgba(58, 53, 44, 0.5) }, 'Hero');
   b.heading(hero, 'Made slowly, by two people', { level: '1', fontSize: '46', color: INK });
   b.text(hero, 'Tableware thrown and glazed in a small studio. Every batch is a little different, which is rather the point.', {
     fontSize: '17', color: MUTED, margin: ['12', '0', '0', '0'],
@@ -30,7 +30,7 @@ export default function ceramics() {
     ['Plates', 'From ₪110', px(6693557, 700)],
   ]) {
     const card = b.container(grid, { background: PANEL, padding: ['0', '0', '18', '0'], radius: 18 }, name);
-    b.image(card, { src: img, radius: 18, width: '100%' });
+    b.image(card, img, { radius: 18, width: '100%' });
     b.heading(card, name, { level: '3', fontSize: '18', color: INK, margin: ['14', '18', '4', '18'] });
     b.text(card, price, { fontSize: '15', color: MOSS, margin: ['0', '18', '0', '18'] });
   }

@@ -130,7 +130,14 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "backgroundImage": "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "overlay": {
+        "r": 28,
+        "g": 30,
+        "b": 30,
+        "a": 0.66
+      }
     },
     "displayName": "Container",
     "custom": {
@@ -376,13 +383,9 @@
     },
     "isCanvas": false,
     "props": {
-      "src": {
-        "src": "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=900",
-        "radius": 10,
-        "width": "100%"
-      },
-      "radius": 0,
-      "width": "auto",
+      "src": "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "radius": 10,
+      "width": "100%",
       "height": "auto",
       "maxWidth": "100%"
     },
@@ -578,13 +581,9 @@
     },
     "isCanvas": false,
     "props": {
-      "src": {
-        "src": "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "radius": 10,
-        "width": "100%"
-      },
-      "radius": 0,
-      "width": "auto",
+      "src": "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "radius": 10,
+      "width": "100%",
       "height": "auto",
       "maxWidth": "100%"
     },
@@ -684,13 +683,9 @@
     },
     "isCanvas": false,
     "props": {
-      "src": {
-        "src": "https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "radius": 10,
-        "width": "100%"
-      },
-      "radius": 0,
-      "width": "auto",
+      "src": "https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "radius": 10,
+      "width": "100%",
       "height": "auto",
       "maxWidth": "100%"
     },

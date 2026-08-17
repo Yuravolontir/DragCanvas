@@ -16,7 +16,7 @@ export default function developer() {
     { text: 'Contact', href: '#contact' },
   ], { variant: 'dark' });
 
-  const hero = b.container(root, { background: INK, padding: ['80', '48', '48', '48'], width: '100%' }, 'Hero');
+  const hero = b.container(root, { background: INK, padding: ['80', '48', '48', '48'], width: '100%', backgroundImage: px(1181671, 1600), overlay: rgba(14, 16, 20, 0.8) }, 'Hero');
   b.heading(hero, 'I build the boring parts properly', { level: '1', fontSize: '48', color: BONE });
   b.text(hero, 'Backend and infrastructure, mostly Node and Postgres. Ten years, four companies, one very long migration.', {
     fontSize: '17', color: MUTED, margin: ['14', '0', '0', '0'],

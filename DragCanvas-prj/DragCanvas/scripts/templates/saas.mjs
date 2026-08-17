@@ -28,6 +28,7 @@ export default function saas() {
   // ── the promise ────────────────────────────────────────────────
   const hero = b.container(root, {
     background: INK, padding: ['80', '48', '64', '48'], alignItems: 'center', width: '100%',
+    backgroundImage: px(3184291, 1600), overlay: rgba(2, 6, 23, 0.82),
   }, 'Hero');
   b.heading(hero, 'Ship the work, not the status update', {
     level: '1', fontSize: '52', fontWeight: '800', textAlign: 'center', color: WHITE,

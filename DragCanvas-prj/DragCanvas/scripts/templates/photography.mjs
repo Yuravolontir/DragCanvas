@@ -17,7 +17,7 @@ export default function photography() {
   ], { variant: 'dark' });
 
   const hero = b.container(root, { background: INK, padding: ['0', '0', '0', '0'], width: '100%' }, 'Hero');
-  b.video(hero, { sourceType: 'url', videoUrl: '', text: 'Light, and what it does to a face' });
+  b.video(hero, { sourceType: 'url', videoUrl: 'https://videos.pexels.com/video-files/6516822/6516822-hd_1280_720_30fps.mp4', text: 'Light, and what it does to a face' });
 
   const intro = b.container(root, { background: INK, padding: ['48', '48', '32', '48'], width: '100%' }, 'Intro');
   b.heading(intro, 'Light, and what it does to a face', { level: '1', fontSize: '48', color: BONE });
@@ -28,7 +28,7 @@ export default function photography() {
   const work = b.container(root, { background: INK, padding: ['16', '48', '48', '48'], width: '100%', anchor: 'work' }, 'Work');
   const grid = b.columns(work, { count: '3', gap: '14' });
   for (const id of [29057425, 37233404, 16666883, 1779487, 3184291, 262978]) {
-    b.image(grid, { src: px(id, 700), radius: 2, width: '100%' });
+    b.image(grid, px(id, 700), { radius: 2, width: '100%' });
   }
 
   const rates = b.container(root, { background: PANEL, padding: ['56', '48', '56', '48'], width: '100%', anchor: 'rates', alignItems: 'center' }, 'Rates');

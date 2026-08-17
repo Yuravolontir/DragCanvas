@@ -16,7 +16,7 @@ export default function coffee() {
     { text: 'Visit', href: '#visit' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: PAPER, padding: ['64', '48', '40', '48'], width: '100%' }, 'Hero');
+  const hero = b.container(root, { background: PAPER, padding: ['64', '48', '40', '48'], width: '100%', backgroundImage: px(302899, 1600), overlay: rgba(45, 32, 24, 0.62) }, 'Hero');
   b.heading(hero, 'Roasted Tuesday, with you Thursday', { level: '1', fontSize: '46', color: INK });
   b.text(hero, 'One roastery, four farms, and a delivery that arrives before the last bag runs out.', {
     fontSize: '17', color: MUTED, margin: ['12', '0', '24', '0'],

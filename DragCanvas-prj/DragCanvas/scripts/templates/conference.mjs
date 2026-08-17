@@ -16,7 +16,7 @@ export default function conference() {
     { text: 'Tickets', href: '#tickets' },
   ], { variant: 'dark', sticky: true });
 
-  const hero = b.container(root, { background: NAVY, padding: ['72', '48', '48', '48'], width: '100%', alignItems: 'center' }, 'Hero');
+  const hero = b.container(root, { background: NAVY, padding: ['72', '48', '48', '48'], width: '100%', alignItems: 'center', backgroundImage: px(9275222, 1600), overlay: rgba(15, 27, 52, 0.72) }, 'Hero');
   b.badge(hero, 'Haifa · 12–13 November', { background: GOLD, color: NAVY });
   b.heading(hero, 'Two days on how software feels', {
     level: '1', fontSize: '50', textAlign: 'center', color: BONE, margin: ['16', '0', '12', '0'],

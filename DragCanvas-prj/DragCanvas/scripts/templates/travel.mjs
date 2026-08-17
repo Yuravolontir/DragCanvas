@@ -21,7 +21,7 @@ export default function travel() {
     { text: 'Subscribe', href: '#subscribe' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: PAPER, padding: ['72', '48', '40', '48'], width: '100%' }, 'Hero');
+  const hero = b.container(root, { background: PAPER, padding: ['72', '48', '40', '48'], width: '100%', backgroundImage: px(1271619, 1600), overlay: rgba(38, 34, 30, 0.55) }, 'Hero');
   b.heading(hero, 'Slow routes, written down', { level: '1', fontSize: '50', color: INK });
   b.text(hero, 'Trains, ferries and long walks. Notes from the places in between the places people go.', {
     fontSize: '18', color: MUTED, margin: ['14', '0', '0', '0'],

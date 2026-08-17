@@ -16,7 +16,7 @@ export default function clinic() {
     { text: 'Questions', href: '#questions' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: MIST, padding: ['64', '48', '40', '48'], width: '100%' }, 'Hero');
+  const hero = b.container(root, { background: MIST, padding: ['64', '48', '40', '48'], width: '100%', backgroundImage: px(3184291, 1600), overlay: rgba(23, 42, 48, 0.62) }, 'Hero');
   const top = b.columns(hero, { count: '2', gap: '40', align: 'center' });
   const words = b.container(top, { background: MIST, padding: ['0', '0', '0', '0'] }, 'Words');
   b.badge(words, 'Taking new patients', { background: PANEL, color: TEAL });
@@ -25,7 +25,7 @@ export default function clinic() {
     fontSize: '17', color: MUTED,
   });
   b.button(words, 'Book a check-up', { background: TEAL, color: WHITE, buttonStyle: 'full' });
-  b.image(top, { src: px(3184291, 900), radius: 12, width: '100%' });
+  b.image(top, px(3184291, 900), { radius: 12, width: '100%' });
 
   const treat = b.container(root, { background: MIST, padding: ['40', '48', '48', '48'], width: '100%', anchor: 'treatments' }, 'Treatments');
   b.heading(treat, 'What we do', { fontSize: '32', color: INK });

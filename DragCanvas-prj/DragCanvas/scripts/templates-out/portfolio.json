@@ -131,7 +131,14 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "backgroundImage": "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "overlay": {
+        "r": 13,
+        "g": 13,
+        "b": 15,
+        "a": 0.62
+      }
     },
     "displayName": "Container",
     "custom": {
@@ -293,13 +300,9 @@
     },
     "isCanvas": false,
     "props": {
-      "src": {
-        "src": "https://images.pexels.com/photos/29057425/pexels-photo-29057425.jpeg?auto=compress&cs=tinysrgb&w=900",
-        "radius": 0,
-        "width": "100%"
-      },
+      "src": "https://images.pexels.com/photos/29057425/pexels-photo-29057425.jpeg?auto=compress&cs=tinysrgb&w=900",
       "radius": 0,
-      "width": "auto",
+      "width": "100%",
       "height": "auto",
       "maxWidth": "100%"
     },
@@ -318,13 +321,9 @@
     },
     "isCanvas": false,
     "props": {
-      "src": {
-        "src": "https://images.pexels.com/photos/37233404/pexels-photo-37233404.jpeg?auto=compress&cs=tinysrgb&w=900",
-        "radius": 0,
-        "width": "100%"
-      },
+      "src": "https://images.pexels.com/photos/37233404/pexels-photo-37233404.jpeg?auto=compress&cs=tinysrgb&w=900",
       "radius": 0,
-      "width": "auto",
+      "width": "100%",
       "height": "auto",
       "maxWidth": "100%"
     },
@@ -343,13 +342,9 @@
     },
     "isCanvas": false,
     "props": {
-      "src": {
-        "src": "https://images.pexels.com/photos/16666883/pexels-photo-16666883.jpeg?auto=compress&cs=tinysrgb&w=900",
-        "radius": 0,
-        "width": "100%"
-      },
+      "src": "https://images.pexels.com/photos/16666883/pexels-photo-16666883.jpeg?auto=compress&cs=tinysrgb&w=900",
       "radius": 0,
-      "width": "auto",
+      "width": "100%",
       "height": "auto",
       "maxWidth": "100%"
     },
@@ -368,13 +363,9 @@
     },
     "isCanvas": false,
     "props": {
-      "src": {
-        "src": "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=900",
-        "radius": 0,
-        "width": "100%"
-      },
+      "src": "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=900",
       "radius": 0,
-      "width": "auto",
+      "width": "100%",
       "height": "auto",
       "maxWidth": "100%"
     },

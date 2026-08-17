@@ -23,6 +23,11 @@ AVAILABLE ELEMENTS (use these EXACT type names, use ALL of them when appropriate
 
 1. Container (layout wrapper, can have children):
    Props: { "width": "100%", "height": "auto", "flexDirection": "row"|"column", "alignItems": "flex-start"|"center"|"flex-end", "justifyContent": "flex-start"|"center"|"flex-end"|"space-between", "background": {"r":255,"g":255,"b":255,"a":1}, "color": {"r":0,"g":0,"b":0,"a":1}, "padding": ["0","0","0","0"], "margin": ["0","0","0","0"], "shadow": 0, "radius": 0, "fillSpace": "no"|"yes" }
+   Also: { "backgroundImage": "https://picsum.photos/seed/DESCRIPTIVE_NAME/1600/900", "overlay": {"r":0,"g":0,"b":0,"a":0.45} }
+   A photograph behind a whole section, with a scrim over it so the text stays
+   readable. This is what makes a hero look like a hero - reach for it on the
+   first screen of almost any page, and on one or two section breaks. The seed
+   rule under IMAGES applies here too.
 
 2. Text (inline text, editable):
    Props: { "text": "Hello World", "fontSize": "15", "fontWeight": "400"|"500"|"600"|"700", "textAlign": "left"|"center"|"right", "color": {"r":92,"g":90,"b":90,"a":1}, "shadow": 0, "margin": [0,0,0,0] }

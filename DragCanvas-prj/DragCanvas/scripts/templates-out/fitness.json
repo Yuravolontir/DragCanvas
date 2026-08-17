@@ -131,7 +131,14 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "backgroundImage": "https://images.pexels.com/photos/6628962/pexels-photo-6628962.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "overlay": {
+        "r": 16,
+        "g": 18,
+        "b": 17,
+        "a": 0.7
+      }
     },
     "displayName": "Container",
     "custom": {

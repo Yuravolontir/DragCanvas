@@ -7,6 +7,13 @@ import { ToolbarRadio } from './Toolbar/ToolbarRadio';
 export const ContainerSettings = () => {
   return (
     <React.Fragment>
+      <ToolbarSection title="Background image"
+        props={['backgroundImage']}
+        summary={({ backgroundImage }) => (backgroundImage ? 'photo' : 'none')}
+      >
+        <ToolbarItem full={true} propKey="backgroundImage" type="text" label="Image URL" />
+        <ToolbarItem full={true} propKey="overlay" type="bg" label="Scrim over it" />
+      </ToolbarSection>
       <ToolbarSection
         title="Dimensions"
         props={['width', 'height']}

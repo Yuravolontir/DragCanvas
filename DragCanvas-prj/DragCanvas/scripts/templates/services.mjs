@@ -21,7 +21,7 @@ export default function services() {
     { text: 'Quote', href: '#quote' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: PAPER, padding: ['64', '48', '40', '48'], width: '100%' }, 'Hero');
+  const hero = b.container(root, { background: PAPER, padding: ['64', '48', '40', '48'], width: '100%', backgroundImage: px(1571460, 1600), overlay: rgba(28, 30, 30, 0.66) }, 'Hero');
   const top = b.columns(hero, { count: '2', gap: '40', align: 'center' });
   const words = b.container(top, { background: PAPER, padding: ['0', '0', '0', '0'] }, 'Words');
   b.badge(words, 'Booking three weeks ahead', { background: PANEL, color: AMBER });
@@ -30,7 +30,7 @@ export default function services() {
     fontSize: '17', color: MUTED,
   });
   b.button(words, 'Get a quote', { background: AMBER, color: WHITE, buttonStyle: 'full' });
-  b.image(top, { src: px(1571460, 900), radius: 10, width: '100%' });
+  b.image(top, px(1571460, 900), { radius: 10, width: '100%' });
 
   const work = b.container(root, { background: PAPER, padding: ['32', '48', '40', '48'], width: '100%', anchor: 'work' }, 'Work');
   b.heading(work, 'Before and after', { fontSize: '30', color: INK });
@@ -38,7 +38,7 @@ export default function services() {
   const ba = b.columns(work, { count: '2', gap: '20' });
   for (const [label, img] of [['Before', px(276724, 800)], ['After', px(1080721, 800)]]) {
     const card = b.container(ba, { background: PANEL, padding: ['0', '0', '16', '0'], radius: 10 }, label);
-    b.image(card, { src: img, radius: 10, width: '100%' });
+    b.image(card, img, { radius: 10, width: '100%' });
     b.badge(card, label, { background: WHITE, color: INK });
   }
 

@@ -22,7 +22,7 @@ export default function fitness() {
     { text: 'Membership', href: '#membership' },
   ], { variant: 'dark', sticky: true });
 
-  const hero = b.container(root, { background: INK, padding: ['80', '48', '56', '48'], width: '100%' }, 'Hero');
+  const hero = b.container(root, { background: INK, padding: ['80', '48', '56', '48'], width: '100%', backgroundImage: px(6628962, 1600), overlay: rgba(16, 18, 17, 0.7) }, 'Hero');
   b.heading(hero, 'Show up. Lift. Leave.', { level: '1', fontSize: '56', fontWeight: '800', color: BONE });
   b.text(hero, 'Barbell club and conditioning, five in the morning to ten at night. No mirrors, no contracts.', {
     fontSize: '18', color: MUTED, margin: ['14', '0', '24', '0'],

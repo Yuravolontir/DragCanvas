@@ -16,7 +16,7 @@ export default function agency() {
     { text: 'Brief', href: '#brief' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: PAPER, padding: ['80', '48', '40', '48'], width: '100%' }, 'Hero');
+  const hero = b.container(root, { background: PAPER, padding: ['80', '48', '40', '48'], width: '100%', backgroundImage: px(3184338, 1600), overlay: rgba(20, 20, 22, 0.68) }, 'Hero');
   b.heading(hero, 'We make the difficult part look obvious', { level: '1', fontSize: '54', color: INK });
   b.text(hero, 'Brand and product design for companies that have outgrown their first look.', {
     fontSize: '19', color: MUTED, margin: ['14', '0', '28', '0'],
@@ -32,7 +32,7 @@ export default function agency() {
     ['Fathom', 'Turning a dense product into three screens', px(3184291, 800)],
   ]) {
     const card = b.container(cases, { background: PANEL, padding: ['0', '0', '22', '0'], radius: 12 }, client);
-    b.image(card, { src: img, radius: 12, width: '100%' });
+    b.image(card, img, { radius: 12, width: '100%' });
     b.heading(card, client, { level: '3', fontSize: '20', color: INK, margin: ['16', '22', '4', '22'] });
     b.text(card, what, { fontSize: '15', color: MUTED, margin: ['0', '22', '0', '22'] });
   }

@@ -50,6 +50,29 @@ for (const t of templates) {
     }
   }
 
+  // Props that must be text, and were not.
+  //
+  // Every image in the first build of this set was broken, because `image()`
+  // takes its src as the second argument and it was being handed a props object
+  // instead - so `src` held `{ src: '...', radius: 6 }` and the browser rendered
+  // nothing. The URLs were all valid; they were in the wrong place. Checking
+  // that a URL appears somewhere in the JSON does not catch that, and did not.
+  for (const [id, n] of Object.entries(t.map)) {
+    for (const key of ['src', 'videoUrl', 'href', 'text', 'brand', 'title', 'quote', 'author']) {
+      const v = n.props?.[key];
+      if (v !== undefined && typeof v !== 'string') {
+        throw new Error(`${t.name}: ${id} (${n.type?.resolvedName}) has a non-string ${key}: ${JSON.stringify(v).slice(0, 60)}`);
+      }
+    }
+    // An element that shows media and has none renders as an empty box
+    if (n.type?.resolvedName === 'Image' && !n.props?.src) {
+      throw new Error(`${t.name}: ${id} is an Image with no src`);
+    }
+    if (n.type?.resolvedName === 'Video' && !n.props?.videoUrl) {
+      throw new Error(`${t.name}: ${id} is a Video with no videoUrl`);
+    }
+  }
+
   // A page needs one level-1 heading. Zero leaves it with no subject; two make
   // the outline ambiguous, and both are silent until somebody audits the HTML.
   const h1 = Object.values(t.map).filter(
@@ -103,17 +126,27 @@ for (const t of templates) {
   const componentCount = Object.keys(t.map).length - 1;
   const size = (flat.length / 1024).toFixed(1);
 
-  if (t.id) {
+  // Without an id, match on the name. Running this twice used to insert a second
+  // copy of every template that had no id - nine duplicates in the gallery from
+  // one extra run. A build script is going to be run more than once, so it has
+  // to be safe to.
+  let targetId = t.id;
+  if (!targetId) {
+    const found = await pool.query('SELECT "Template_ID" FROM "TBTemplates" WHERE "TemplateName" = $1', [t.name]);
+    if (found.rowCount > 0) targetId = found.rows[0].Template_ID;
+  }
+
+  if (targetId) {
     const res = await pool.query(
       `UPDATE "TBTemplates"
           SET "TemplateName" = $2, "Category" = $3, "ThumbnailURL" = $4,
               "TemplateData" = $5, "ComponentCount" = $6, "IsActive" = true
         WHERE "Template_ID" = $1
       RETURNING "Template_ID"`,
-      [t.id, t.name, t.category, t.thumb, templateData, componentCount]
+      [targetId, t.name, t.category, t.thumb, templateData, componentCount]
     );
-    if (res.rowCount === 0) throw new Error(`${t.name}: no template with id ${t.id} to replace`);
-    console.log(`  replaced ${t.id}  ${t.name} (${componentCount} components, ${size} KB)`);
+    if (res.rowCount === 0) throw new Error(`${t.name}: no template with id ${targetId} to replace`);
+    console.log(`  replaced ${targetId}  ${t.name} (${componentCount} components, ${size} KB)`);
   } else {
     const res = await pool.query(
       `INSERT INTO "TBTemplates" ("TemplateName", "Category", "ThumbnailURL", "TemplateData", "ComponentCount", "CreatedBy", "IsActive")

@@ -23,7 +23,7 @@ export default function portfolio() {
     { text: 'Contact', href: '#contact' },
   ], { variant: 'dark' });
 
-  const hero = b.container(root, { background: INK, padding: ['96', '48', '56', '48'], width: '100%' }, 'Hero');
+  const hero = b.container(root, { background: INK, padding: ['96', '48', '56', '48'], width: '100%', backgroundImage: px(1779487, 1600), overlay: rgba(13, 13, 15, 0.62) }, 'Hero');
   b.heading(hero, 'Portraits, mostly', { level: '1', fontSize: '58', fontWeight: '700', color: BONE });
   b.text(hero, 'Studio and location work for editorial and brands. Currently booking for spring.', {
     fontSize: '18', color: MUTED, margin: ['14', '0', '0', '0'],
@@ -32,7 +32,7 @@ export default function portfolio() {
   const work = b.container(root, { background: INK, padding: ['24', '48', '48', '48'], width: '100%', anchor: 'work' }, 'Work');
   const grid = b.columns(work, { count: '2', gap: '20' });
   for (const id of [29057425, 37233404, 16666883, 1779487]) {
-    b.image(grid, { src: px(id, 900), radius: 0, width: '100%' });
+    b.image(grid, px(id, 900), { radius: 0, width: '100%' });
   }
 
   const said = b.container(root, { background: INK, padding: ['32', '48', '48', '48'], width: '100%' }, 'Said');
