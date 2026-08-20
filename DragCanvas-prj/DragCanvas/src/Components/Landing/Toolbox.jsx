@@ -138,7 +138,13 @@ const Empty = styled.div`
   text-align: center;
 `;
 
-export const Toolbox = () => {
+/*
+ * `offCanvas` is true below 1024 while this panel is a closed drawer. It becomes
+ * `inert`, which takes the whole subtree out of the tab order and the
+ * accessibility tree — an off-screen panel whose buttons you can still Tab into
+ * is worse than one that is simply not there.
+ */
+export const Toolbox = ({ offCanvas = false }) => {
   const {
     enabled,
     selectedId,
@@ -224,6 +230,8 @@ export const Toolbox = () => {
       $enabled={enabled && enabled}
       className="toolbox transition h-full flex flex-col"
       style={{ width: enabled ? '104px' : 0 }}
+      inert={offCanvas || undefined}
+      aria-hidden={offCanvas || undefined}
     >
       <PanelTitle>Elements</PanelTitle>
       <SearchBox

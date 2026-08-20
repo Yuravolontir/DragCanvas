@@ -132,7 +132,7 @@ export default function MyProject() {
 
       <div style={{ paddingTop: '100px', paddingBottom: '80px', paddingLeft: '24px', paddingRight: '24px', maxWidth: '1200px', margin: '0 auto' }}>
         {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '48px' }}>
+        <div className="dc-projects-header">
           <div>
             <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.75rem', color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '12px', fontWeight: 700 }}>
               Dashboard
@@ -161,6 +161,7 @@ export default function MyProject() {
           </div>
           <button
             onClick={() => navigate('/create-new-project')}
+            className="dc-projects-new"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -259,11 +260,7 @@ export default function MyProject() {
             </button>
           </div>
         ) : (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(12, 1fr)',
-            gap: '24px',
-          }}>
+          <div className="dc-projects-grid">
             {projects.map((project, index) => {
               const isFirst = index === 0;
               return (
@@ -271,7 +268,6 @@ export default function MyProject() {
                   key={project.Project_ID}
                   className={`animate-fade-in-up stagger-${Math.min(index + 1, 5)}`}
                   style={{
-                    gridColumn: isFirst ? 'span 8' : 'span 4',
                     background: 'var(--surface)',
                     borderRadius: '20px',
                     overflow: 'hidden',

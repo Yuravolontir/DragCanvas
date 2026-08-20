@@ -147,7 +147,7 @@ return (
     {/* Table example */}
     <Card className="shadow-sm mb-4">
         <Card.Header>Projects per User (Top 10)</Card.Header>
-        <Table striped bordered hover className="mb-0">
+        <Table responsive striped bordered hover className="mb-0">
         <thead>
             <tr><th>User</th><th>Projects</th></tr>
         </thead>

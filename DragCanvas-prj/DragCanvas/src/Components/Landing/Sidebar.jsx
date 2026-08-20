@@ -78,7 +78,8 @@ export const SidebarDiv = styled.div`
   box-shadow: -2px 0 14px color-mix(in oklab, var(--paper) 6%, transparent);
 `;
 
-export const Sidebar = () => {
+/* See Toolbox: a closed drawer must leave the tab order, not just the screen. */
+export const Sidebar = ({ offCanvas = false }) => {
   const [layersVisible, setLayerVisible] = useState(true);
   const [toolbarVisible, setToolbarVisible] = useState(true);
   const { enabled } = useEditor((state) => ({
@@ -86,7 +87,12 @@ export const Sidebar = () => {
   }));
 
   return (
-    <SidebarDiv $enabled={enabled} className="sidebar transition bg-white w-2">
+    <SidebarDiv
+      $enabled={enabled}
+      className="sidebar transition bg-white w-2"
+      inert={offCanvas || undefined}
+      aria-hidden={offCanvas || undefined}
+    >
       <div className="flex flex-col h-full">
         <SidebarItem
           icon="tune"

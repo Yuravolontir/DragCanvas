@@ -563,7 +563,7 @@ const confirmRoleChange = async () => {
   if (error) return (
     <div>
       <NavBar />
-      <Container className="mt-5">
+      <Container className="dc-admin-page">
         <div className="alert alert-danger">Error: {error}</div>
       </Container>
     </div>
@@ -572,9 +572,8 @@ const confirmRoleChange = async () => {
    return (
       <div>
         <NavBar />
-        <Container className="mt-5">
-          <div className="d-flex justify-content-between
-  align-items-center mb-4">
+        <Container className="dc-admin-page">
+          <div className="d-flex justify-content-between align-items-center mb-4 dc-admin-row">
             <h2>Admin Panel</h2>
             <div>
               <Button
@@ -613,8 +612,8 @@ const confirmRoleChange = async () => {
           {/* USERS TAB */}
           {activeTab === 'users' && (
             <>
-              <div className="d-flex gap-3 mb-3">
-                <InputGroup style={{ maxWidth: '400px' }}>
+              <div className="d-flex gap-3 mb-3 dc-admin-row">
+                <InputGroup className="dc-admin-search">
                   <InputGroup.Text>🔍</InputGroup.Text>
                   <Form.Control
                     placeholder="Search email..."
@@ -624,7 +623,7 @@ const confirmRoleChange = async () => {
                 </InputGroup>
 
                 <Form.Select
-                  style={{ width: '150px' }}
+                  className="dc-admin-select"
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
                 >
@@ -634,7 +633,7 @@ const confirmRoleChange = async () => {
                 </Form.Select>
 
                 <Form.Select
-                  style={{ width: '150px' }}
+                  className="dc-admin-select"
                   value={filterRole}
                   onChange={(e) => setFilterRole(e.target.value)}
                 >
@@ -647,7 +646,7 @@ const confirmRoleChange = async () => {
                 </Form.Select>
               </div>
 
-              <Table striped bordered hover>
+              <Table responsive striped bordered hover>
                 <thead className="table-dark">
                   <tr>
                     <th>ID</th>
@@ -740,7 +739,7 @@ const confirmRoleChange = async () => {
               ) : templates.length === 0 ? (
                 <p className="text-center mt-4">No templates found.</p>
               ) : (
-                <Table striped bordered hover>
+                <Table responsive striped bordered hover>
                   <thead className="table-dark">
                     <tr>
                       <th>ID</th>
@@ -804,7 +803,7 @@ const confirmRoleChange = async () => {
             {activeTab === 'notifications' && (
               <>
                 {/* Sub-tab Navigation */}
-                <div className="d-flex gap-2 mb-3">
+                <div className="d-flex gap-2 mb-3 dc-admin-row">
                   <Button
                     variant={activeNotificationSubTab === 'manage' ? 'primary' : 'outline-primary'}
                     size="sm"
@@ -857,7 +856,7 @@ const confirmRoleChange = async () => {
                     ) : notifications.length === 0 ? (
                       <p className="text-center mt-4">No notifications found.</p>
                     ) : (
-                      <Table striped bordered hover size="sm">
+                      <Table responsive striped bordered hover size="sm">
                         <thead className="table-dark">
                           <tr>
                             <th>ID</th>
@@ -922,7 +921,7 @@ const confirmRoleChange = async () => {
                     ) : schedules.length === 0 ? (
                       <p className="text-center mt-4">No schedules found.</p>
                     ) : (
-                      <Table striped bordered hover size="sm">
+                      <Table responsive striped bordered hover size="sm">
                         <thead className="table-dark">
                           <tr>
                             <th>ID</th>
@@ -991,7 +990,7 @@ const confirmRoleChange = async () => {
                     ) : notificationTemplates.length === 0 ? (
                       <p className="text-center mt-4">No templates found.</p>
                     ) : (
-                      <Table striped bordered hover size="sm">
+                      <Table responsive striped bordered hover size="sm">
                         <thead className="table-dark">
                           <tr>
                             <th>ID</th>
@@ -1050,7 +1049,7 @@ const confirmRoleChange = async () => {
                     <h4 className="mb-3">📊 Notification Logs</h4>
 
                     {/* Summary Cards */}
-                    <div className="d-flex gap-3 mb-3">
+                    <div className="d-flex gap-3 mb-3 dc-admin-row">
                       <div className="flex-fill p-3 border rounded bg-light">
                         <h6 className="mb-1">Total</h6>
                         <h3 className="mb-0">{logStats.Total || 0}</h3>
@@ -1070,9 +1069,9 @@ const confirmRoleChange = async () => {
                     </div>
 
                     {/* Filters */}
-                    <div className="d-flex gap-2 mb-3">
+                    <div className="d-flex gap-2 mb-3 dc-admin-row">
                       <Form.Select
-                        style={{ width: '150px' }}
+                        className="dc-admin-select"
                         value={logFilters.status}
                         onChange={(e) => { setLogFilters({ ...logFilters, status: e.target.value }); fetchNotificationLogs(1); }}
                       >
@@ -1082,7 +1081,7 @@ const confirmRoleChange = async () => {
                         <option value="failed">Failed</option>
                       </Form.Select>
                       <Form.Control
-                        style={{ width: '200px' }}
+                        className="dc-admin-input"
                         placeholder="Search username or email..."
                         value={logFilters.search}
                         onChange={(e) => setLogFilters({ ...logFilters, search: e.target.value })}
@@ -1097,7 +1096,7 @@ const confirmRoleChange = async () => {
                     ) : notificationLogs.length === 0 ? (
                       <p className="text-center mt-4">No logs found.</p>
                     ) : (
-                      <Table striped bordered hover size="sm">
+                      <Table responsive striped bordered hover size="sm">
                         <thead className="table-dark">
                           <tr>
                             <th>Date</th>
@@ -1271,7 +1270,7 @@ const confirmRoleChange = async () => {
                 {/* User Info */}
                 <div className="mb-4">
                   <h5 className="mb-3">📋 Account Information</h5>
-                  <Table bordered size="sm">
+                  <Table responsive bordered size="sm">
                     <tbody>
                       <tr>
                         <td><strong>User ID:</strong></td>
@@ -1584,7 +1583,7 @@ function ScheduleForm({ schedule, users, templates, onSave, onCancel }) {
         </Form.Select>
       </Form.Group>
 
-      <div className="d-flex gap-3 mb-3">
+      <div className="d-flex gap-3 mb-3 dc-admin-row">
         <Form.Group className="flex-fill">
           <Form.Label>Frequency *</Form.Label>
           <Form.Select

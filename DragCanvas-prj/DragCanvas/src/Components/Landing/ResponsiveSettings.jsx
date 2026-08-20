@@ -39,15 +39,43 @@ export function ResponsiveSettings({ nodeId, nodeProps }) {
     }
   });
 
-  const inheritedNote = device === 'desktop' ? 'Base values for all devices' : 'Empty fields inherit Desktop values';
   const hasSpacing = Array.isArray(nodeProps.padding) || Array.isArray(nodeProps.margin);
+
+  /*
+   * A label, not a warning, was fine while the device buttons existed and the
+   * mode was something you chose. The mode now follows the workspace width, so
+   * narrowing a window silently redirects every edit below into an override and
+   * leaves the desktop value behind. Saying which one you are editing is the
+   * whole mitigation, so it has to look like a warning.
+   */
+  const isOverride = device !== 'desktop';
 
   return (
     <section style={{ padding: '12px 10px', borderTop: '1px solid var(--outline-light)' }}>
       <div style={{ fontSize: 11, fontWeight: 800, textTransform: 'uppercase', color: 'var(--on-surface-variant)' }}>
         Responsive · {device}
       </div>
-      <p style={{ margin: '4px 0 10px', fontSize: 10, color: 'var(--muted)' }}>{inheritedNote}</p>
+      {isOverride ? (
+        <p
+          style={{
+            margin: '6px 0 10px',
+            padding: '7px 9px',
+            borderRadius: 6,
+            border: '1px solid color-mix(in oklab, #c96a3f 45%, transparent)',
+            background: 'color-mix(in oklab, #c96a3f 12%, transparent)',
+            fontSize: 10,
+            lineHeight: 1.45,
+            color: 'var(--on-surface)',
+          }}
+        >
+          Editing the <strong>{device}</strong> override. The Desktop value is left
+          as it is, and empty fields here inherit it.
+        </p>
+      ) : (
+        <p style={{ margin: '4px 0 10px', fontSize: 10, color: 'var(--muted)' }}>
+          Base values for all devices
+        </p>
+      )}
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
         <label style={{ fontSize: 10, color: 'var(--muted)' }}>Width

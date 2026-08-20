@@ -86,7 +86,33 @@ const Divider = styled.span`
   margin: 0 4px;
 `;
 
-export const Header = () => {
+/*
+ * Only rendered below 1024, where Toolbox and Sidebar are overlays rather than
+ * columns. A real <button>, unlike `Item` above, because this one toggles state
+ * rather than navigating.
+ */
+const PanelToggle = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin-right: 6px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: ${(props) => (props.$on ? 'var(--primary-light, #e3f2fd)' : 'transparent')};
+  cursor: pointer;
+  transition: all 0.15s ease;
+  .material-symbols-outlined {
+    font-size: 20px;
+    color: ${(props) => (props.$on ? 'var(--primary)' : 'var(--muted)')};
+  }
+  &:hover {
+    background: var(--primary-light, #e3f2fd);
+  }
+`;
+
+export const Header = ({ openPanel = null, onTogglePanel = null }) => {
 
   const [projectName, setProjectName] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
@@ -366,6 +392,31 @@ const handlePublish = async () => {
   return (
     <HeaderDiv className="header text-white transition w-full">
       <div className="items-center flex w-full px-2 justify-end">
+        {onTogglePanel && (
+          <div className="flex items-center">
+            <Tooltip title="Elements" placement="bottom" describeChild>
+              <PanelToggle
+                $on={openPanel === 'toolbox'}
+                aria-pressed={openPanel === 'toolbox'}
+                aria-label="Elements panel"
+                onClick={() => onTogglePanel('toolbox')}
+              >
+                <span className="material-symbols-outlined" aria-hidden="true">widgets</span>
+              </PanelToggle>
+            </Tooltip>
+            <Tooltip title="Settings and layers" placement="bottom" describeChild>
+              <PanelToggle
+                $on={openPanel === 'sidebar'}
+                aria-pressed={openPanel === 'sidebar'}
+                aria-label="Settings panel"
+                onClick={() => onTogglePanel('sidebar')}
+              >
+                <span className="material-symbols-outlined" aria-hidden="true">tune</span>
+              </PanelToggle>
+            </Tooltip>
+            <Divider />
+          </div>
+        )}
         {enabled && (
           <div className="flex-1 flex">
             <Tooltip title="Undo last change" placement="bottom">

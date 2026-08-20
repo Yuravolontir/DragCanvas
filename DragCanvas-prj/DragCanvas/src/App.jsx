@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import './App.css'
+import './responsive.css'
 
 import UserContextProvider from './UserContextProvider';
 import RouteErrorBoundary from './RouteErrorBoundary';

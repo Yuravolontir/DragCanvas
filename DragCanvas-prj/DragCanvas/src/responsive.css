@@ -1,0 +1,276 @@
+/*
+ * ── Breakpoints for the application's own chrome ──────────────────────────
+ *
+ * Every media query for the editor, My Projects, Templates and the Admin panel
+ * lives in this one file. Not because co-locating CSS is wrong — Components/Home
+ * does it per component and that suits independent marketing sections — but
+ * because when the navbar vanished the question was "what rule is doing this,
+ * and where does it come from", and the answer took a stylesheet-by-stylesheet
+ * scan. One file answers "what does this app do at 768px".
+ *
+ * Two widths, and only two:
+ *
+ *     768px   phone
+ *    1024px   tablet / narrow window
+ *
+ * They are not a preference. `utils/deviceModes.js` already splits on 600 and
+ * 1024, and `utils/exportToHtml.js` already emits @media (max-width: 1024px)
+ * and (max-width: 768px) into every published site. A third scale would mean
+ * the builder disagreed with the sites it builds.
+ *
+ * There is no `!important` in this file, deliberately. Most of these screens are
+ * built with inline style={{}}, which beats any class, so a property that needs
+ * a breakpoint is *moved out* of the inline style into the class below rather
+ * than shouted over. `!important` would work today and make the next person's
+ * override fail silently.
+ *
+ * This file is for the app's chrome. Rules for the user's own content belong in
+ * index.css (see .dc-columns) or in the exporter.
+ */
+
+/* ── My Projects ─────────────────────────────────────────────────────────── */
+
+.dc-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+}
+
+/*
+ * The spans live here rather than inline so a media query can reach them. The
+ * first project is the featured one; below 1024 "featured" stops meaning a
+ * different width and starts meaning nothing, which is the correct amount of
+ * emphasis for a one-column list.
+ */
+.dc-projects-grid > * {
+  grid-column: span 4;
+}
+
+.dc-projects-grid > :first-child {
+  grid-column: span 8;
+}
+
+.dc-projects-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 48px;
+}
+
+@media (max-width: 1024px) {
+  .dc-projects-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .dc-projects-grid > *,
+  .dc-projects-grid > :first-child {
+    grid-column: span 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .dc-projects-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .dc-projects-grid > *,
+  .dc-projects-grid > :first-child {
+    grid-column: span 1;
+  }
+
+  /*
+   * Stretch, not flex-end: with the heading wrapped onto its own line a
+   * right-aligned button becomes a 140px stub in the middle of nowhere.
+   */
+  .dc-projects-header {
+    align-items: stretch;
+    margin-bottom: 32px;
+  }
+
+  .dc-projects-header .dc-projects-new {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ── Templates (InspireMe) ───────────────────────────────────────────────── */
+
+.dc-tpl-stage {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/*
+ * `display: contents` and not a wrapper box: above 1024 the two buttons must
+ * behave exactly as they did before they were grouped, and a box in the flow
+ * would change the card's position by its own margin collapsing.
+ */
+.dc-tpl-arrows {
+  display: contents;
+}
+
+.dc-tpl-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+}
+
+.dc-tpl-arrow--prev {
+  left: 24px;
+}
+
+.dc-tpl-arrow--next {
+  right: 24px;
+}
+
+/*
+ * A 48px circle pinned 24px from each edge sits *on top of* the card as soon as
+ * the card is wider than the gap, which below 1024 it always is. So the rails
+ * become a row, and `order` puts them under the card rather than above it —
+ * the card is what the page is about.
+ */
+@media (max-width: 1024px) {
+  .dc-tpl-stage {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dc-tpl-card {
+    order: 1;
+  }
+
+  .dc-tpl-arrows {
+    display: flex;
+    order: 2;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .dc-tpl-arrow,
+  .dc-tpl-arrow--prev,
+  .dc-tpl-arrow--next {
+    position: static;
+    top: auto;
+    left: auto;
+    right: auto;
+    transform: none;
+  }
+}
+
+/* ── Admin panel ─────────────────────────────────────────────────────────── */
+
+/*
+ * The tab row and the filter rows are Bootstrap `d-flex` with no wrapping, and
+ * the users filter alone is a 400px search beside two 150px selects. That is
+ * 700px of content that had nowhere to go.
+ *
+ * The tables are a different problem with a different answer: they carry the
+ * `responsive` prop now, so each scrolls inside its own box. Turning seven data
+ * tables into card lists is a redesign, not a responsive fix.
+ */
+/*
+ * Not a breakpoint fix, and found while checking one: `mt-5` is 48px, the NavBar
+ * is fixed and taller than that, so the "Admin Panel" heading and the tab row
+ * were sitting underneath it at *every* width, 1440 included. 100px is what
+ * My Projects and Templates already use to clear the same navbar.
+ */
+.dc-admin-page {
+  padding-top: 100px;
+}
+
+.dc-admin-row {
+  flex-wrap: wrap;
+}
+
+.dc-admin-search {
+  max-width: 400px;
+}
+
+.dc-admin-select {
+  width: 150px;
+}
+
+.dc-admin-input {
+  width: 200px;
+}
+
+@media (max-width: 768px) {
+  .dc-admin-search,
+  .dc-admin-select,
+  .dc-admin-input {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+/* ── Editor: panels as drawers, 768–1023 ─────────────────────────────────── */
+
+/*
+ * Measured, not guessed: the shell is Toolbox 104px + Sidebar 300px, so the row
+ * is 806px wide whatever the window is. At 390 and at 768 alike, `scrollWidth`
+ * was 806 with `overflow-x: hidden` on the row — the settings panel was not
+ * cramped, it was unreachable. From 1024 up it fits, so from 1024 up nothing
+ * here applies.
+ *
+ * Both selectors are two classes deep on purpose. Toolbox and Sidebar are
+ * styled-components, whose generated rules are a single class; a single class
+ * of ours would tie on specificity and be decided by whichever stylesheet Vite
+ * happened to inject last.
+ */
+@media (max-width: 1023px) {
+  /*
+   * The row becomes the containing block, so a closed drawer is clipped by the
+   * row's own `overflow: hidden` instead of resolving against the fixed
+   * .viewport and leaving a phantom 300px of scrollable nothing.
+   */
+  .dc-editor-row {
+    position: relative;
+  }
+
+  /*
+   * `top: 56px` is the editor Header's height. The Header sits at z-index 99999
+   * and would otherwise cover the first 56px of an open drawer — which is the
+   * panel's own title and half its search box. Starting below it also keeps the
+   * toggle that opened the drawer visible, so it can be pressed again to close.
+   */
+  .viewport .toolbox,
+  .viewport .sidebar {
+    position: absolute;
+    top: 56px;
+    bottom: 0;
+    z-index: 30;
+    margin: 0;
+    transition: transform 0.18s ease;
+  }
+
+  .dc-editor-row .dc-drawer-scrim {
+    top: 56px;
+  }
+
+  .viewport .toolbox {
+    left: 0;
+    transform: translateX(-100%);
+  }
+
+  .viewport .sidebar {
+    right: 0;
+    transform: translateX(100%);
+  }
+
+  .viewport[data-panel='toolbox'] .toolbox,
+  .viewport[data-panel='sidebar'] .sidebar {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewport .toolbox,
+  .viewport .sidebar {
+    transition: none;
+  }
+}

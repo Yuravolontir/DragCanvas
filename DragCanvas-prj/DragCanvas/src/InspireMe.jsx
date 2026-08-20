@@ -210,16 +210,19 @@ export default function InspireMe() {
             </h3>
           </div>
         ) : (
-          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-            {/* Navigation Arrows */}
+          <div className="dc-tpl-stage">
+            {/*
+              Side-rails on a wide screen, a row under the card on a narrow one.
+              The wrapper is `display: contents` above 1024 so the buttons keep
+              behaving exactly as they did; position/offset/z-index live in
+              responsive.css rather than inline, because a media query cannot
+              override an inline style.
+            */}
+            <div className="dc-tpl-arrows">
             <button
               onClick={goToPrevious}
+              className="dc-tpl-arrow dc-tpl-arrow--prev"
               style={{
-                position: 'fixed',
-                left: '24px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                zIndex: 1000,
                 width: '48px',
                 height: '48px',
                 borderRadius: '9999px',
@@ -246,12 +249,8 @@ export default function InspireMe() {
 
             <button
               onClick={goToNext}
+              className="dc-tpl-arrow dc-tpl-arrow--next"
               style={{
-                position: 'fixed',
-                right: '24px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                zIndex: 1000,
                 width: '48px',
                 height: '48px',
                 borderRadius: '9999px',
@@ -274,9 +273,10 @@ export default function InspireMe() {
             >
               <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--on-surface-variant)' }}>arrow_forward</span>
             </button>
+            </div>
 
             {/* Template Card */}
-            <div style={{
+            <div className="dc-tpl-card" style={{
               background: 'var(--surface)',
               borderRadius: '24px',
               border: '1px solid var(--outline-light)',

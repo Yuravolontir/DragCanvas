@@ -13,6 +13,7 @@
     "check:catalogue": "node scripts/check-ai-catalogue.mjs",
     "check:export": "node scripts/check-export.mjs",
     "check:config": "node scripts/check-config.mjs",
+    "check:responsive": "node scripts/check-responsive.mjs",
     "templates:build": "node scripts/generate-templates.mjs",
     "templates:dry": "node scripts/generate-templates.mjs --dry",
     "check:template": "node scripts/check-template.mjs"
