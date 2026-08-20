@@ -107,7 +107,7 @@ export default function conference() {
     'Pass the ticket to a colleague any time, or ask for a refund up to two weeks before.',
   ], { background: PANEL, color: BONE, radius: 12 });
 
-  const find = b.container(root, { background: NAVY, padding: ['16', '48', '64', '48'], width: '100%' }, 'Venue');
+  const find = b.container(root, { background: NAVY, padding: ['16', '48', '64', '48'], width: '100%', anchor: 'venue' }, 'Venue');
   const venueSplit = b.columns(find, { count: '2', gap: '36', ratio: '2:3', stack: 'yes' });
   const venueCopy = b.container(venueSplit, {
     background: TRANSPARENT, width: '100%', justifyContent: 'center',
@@ -116,7 +116,7 @@ export default function conference() {
   b.text(venueCopy, 'The old customs house in the port. Twelve minutes on foot from the train, and the coffee is better than any conference deserves.', {
     fontSize: '15', color: MUTED, margin: ['12', '0', '16', '0'],
   });
-  b.link(venueCopy, 'Hotels within walking distance', 'https://example.com', { color: GOLD, fontSize: '15' });
+  b.link(venueCopy, 'View venue details', '#venue', { color: GOLD, fontSize: '15' });
   const venueMap = b.container(venueSplit, { background: TRANSPARENT, width: '100%' }, 'Venue map');
   b.map_(venueMap, { lat: 32.7940, lng: 34.9896, zoom: 14, label: 'Haifa' });
 

@@ -1,10 +1,19 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_URL = import.meta.env?.VITE_API_URL || 'http://localhost:3001';
 
 const TOKEN_KEY = 'dragcanvas_token';
 
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
 export const setToken = (token) => localStorage.setItem(TOKEN_KEY, token);
 export const clearToken = () => localStorage.removeItem(TOKEN_KEY);
+
+export class ApiError extends Error {
+  constructor(message, { status = 0, requestId = null, cause } = {}) {
+    super(message, { cause });
+    this.name = 'ApiError';
+    this.status = status;
+    this.requestId = requestId;
+  }
+}
 
 /**
  * Single entry point for every call to our Node API.
@@ -28,18 +37,27 @@ export async function apiFetch(path, options = {}) {
     payload = JSON.stringify(body);
   }
 
-  const response = await fetch(`${API_URL}${path}`, { ...rest, headers, body: payload });
-
-  if (response.status === 401) {
-    clearToken();
-    if (window.location.pathname !== '/login') window.location.href = '/login';
-    throw new Error('Session expired, please log in again');
+  let response;
+  try {
+    response = await fetch(`${API_URL}${path}`, { ...rest, headers, body: payload });
+  } catch (cause) {
+    throw new ApiError('Could not connect to the server. Check your internet connection and try again.', { cause });
   }
 
+  const requestId = response.headers.get('X-Request-Id');
   const result = await response.json().catch(() => null);
 
+  // Only an existing token can expire. A 401 from login means bad credentials
+  // and must preserve the server's useful message instead of redirecting.
+  if (response.status === 401 && token) {
+    clearToken();
+    if (window.location.pathname !== '/login') window.location.href = '/login';
+    throw new ApiError('Your session has expired. Please sign in again.', { status: 401, requestId });
+  }
+
   if (!response.ok || result?.success === false) {
-    throw new Error(result?.error || `Request failed (${response.status})`);
+    const message = result?.error || `Request failed (${response.status})`;
+    throw new ApiError(message, { status: response.status, requestId });
   }
 
   return result?.data !== undefined ? result.data : result;

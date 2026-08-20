@@ -2118,18 +2118,34 @@
     "props": {
       "width": "704px",
       "height": "400px",
-      "src1": "https://images.pexels.com/photos/4955393/pexels-photo-4955393.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      "src2": "https://images.pexels.com/photos/4164418/pexels-photo-4164418.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      "src3": "https://images.pexels.com/photos/360591/pexels-photo-360591.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      "heading1": "Observe first",
-      "heading2": "Review the boundary",
-      "heading3": "Leave a trail",
-      "label1": "Runtime",
-      "label2": "Code",
-      "label3": "Debugging",
-      "p1": "Make the failure visible before trying to make it disappear.",
-      "p2": "Small interfaces, explicit ownership, fewer surprises.",
-      "p3": "Logs that explain what the system believed at the time.",
+      "title": "Project gallery",
+      "autoplay": false,
+      "loop": true,
+      "arrows": true,
+      "dots": true,
+      "perView": 1,
+      "perViewTablet": 1,
+      "perViewMobile": 1,
+      "slides": [
+        {
+          "src": "https://images.pexels.com/photos/4955393/pexels-photo-4955393.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "heading": "Observe first",
+          "label": "Runtime",
+          "text": "Make the failure visible before trying to make it disappear."
+        },
+        {
+          "src": "https://images.pexels.com/photos/4164418/pexels-photo-4164418.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "heading": "Review the boundary",
+          "label": "Code",
+          "text": "Small interfaces, explicit ownership, fewer surprises."
+        },
+        {
+          "src": "https://images.pexels.com/photos/360591/pexels-photo-360591.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "heading": "Leave a trail",
+          "label": "Debugging",
+          "text": "Logs that explain what the system believed at the time."
+        }
+      ],
       "accent": {
         "r": 86,
         "g": 204,
@@ -2805,6 +2821,24 @@
         "r": 86,
         "g": 204,
         "b": 218,
+        "a": 1
+      },
+      "textColor": {
+        "r": 73,
+        "g": 69,
+        "b": 79,
+        "a": 1
+      },
+      "inputBackground": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "inputBorder": {
+        "r": 221,
+        "g": 221,
+        "b": 221,
         "a": 1
       },
       "width": "100%",

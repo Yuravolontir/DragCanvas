@@ -7,7 +7,7 @@ import router from './routes.js';
 import db from './utils/db.sql.services.js';
 import { getSiteByDomain } from './features/publish/publish.ctrl.js';
 import { imageProxy } from './features/assets/asset.ctrl.js';
-import { requestId, hideInternalErrors, notFoundHandler, errorHandler } from './middlewares/error.js';
+import { requestId, requestLog, hideInternalErrors, notFoundHandler, errorHandler } from './middlewares/error.js';
 import { startScheduleProcessor } from './jobs/schedule.processor.js';
 import { startBirthdayJob } from './jobs/birthday.job.js';
 
@@ -22,6 +22,7 @@ server.set('trust proxy', 1);
 
 // ---------- Middlewares ----------
 server.use(requestId);
+server.use(requestLog);
 server.use(hideInternalErrors);
 
 /**

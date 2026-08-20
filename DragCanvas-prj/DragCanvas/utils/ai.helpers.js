@@ -103,9 +103,19 @@ export function replacePlaceholdersInJson(obj, images, videos) {
             if (vidMatch) {
                 const idx = parseInt(vidMatch[1], 10) - 1;
                 if (idx >= 0 && idx < videos.length) {
-                    obj.videoUrl = videos[idx].videoUrl;
-                    obj.videoId = '';
-                    if (!obj.text || obj.text.startsWith('VIDEO_PLACEHOLDER')) obj.text = '';
+                    // Write into the prop the placeholder was actually found in.
+                    // This used to hard-write `videoUrl`, which was fine while
+                    // Video was the only video element; BackgroundVideo keeps its
+                    // clip in `src`, and a hard-coded key left that as the literal
+                    // string "VIDEO_PLACEHOLDER_1".
+                    obj[key] = videos[idx].videoUrl;
+
+                    // Video's own bookkeeping: a url and an embed id are mutually
+                    // exclusive there, and its overlay text is not a placeholder.
+                    if (key === 'videoUrl') {
+                        obj.videoId = '';
+                        if (!obj.text || obj.text.startsWith('VIDEO_PLACEHOLDER')) obj.text = '';
+                    }
                 }
             }
         } else if (typeof obj[key] === 'object') {

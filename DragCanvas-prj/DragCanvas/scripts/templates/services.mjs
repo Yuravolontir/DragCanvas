@@ -31,7 +31,7 @@ export default function services() {
     fontSize: '17', color: rgba(255, 255, 255, 0.82),
   });
   b.button(words, 'Get a quote', { background: AMBER, color: WHITE, buttonStyle: 'full' });
-  b.image(top, P.joinery.bench(900), { radius: 10, width: '100%', height: '400px' });
+  b.image(top, P.joinery.bench(900), { alt: 'Joiner shaping timber at a workshop bench', radius: 10, width: '100%', height: '400px' });
 
   // ── the joinery in three numbers ────────────────────────────────
   const num = b.container(root, { background: PAPER, padding: ['32', '48', '8', '48'], width: '100%' }, 'Numbers');
@@ -45,7 +45,7 @@ export default function services() {
   const ba = b.columns(work, { count: '2', gap: '20' });
   for (const [label, img] of [['In the workshop', P.joinery.saw(800)], ['In your house', P.interiors.kitchen(800)]]) {
     const card = b.container(ba, { background: PANEL, padding: ['0', '0', '16', '0'], radius: 10 }, label);
-    b.image(card, img, { radius: 10, width: '100%', height: '300px' });
+    b.image(card, img, { alt: label, radius: 10, width: '100%', height: '300px' });
     b.badge(card, label, { background: WHITE, color: INK });
   }
 

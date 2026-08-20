@@ -1,20 +1,23 @@
 import { useEditor } from '@craftjs/core';
 import React from 'react';
+import { ResponsiveSettings } from './ResponsiveSettings.jsx';
 
 export const Toolbar = () => {
-  const { active, related } = useEditor((state, query) => {
+  const { active, related, nodeProps } = useEditor((state, query) => {
     // TODO: handle multiple selected elements
     const currentlySelectedNodeId = query.getEvent('selected').first();
     return {
       active: currentlySelectedNodeId,
       related:
         currentlySelectedNodeId && state.nodes[currentlySelectedNodeId].related,
+      nodeProps: currentlySelectedNodeId ? state.nodes[currentlySelectedNodeId].data.props : null,
     };
   });
 
   return (
     <div className="py-1 h-full">
       {active && related.toolbar && React.createElement(related.toolbar)}
+      {active && <ResponsiveSettings nodeId={active} nodeProps={nodeProps || {}} />}
       {!active && (
         <div
           className="px-6 py-5 flex flex-col items-center h-full justify-center text-center"

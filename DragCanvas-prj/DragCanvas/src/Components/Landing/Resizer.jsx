@@ -4,6 +4,8 @@ import debounce from 'debounce';
 import { Resizable } from 're-resizable';
 import React, { useRef, useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
+import { useDeviceMode } from '../../useDeviceMode.js';
+import { responsiveValue, updateResponsiveDraft } from '../../utils/responsiveProps.js';
 
 import {
   isPercentage,
@@ -82,6 +84,7 @@ const Indicators = styled.div`
 `;
 
 export const Resizer = ({ propKey, children, ...props }) => {
+  const deviceMode = useDeviceMode();
   const {
     id,
     actions: { setProp },
@@ -89,6 +92,7 @@ export const Resizer = ({ propKey, children, ...props }) => {
     fillSpace,
     nodeWidth,
     nodeHeight,
+    responsive,
     parent,
     active,
     inNodeContext,
@@ -97,8 +101,12 @@ export const Resizer = ({ propKey, children, ...props }) => {
     active: node.events.selected,
     nodeWidth: node.data.props[propKey.width],
     nodeHeight: node.data.props[propKey.height],
+    responsive: node.data.props.responsive,
     fillSpace: node.data.props.fillSpace,
   }));
+
+  const effectiveWidth = responsiveValue({ [propKey.width]: nodeWidth, responsive }, deviceMode, propKey.width);
+  const effectiveHeight = responsiveValue({ [propKey.height]: nodeHeight, responsive }, deviceMode, propKey.height);
 
   const { isRootNode, parentDirection } = useEditor((state, query) => {
     return {
@@ -113,7 +121,7 @@ export const Resizer = ({ propKey, children, ...props }) => {
   const resizable = useRef(null);
   const isResizing = useRef(false);
   const editingDimensions = useRef(null);
-  const nodeDimensions = useRef({ width: nodeWidth, height: nodeHeight });
+  const nodeDimensions = useRef({ width: effectiveWidth, height: effectiveHeight });
 
   // The callbacks below read this ref instead of closing over the dimensions,
   // so they never go stale. Writing it during render is what React forbids -
@@ -121,12 +129,12 @@ export const Resizer = ({ propKey, children, ...props }) => {
   // rather than useEffect because it runs before paint, so the resize handlers
   // and the effect below never see a frame-old value while dragging.
   useLayoutEffect(() => {
-    nodeDimensions.current = { width: nodeWidth, height: nodeHeight };
+    nodeDimensions.current = { width: effectiveWidth, height: effectiveHeight };
   });
 
   const [internalDimensions, setInternalDimensions] = useState({
-    width: nodeWidth,
-    height: nodeHeight,
+    width: effectiveWidth,
+    height: effectiveHeight,
   });
 
   const updateInternalDimensionsInPx = useCallback(() => {
@@ -172,7 +180,7 @@ export const Resizer = ({ propKey, children, ...props }) => {
 
   useEffect(() => {
     if (!isResizing.current) updateInternalDimensionsWithOriginal();
-  }, [nodeWidth, nodeHeight, updateInternalDimensionsWithOriginal]);
+  }, [effectiveWidth, effectiveHeight, updateInternalDimensionsWithOriginal]);
 
   useEffect(() => {
     const listener = debounce(updateInternalDimensionsWithOriginal, 1);
@@ -250,8 +258,8 @@ export const Resizer = ({ propKey, children, ...props }) => {
         }
 
         setProp((prop) => {
-          prop[propKey.width] = width;
-          prop[propKey.height] = height;
+          updateResponsiveDraft(prop, deviceMode, propKey.width, width);
+          updateResponsiveDraft(prop, deviceMode, propKey.height, height);
         }, 500);
       }}
       onResizeStop={() => {

@@ -33,36 +33,50 @@ AVAILABLE ELEMENTS (use these EXACT type names, use ALL of them when appropriate
    Props: { "text": "Hello World", "fontSize": "15", "fontWeight": "400"|"500"|"600"|"700", "textAlign": "left"|"center"|"right", "color": {"r":92,"g":90,"b":90,"a":1}, "shadow": 0, "margin": [0,0,0,0] }
 
 3. Button (clickable button):
-   Props: { "text": "Click Me", "background": {"r":0,"g":96,"b":172,"a":1}, "color": {"r":255,"g":255,"b":255,"a":1}, "buttonStyle": "full"|"outline", "textAlign": "center", "margin": ["5","0","5","0"] }
+   Props: { "text": "Click Me", "background": {"r":0,"g":96,"b":172,"a":1}, "color": {"r":255,"g":255,"b":255,"a":1}, "buttonStyle": "full"|"outline", "action": "none"|"url"|"section"|"email"|"phone", "actionValue": "https://example.com", "newTab": false, "textAlign": "center", "margin": ["5","0","5","0"] }
 
 4. Image (image with optional border radius):
-   Props: { "src": "https://picsum.photos/seed/sourdough-loaves/800/400", "radius": 0, "width": "auto", "height": "auto", "maxWidth": "100%" }
+   Props: { "src": "https://picsum.photos/seed/sourdough-loaves/800/400", "alt": "Fresh sourdough loaves cooling on a rack", "radius": 0, "width": "auto", "height": "auto", "maxWidth": "100%" }
    The seed is not decoration - see IMAGES below. A src without /seed/ is left as a random stock photo.
 
-5. Video (background video with a text overlay):
-   Props: { "sourceType": "url", "videoUrl": "VIDEO_PLACEHOLDER_1", "text": "" }
-   ALWAYS use sourceType:"url" and put VIDEO_PLACEHOLDER_1 in videoUrl - the server
-   replaces it with a real stock clip matching the subject. Never invent a video URL
-   and never use sourceType:"youtube": you cannot know a real YouTube id, and a made-up
-   one leaves the page showing an unrelated video.
-   Put the headline in "text" - it is displayed over the video.
+5. Video (YouTube, a video file, or a background hero) - CANVAS in background mode:
+   Props: { "sourceType": "background", "videoId": "", "videoUrl": "", "text": "", "src": "VIDEO_PLACEHOLDER_1", "poster": "IMAGE_PLACEHOLDER_1", "overlay": 45, "position": "center", "minHeight": "420px", "loop": true }
+   ALWAYS put VIDEO_PLACEHOLDER_1 in src - the server replaces it with a real stock
+   clip matching the subject. Never invent a video URL.
+   ALWAYS set a poster too, with an IMAGE_PLACEHOLDER: it is what shows on a phone,
+   for visitors who asked for less motion, and if the clip fails to load. A hero
+   without one can end up blank.
+   This is a canvas: the headline, the subtitle and the button are real children
+   nested inside it, not a text prop. That is the whole reason to use it.
+   overlay darkens the footage 0-100 so white text stays readable; 45 is a good
+   start, higher over bright or busy video.
+   position is "top", "center" or "bottom" - which part of the frame survives the
+   crop. Nothing else is valid.
+   It is always muted and plays in place; there is no sound to configure.
+   Use it once at the top of a page at most. Two video heroes is a slow page.
 
 6. Link (hyperlink):
    Props: { "href": "https://example.com", "text": "Click here", "fontSize": "16", "fontWeight": "500", "width": "auto", "height": "auto", "maxWidth": "100%" }
 
-7. Carousel (3-slide image carousel with captions):
-   Props: { "src1": "url", "src2": "url", "src3": "url", "heading1": "Title", "heading2": "Title", "heading3": "Title", "label1": "Badge", "label2": "", "label3": "", "p1": "Description", "p2": "Description", "p3": "Description", "width": "600px", "height": "400px", "accent": {"r":13,"g":110,"b":253,"a":1} }
+7. Carousel (image carousel with captions, any number of slides):
+   Props: { "slides": [{"src": "url", "heading": "Title", "label": "Badge", "text": "Description", "alt": "What the picture shows"}], "title": "Gallery", "autoplay": false, "interval": 5000, "loop": true, "arrows": true, "dots": true, "perView": 1, "perViewTablet": 1, "perViewMobile": 1, "width": "600px", "height": "400px", "accent": {"r":13,"g":110,"b":253,"a":1} }
+   slides is a list - give it as many entries as the page needs, three is a good
+   default. Every slide needs a src; heading, label, text and alt are optional,
+   and alt falls back to the heading when left out.
+   title names the carousel for screen readers - say what is in it ("Our work",
+   "The menu"), not "Carousel".
+   perView shows more than one slide at a time - use it for logos or small cards,
+   leave it at 1 for photographs.
+   Leave autoplay false unless the page is a showcase: a page that moves on its
+   own is harder to read.
    The accent prop colours the small label pill on each slide. Set it to the page's accent
    colour - left alone it is Bootstrap blue, which fights every palette that is not blue.
-   Slides follow the same rule as every other image - see IMAGES below. Give each one
-   its own descriptive seed drawn from what the slide is about, e.g.
-   https://picsum.photos/seed/rye-on-cooling-rack/800/400
 
 8. Map (Leaflet map with marker):
    Props: { "lat": 32.3215, "lng": 34.8532, "zoom": 13, "height": "300px", "width": "100%", "label": "Location Name" }
 
 9. Form (contact form - visitors fill it in, the owner gets an email):
-   Props: { "fields": [{"label":"Name","type":"text","placeholder":"Your name","required":true}], "submitText": "Send", "successMessage": "Thank you!", "radius": 8, "background": {"r":255,"g":255,"b":255,"a":1}, "accent": {"r":126,"g":87,"b":194,"a":1}, "width": "100%", "height": "auto" }
+   Props: { "fields": [{"label":"Name","type":"text","placeholder":"Your name","required":true}], "submitText": "Send", "successMessage": "Thank you!", "radius": 8, "background": {"r":255,"g":255,"b":255,"a":1}, "accent": {"r":126,"g":87,"b":194,"a":1}, "textColor": {"r":73,"g":69,"b":79,"a":1}, "inputBackground": {"r":255,"g":255,"b":255,"a":1}, "inputBorder": {"r":221,"g":221,"b":221,"a":1}, "width": "100%", "height": "auto" }
    Field types: "text", "email", "phone", "textarea". Keep forms short - three or
    four fields answer more often than ten. A contact form belongs on almost any
    page for a business or a freelancer: it is how the site earns its keep.
@@ -81,9 +95,11 @@ AVAILABLE ELEMENTS (use these EXACT type names, use ALL of them when appropriate
    a small section title is still a level 2.
 
 12. Columns (side-by-side, stacks on a phone):
-   Props: { "count": "2"|"3"|"4", "gap": "24", "align": "stretch"|"center", "stack": "yes" }
+   Props: { "count": "2"|"3"|"4", "gap": "24", "align": "stretch"|"center", "stack": "yes", "ratio": ""|"1:1"|"1:2"|"2:1"|"1:1:1" }
    Children become the columns. Use this instead of Containers with width:"33%",
    which stay narrow on a phone instead of stacking.
+   Leave ratio empty for equal columns. For a two-column editorial split, use
+   "1:2" or "2:1" depending on which side should carry more visual weight.
 
 13. Spacer (empty vertical space):
    Props: { "height": "48" }
@@ -154,13 +170,13 @@ makes a page look put together rather than designed.
 
 PATTERNS YOU CAN DRAW ON (a vocabulary, not a checklist - pick what suits the subject):
 
-- HERO SECTION: Full-width dark Container with a Video (videoUrl:"VIDEO_PLACEHOLDER_1" with text overlay) or large Text (fontSize:"48", fontWeight:"700") + subtitle Text + Button. Add dramatic shadow.
+- HERO SECTION: a Video in background mode (sourceType:"background", src:"VIDEO_PLACEHOLDER_1", poster:"IMAGE_PLACEHOLDER_1") holding a Heading + subtitle Text + Button, or a full-width dark Container with a large Heading + subtitle Text + Button. Add dramatic shadow.
 
 - NAVBAR: usually the first section. Use "dark" or "primary" variant. Make it sticky: true for single-page sites.
 
 - GALLERY/SHOWCASE: a Columns with three card Containers, each with Image + Heading + Text. Use radius:12 and shadow:30 for the card effect.
 
-- VIDEO HERO: Use Video with videoUrl:"VIDEO_PLACEHOLDER_1" and a text overlay for a cinematic hero section.
+- VIDEO HERO: Use Video with sourceType:"background", src:"VIDEO_PLACEHOLDER_1" and a poster, nesting the Heading and Button inside it, for a cinematic hero section.
 
 - CAROUSEL SECTION: full-width Carousel with images, headings and descriptions. Worth it when there are several things to show in sequence - a photographer's series, a product range. Skip it otherwise.
 

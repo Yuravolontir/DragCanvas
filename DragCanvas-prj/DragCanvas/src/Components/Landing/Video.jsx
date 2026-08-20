@@ -3,6 +3,7 @@
   import YouTube from 'react-youtube';
   import styled from 'styled-components';
   import { VideoSettings } from './VideoSettings';
+  import { BackgroundVideoView } from './BackgroundVideo';
 
   const VideoWrapper = styled.div`
     width: 100%;
@@ -25,7 +26,11 @@
       selected: node.events.selected,
     }));
 
-    const { videoId, videoUrl, text} = props;
+    const { videoId, videoUrl, text, children, sourceType } = props;
+
+    if (sourceType === 'background') {
+      return <BackgroundVideoView connect={connect} {...props}>{children}</BackgroundVideoView>;
+    }
 
     return (
       <VideoWrapper
@@ -70,6 +75,12 @@
       videoId: 'IwzUs1IMdyQ',
       videoUrl: '',
       text: '',
+      src: '',
+      poster: '',
+      overlay: 40,
+      position: 'center',
+      minHeight: '420px',
+      loop: true,
     },
     related: {
       toolbar: VideoSettings,

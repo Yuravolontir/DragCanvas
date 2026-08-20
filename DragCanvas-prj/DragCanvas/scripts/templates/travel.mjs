@@ -129,7 +129,7 @@ export default function travel() {
   b.footer(root, {
     brand: 'Wanderlog',
     note: 'One long trip a month, written up slowly.',
-    socials: ['Instagram', 'https://instagram.com/', 'RSS', 'https://example.com/feed'],
+    socials: ['Instagram', 'https://instagram.com/', 'Stories', '#recent'],
     background: INK, ink: PAPER, muted: PANEL,
   });
 

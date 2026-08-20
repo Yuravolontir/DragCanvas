@@ -38,11 +38,14 @@ function readFrontendSystemPrompt() {
 }
 
 async function generateViaOpenRouter(systemPrompt) {
+    if (!process.env.OPENROUTER_API_KEY) {
+        throw new Error('OPENROUTER_API_KEY is required for the frontend baseline');
+    }
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.VITE_OPENROUTER_API_KEY}`,
+            'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
         },
         body: JSON.stringify({
             model: process.env.AI_MODEL || 'google/gemini-2.5-flash',
@@ -71,12 +74,15 @@ async function generateViaBackend(token) {
 }
 
 async function loginForToken() {
+    if (!process.env.MEASURE_EMAIL || !process.env.MEASURE_PASSWORD) {
+        throw new Error('MEASURE_EMAIL and MEASURE_PASSWORD are required for backend measurements');
+    }
     const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            email: process.env.MEASURE_EMAIL || 'yuravolontir@gmail.com',
-            password: process.env.MEASURE_PASSWORD || '123456',
+            email: process.env.MEASURE_EMAIL,
+            password: process.env.MEASURE_PASSWORD,
         }),
     });
     const data = await response.json();

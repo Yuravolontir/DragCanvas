@@ -38,6 +38,7 @@ function CreateNewProject() {
             OnlyButtons: Landing.OnlyButtons,
             Button: Landing.Button,
             Video: Landing.Video,
+            BackgroundVideo: Landing.BackgroundVideo,
             Link: Landing.Link,
             Form: Landing.Form,
             Image: Landing.Image,

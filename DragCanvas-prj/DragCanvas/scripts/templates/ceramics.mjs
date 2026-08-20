@@ -39,7 +39,7 @@ export default function ceramics() {
     ['Plates', 'From ₪110', P.ceramics.tools(700)],
   ]) {
     const card = b.container(grid, { background: PANEL, padding: ['0', '0', '18', '0'], radius: 18 }, name);
-    b.image(card, img, { radius: 18, width: '100%', height: '280px' });
+    b.image(card, img, { alt: `Handmade ceramic ${name.toLowerCase()}`, radius: 18, width: '100%', height: '280px' });
     b.heading(card, name, { level: '3', fontSize: '18', color: INK, margin: ['14', '18', '4', '18'] });
     b.text(card, price, { fontSize: '15', color: MOSS, margin: ['0', '18', '0', '18'] });
   }

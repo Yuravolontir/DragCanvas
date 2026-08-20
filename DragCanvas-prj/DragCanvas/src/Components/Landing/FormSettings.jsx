@@ -131,6 +131,11 @@ export const FormSettings = () => {
       </ToolbarSection>
 
       <ToolbarSection title="Appearance">
+        <ToolbarItem full={true} propKey="background" type="bg" label="Form background" />
+        <ToolbarItem full={true} propKey="accent" type="bg" label="Button colour" />
+        <ToolbarItem full={true} propKey="textColor" type="color" label="Label colour" />
+        <ToolbarItem full={true} propKey="inputBackground" type="bg" label="Input background" />
+        <ToolbarItem full={true} propKey="inputBorder" type="color" label="Input border" />
         <ToolbarItem full={true} propKey="radius" type="slider" label="Radius" max={40} />
       </ToolbarSection>
     </React.Fragment>

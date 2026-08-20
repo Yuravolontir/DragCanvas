@@ -252,6 +252,9 @@
         "8",
         "0"
       ],
+      "action": "none",
+      "actionValue": "",
+      "newTab": false,
       "textComponent": {
         "fontSize": "16",
         "textAlign": "center",
@@ -1223,18 +1226,34 @@
     "props": {
       "width": "704px",
       "height": "400px",
-      "src1": "https://images.pexels.com/photos/6628962/pexels-photo-6628962.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      "src2": "https://images.pexels.com/photos/4464780/pexels-photo-4464780.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      "src3": "https://images.pexels.com/photos/32610333/pexels-photo-32610333.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      "heading1": "Strength floor",
-      "heading2": "Conditioning",
-      "heading3": "Open gym",
-      "label1": "Train",
-      "label2": "Move",
-      "label3": "Practice",
-      "p1": "Platforms, racks and enough room to move safely.",
-      "p2": "Short sessions, measured work, no random punishment.",
-      "p3": "Your programme, with a coach nearby when you need one.",
+      "title": "Inside FORGE",
+      "autoplay": false,
+      "loop": true,
+      "arrows": true,
+      "dots": true,
+      "perView": 1,
+      "perViewTablet": 1,
+      "perViewMobile": 1,
+      "slides": [
+        {
+          "src": "https://images.pexels.com/photos/6628962/pexels-photo-6628962.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "heading": "Strength floor",
+          "label": "Train",
+          "text": "Platforms, racks and enough room to move safely."
+        },
+        {
+          "src": "https://images.pexels.com/photos/4464780/pexels-photo-4464780.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "heading": "Conditioning",
+          "label": "Move",
+          "text": "Short sessions, measured work, no random punishment."
+        },
+        {
+          "src": "https://images.pexels.com/photos/32610333/pexels-photo-32610333.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "heading": "Open gym",
+          "label": "Practice",
+          "text": "Your programme, with a coach nearby when you need one."
+        }
+      ],
       "accent": {
         "r": 196,
         "g": 242,
@@ -1760,7 +1779,8 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "anchor": "book"
     },
     "displayName": "Container",
     "custom": {
@@ -1983,6 +2003,24 @@
         "r": 196,
         "g": 242,
         "b": 75,
+        "a": 1
+      },
+      "textColor": {
+        "r": 73,
+        "g": 69,
+        "b": 79,
+        "a": 1
+      },
+      "inputBackground": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "inputBorder": {
+        "r": 221,
+        "g": 221,
+        "b": 221,
         "a": 1
       },
       "width": "100%",

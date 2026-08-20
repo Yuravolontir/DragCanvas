@@ -1,4 +1,4 @@
-import { useNode } from '@craftjs/core';
+import { useEditor, useNode } from '@craftjs/core';
 import cx from 'classnames';
 import React from 'react';
 import styled from 'styled-components';
@@ -20,7 +20,17 @@ const StyledButton = styled.button`
     `${$margin[0]}px ${$margin[1]}px ${$margin[2]}px ${$margin[3]}px`};
 `;
 
-export const Button = ({ text, textComponent, color, buttonStyle, background, margin }) => {
+const actionHref = (action, value) => {
+  const clean = String(value || '').trim();
+  if (!clean || action === 'none') return undefined;
+  if (action === 'section') return `#${clean.replace(/^#/, '')}`;
+  if (action === 'email') return `mailto:${clean.replace(/^mailto:/, '')}`;
+  if (action === 'phone') return `tel:${clean.replace(/^tel:/, '')}`;
+  if (/^(https?:\/\/|\/|\.\/|\.\.\/)/i.test(clean)) return clean;
+  return `https://${clean}`;
+};
+
+export const Button = ({ text, textComponent, color, buttonStyle, background, margin, action, actionValue, newTab }) => {
   // Default values
   background = background || { r: 255, g: 255, b: 255, a: 0.5 };
   color = color || { r: 92, g: 90, b: 90, a: 1 };
@@ -37,9 +47,16 @@ export const Button = ({ text, textComponent, color, buttonStyle, background, ma
   } = useNode((node) => ({
     selected: node.events.selected,
   }));
+  const { enabled } = useEditor((state) => ({ enabled: state.options.enabled }));
+  const href = actionHref(action, actionValue);
 
   return (
     <StyledButton
+      as={href ? 'a' : 'button'}
+      type={href ? undefined : 'button'}
+      href={href}
+      target={href && newTab ? '_blank' : undefined}
+      rel={href && newTab ? 'noopener noreferrer' : undefined}
       ref={(dom) => {
         connect(dom);
       }}
@@ -65,6 +82,7 @@ export const Button = ({ text, textComponent, color, buttonStyle, background, ma
       $buttonStyle={buttonStyle}
       $background={background}
       $margin={margin}
+      style={{ pointerEvents: enabled ? 'none' : 'auto', textDecoration: 'none' }}
     >
       <Text {...textComponent} text={text} color={color} />
     </StyledButton>
@@ -78,6 +96,9 @@ Button.craft = {
     color: { r: 92, g: 90, b: 90, a: 1 },
     buttonStyle: 'full',
     text: 'Button',
+    action: 'none',
+    actionValue: '',
+    newTab: false,
     margin: ['5', '0', '5', '0'],
     textComponent: {
       ...Text.craft.props,

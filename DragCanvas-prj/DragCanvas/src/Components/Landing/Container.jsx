@@ -1,6 +1,8 @@
 import React from 'react';
 import { Resizer } from './Resizer';
 import { ContainerSettings } from './ContainerSettings';
+import { useDeviceMode } from '../../useDeviceMode.js';
+import { responsiveValue } from '../../utils/responsiveProps.js';
 
 const defaultProps = {
   flexDirection: 'column',
@@ -22,6 +24,7 @@ const defaultProps = {
 };
 
 export const Container = (props) => {
+  const deviceMode = useDeviceMode();
   props = {
     ...defaultProps,
     ...props,
@@ -42,6 +45,8 @@ export const Container = (props) => {
     overlay,
     children,
   } = props;
+  const effectivePadding = responsiveValue(props, deviceMode, 'padding') || padding;
+  const effectiveMargin = responsiveValue(props, deviceMode, 'margin') || margin;
   return (
     <Resizer
       propKey={{ width: 'width', height: 'height' }}
@@ -63,8 +68,8 @@ export const Container = (props) => {
         backgroundSize: backgroundImage ? 'cover' : undefined,
         backgroundPosition: backgroundImage ? 'center' : undefined,
         color: `rgba(${Object.values(color)})`,
-        padding: `${padding[0]}px ${padding[1]}px ${padding[2]}px ${padding[3]}px`,
-        margin: `${margin[0]}px ${margin[1]}px ${margin[2]}px ${margin[3]}px`,
+        padding: `${effectivePadding[0]}px ${effectivePadding[1]}px ${effectivePadding[2]}px ${effectivePadding[3]}px`,
+        margin: `${effectiveMargin[0]}px ${effectiveMargin[1]}px ${effectiveMargin[2]}px ${effectiveMargin[3]}px`,
         boxShadow:
           shadow === 0
             ? 'none'

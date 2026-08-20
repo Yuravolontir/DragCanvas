@@ -21,7 +21,7 @@
  * authored with them now.
  */
 export const RESOLVED_NAMES = new Set([
-  'Container', 'Text', 'Button', 'Video', 'Link', 'Form', 'Image', 'Carousel',
+  'Container', 'Text', 'Button', 'Video', 'BackgroundVideo', 'Link', 'Form', 'Image', 'Carousel',
   'Map', 'NavbarElement', 'Heading', 'Columns', 'Spacer', 'Divider', 'List',
   'Quote', 'Icon', 'Badge', 'Accordion', 'Pricing', 'Testimonial', 'Stats',
   'TeamGrid', 'Timeline', 'CTABanner', 'LogoStrip', 'SocialLinks',
@@ -82,8 +82,47 @@ export function validateTemplate(t) {
     if (n.type?.resolvedName === 'Image' && !n.props?.src) {
       throw new Error(`${t.name}: ${id} is an Image with no src`);
     }
-    if (n.type?.resolvedName === 'Video' && !n.props?.videoUrl) {
+    if (n.type?.resolvedName === 'Image' && !String(n.props?.alt || '').trim()) {
+      throw new Error(`${t.name}: ${id} is an Image with no alt text`);
+    }
+    if (
+      n.type?.resolvedName === 'Video' &&
+      n.props?.sourceType !== 'background' &&
+      !n.props?.videoUrl &&
+      !n.props?.videoId
+    ) {
       throw new Error(`${t.name}: ${id} is a Video with no videoUrl`);
+    }
+    if (
+      n.type?.resolvedName === 'Video' &&
+      n.props?.sourceType === 'background' &&
+      !n.props?.src &&
+      !n.props?.poster
+    ) {
+      throw new Error(`${t.name}: ${id} is a background Video with no video or poster`);
+    }
+  }
+
+  // Internal calls to action must land on a real section. The exporter safely
+  // disables dead anchors, but a template should not ship a button that only
+  // becomes inert after publication.
+  const anchors = new Set(
+    Object.values(t.map).map((n) => n.props?.anchor).filter(Boolean).map(String)
+  );
+  const internalLinks = [];
+  for (const [id, n] of Object.entries(t.map)) {
+    if (typeof n.props?.href === 'string' && n.props.href.startsWith('#')) {
+      internalLinks.push([id, n.props.href]);
+    }
+    for (const link of Array.isArray(n.props?.links) ? n.props.links : []) {
+      const href = typeof link === 'string' ? null : link?.href;
+      if (typeof href === 'string' && href.startsWith('#')) internalLinks.push([id, href]);
+    }
+  }
+  for (const [id, href] of internalLinks) {
+    const target = href.slice(1);
+    if (target && !anchors.has(target)) {
+      throw new Error(`${t.name}: ${id} links to missing #${target}`);
     }
   }
 

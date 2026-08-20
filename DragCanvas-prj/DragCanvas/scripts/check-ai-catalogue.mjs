@@ -14,7 +14,7 @@ import { SYSTEM_PROMPT } from '../features/ai/prompt/system.prompt.js';
 
 /** Props the model must NOT set: it cannot know a correct value. */
 const DELIBERATELY_HIDDEN = {
-    Video: ['videoId'],          // no way to know a real YouTube id
+    Video: ['videoId'],          // generated sites use stock files, not a YouTube id
     Button: ['textComponent'],   // internal nested Text config
 };
 
@@ -22,6 +22,17 @@ const DELIBERATELY_HIDDEN = {
 const NOT_GENERATABLE = [
     'Custom1', 'Custom2', 'Custom3', 'Custom2VideoDrop', 'Custom3BtnDrop', 'OnlyButtons',
 ];
+
+/**
+ * In the resolver and in the toolbox, but the model must not author them.
+ *
+ * Different from NOT_GENERATABLE: these build fine, they are just not what the
+ * generator should reach for.
+ */
+const NOT_AUTHORED = [];
+
+/** Old resolver names retained only so saved projects can still deserialize. */
+const LEGACY_ONLY = ['BackgroundVideo'];
 
 function resolverComponents() {
     const source = fs.readFileSync('src/CreateNewProject.jsx', 'utf8');
@@ -52,15 +63,50 @@ function promptProps() {
     return found;
 }
 
+/**
+ * The toolbox is the third hand-maintained list of the same components, after
+ * the resolver and the prompt. Parsed the same way: by regex, so this script
+ * stays dependency-free and does not have to import JSX.
+ */
+function catalogueEntries() {
+    const path = 'src/Components/Landing/elements.catalogue.jsx';
+    const source = fs.readFileSync(path, 'utf8');
+    const groups = source.match(/ELEMENT_GROUPS\s*=\s*\[([^\]]*)\]/);
+    const known = groups ? [...groups[1].matchAll(/'([^']+)'/g)].map(m => m[1]) : [];
+    const entries = [];
+    for (const block of source.split(/\n  \{\n/).slice(1)) {
+        const field = (k) => (block.match(new RegExp(`^\\s*${k}: '([^']*)'`, 'm')) || [])[1];
+        const name = field('name');
+        if (name) entries.push({ name, group: field('group'), icon: field('icon'), tip: field('tip'), label: field('label') });
+    }
+    return { entries, known };
+}
+
 const resolver = resolverComponents();
 const described = promptProps();
+const { entries: catalogue, known: knownGroups } = catalogueEntries();
 const problems = [];
 
 console.log(`resolver: ${resolver.length} components | prompt describes: ${Object.keys(described).length}\n`);
 
 for (const name of resolver) {
+    if (LEGACY_ONLY.includes(name)) {
+        console.log(`  ${name.padEnd(18)} skipped - legacy compatibility only`);
+        continue;
+    }
     if (NOT_GENERATABLE.includes(name)) {
         console.log(`  ${name.padEnd(18)} skipped - needs linkedNodes, which buildCraftTree cannot produce`);
+        continue;
+    }
+
+    if (NOT_AUTHORED.includes(name)) {
+        // The prompt must not describe it, or the model will use it anyway.
+        if (described[name]) {
+            problems.push(`${name} is not for the generator, but the prompt still describes it`);
+            console.log(`  ${name.padEnd(18)} STILL IN PROMPT`);
+        } else {
+            console.log(`  ${name.padEnd(18)} skipped - not authored by the model`);
+        }
         continue;
     }
 
@@ -83,10 +129,53 @@ for (const name of resolver) {
     }
 }
 
+// ---- The toolbox catalogue ----
+//
+// Same exclusion list as above: the Custom* helpers cannot be built from
+// serialized props, and they are not things a user drags either.
+
+console.log(`\ncatalogue: ${catalogue.length} elements | groups: ${knownGroups.join(', ')}\n`);
+
+const byName = new Map(catalogue.map(e => [e.name, e]));
+
+for (const name of resolver) {
+    if (LEGACY_ONLY.includes(name)) continue;
+    if (NOT_GENERATABLE.includes(name)) continue;
+    if (!byName.has(name)) {
+        problems.push(`${name} is in the resolver but has no entry in elements.catalogue.jsx, so nothing in the toolbox can add it`);
+        console.log(`  ${name.padEnd(18)} MISSING FROM TOOLBOX`);
+    }
+}
+
+for (const entry of catalogue) {
+    if (!resolver.includes(entry.name)) {
+        problems.push(`${entry.name} is in elements.catalogue.jsx but not in the resolver, so dropping it would break the project`);
+    }
+    if (!knownGroups.includes(entry.group)) {
+        problems.push(`${entry.name}: group "${entry.group}" is not one of ${knownGroups.join(', ')}`);
+    }
+    const shown = entry.label || entry.name;
+    if (!entry.tip || entry.tip.toLowerCase() === shown.toLowerCase()) {
+        problems.push(`${entry.name}: tooltip "${entry.tip}" only repeats the label - say something the label does not`);
+    }
+}
+
+const iconOwners = new Map();
+for (const entry of catalogue) {
+    if (!iconOwners.has(entry.icon)) iconOwners.set(entry.icon, []);
+    iconOwners.get(entry.icon).push(entry.label || entry.name);
+}
+for (const [icon, owners] of iconOwners) {
+    if (owners.length > 1) {
+        problems.push(`icon "${icon}" is used by ${owners.join(' and ')} - two elements drawn the same are two the user cannot tell apart`);
+        console.log(`  ${icon.padEnd(18)} DUPLICATE: ${owners.join(', ')}`);
+    }
+}
+
 if (problems.length > 0) {
     console.log(`\n${problems.length} problem(s):`);
     problems.forEach(p => console.log(`  - ${p}`));
     process.exit(1);
 }
 
-console.log('\nprompt and editor agree');
+console.log('\nprompt, editor and toolbox agree');

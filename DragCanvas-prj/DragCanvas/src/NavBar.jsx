@@ -5,12 +5,14 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from './userContext.js';
+import { APP_NAV_ITEMS, APP_NAV_Z_INDEX, userDisplayName } from './utils/appNavigation.js';
 
 export default function NavBar() {
   const navigate = useNavigate();
   const { currentUser, logout, isAdmin, isSuperAdmin, notificationsVersion } = useUserContext();
   const [unreadCount, setUnreadCount] = useState(0);
   const [scrolled, setScrolled] = useState(false);
+  const displayName = userDisplayName(currentUser);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,7 +48,16 @@ export default function NavBar() {
     <Navbar
       expand="lg"
       fixed="top"
+      className="dragcanvas-app-navbar"
       style={{
+        // Do not rely only on Bootstrap's .fixed-top. The editor has its own
+        // high stacking contexts, which can otherwise cover the application
+        // navigation completely.
+        position: 'fixed',
+        inset: '0 0 auto 0',
+        width: '100%',
+        zIndex: APP_NAV_Z_INDEX,
+        isolation: 'isolate',
         background: scrolled ? 'var(--nav-bg-scrolled)' : 'var(--nav-bg)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
@@ -80,14 +91,10 @@ export default function NavBar() {
 
         <Navbar.Collapse id="main-nav">
           <Nav className="me-auto" style={{ gap: '4px', marginLeft: '24px' }}>
-            {[
-              { label: 'Create', onClick: () => navigate("/create-new-project") },
-              { label: 'My Projects', onClick: () => navigate("/my-projects") },
-              { label: 'Templates', onClick: () => navigate("/inspire-me") },
-            ].map((item, i) => (
+            {APP_NAV_ITEMS.map((item) => (
               <Nav.Link
-                key={i}
-                onClick={item.onClick}
+                key={item.path}
+                onClick={() => navigate(item.path)}
                 style={{
                   color: 'var(--on-surface-variant)',
                   fontSize: '0.875rem',
@@ -125,7 +132,7 @@ export default function NavBar() {
                   border: '1px solid var(--outline-light)',
                 }}>
                   <span style={{ color: 'var(--muted)' }}>{getGreeting()}</span>,{' '}
-                  <span style={{ color: 'var(--primary)', fontWeight: 600 }}>{currentUser.UserName}</span>
+                  <span style={{ color: 'var(--primary)', fontWeight: 600 }}>{displayName}</span>
                 </span>
 
                 {(isAdmin || isSuperAdmin) && (

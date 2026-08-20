@@ -40,7 +40,7 @@ export default function portfolio() {
   const work = b.container(root, { background: INK, padding: ['32', '48', '48', '48'], width: '100%', anchor: 'work' }, 'Work');
   const grid = b.columns(work, { count: '2', gap: '20' });
   for (const shot of [P.agency.sketches, P.agency.facade, P.agency.studio, P.photography.editorial]) {
-    b.image(grid, shot(900), { radius: 0, width: '100%', height: '340px' });
+    b.image(grid, shot(900), { alt: 'Selected branding and editorial design project', radius: 0, width: '100%', height: '340px' });
   }
 
   // ── how the work gets made ──────────────────────────────────────

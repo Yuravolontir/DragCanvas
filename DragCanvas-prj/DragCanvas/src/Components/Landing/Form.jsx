@@ -19,22 +19,28 @@ export const Form = (props) => {
     submitText = 'Send',
     background,
     accent,
+    textColor,
+    inputBackground,
+    inputBorder,
     radius = 8,
   } = props;
 
   const bg = background ? `rgba(${background.r},${background.g},${background.b},${background.a})` : '#ffffff';
   const accentColor = accent ? `rgba(${accent.r},${accent.g},${accent.b},${accent.a})` : '#7e57c2';
+  const labelColor = textColor ? `rgba(${Object.values(textColor)})` : '#49454f';
+  const fieldBackground = inputBackground ? `rgba(${Object.values(inputBackground)})` : '#fff';
+  const fieldBorder = inputBorder ? `rgba(${Object.values(inputBorder)})` : '#ddd';
 
   const inputStyle = {
     width: '100%',
     padding: '10px 12px',
     marginBottom: 12,
-    border: '1px solid #ddd',
+    border: `1px solid ${fieldBorder}`,
     borderRadius: radius,
     fontSize: 14,
     fontFamily: 'inherit',
     boxSizing: 'border-box',
-    background: '#fff',
+    background: fieldBackground,
     color: '#1c1b1f',
   };
 
@@ -43,7 +49,7 @@ export const Form = (props) => {
       <div style={{ background: bg, padding: 24, borderRadius: radius, boxSizing: 'border-box' }}>
         {fields.map((field, index) => (
           <div key={index}>
-            <label style={{ display: 'block', fontSize: 13, marginBottom: 4, color: '#49454f' }}>
+            <label style={{ display: 'block', fontSize: 13, marginBottom: 4, color: labelColor }}>
               {field.label}{field.required ? ' *' : ''}
             </label>
             {field.type === 'textarea' ? (
@@ -86,7 +92,7 @@ export const Form = (props) => {
 
         {enabled && (
           <p style={{ margin: '10px 0 0', fontSize: 11, color: '#a09aa8' }}>
-            After publishing, submissions arrive by email and in your project.
+            Preview mode — the form becomes interactive after publishing. Submissions are saved in your project and emailed to you.
           </p>
         )}
       </div>
@@ -106,6 +112,9 @@ Form.craft = {
     successMessage: 'Thank you! We will be in touch.',
     background: { r: 255, g: 255, b: 255, a: 1 },
     accent: { r: 126, g: 87, b: 194, a: 1 },
+    textColor: { r: 73, g: 69, b: 79, a: 1 },
+    inputBackground: { r: 255, g: 255, b: 255, a: 1 },
+    inputBorder: { r: 221, g: 221, b: 221, a: 1 },
     radius: 8,
     width: '100%',
     height: 'auto',

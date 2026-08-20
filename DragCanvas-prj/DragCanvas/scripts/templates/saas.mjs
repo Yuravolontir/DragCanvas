@@ -75,11 +75,11 @@ export default function saas() {
 
   // ── the meeting it replaces ────────────────────────────────────
   const digest = b.container(root, {
-    background: INK, padding: ['0', '48', '64', '48'], width: '100%',
+    background: INK, padding: ['0', '48', '64', '48'], width: '100%', anchor: 'workflow',
   }, 'Digest');
   const split = b.columns(digest, { count: '2', gap: '36', ratio: '3:2', stack: 'yes' });
   const photoSide = b.container(split, { background: TRANSPARENT, width: '100%' }, 'Digest photo');
-  b.image(photoSide, P.saas.desks(1000), { width: '100%', height: '420px', objectFit: 'cover', radius: 12 });
+  b.image(photoSide, P.saas.desks(1000), { alt: 'Product team reviewing project activity together', width: '100%', height: '420px', objectFit: 'cover', radius: 12 });
   const copySide = b.container(split, {
     background: TRANSPARENT, width: '100%', justifyContent: 'center', padding: ['0', '0', '0', '8'],
   }, 'Digest copy');
@@ -87,7 +87,7 @@ export default function saas() {
   b.text(copySide, 'Every Friday the digest goes out: what shipped, what slipped, and the one decision that is still open. It is assembled from the board, so nobody has to write a status update again.', {
     fontSize: '15', color: MUTED, margin: ['12', '0', '16', '0'],
   });
-  b.link(copySide, 'See a real digest', 'https://example.com', { color: INDIGO, fontSize: '15' });
+  b.link(copySide, 'Explore the workflow', '#workflow', { color: INDIGO, fontSize: '15' });
 
   // ── what it costs ──────────────────────────────────────────────
   const price = b.container(root, {

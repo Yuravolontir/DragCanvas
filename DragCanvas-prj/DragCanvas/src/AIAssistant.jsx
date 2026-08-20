@@ -91,7 +91,7 @@ function stageLabel(stage) {
 
         nodes[nodeId] = {
           type: { resolvedName },
-          isCanvas: element.type === 'container',
+          isCanvas: element.type === 'container' || (element.type === 'video' && element.props?.sourceType === 'background'),
           props: element.props || {},
           displayName: resolvedName,
           custom: {},
@@ -131,7 +131,7 @@ function stageLabel(stage) {
 
         nodes[sectionId] = {
           type: { resolvedName: sectionType },
-          isCanvas: sectionType === 'Container',
+          isCanvas: sectionType === 'Container' || (sectionType === 'Video' && section.props?.sourceType === 'background'),
           props: section.props || {},
           displayName: sectionType,
           custom: {},
@@ -330,7 +330,7 @@ function stageLabel(stage) {
     return (
       <div style={{
         padding: '12px 16px',
-        marginBottom: 10,
+        margin: '0 auto 10px',
         background: 'var(--surface)',
         borderRadius: '12px',
         border: '1px solid var(--outline-light)',

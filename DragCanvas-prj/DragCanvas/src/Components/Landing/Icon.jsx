@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNode } from '@craftjs/core';
 import { ToolbarSection } from './Toolbar/ToolbarSection';
 import { ToolbarItem } from './Toolbar/ToolbarItem';
@@ -35,10 +35,37 @@ export const Icon = ({ name, size, color, background, padded }) => {
   );
 };
 
+const SYMBOLS = [
+  'star', 'favorite', 'home', 'search', 'menu', 'close', 'check', 'add', 'arrow_forward',
+  'arrow_back', 'expand_more', 'play_arrow', 'pause', 'mail', 'call', 'location_on', 'link',
+  'download', 'upload', 'share', 'person', 'group', 'shopping_cart', 'payments', 'verified',
+  'bolt', 'schedule', 'calendar_month', 'public', 'language', 'photo_camera', 'image', 'videocam',
+  'lightbulb', 'rocket_launch', 'security', 'lock', 'settings', 'edit', 'delete', 'info', 'warning',
+];
+
+const IconPicker = () => {
+  const [search, setSearch] = useState('');
+  const { selected, setProp } = useNode((node) => ({
+    selected: node.data.props.name || 'star',
+    setProp: node.actions.setProp,
+  }));
+  const shown = SYMBOLS.filter((name) => name.includes(search.trim().toLowerCase().replace(/\s+/g, '_')));
+
+  return <div style={{ width: '100%', padding: '0 8px 8px' }}>
+    <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search icons" aria-label="Search icons" style={{ width: '100%', padding: '7px 8px', border: '1px solid var(--outline-light)', borderRadius: 6, marginBottom: 8 }} />
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 5, maxHeight: 180, overflowY: 'auto' }}>
+      {shown.map((name) => <button key={name} type="button" title={name} aria-label={`Use ${name} icon`} onClick={() => setProp((p) => { p.name = name; })} style={{ display: 'grid', placeItems: 'center', padding: 6, borderRadius: 6, cursor: 'pointer', border: selected === name ? '2px solid var(--primary)' : '1px solid var(--outline-light)', background: selected === name ? 'var(--surface-container)' : 'transparent', color: 'var(--on-surface)' }}>
+        <span className="material-symbols-outlined" style={{ fontSize: 21 }}>{name}</span>
+      </button>)}
+    </div>
+    {!shown.length && <div style={{ fontSize: 11, color: 'var(--muted)', padding: 6 }}>No matching icons. Enter a Material Symbol name below.</div>}
+  </div>;
+};
+
 const IconSettings = () => (
   <React.Fragment>
     <ToolbarSection title="Icon">
-      {/* The name is the Material symbol's own, e.g. bolt, schedule, verified */}
+      <IconPicker />
       <ToolbarItem full={true} propKey="name" type="text" label="Symbol name" />
       <ToolbarItem full={true} propKey="size" type="slider" label="Size" min={12} max={96} />
       <ToolbarItem full={true} propKey="color" type="color" label="Colour" />

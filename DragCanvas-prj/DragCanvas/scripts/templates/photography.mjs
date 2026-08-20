@@ -21,9 +21,13 @@ export default function photography() {
   // A studio portrait session, which is what the studio sells. The caption is
   // left empty on purpose: the page's one h1 is directly below, and printing
   // the same line twice made the hero read as a duplicate rather than a lead.
-  b.video(hero, {
-    sourceType: 'url',
-    videoUrl: 'https://videos.pexels.com/video-files/7206150/7206150-hd_1920_1080_25fps.mp4',
+  b.backgroundVideo(hero, {
+    src: 'https://videos.pexels.com/video-files/7206150/7206150-hd_1920_1080_25fps.mp4',
+    // The poster is the hero on a phone, under reduced motion, and if the clip
+    // fails - so it has to be a frame that stands on its own.
+    poster: P.photography.portrait(1600),
+    overlay: 0,
+    minHeight: '520px',
   });
 
   const intro = b.container(root, { background: INK, padding: ['48', '48', '32', '48'], width: '100%' }, 'Intro');
@@ -44,7 +48,7 @@ export default function photography() {
                       P.photography.mono, P.photography.couple, P.photography.standing]) {
     // A fixed height, because a grid of photographs at their own aspect ratios
     // is a ragged grid. `object-fit: cover` does the rest.
-    b.image(grid, shot(700), { radius: 2, width: '100%', height: '300px' });
+    b.image(grid, shot(700), { alt: 'Editorial portrait from the studio portfolio', radius: 2, width: '100%', height: '300px' });
   }
 
   // ── what every booking means here ───────────────────────────────

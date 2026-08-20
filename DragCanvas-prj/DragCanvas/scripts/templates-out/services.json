@@ -354,6 +354,9 @@
         "8",
         "0"
       ],
+      "action": "none",
+      "actionValue": "",
+      "newTab": false,
       "textComponent": {
         "fontSize": "16",
         "textAlign": "center",
@@ -390,6 +393,7 @@
     "isCanvas": false,
     "props": {
       "src": "https://images.pexels.com/photos/313776/pexels-photo-313776.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Joiner shaping timber at a workshop bench",
       "radius": 10,
       "width": "100%",
       "height": "400px",
@@ -675,6 +679,7 @@
     "isCanvas": false,
     "props": {
       "src": "https://images.pexels.com/photos/5711703/pexels-photo-5711703.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "alt": "In the workshop",
       "radius": 10,
       "width": "100%",
       "height": "300px",
@@ -777,6 +782,7 @@
     "isCanvas": false,
     "props": {
       "src": "https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "alt": "In your house",
       "radius": 10,
       "width": "100%",
       "height": "300px",
@@ -2240,6 +2246,24 @@
         "r": 214,
         "g": 138,
         "b": 30,
+        "a": 1
+      },
+      "textColor": {
+        "r": 73,
+        "g": 69,
+        "b": 79,
+        "a": 1
+      },
+      "inputBackground": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "inputBorder": {
+        "r": 221,
+        "g": 221,
+        "b": 221,
         "a": 1
       },
       "width": "100%",

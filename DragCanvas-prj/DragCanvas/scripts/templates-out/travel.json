@@ -281,6 +281,9 @@
         "8",
         "0"
       ],
+      "action": "none",
+      "actionValue": "",
+      "newTab": false,
       "textComponent": {
         "fontSize": "16",
         "textAlign": "center",
@@ -369,18 +372,34 @@
     "props": {
       "width": "100%",
       "height": "420px",
-      "src1": "https://images.pexels.com/photos/13522524/pexels-photo-13522524.jpeg?auto=compress&cs=tinysrgb&w=1000",
-      "src2": "https://images.pexels.com/photos/29719488/pexels-photo-29719488.jpeg?auto=compress&cs=tinysrgb&w=1000",
-      "src3": "https://images.pexels.com/photos/11680560/pexels-photo-11680560.jpeg?auto=compress&cs=tinysrgb&w=1000",
-      "heading1": "The long way to Lisbon",
-      "heading2": "Winter in the Dolomites",
-      "heading3": "Down the Danube",
-      "label1": "Portugal",
-      "label2": "Italy",
-      "label3": "Hungary",
-      "p1": "Four days by rail when the flight was two hours.",
-      "p2": "Empty huts, cold mornings, better coffee than expected.",
-      "p3": "A ferry, a bicycle, and a week without a plan.",
+      "title": "Carousel",
+      "autoplay": false,
+      "loop": true,
+      "arrows": true,
+      "dots": true,
+      "perView": 1,
+      "perViewTablet": 1,
+      "perViewMobile": 1,
+      "slides": [
+        {
+          "src": "https://images.pexels.com/photos/13522524/pexels-photo-13522524.jpeg?auto=compress&cs=tinysrgb&w=1000",
+          "heading": "The long way to Lisbon",
+          "label": "Portugal",
+          "text": "Four days by rail when the flight was two hours."
+        },
+        {
+          "src": "https://images.pexels.com/photos/29719488/pexels-photo-29719488.jpeg?auto=compress&cs=tinysrgb&w=1000",
+          "heading": "Winter in the Dolomites",
+          "label": "Italy",
+          "text": "Empty huts, cold mornings, better coffee than expected."
+        },
+        {
+          "src": "https://images.pexels.com/photos/11680560/pexels-photo-11680560.jpeg?auto=compress&cs=tinysrgb&w=1000",
+          "heading": "Down the Danube",
+          "label": "Hungary",
+          "text": "A ferry, a bicycle, and a week without a plan."
+        }
+      ],
       "accent": {
         "r": 24,
         "g": 108,
@@ -1951,6 +1970,24 @@
         "b": 122,
         "a": 1
       },
+      "textColor": {
+        "r": 73,
+        "g": 69,
+        "b": 79,
+        "a": 1
+      },
+      "inputBackground": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "inputBorder": {
+        "r": 221,
+        "g": 221,
+        "b": 221,
+        "a": 1
+      },
       "width": "100%",
       "height": "auto"
     },
@@ -2235,8 +2272,8 @@
       "items": [
         "Instagram",
         "https://instagram.com/",
-        "RSS",
-        "https://example.com/feed"
+        "Stories",
+        "#recent"
       ],
       "background": {
         "r": 0,

@@ -23,6 +23,7 @@ export { TextSettings } from './TextSettings';
 export { Button } from './Button';
 export { ButtonSettings } from './ButtonSettings';
 export { Video } from './Video';
+export { BackgroundVideo } from './BackgroundVideo';
 export { VideoSettings } from './VideoSettings';
 export { ContainerSettings } from './ContainerSettings';
 export { Custom1, OnlyButtons } from './Custom1';

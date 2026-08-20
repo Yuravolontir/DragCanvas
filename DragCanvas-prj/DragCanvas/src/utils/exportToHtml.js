@@ -1,5 +1,6 @@
 import { columnTracks } from './columnTracks.js';
 import { pairUp, groupLines } from './elementData.js';
+import { readSlides } from './carouselSlides.js';
 
 /**
  * Convert Craft.js serialized data to clean HTML with inline CSS
@@ -55,6 +56,37 @@ const cssRules = [];
 // Mobile (<=768px) overrides collected during conversion,
 // emitted as a single @media block after the base rules
 const mobileRules = [];
+const tabletRules = [];
+
+const responsiveCss = (values = {}) => {
+  const styles = {};
+  if (values.width) styles.width = values.width;
+  if (values.height) styles.height = values.height;
+  if (Array.isArray(values.padding)) styles.padding = spacingToCss(values.padding);
+  if (Array.isArray(values.margin)) styles.margin = spacingToCss(values.margin);
+  if (values.visible === false) styles.display = 'none !important';
+  return styles;
+};
+
+const wrapResponsive = (html, node, depth) => {
+  const responsive = node.props?.responsive;
+  if (!responsive || (!responsive.tablet && !responsive.mobile)) return html;
+
+  const className = generateClass('responsive');
+  cssRules.push(`.${className} {\n  display: contents;\n}`);
+
+  const addRule = (bucket, values) => {
+    const styles = responsiveCss(values);
+    if (!Object.keys(styles).length) return;
+    if (styles.display !== 'none !important') styles.display = 'block';
+    bucket.push(`  .${className} {\n${stylesToCss(styles)}\n  }`);
+  };
+  addRule(tabletRules, responsive.tablet);
+  addRule(mobileRules, responsive.mobile);
+
+  const indent = '  '.repeat(depth + 1);
+  return `${indent}<div class="${className}">\n${html}${indent}</div>\n`;
+};
 
 // A node is "large" (forces its parent row to stack on mobile) when it is
 // media/custom content, or a Container that is a real column: declared
@@ -951,11 +983,32 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
     cssRules.push(`.${className}:hover {\n  transform: translateY(-2px);\n  box-shadow: 0 6px 12px rgba(0,0,0,0.15);\n}\n`);
 
     const text = props.text || 'Button';
-    return `    <button class="${className}">${text}</button>\n`;
+    const value = String(props.actionValue || '').trim();
+    let href = '';
+    if (props.action === 'url' && value) {
+      if (/^(https?:\/\/|\/|\.\/|\.\.\/)/i.test(value)) href = value;
+      else if (!/^[a-z][a-z0-9+.-]*:/i.test(value)) href = `https://${value}`;
+    }
+    if (props.action === 'section' && value) href = `#${slugifyAnchor(value.replace(/^#/, ''))}`;
+    if (props.action === 'email' && value) href = `mailto:${value.replace(/^mailto:/i, '')}`;
+    if (props.action === 'phone' && value) href = `tel:${value.replace(/^tel:/i, '')}`;
+    if (href) {
+      const target = props.action === 'url' && props.newTab ? ' target="_blank" rel="noopener noreferrer"' : '';
+      return `    <a class="${className}" href="${escapeAttribute(href)}"${target}>${escapeHtmlText(text)}</a>\n`;
+    }
+    return `    <button class="${className}" type="button">${escapeHtmlText(text)}</button>\n`;
   },
 
-  Video: (node) => {
+  Video: (node, data, depth = 0) => {
     const props = node.props || {};
+
+    if (props.sourceType === 'background') {
+      return converters.BackgroundVideo(
+        { ...node, props: { ...props, src: props.src || props.videoUrl || '' } },
+        data,
+        depth
+      );
+    }
     const wrapperClass = generateClass('video-wrapper');
 
     const wrapperStyles = {
@@ -1021,31 +1074,65 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
       mobileRules.push(`  .${className} {\n  width: 100%;\n  }`);
     }
 
-    return `    <img class="${className}" src="${resolveImageSrc(props.src)}" alt="" />\n`;
+    return `    <img class="${className}" src="${escapeAttribute(resolveImageSrc(props.src))}" alt="${escapeAttribute(props.alt || '')}" />\n`;
   },
 
+  /**
+   * The carousel, matching what Carousel.jsx renders.
+   *
+   * The editor used to run react-bootstrap's carousel and this converter used to
+   * emit a bare scroll-snap strip, so arrows, dots and autoplay existed on one
+   * side and not the other. Both sides are the same scroll-snap strip now, and
+   * the controls below are the same behaviour written for a page with no bundle.
+   *
+   * A carousel with no arrows, no dots and no autoplay still exports as pure
+   * CSS, exactly as it did before.
+   */
   Carousel: (node) => {
     const props = node.props || {};
     const className = generateClass('carousel');
+    const trackId = `${className}-track`;
 
+    const slides = readSlides(props);
     const height = props.height || '400px';
+    const perView = Math.max(1, Number(props.perView) || 1);
+    const perViewTablet = Math.max(1, Number(props.perViewTablet) || Math.min(perView, 2));
+    const perViewMobile = Math.max(1, Number(props.perViewMobile) || 1);
 
-    // CSS-only carousel: horizontal scroll-snap strip (swipeable on mobile)
+    const arrows = props.arrows !== false && slides.length > 1;
+    const dots = props.dots !== false && slides.length > 1;
+    const autoplay = props.autoplay === true && slides.length > 1;
+    const loop = props.loop !== false;
+    const interval = Math.max(1000, Number(props.interval) || 5000);
+
     cssRules.push(`.${className} {
-  display: flex;
+  position: relative;
   width: 100%;
   height: ${height};
+}
+.${className} .track {
+  --per-view: ${perView};
+  display: flex;
+  width: 100%;
+  height: 100%;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  scrollbar-width: none;
   border-radius: 12px;
 }
-.${className}::-webkit-scrollbar { display: none; }
+.${className} .track::-webkit-scrollbar { display: none; }
 .${className} .slide {
   position: relative;
-  flex: 0 0 100%;
+  flex: 0 0 calc(100% / var(--per-view));
+  height: 100%;
   scroll-snap-align: start;
-  background-size: cover;
-  background-position: center;
+  overflow: hidden;
+}
+.${className} .slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .${className} .caption {
   position: absolute;
@@ -1065,24 +1152,234 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
   font-size: 12px;
   font-weight: 600;
   border-radius: 999px;
+  color: #fff;
   background: ${rgbaToString(props.accent) || '#0d6efd'};
+}
+.${className} .arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.${className} .arrow:hover { background: rgba(0,0,0,0.65); }
+.${className} .arrow:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.${className} .arrow.prev { left: 10px; }
+.${className} .arrow.next { right: 10px; }
+.${className} .dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+.${className} .dots button {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  background: rgba(255,255,255,0.45);
+}
+.${className} .dots button[aria-current="true"] { background: #fff; }
+.${className} .dots button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+@media (max-width: 900px) {
+  .${className} .track { --per-view: ${perViewTablet}; }
+}
+@media (max-width: 600px) {
+  .${className} .track { --per-view: ${perViewMobile}; }
 }`);
 
-    let slides = '';
-    for (const i of [1, 2, 3]) {
-      const src = props[`src${i}`];
-      if (!src) continue;
-      const label = props[`label${i}`];
-      slides += `      <div class="slide" style="background-image: url('${resolveImageSrc(src)}')">
-        <div class="caption">
-          ${label ? `<span class="badge">${label}</span>` : ''}
-          <h3>${props[`heading${i}`] || ''}</h3>
-          <p>${props[`p${i}`] || ''}</p>
-        </div>
-      </div>\n`;
+    let slideHtml = '';
+    slides.forEach((slide, i) => {
+      if (!slide.src) return;
+      const caption = slide.label || slide.heading || slide.text
+        ? `        <div class="caption">
+          ${slide.label ? `<span class="badge">${escapeHtmlText(slide.label)}</span>` : ''}
+          ${slide.heading ? `<h3>${escapeHtmlText(slide.heading)}</h3>` : ''}
+          ${slide.text ? `<p>${escapeHtmlText(slide.text)}</p>` : ''}
+        </div>\n`
+        : '';
+      slideHtml += `      <div class="slide" role="group" aria-roledescription="slide" aria-label="${i + 1} of ${slides.length}">
+        <img src="${escapeAttribute(resolveImageSrc(slide.src))}" alt="${escapeAttribute(slide.alt)}" loading="lazy" decoding="async">
+${caption}      </div>\n`;
+    });
+
+    const arrowHtml = arrows
+      ? `      <button class="arrow prev" type="button" aria-label="Previous slide">&lsaquo;</button>
+      <button class="arrow next" type="button" aria-label="Next slide">&rsaquo;</button>\n`
+      : '';
+
+    const dotsHtml = dots
+      ? `      <div class="dots">${slides
+          .map(
+            (_, i) =>
+              `<button type="button" aria-label="Go to slide ${i + 1}"${i === 0 ? ' aria-current="true"' : ''}></button>`
+          )
+          .join('')}</div>\n`
+      : '';
+
+    // Only a carousel that actually has controls pays for a script.
+    const script = arrows || dots || autoplay
+      ? `      <script>
+      (function () {
+        var root = document.getElementById('${trackId}');
+        if (!root) return;
+        var track = root.querySelector('.track');
+        var dots = root.querySelectorAll('.dots button');
+        var step = function () {
+          var first = track.firstElementChild;
+          return first ? first.getBoundingClientRect().width : track.clientWidth;
+        };
+        var go = function (direction) {
+          var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+          var atStart = track.scrollLeft <= 1;
+          if (direction > 0 && atEnd) { if (${loop}) track.scrollTo({ left: 0, behavior: 'smooth' }); return; }
+          if (direction < 0 && atStart) { if (${loop}) track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' }); return; }
+          track.scrollBy({ left: direction * step(), behavior: 'smooth' });
+        };
+        var prev = root.querySelector('.arrow.prev');
+        var next = root.querySelector('.arrow.next');
+        if (prev) prev.addEventListener('click', function () { go(-1); });
+        if (next) next.addEventListener('click', function () { go(1); });
+        Array.prototype.forEach.call(dots, function (dot, i) {
+          dot.addEventListener('click', function () { track.scrollTo({ left: i * step(), behavior: 'smooth' }); });
+        });
+        track.addEventListener('keydown', function (event) {
+          if (event.key === 'ArrowRight') { event.preventDefault(); go(1); }
+          if (event.key === 'ArrowLeft') { event.preventDefault(); go(-1); }
+        });
+        track.addEventListener('scroll', function () {
+          if (!dots.length) return;
+          var width = step();
+          if (!width) return;
+          var active = Math.round(track.scrollLeft / width);
+          Array.prototype.forEach.call(dots, function (dot, i) {
+            if (i === active) dot.setAttribute('aria-current', 'true');
+            else dot.removeAttribute('aria-current');
+          });
+        }, { passive: true });
+${autoplay ? `        var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!reduced) {
+          var timer = setInterval(function () { go(1); }, ${interval});
+          var stop = function () { clearInterval(timer); timer = null; };
+          var start = function () { if (!timer) timer = setInterval(function () { go(1); }, ${interval}); };
+          root.addEventListener('mouseenter', stop);
+          root.addEventListener('mouseleave', start);
+          root.addEventListener('focusin', stop);
+          root.addEventListener('focusout', start);
+        }\n` : ''}      })();
+      </script>\n`
+      : '';
+
+    return `    <div class="${className}" id="${trackId}" role="region" aria-roledescription="carousel" aria-label="${escapeAttribute(props.title || 'Gallery')}">
+      <div class="track" tabindex="0">
+${slideHtml}      </div>
+${arrowHtml}${dotsHtml}${script}    </div>\n`;
+  },
+
+  /**
+   * A hero with video behind it.
+   *
+   * Mirrors BackgroundVideo.jsx: three layers, same class names, same gate. The
+   * <video> ships without a src on purpose — the inline script attaches one only
+   * on a wide viewport and only when the visitor has not asked for less motion.
+   * On a phone, under reduced motion, with JavaScript off, or when the file
+   * fails, the poster is the hero and no video is fetched.
+   */
+  BackgroundVideo: (node, data, depth = 0) => {
+    const props = node.props || {};
+    const className = generateClass('backgroundvideo');
+    const rootId = `${className}-root`;
+
+    const src = props.src || '';
+    const poster = props.poster ? resolveImageSrc(props.poster) : '';
+    const dim = Math.min(100, Math.max(0, Number(props.overlay ?? 40))) / 100;
+    const position = ['top', 'center', 'bottom'].includes(props.position) ? props.position : 'center';
+    const objectPosition = position === 'top' ? 'center top' : position === 'bottom' ? 'center bottom' : 'center center';
+    const minHeight = props.minHeight || '420px';
+
+    cssRules.push(`.${className} {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  min-height: ${minHeight};
+  overflow: hidden;${poster ? `
+  background-image: url('${poster}');
+  background-size: cover;
+  background-position: ${objectPosition};` : ''}
+}
+.${className} > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: ${objectPosition};
+  pointer-events: none;
+  z-index: 0;
+}
+.${className} > .dim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, ${dim});
+  pointer-events: none;
+  z-index: 1;
+}
+.${className} > .content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}`);
+
+    let childrenHtml = '';
+    for (const childNodeId of getChildIds(node)) {
+      childrenHtml += convertNode(childNodeId, data, depth + 1);
     }
 
-    return `    <div class="${className}">\n${slides}    </div>\n`;
+    const videoTag = src
+      ? `      <video muted ${props.loop === false ? '' : 'loop '}playsinline preload="none"${poster ? ` poster="${escapeAttribute(poster)}"` : ''} aria-hidden="true" tabindex="-1" data-src="${escapeAttribute(src)}"></video>\n`
+      : '';
+
+    // No src, no script: a poster-only hero is static CSS.
+    const script = src
+      ? `      <script>
+      (function () {
+        var root = document.getElementById('${rootId}');
+        if (!root) return;
+        var video = root.querySelector('video');
+        if (!video) return;
+        var wide = !window.matchMedia || window.matchMedia('(min-width: 768px)').matches;
+        var calm = !window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!wide || !calm) return;
+        video.addEventListener('error', function () { video.style.display = 'none'; });
+        video.src = video.getAttribute('data-src');
+        var playing = video.play();
+        if (playing && playing.catch) playing.catch(function () {});
+      })();
+      </script>\n`
+      : '';
+
+    return `    <div class="${className}" id="${rootId}">
+${videoTag}      <div class="dim"></div>
+      <div class="content">
+${childrenHtml}      </div>
+${script}    </div>\n`;
   },
 
   /**
@@ -1100,6 +1397,9 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
     const fields = Array.isArray(props.fields) ? props.fields : [];
     const radius = props.radius ?? 8;
     const accent = rgbaToString(props.accent) || '#7e57c2';
+    const textColor = props.textColor ? rgbaToString(props.textColor) : '#49454f';
+    const inputBackground = props.inputBackground ? rgbaToString(props.inputBackground) : '#ffffff';
+    const inputBorder = props.inputBorder ? rgbaToString(props.inputBorder) : '#dddddd';
 
     cssRules.push(`.${className} {
   background: ${rgbaToString(props.background) || '#ffffff'};
@@ -1112,18 +1412,19 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
   display: block;
   font-size: 13px;
   margin-bottom: 4px;
-  color: #49454f;
+  color: ${textColor};
 }
 .${className} input,
 .${className} textarea {
   width: 100%;
   padding: 10px 12px;
   margin-bottom: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid ${inputBorder};
   border-radius: ${radius}px;
   font-size: 14px;
   font-family: inherit;
   box-sizing: border-box;
+  background: ${inputBackground};
 }
 .${className} button {
   background: ${accent};
@@ -1300,7 +1601,7 @@ const convertNode = (nodeId, data, depth = 0) => {
   const converter = converters[typeName];
 
   if (converter) {
-    return converter(node, data, depth, nodeId);
+    return wrapResponsive(converter(node, data, depth, nodeId), node, depth);
   }
 
   // Fallback for custom/unknown components (Custom1-3, Carousel, Map, ...):
@@ -1324,6 +1625,7 @@ export const exportToHtml = (serializedData, title = 'My Website', options = {})
   ruleCounter = 0;
   cssRules.length = 0;
   mobileRules.length = 0;
+  tabletRules.length = 0;
 
   // A published page has no way of knowing which project it came from, so the
   // id is baked in here; the API address is the one this build points at.
@@ -1384,6 +1686,9 @@ button {
 
   // Combine everything; mobile overrides go last so they win the cascade
   let css = cssRules.join('\n\n');
+  if (tabletRules.length > 0) {
+    css += `\n\n@media (max-width: 1024px) {\n${tabletRules.join('\n\n')}\n}`;
+  }
   if (mobileRules.length > 0) {
     css += `\n\n@media (max-width: 768px) {\n${mobileRules.join('\n\n')}\n}`;
   }

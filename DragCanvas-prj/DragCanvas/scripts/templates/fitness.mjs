@@ -108,7 +108,7 @@ export default function fitness() {
   ], { featured: 2, accent: LIME, background: INK, color: BONE });
 
   // ── book the free class ────────────────────────────────────────
-  const book = b.container(root, { background: INK, padding: ['48', '48', '48', '48'], width: '100%' }, 'Book');
+  const book = b.container(root, { background: INK, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'book' }, 'Book');
   const bookSplit = b.columns(book, { count: '2', gap: '40', ratio: '3:2', stack: 'yes' });
   const bookCopy = b.container(bookSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Book copy');
   b.heading(bookCopy, 'Take the free class', { fontSize: '30', color: BONE });

@@ -242,7 +242,7 @@ body {
 
 @tailwind utilities;
 
- .component-selected {
+.component-selected {
     @apply relative;
   }
 
@@ -260,6 +260,15 @@ body {
 
 .transition {
   transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.responsive-node-hidden {
+  display: none !important;
+}
+
+.responsive-node-hidden-editor {
+  opacity: 0.28;
+  outline: 1px dashed #ef4444;
 }
 
 /* ─── Scrollbar ─── */

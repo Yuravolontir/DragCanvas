@@ -27,7 +27,7 @@ export default function bakery() {
     fontSize: '17', color: rgba(255, 255, 255, 0.82), margin: ['12', '0', '20', '0'],
   });
   b.button(words, 'Order for tomorrow', { background: TERRA, color: WHITE, buttonStyle: 'full' });
-  b.image(top, P.bakery.loaves(900), { radius: 6, width: '100%', height: '420px' });
+  b.image(top, P.bakery.loaves(900), { alt: 'Fresh loaves cooling after the morning bake', radius: 6, width: '100%', height: '420px' });
 
   const night = b.container(root, { background: INK, padding: ['36', '48', '36', '48'], width: '100%' }, 'Overnight');
   b.stats(night, ['340', 'loaves before six', '3', 'bakers on the night shift', '2 days', 'for a sourdough'], {
@@ -44,7 +44,7 @@ export default function bakery() {
     ['Baguettes', 'Baked through the morning, so there is always a warm one.', P.bakery.trays(600)],
   ]) {
     const card = b.container(cols, { background: CREAM, padding: ['0', '0', '20', '0'], radius: 8 }, name);
-    b.image(card, img, { radius: 8, width: '100%', height: '240px' });
+    b.image(card, img, { alt: `${name} from the bakery`, radius: 8, width: '100%', height: '240px' });
     b.heading(card, name, { level: '3', fontSize: '19', color: INK, margin: ['16', '18', '6', '18'] });
     b.text(card, note, { fontSize: '15', color: MUTED, margin: ['0', '18', '0', '18'] });
   }

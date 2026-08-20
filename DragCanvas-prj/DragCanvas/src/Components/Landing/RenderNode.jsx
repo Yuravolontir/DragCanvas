@@ -3,6 +3,8 @@ import { ROOT_NODE } from '@craftjs/utils';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import { useDeviceMode } from '../../useDeviceMode.js';
+import { responsiveVisibility } from '../../utils/responsiveProps.js';
 
 const IndicatorDiv = styled.div`
   height: 30px;
@@ -37,9 +39,11 @@ const Btn = styled.a`
 `;
 
 export const RenderNode = ({ render }) => {
+  const deviceMode = useDeviceMode();
   const { id } = useNode();
-  const { actions, query, isActive } = useEditor((_, query) => ({
+  const { actions, query, isActive, enabled } = useEditor((state, query) => ({
     isActive: query.getEvent('selected').contains(id),
+    enabled: state.options.enabled,
   }));
 
   const {
@@ -50,6 +54,7 @@ export const RenderNode = ({ render }) => {
     deletable,
     connectors: { drag },
     parent,
+    nodeProps,
   } = useNode((node) => ({
     isHover: node.events.hovered,
     dom: node.dom,
@@ -57,7 +62,7 @@ export const RenderNode = ({ render }) => {
     moveable: query.node(node.id).isDraggable(),
     deletable: query.node(node.id).isDeletable(),
     parent: node.data.parent,
-    props: node.data.props,
+    nodeProps: node.data.props,
   }));
 
   const currentRef = React.useRef(null);
@@ -66,8 +71,11 @@ export const RenderNode = ({ render }) => {
     if (dom) {
       if (isActive || isHover) dom.classList.add('component-selected');
       else dom.classList.remove('component-selected');
+      const visible = responsiveVisibility(nodeProps, deviceMode);
+      dom.classList.toggle('responsive-node-hidden', !visible && !enabled);
+      dom.classList.toggle('responsive-node-hidden-editor', !visible && enabled);
     }
-  }, [dom, isActive, isHover]);
+  }, [dom, isActive, isHover, nodeProps, deviceMode, enabled]);
 
   const getPos = React.useCallback((dom) => {
     const { top, left, bottom } = dom

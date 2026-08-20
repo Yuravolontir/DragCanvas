@@ -3,10 +3,29 @@ import React from 'react';
 import { ToolbarSection } from './Toolbar/ToolbarSection';
 import { ToolbarItem } from './Toolbar/ToolbarItem';
 import { ToolbarRadio } from './Toolbar/ToolbarRadio';
+import { useNode } from '@craftjs/core';
 
 export const ButtonSettings = () => {
+  const { action, newTab, setProp } = useNode((node) => ({
+    action: node.data.props.action || 'none',
+    newTab: !!node.data.props.newTab,
+    setProp: node.actions.setProp,
+  }));
   return (
     <React.Fragment>
+      <ToolbarSection title="Action">
+        <div style={{ width: '100%', padding: '0 8px 8px' }}>
+          <select value={action} onChange={(e) => setProp((p) => { p.action = e.target.value; })} style={{ width: '100%', padding: '7px 8px', borderRadius: 6, marginBottom: 8 }}>
+            <option value="none">No action</option>
+            <option value="url">Open URL</option>
+            <option value="section">Go to section</option>
+            <option value="email">Send email</option>
+            <option value="phone">Call phone number</option>
+          </select>
+          {action !== 'none' && <ToolbarItem full={true} propKey="actionValue" type="text" label={action === 'section' ? 'Section ID' : action === 'email' ? 'Email address' : action === 'phone' ? 'Phone number' : 'URL'} />}
+          {action === 'url' && <label style={{ display: 'flex', gap: 6, fontSize: 12, color: 'var(--muted)' }}><input type="checkbox" checked={newTab} onChange={(e) => setProp((p) => { p.newTab = e.target.checked; })} />Open in new tab</label>}
+        </div>
+      </ToolbarSection>
       <ToolbarSection
         title="Colors"
         props={['background', 'color']}

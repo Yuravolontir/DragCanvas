@@ -8,7 +8,7 @@ import { useEditor } from '@craftjs/core';
       enabled: state.options.enabled,
     }));
 
-    const { src, radius } = props;
+    const { src, radius, alt = '' } = props;
 
     return (
   <Resizer
@@ -21,6 +21,7 @@ import { useEditor } from '@craftjs/core';
   >
   <img
     src={src}
+    alt={alt}
     style={{
       pointerEvents: enabled ? 'none' : 'auto',
       width: '100%',
@@ -39,6 +40,7 @@ import { useEditor } from '@craftjs/core';
     displayName: 'Image',
     props: {
       src: 'https://imgs.search.brave.com/RCCorhr7zXPhrX1kLp0jyhqkw62Yd9BmsiP6bZIqcPQ/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9saDMu/Z29vZ2xldXNlcmNv/bnRlbnQuY29tL212/OWJONnBpY00yX0pI/VmhVUzZDWktMaUJ1/b05CQmxEYzRrQlYz/OXplWnpIYWhBWUJt/MkpBUDVhRktkam8x/YWZtWEhhTHA3cVcx/aHJhMGpnNURiN0dP/MW1GbndkSVd3REF2/dFZhNDR6VEE9dzE0/NDAtaDgxMC1uLW51',
+      alt: '',
       radius: 0,
       width: 'auto',
       height: 'auto',

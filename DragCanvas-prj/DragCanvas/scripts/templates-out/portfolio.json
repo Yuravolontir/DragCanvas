@@ -459,6 +459,7 @@
     "isCanvas": false,
     "props": {
       "src": "https://images.pexels.com/photos/3747269/pexels-photo-3747269.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Selected branding and editorial design project",
       "radius": 0,
       "width": "100%",
       "height": "340px",
@@ -480,6 +481,7 @@
     "isCanvas": false,
     "props": {
       "src": "https://images.pexels.com/photos/2582933/pexels-photo-2582933.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Selected branding and editorial design project",
       "radius": 0,
       "width": "100%",
       "height": "340px",
@@ -501,6 +503,7 @@
     "isCanvas": false,
     "props": {
       "src": "https://images.pexels.com/photos/7675029/pexels-photo-7675029.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Selected branding and editorial design project",
       "radius": 0,
       "width": "100%",
       "height": "340px",
@@ -522,6 +525,7 @@
     "isCanvas": false,
     "props": {
       "src": "https://images.pexels.com/photos/37233404/pexels-photo-37233404.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Selected branding and editorial design project",
       "radius": 0,
       "width": "100%",
       "height": "340px",
@@ -2298,6 +2302,24 @@
         "r": 228,
         "g": 200,
         "b": 138,
+        "a": 1
+      },
+      "textColor": {
+        "r": 73,
+        "g": 69,
+        "b": 79,
+        "a": 1
+      },
+      "inputBackground": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "inputBorder": {
+        "r": 221,
+        "g": 221,
+        "b": 221,
         "a": 1
       },
       "width": "100%",

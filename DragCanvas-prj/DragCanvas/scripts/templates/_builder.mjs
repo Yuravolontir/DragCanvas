@@ -100,6 +100,9 @@ export function createBuilder() {
         buttonStyle: 'full',
         text: str,
         margin: ['8', '0', '8', '0'],
+        action: 'none',
+        actionValue: '',
+        newTab: false,
         textComponent: {
           fontSize: '16',
           textAlign: 'center',
@@ -115,7 +118,15 @@ export function createBuilder() {
     );
 
   const image = (parent, src, props = {}, label = 'Image') =>
-    node('Image', parent, { src, radius: 0, width: 'auto', height: 'auto', maxWidth: '100%', ...props }, { label });
+    node('Image', parent, {
+      src,
+      alt: props.alt || (label === 'Image' ? '' : label),
+      radius: 0,
+      width: 'auto',
+      height: 'auto',
+      maxWidth: '100%',
+      ...props,
+    }, { label });
 
   const video = (parent, props = {}, label = 'Video') =>
     node('Video', parent, { sourceType: 'file', videoId: '', videoUrl: '', text: '', ...props }, { label });
@@ -123,20 +134,53 @@ export function createBuilder() {
   const link = (parent, str, href, props = {}, label = 'Link') =>
     node('Link', parent, { href, text: str, width: 'auto', height: 'auto', maxWidth: '100%', ...props }, { label });
 
-  const carousel = (parent, props = {}, label = 'Carousel') =>
-    node(
+  /**
+   * Slides are a list now. Templates written before that passed src1..p3, and
+   * those still work: the legacy keys are folded into `slides` here so no
+   * template source has to change on the same day the component does.
+   */
+  const carousel = (parent, props = {}, label = 'Carousel') => {
+    const { src1, src2, src3, heading1, heading2, heading3,
+            label1, label2, label3, p1, p2, p3, slides, ...rest } = props;
+
+    const legacy = [
+      { src: src1, heading: heading1, label: label1, text: p1 },
+      { src: src2, heading: heading2, label: label2, text: p2 },
+      { src: src3, heading: heading3, label: label3, text: p3 },
+    ].filter((slide) => slide.src);
+
+    return node(
       'Carousel',
       parent,
       {
         width: '600px',
         height: '400px',
-        src1: '', src2: '', src3: '',
-        heading1: '', heading2: '', heading3: '',
-        label1: '', label2: '', label3: '',
-        p1: '', p2: '', p3: '',
-        ...props,
+        title: label,
+        autoplay: false,
+        loop: true,
+        arrows: true,
+        dots: true,
+        perView: 1,
+        perViewTablet: 1,
+        perViewMobile: 1,
+        slides: slides || legacy,
+        ...rest,
       },
       { label }
+    );
+  };
+
+  /**
+   * A hero with video behind it. Canvas: whatever the caller nests goes over the
+   * video. A poster is always set, because it is what shows on a phone and when
+   * the file fails.
+   */
+  const backgroundVideo = (parent, props = {}, label = 'Background video') =>
+    node(
+      'Video',
+      parent,
+      { sourceType: 'background', videoId: '', videoUrl: '', text: '', src: '', poster: '', overlay: 40, position: 'center', minHeight: '420px', loop: true, ...props },
+      { label, canvas: true }
     );
 
   // ── The elements added by the element-library change ──────────────────
@@ -255,6 +299,7 @@ export function createBuilder() {
       ],
       submitText: 'Send', successMessage: 'Thank you — we will be in touch.',
       radius: 10, background: WHITE, accent: rgba(0, 64, 224),
+      textColor: rgba(73, 69, 79), inputBackground: WHITE, inputBorder: rgba(221, 221, 221),
       width: '100%', height: 'auto', ...props,
     }, { label });
 
@@ -297,6 +342,7 @@ export function createBuilder() {
     heading, columns, spacer, divider, list, quote, icon, badge, accordion,
     pricing, testimonial, stats, teamGrid, timeline, ctaBanner, logoStrip,
     socialLinks, navbar, map_, form, footer,
+    backgroundVideo,
   };
 }
 

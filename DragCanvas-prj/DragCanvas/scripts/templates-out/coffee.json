@@ -249,6 +249,9 @@
         "8",
         "0"
       ],
+      "action": "none",
+      "actionValue": "",
+      "newTab": false,
       "textComponent": {
         "fontSize": "16",
         "textAlign": "center",
@@ -1264,18 +1267,34 @@
     "props": {
       "width": "704px",
       "height": "400px",
-      "src1": "https://images.pexels.com/photos/5373256/pexels-photo-5373256.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      "src2": "https://images.pexels.com/photos/7601665/pexels-photo-7601665.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      "src3": "https://images.pexels.com/photos/4916548/pexels-photo-4916548.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      "heading1": "The bar",
-      "heading2": "Four farms",
-      "heading3": "Stay a while",
-      "label1": "Visit",
-      "label2": "Origins",
-      "label3": "Harbour",
-      "p1": "Espresso, filter and the day’s roast at the long counter.",
-      "p2": "Every bag names the farm, harvest and roast date.",
-      "p3": "A quiet table, a window, and coffee made without hurry.",
+      "title": "Roastery gallery",
+      "autoplay": false,
+      "loop": true,
+      "arrows": true,
+      "dots": true,
+      "perView": 1,
+      "perViewTablet": 1,
+      "perViewMobile": 1,
+      "slides": [
+        {
+          "src": "https://images.pexels.com/photos/5373256/pexels-photo-5373256.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "heading": "The bar",
+          "label": "Visit",
+          "text": "Espresso, filter and the day’s roast at the long counter."
+        },
+        {
+          "src": "https://images.pexels.com/photos/7601665/pexels-photo-7601665.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "heading": "Four farms",
+          "label": "Origins",
+          "text": "Every bag names the farm, harvest and roast date."
+        },
+        {
+          "src": "https://images.pexels.com/photos/4916548/pexels-photo-4916548.jpeg?auto=compress&cs=tinysrgb&w=1200",
+          "heading": "Stay a while",
+          "label": "Harbour",
+          "text": "A quiet table, a window, and coffee made without hurry."
+        }
+      ],
       "accent": {
         "r": 178,
         "g": 92,

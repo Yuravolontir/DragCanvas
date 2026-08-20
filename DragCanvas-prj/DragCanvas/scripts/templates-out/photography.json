@@ -155,16 +155,22 @@
     "type": {
       "resolvedName": "Video"
     },
-    "isCanvas": false,
+    "isCanvas": true,
     "props": {
-      "sourceType": "url",
+      "sourceType": "background",
       "videoId": "",
-      "videoUrl": "https://videos.pexels.com/video-files/7206150/7206150-hd_1920_1080_25fps.mp4",
-      "text": ""
+      "videoUrl": "",
+      "text": "",
+      "src": "https://videos.pexels.com/video-files/7206150/7206150-hd_1920_1080_25fps.mp4",
+      "poster": "https://images.pexels.com/photos/14257415/pexels-photo-14257415.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "overlay": 0,
+      "position": "center",
+      "minHeight": "520px",
+      "loop": true
     },
     "displayName": "Video",
     "custom": {
-      "displayName": "Video"
+      "displayName": "Background video"
     },
     "parent": "cont02",
     "hidden": false,
@@ -460,6 +466,7 @@
     "isCanvas": false,
     "props": {
       "src": "https://images.pexels.com/photos/23991042/pexels-photo-23991042.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "alt": "Editorial portrait from the studio portfolio",
       "radius": 2,
       "width": "100%",
       "height": "300px",
@@ -481,6 +488,7 @@
     "isCanvas": false,
     "props": {
       "src": "https://images.pexels.com/photos/14257415/pexels-photo-14257415.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "alt": "Editorial portrait from the studio portfolio",
       "radius": 2,
       "width": "100%",
       "height": "300px",
@@ -502,6 +510,7 @@
     "isCanvas": false,
     "props": {
       "src": "https://images.pexels.com/photos/5611592/pexels-photo-5611592.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "alt": "Editorial portrait from the studio portfolio",
       "radius": 2,
       "width": "100%",
       "height": "300px",
@@ -523,6 +532,7 @@
     "isCanvas": false,
     "props": {
       "src": "https://images.pexels.com/photos/29085930/pexels-photo-29085930.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "alt": "Editorial portrait from the studio portfolio",
       "radius": 2,
       "width": "100%",
       "height": "300px",
@@ -544,6 +554,7 @@
     "isCanvas": false,
     "props": {
       "src": "https://images.pexels.com/photos/20029576/pexels-photo-20029576.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "alt": "Editorial portrait from the studio portfolio",
       "radius": 2,
       "width": "100%",
       "height": "300px",
@@ -565,6 +576,7 @@
     "isCanvas": false,
     "props": {
       "src": "https://images.pexels.com/photos/34921744/pexels-photo-34921744.jpeg?auto=compress&cs=tinysrgb&w=700",
+      "alt": "Editorial portrait from the studio portfolio",
       "radius": 2,
       "width": "100%",
       "height": "300px",
@@ -2028,6 +2040,24 @@
         "r": 224,
         "g": 168,
         "b": 92,
+        "a": 1
+      },
+      "textColor": {
+        "r": 73,
+        "g": 69,
+        "b": 79,
+        "a": 1
+      },
+      "inputBackground": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+      },
+      "inputBorder": {
+        "r": 221,
+        "g": 221,
+        "b": 221,
         "a": 1
       },
       "width": "100%",

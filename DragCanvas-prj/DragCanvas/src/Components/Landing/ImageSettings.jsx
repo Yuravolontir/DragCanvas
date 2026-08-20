@@ -37,6 +37,7 @@ import { ToolbarItem } from './Toolbar/ToolbarItem';
       <React.Fragment>
         <ToolbarSection title="Content">
             <ToolbarItem full={true} propKey="src" type="text" label="Image URL" />
+            <ToolbarItem full={true} propKey="alt" type="text" label="Alt text" />
             <ToolbarItem
           full={true}
           propKey="radius"

@@ -1,5 +1,6 @@
 import { randomUUID } from 'crypto';
 import { buildErrorResponse } from '../utils/response.builder.js';
+import { log } from '../utils/logger.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -11,6 +12,26 @@ const isProduction = process.env.NODE_ENV === 'production';
 export function requestId(req, res, next) {
     req.id = randomUUID().slice(0, 8);
     res.setHeader('X-Request-Id', req.id);
+    next();
+}
+
+/** One compact JSON record per request, suitable for Render log search. */
+export function requestLog(req, res, next) {
+    const started = performance.now();
+    res.on('finish', () => {
+        const status = res.statusCode;
+        const details = {
+            requestId: req.id,
+            method: req.method,
+            path: req.path || req.originalUrl?.split('?')[0],
+            status,
+            durationMs: Math.round(performance.now() - started),
+            userId: req.user?.userId,
+        };
+        if (status >= 500) log.error('http_request', details);
+        else if (status >= 400) log.warn('http_request', details);
+        else log.info('http_request', details);
+    });
     next();
 }
 
@@ -33,7 +54,12 @@ export function hideInternalErrors(req, res, next) {
 
     res.json = (body) => {
         if (isProduction && res.statusCode >= 500 && body && body.success === false) {
-            console.error(`[ERROR ${req.id}] ${req.method} ${req.originalUrl}:`, body.error);
+            log.error('controller_error', {
+                requestId: req.id,
+                method: req.method,
+                path: req.path || req.originalUrl?.split('?')[0],
+                error: body.error,
+            });
             return sendJson({ ...body, error: `Something went wrong on our side. Reference: ${req.id}` });
         }
         return sendJson(body);
@@ -64,9 +90,13 @@ export function notFoundHandler(req, res) {
  */
 export function errorHandler(error, req, res, _next) {
     const status = error.status || error.statusCode || 500;
-    const id = req.id ? ` [${req.id}]` : '';
-
-    console.error(`[ERROR${id}] ${req.method} ${req.originalUrl}:`, error.stack || error.message);
+    log.error('unhandled_error', {
+        requestId: req.id,
+        method: req.method,
+        path: req.path || req.originalUrl?.split('?')[0],
+        status,
+        error: error.stack || error.message,
+    });
 
     const deliberate = status < 500;
     const message = (deliberate || !isProduction)

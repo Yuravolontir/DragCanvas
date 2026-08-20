@@ -26,7 +26,7 @@ export default function clinic() {
     fontSize: '17', color: rgba(255, 255, 255, 0.82),
   });
   b.button(words, 'Book a check-up', { background: TEAL, color: WHITE, buttonStyle: 'full' });
-  b.image(top, P.clinic.hygienist(900), { radius: 12, width: '100%', height: '400px' });
+  b.image(top, P.clinic.hygienist(900), { alt: 'Dental hygienist preparing a bright treatment room', radius: 12, width: '100%', height: '400px' });
 
   // ── the practice in three numbers ──────────────────────────────
   const num = b.container(root, { background: MIST, padding: ['32', '48', '8', '48'], width: '100%' }, 'Numbers');

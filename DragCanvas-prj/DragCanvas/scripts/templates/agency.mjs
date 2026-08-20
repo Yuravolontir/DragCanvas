@@ -33,7 +33,7 @@ export default function agency() {
     ['Fathom', 'Turning a dense product into three screens', P.agency.monitor(800)],
   ]) {
     const card = b.container(cases, { background: PANEL, padding: ['0', '0', '22', '0'], radius: 12 }, client);
-    b.image(card, img, { radius: 12, width: '100%', height: '260px' });
+    b.image(card, img, { alt: `${client} identity design case study`, radius: 12, width: '100%', height: '260px' });
     b.heading(card, client, { level: '3', fontSize: '20', color: INK, margin: ['16', '22', '4', '22'] });
     b.text(card, what, { fontSize: '15', color: MUTED, margin: ['0', '22', '0', '22'] });
   }

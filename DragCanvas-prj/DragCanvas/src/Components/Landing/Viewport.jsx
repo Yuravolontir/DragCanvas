@@ -1,5 +1,5 @@
 import { useEditor } from '@craftjs/core';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { Header } from './Header';
@@ -8,6 +8,8 @@ import { Toolbox } from './Toolbox';
 
 import  AIAssistant  from
   '../../AIAssistant';
+import { deviceModeForWidth } from '../../utils/deviceModes.js';
+import { DeviceModeProvider } from '../../DeviceModeProvider.jsx';
 
   const ViewportDiv = styled.div`
     .viewport {
@@ -17,9 +19,22 @@ import  AIAssistant  from
       right: 0;
       bottom: 0;
     }
+
+    .device-canvas {
+      container-type: inline-size;
+      container-name: editor-canvas;
+    }
+
+    @container editor-canvas (max-width: 767px) {
+      .dc-columns:not(.dc-columns--hold) {
+        grid-template-columns: 1fr !important;
+      }
+    }
   `;
 
 export const Viewport = ({ children }) => {
+  const [deviceMode, setDeviceMode] = useState(() => deviceModeForWidth(window.innerWidth));
+  const pageRef = useRef(null);
   const {
     enabled,
     connectors,
@@ -42,12 +57,23 @@ export const Viewport = ({ children }) => {
     });
   }, [setOptions]);
 
+  useEffect(() => {
+    const page = pageRef.current;
+    if (!page) return undefined;
+    const update = () => setDeviceMode(deviceModeForWidth(page.getBoundingClientRect().width));
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(page);
+    return () => observer.disconnect();
+  }, []);
+
   return (
+    <DeviceModeProvider value={deviceMode}>
     <ViewportDiv>
       <div className="viewport">
         <div className="flex h-full overflow-hidden flex-row w-full">
           <Toolbox />
-          <div className="page-container flex flex-1 h-full flex-col">
+          <div ref={pageRef} className="page-container flex flex-1 h-full flex-col">
             <Header />
             <div
               // `paper` is not decoration: what is rendered below is the user's own
@@ -60,10 +86,23 @@ export const Viewport = ({ children }) => {
                 connectors.select(connectors.hover(ref, null), null);
               }}
             >
-              <div className="relative flex-col flex items-center pt-8">
-                 <AIAssistant/>
-                {children}
-
+              <div
+                className="relative flex-col flex items-center pt-8"
+                style={{ minWidth: 'min-content' }}
+              >
+                <div
+                  className="device-canvas"
+                  data-device={deviceMode}
+                  aria-label={`${deviceMode} responsive preview`}
+                  style={{
+                    width: '100%',
+                    maxWidth: '100%',
+                    minHeight: '100%',
+                  }}
+                >
+                  <AIAssistant/>
+                  {children}
+                </div>
               </div>
             </div>
           </div>
@@ -73,5 +112,6 @@ export const Viewport = ({ children }) => {
         </div>
       </div>
     </ViewportDiv>
+    </DeviceModeProvider>
   );
 };

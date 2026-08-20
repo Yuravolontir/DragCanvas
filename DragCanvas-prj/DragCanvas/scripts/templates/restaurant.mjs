@@ -33,7 +33,7 @@ export default function restaurant() {
     fontSize: '17', color: rgba(255, 255, 255, 0.82),
   });
   b.button(words, 'Book a table', { background: TERRA, color: WHITE, buttonStyle: 'full' });
-  b.image(top, P.restaurant.tasting(900), { radius: 8, width: '100%', height: '420px' });
+  b.image(top, P.restaurant.tasting(900), { alt: 'Seasonal tasting menu plated in the restaurant kitchen', radius: 8, width: '100%', height: '420px' });
 
   // ── the room in three numbers ──────────────────────────────────
   const num = b.container(root, { background: CREAM, padding: ['40', '48', '8', '48'], width: '100%' }, 'Numbers');

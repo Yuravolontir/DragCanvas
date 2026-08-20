@@ -29,8 +29,10 @@ const ELEMENTS = [
   ['Button', false, { text: 'Go' }],
   ['Image', false, { src: 'https://example.com/a.jpg' }],
   ['Video', false, { sourceType: 'url', videoUrl: 'https://example.com/a.mp4' }],
+  ['Video', true, { sourceType: 'background', src: 'https://example.com/hero.mp4', poster: 'https://example.com/hero.jpg' }],
+  ['BackgroundVideo', true, { src: 'https://example.com/loop.mp4', poster: 'https://example.com/p.jpg' }],
   ['Link', false, { text: 'Here', href: 'https://example.com' }],
-  ['Carousel', false, { src1: 'https://example.com/1.jpg', heading1: 'One' }],
+  ['Carousel', false, { slides: [{ src: 'https://example.com/1.jpg', heading: 'One' }] }],
   ['Map', false, { lat: 32.0853, lng: 34.7818, label: 'Tel Aviv' }],
   ['Form', false, { fields: [{ label: 'Name', type: 'text' }], submitText: 'Send' }],
   ['NavbarElement', false, { brand: 'Brand', links: [{ text: 'Home', href: '#' }] }],
@@ -81,4 +83,85 @@ test('every registered element produces markup when published', () => {
   }
 
   assert.deepEqual(missing, [], 'these elements have no converter and vanish on publish');
+});
+
+/**
+ * Slides became an array, but six built templates, every saved project and every
+ * live published site still carry src1..p3. If this goes red, those sites lost
+ * their slides on the next publish.
+ */
+test('a carousel saved in the old three-prop shape still publishes', () => {
+  const nodes = {
+    ROOT: { type: { resolvedName: 'Container' }, isCanvas: true, props: {}, nodes: ['c'] },
+    c: {
+      type: { resolvedName: 'Carousel' }, isCanvas: false, nodes: [],
+      props: {
+        src1: 'https://example.com/1.jpg', heading1: 'One', label1: 'Featured', p1: 'First',
+        src2: 'https://example.com/2.jpg', heading2: 'Two',
+      },
+    },
+  };
+  const html = exportToHtml(nodes, 'legacy');
+
+  assert.match(html, /aria-roledescription="carousel"/);
+  assert.match(html, /aria-label="1 of 2"/, 'the first slide announces its position');
+  assert.match(html, /aria-label="2 of 2"/, 'the second slide survived');
+  assert.ok(!html.includes('3 of 2'), 'an empty third slot is not a slide');
+  assert.match(html, /src="https:\/\/example\.com\/1\.jpg"/);
+  assert.match(html, /alt="One"/, 'alt falls back to the heading');
+  assert.match(html, /loading="lazy"/, 'off-screen slides are not fetched on load');
+  assert.match(html, /<span class="badge">Featured<\/span>/);
+});
+
+test('button actions publish as working and safe links', () => {
+  const nodes = {
+    ROOT: { type: { resolvedName: 'Container' }, isCanvas: true, props: {}, nodes: ['button'] },
+    button: { type: { resolvedName: 'Button' }, isCanvas: false, nodes: [], props: {
+      text: 'Visit', action: 'url', actionValue: 'example.com', newTab: true,
+    } },
+  };
+  const html = exportToHtml(nodes, 'button-action');
+  assert.match(html, /href="https:\/\/example\.com"/);
+  assert.match(html, /target="_blank" rel="noopener noreferrer"/);
+});
+
+test('form appearance reaches the published form', () => {
+  const nodes = {
+    ROOT: { type: { resolvedName: 'Container' }, isCanvas: true, props: {}, nodes: ['form'] },
+    form: { type: { resolvedName: 'Form' }, isCanvas: false, nodes: [], props: {
+      fields: [{ label: 'Email', type: 'email' }],
+      textColor: { r: 1, g: 2, b: 3, a: 1 },
+      inputBackground: { r: 4, g: 5, b: 6, a: 1 },
+      inputBorder: { r: 7, g: 8, b: 9, a: 1 },
+    } },
+  };
+  const html = exportToHtml(nodes, 'form-colours');
+  assert.match(html, /color: rgba\(1, 2, 3, 1\)/);
+  assert.match(html, /background: rgba\(4, 5, 6, 1\)/);
+  assert.match(html, /border: 1px solid rgba\(7, 8, 9, 1\)/);
+});
+
+test('responsive element overrides are emitted for tablet and mobile', () => {
+  const data = {
+    ROOT: {
+      type: { resolvedName: 'Container' }, isCanvas: true, nodes: ['copy'], parent: null,
+      props: { width: '100%', height: 'auto', padding: ['0', '0', '0', '0'], margin: ['0', '0', '0', '0'] },
+    },
+    copy: {
+      type: { resolvedName: 'Text' }, isCanvas: false, nodes: [], parent: 'ROOT',
+      props: {
+        text: 'Responsive copy', width: '100%', height: 'auto',
+        responsive: {
+          tablet: { width: '80%' },
+          mobile: { visible: false, margin: ['8', '4', '8', '4'] },
+        },
+      },
+    },
+  };
+  const html = exportToHtml(data);
+  assert.match(html, /@media \(max-width: 1024px\)/);
+  assert.match(html, /width: 80%/);
+  assert.match(html, /@media \(max-width: 768px\)/);
+  assert.match(html, /display: none !important/);
+  assert.match(html, /margin: 8px 4px 8px 4px/);
 });

@@ -9,7 +9,7 @@ import { apiFetch } from '../../api.js';
   import html2canvas from 'html2canvas';
   import { exportToHtml } from '../../utils/exportToHtml';
   import PublishInfoModal from '../PublishInfoModal';
-  import AuthPromptModal from '../AuthPromptModal';
+import AuthPromptModal from '../AuthPromptModal';
 
 const PY_API = import.meta.env.VITE_PY_API_URL || 'http://localhost:8000';
 
@@ -85,8 +85,6 @@ const Divider = styled.span`
   background: var(--outline-light, var(--outline-light));
   margin: 0 4px;
 `;
-
-
 
 export const Header = () => {
 

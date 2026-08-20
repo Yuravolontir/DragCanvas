@@ -354,6 +354,9 @@
         "8",
         "0"
       ],
+      "action": "none",
+      "actionValue": "",
+      "newTab": false,
       "textComponent": {
         "fontSize": "16",
         "textAlign": "center",
@@ -390,6 +393,7 @@
     "isCanvas": false,
     "props": {
       "src": "https://images.pexels.com/photos/1327393/pexels-photo-1327393.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Seasonal tasting menu plated in the restaurant kitchen",
       "radius": 8,
       "width": "100%",
       "height": "420px",

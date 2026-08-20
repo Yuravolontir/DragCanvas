@@ -1,35 +1,9 @@
-import { Element, useEditor } from '@craftjs/core';
+import { useEditor } from '@craftjs/core';
 import { Tooltip } from '@mui/material';
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 
-import { Button } from './Button';
-import { Container } from './Container';
-import { Text } from './Text';
-import { Video } from './Video';
-import { Link } from './Link';
-import { Image } from './Image';
-import { Carousel } from './Carousel';
-import { Map } from './Map';
-import { NavbarElement } from './NavbarElement';
-import { Heading } from './Heading';
-import { Columns } from './Columns';
-import { Spacer } from './Spacer';
-import { Divider } from './Divider';
-import { List } from './List';
-import { Quote } from './Quote';
-import { Icon } from './Icon';
-import { Badge } from './Badge';
-import { Accordion } from './Accordion';
-import { Pricing } from './Pricing';
-import { Testimonial } from './Testimonial';
-import { Stats } from './Stats';
-import { TeamGrid } from './TeamGrid';
-import { Timeline } from './Timeline';
-import { CTABanner } from './CTABanner';
-import { LogoStrip } from './LogoStrip';
-import { SocialLinks } from './SocialLinks';
-import { Form } from './Form';
+import { ELEMENTS, ELEMENT_GROUPS, labelOf, matchesQuery } from './elements.catalogue';
 
 const ToolboxDiv = styled.div`
   transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
@@ -40,7 +14,13 @@ const ToolboxDiv = styled.div`
   box-shadow: 2px 0 14px color-mix(in oklab, var(--paper) 6%, transparent);
 `;
 
-const Item = styled.div`
+/*
+ * A real <button>, not a <div>. That is what makes the panel reachable: tab
+ * order, Enter/Space and an accessible name all come with the element, so no
+ * role or tabIndex is needed. The browser's default button styling has to be
+ * reset first, or it fights the panel's own.
+ */
+const Item = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,6 +30,10 @@ const Item = styled.div`
   border: 1px solid transparent;
   border-radius: 12px;
   padding: 8px 6px;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: center;
   transition: all 0.15s ease;
   .material-symbols-outlined {
     font-size: 24px;
@@ -75,6 +59,12 @@ const Item = styled.div`
       color: var(--primary, var(--primary));
     }
   }
+  /* focus-visible, not focus: a mouse drag must not leave a ring behind */
+  &:focus-visible {
+    outline: 2px solid var(--primary, #4e5ba6);
+    outline-offset: 2px;
+    background: var(--primary-light, var(--primary-light));
+  }
   ${(props) =>
     props.$move &&
     `
@@ -91,13 +81,143 @@ const PanelTitle = styled.div`
   text-transform: uppercase;
 `;
 
+/* Same type as PanelTitle, plus a disclosure arrow and a hit area. */
+const GroupHeader = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  width: 100%;
+  padding: 12px 10px 6px;
+  border: 0;
+  background: none;
+  font: 700 11px/1.2 'Plus Jakarta Sans', sans-serif;
+  color: var(--on-surface-variant);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  &:hover {
+    color: var(--primary, var(--primary));
+  }
+  &:focus-visible {
+    outline: 2px solid var(--primary, #4e5ba6);
+    outline-offset: -2px;
+    border-radius: 6px;
+  }
+  .chevron {
+    font-size: 16px;
+    transition: transform 0.15s ease;
+  }
+  .chevron.collapsed {
+    transform: rotate(-90deg);
+  }
+`;
+
+const SearchBox = styled.input`
+  width: calc(100% - 16px);
+  margin: 10px 8px 4px;
+  padding: 6px 8px;
+  border: 1px solid var(--outline-light, #d6d9e4);
+  border-radius: 8px;
+  background: var(--surface, var(--surface-dim));
+  color: var(--on-surface, inherit);
+  font: 500 11px/1.2 'Plus Jakarta Sans', sans-serif;
+  &::placeholder {
+    color: var(--muted, #8f99b2);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--primary, #4e5ba6);
+    outline-offset: 1px;
+  }
+`;
+
+const Empty = styled.div`
+  padding: 12px 10px;
+  font: 500 10px/1.4 'Plus Jakarta Sans', sans-serif;
+  color: var(--muted, #8f99b2);
+  text-align: center;
+`;
+
 export const Toolbox = () => {
   const {
     enabled,
+    selectedId,
     connectors: { create },
+    actions,
+    query,
   } = useEditor((state) => ({
     enabled: state.options.enabled,
+    // state.events.selected is a Set in craft 0.2.x
+    selectedId: state.events.selected ? Array.from(state.events.selected)[0] : null,
   }));
+
+  const [search, setSearch] = useState('');
+  const [collapsed, setCollapsed] = useState({});
+
+  const searching = search.trim().length > 0;
+  const matches = useMemo(() => ELEMENTS.filter((e) => matchesQuery(e, search)), [search]);
+
+  /*
+   * Where a keyboard insert lands. A mouse drop tells the editor where it went;
+   * a keypress has to be told. The selected node wins if it can hold children,
+   * then its parent, then the page.
+   */
+  const insertionTarget = () => {
+    if (!selectedId) return { parentId: 'ROOT', index: undefined };
+    try {
+      const node = query.node(selectedId);
+      if (node.isCanvas()) return { parentId: selectedId, index: undefined };
+      const parentId = node.get().data.parent;
+      if (parentId && query.node(parentId).isCanvas()) {
+        const siblings = query.node(parentId).get().data.nodes || [];
+        const at = siblings.indexOf(selectedId);
+        return { parentId, index: at >= 0 ? at + 1 : undefined };
+      }
+    } catch {
+      // the selection went stale between render and keypress
+    }
+    return { parentId: 'ROOT', index: undefined };
+  };
+
+  const insert = (entry) => {
+    const { parentId, index } = insertionTarget();
+    const tree = query.parseReactElement(entry.element()).toNodeTree();
+    actions.addNodeTree(tree, parentId, index);
+    // Puts the settings panel on the new element and shows where it landed,
+    // the same as a mouse drop. selectNode is in ignoreHistoryForActions, so
+    // this costs no undo step of its own.
+    actions.selectNode(tree.rootNodeId);
+  };
+
+  const renderItem = (entry) => (
+    <div
+      key={entry.name}
+      ref={(ref) => {
+        create(ref, entry.element());
+      }}
+    >
+      {/*
+        describeChild matters: without it MUI puts the tooltip in aria-label,
+        which replaces the button's name, so a screen reader announces "A
+        location, with a pin" instead of "Map". With it the tooltip becomes
+        aria-describedby and the visible label stays the name.
+      */}
+      <Tooltip title={entry.tip} placement="right" describeChild>
+        <Item
+          type="button"
+          $move
+          className="m-2 pb-2"
+          onClick={() => insert(entry)}
+        >
+          {/* the ligature text is the icon; announcing it would read "map Map" */}
+          <span className="material-symbols-outlined" aria-hidden="true">
+            {entry.icon}
+          </span>
+          <span className="icon-label">{labelOf(entry)}</span>
+        </Item>
+      </Tooltip>
+    </div>
+  );
 
   return (
     <ToolboxDiv
@@ -106,343 +226,55 @@ export const Toolbox = () => {
       style={{ width: enabled ? '104px' : 0 }}
     >
       <PanelTitle>Elements</PanelTitle>
+      <SearchBox
+        type="search"
+        value={search}
+        placeholder="Search"
+        aria-label="Search elements"
+        onChange={(e) => setSearch(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Escape') setSearch('');
+        }}
+      />
       <div className="flex flex-1 flex-col items-center gap-1 overflow-y-auto pb-4">
-        <div
-          ref={(ref) => {
-            create(
-              ref,
-              <Element
-                canvas
-                is={Container}
-                background={{ r: 78, g: 78, b: 78, a: 1 }}
-                color={{ r: 0, g: 0, b: 0, a: 1 }}
-                height="300px"
-                width="300px"
-              ></Element>
+        {searching ? (
+          // A query that matches two groups should not be split across two
+          // headers, so results are one flat list.
+          matches.length ? (
+            matches.map(renderItem)
+          ) : (
+            <Empty>Nothing matches “{search.trim()}”</Empty>
+          )
+        ) : (
+          ELEMENT_GROUPS.map((group) => {
+            const items = ELEMENTS.filter((e) => e.group === group);
+            if (!items.length) return null;
+            const isCollapsed = !!collapsed[group];
+            return (
+              <React.Fragment key={group}>
+                <GroupHeader
+                  type="button"
+                  aria-expanded={!isCollapsed}
+                  onClick={() =>
+                    setCollapsed((prev) => ({ ...prev, [group]: !prev[group] }))
+                  }
+                >
+                  {group}
+                  <span
+                    aria-hidden="true"
+                    className={`material-symbols-outlined chevron${
+                      isCollapsed ? ' collapsed' : ''
+                    }`}
+                  >
+                    expand_more
+                  </span>
+                </GroupHeader>
+                {/* Collapsed groups are not rendered, so they leave the tab order */}
+                {!isCollapsed && items.map(renderItem)}
+              </React.Fragment>
             );
-          }}
-        >
-          <Tooltip title="Drag a layout container onto the page" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">dashboard</span>
-              <span className="icon-label">Container</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Text fontSize="12" textAlign="left" text="Hi there" />);
-          }}
-        >
-          <Tooltip title="Drag text onto the page" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">title</span>
-              <span className="icon-label">Text</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Button />);
-          }}
-        >
-          <Tooltip title="Drag a call-to-action button" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">smart_button</span>
-              <span className="icon-label">Button</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Video />);
-          }}
-        >
-          <Tooltip title="Video" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">play_circle</span>
-              <span className="icon-label">Video</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Link />);
-          }}
-        >
-          <Tooltip title="Link" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">link</span>
-              <span className="icon-label">Link</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Heading />);
-          }}
-        >
-          <Tooltip title="A title, with a real heading level" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">title</span>
-              <span className="icon-label">Heading</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            // canvas, so things can be dropped into it
-            create(ref, <Element canvas is={Columns} />);
-          }}
-        >
-          <Tooltip title="Columns that stack on a phone" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">view_column</span>
-              <span className="icon-label">Columns</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Spacer />);
-          }}
-        >
-          <Tooltip title="Empty space" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">height</span>
-              <span className="icon-label">Spacer</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Divider />);
-          }}
-        >
-          <Tooltip title="A rule between sections" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">horizontal_rule</span>
-              <span className="icon-label">Divider</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <List />);
-          }}
-        >
-          <Tooltip title="A bulleted or numbered list" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">format_list_bulleted</span>
-              <span className="icon-label">List</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Quote />);
-          }}
-        >
-          <Tooltip title="A pull quote" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">format_quote</span>
-              <span className="icon-label">Quote</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Icon />);
-          }}
-        >
-          <Tooltip title="One Material symbol" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">star</span>
-              <span className="icon-label">Icon</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Badge />);
-          }}
-        >
-          <Tooltip title="A small pill of text" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">label</span>
-              <span className="icon-label">Badge</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Accordion />);
-          }}
-        >
-          <Tooltip title="Questions that open and close" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">expand_circle_down</span>
-              <span className="icon-label">Accordion</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Pricing />);
-          }}
-        >
-          <Tooltip title="Tiers, in columns that line up" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">payments</span>
-              <span className="icon-label">Pricing</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Testimonial />);
-          }}
-        >
-          <Tooltip title="Somebody vouching for you" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">format_quote</span>
-              <span className="icon-label">Testimonial</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Stats />);
-          }}
-        >
-          <Tooltip title="A row of numbers" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">bar_chart</span>
-              <span className="icon-label">Stats</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <TeamGrid />);
-          }}
-        >
-          <Tooltip title="The people behind it" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">groups</span>
-              <span className="icon-label">TeamGrid</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Timeline />);
-          }}
-        >
-          <Tooltip title="Steps, in order" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">timeline</span>
-              <span className="icon-label">Timeline</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <CTABanner />);
-          }}
-        >
-          <Tooltip title="The ask, on a band of its own" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">campaign</span>
-              <span className="icon-label">CTABanner</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <LogoStrip />);
-          }}
-        >
-          <Tooltip title="A row of logos" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">view_carousel</span>
-              <span className="icon-label">LogoStrip</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <SocialLinks />);
-          }}
-        >
-          <Tooltip title="Where else to find you" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">share</span>
-              <span className="icon-label">SocialLinks</span>
-            </Item>
-          </Tooltip>
-        </div>
-
-        <div
-          ref={(ref) => {
-            create(ref, <Form />);
-          }}
-        >
-          <Tooltip title="Drag a contact form" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">dynamic_form</span>
-              <span className="icon-label">Form</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Image />);
-          }}
-        >
-          <Tooltip title="Image" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">image</span>
-              <span className="icon-label">Image</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Carousel />);
-          }}
-        >
-          <Tooltip title="Carousel" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">view_carousel</span>
-              <span className="icon-label">Carousel</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <Map />);
-          }}
-        >
-          <Tooltip title="Map" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">map</span>
-              <span className="icon-label">Map</span>
-            </Item>
-          </Tooltip>
-        </div>
-        <div
-          ref={(ref) => {
-            create(ref, <NavbarElement />);
-          }}
-        >
-          <Tooltip title="Drag a navigation bar" placement="right">
-            <Item $move>
-              <span className="material-symbols-outlined">web_asset</span>
-              <span className="icon-label">Navigation</span>
-            </Item>
-          </Tooltip>
-        </div>
+          })
+        )}
       </div>
     </ToolboxDiv>
   );
