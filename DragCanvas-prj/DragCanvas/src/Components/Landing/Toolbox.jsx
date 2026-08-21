@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 import { ELEMENTS, ELEMENT_GROUPS, labelOf, matchesQuery } from './elements.catalogue';
+import { useMediaQuery } from '../../useMediaQuery.js';
 
 const ToolboxDiv = styled.div`
   transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
@@ -79,6 +80,21 @@ const PanelTitle = styled.div`
   color: var(--on-surface-variant);
   letter-spacing: 0.05em;
   text-transform: uppercase;
+`;
+
+/*
+ * Shown only on a coarse pointer. The panel says nothing about dragging, so
+ * there is no false instruction to correct - what is missing is the true one.
+ * Craft drags with HTML5 drag-and-drop, which a finger cannot start, so on a
+ * touch device the only way in is the press these buttons already accept, and
+ * nothing on screen says so.
+ */
+const PanelHint = styled.p`
+  width: 100%;
+  margin: -4px 0 6px;
+  padding: 0 12px;
+  font: 500 10px/1.35 'Plus Jakarta Sans', sans-serif;
+  color: var(--muted);
 `;
 
 /* Same type as PanelTitle, plus a disclosure arrow and a hit area. */
@@ -157,6 +173,7 @@ export const Toolbox = ({ offCanvas = false }) => {
     selectedId: state.events.selected ? Array.from(state.events.selected)[0] : null,
   }));
 
+  const coarse = useMediaQuery('(pointer: coarse)');
   const [search, setSearch] = useState('');
   const [collapsed, setCollapsed] = useState({});
 
@@ -234,6 +251,7 @@ export const Toolbox = ({ offCanvas = false }) => {
       aria-hidden={offCanvas || undefined}
     >
       <PanelTitle>Elements</PanelTitle>
+      {coarse && <PanelHint>Tap one to add it to the page.</PanelHint>}
       <SearchBox
         type="search"
         value={search}

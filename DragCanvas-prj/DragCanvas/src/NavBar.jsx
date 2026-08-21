@@ -67,7 +67,7 @@ export default function NavBar() {
         boxShadow: scrolled ? '0 1px 8px rgba(0,0,0,0.04)' : 'none',
       }}
     >
-      <Container style={{ maxWidth: '1200px' }}>
+      <Container className="dc-nav-inner" style={{ maxWidth: '1200px' }}>
         <Navbar.Brand
           onClick={() => navigate("/")}
           style={{

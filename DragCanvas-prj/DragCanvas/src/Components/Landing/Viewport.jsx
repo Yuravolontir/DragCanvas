@@ -29,12 +29,18 @@ const DRAWERS = '(max-width: 1023px)';
 const PREVIEW = '(max-width: 767px)';
 
   const ViewportDiv = styled.div`
+    /*
+     * The insets are the sensor housing and the home indicator, which the page
+     * now extends under because index.html asks for viewport-fit=cover. They
+     * are 0 on everything without a housing, so this is a no-op on a desktop.
+     * Defined in responsive.css so a check can override them.
+     */
     .viewport {
       position: fixed;
       top: 56px;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      left: var(--safe-left, 0px);
+      right: var(--safe-right, 0px);
+      bottom: var(--safe-bottom, 0px);
     }
 
     .device-canvas {

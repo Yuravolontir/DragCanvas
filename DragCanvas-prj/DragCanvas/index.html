@@ -3,7 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/dragcanvas-mark.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      viewport-fit=cover so the layout viewport is the device's full width.
+      Without it Safari insets the viewport away from the sensor housing, and
+      in landscape that inset comes off the width: window.innerWidth reports a
+      number smaller than the phone, which can drop an 874px iPhone under the
+      768px threshold that decides between the editor and the read-only
+      preview. With cover the breakpoints see the real width and the insets
+      become padding this codebase applies - see --safe-left in responsive.css.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>DragCanvas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

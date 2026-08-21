@@ -28,6 +28,58 @@
  * index.css (see .dc-columns) or in the exporter.
  */
 
+/* ── Safe areas ──────────────────────────────────────────────────────────── */
+
+/*
+ * `index.html` asks for viewport-fit=cover, which hands the page the device's
+ * full width — including the strip under the sensor housing and the strip under
+ * the home indicator. Keeping content out of those is now this file's job.
+ *
+ * The values go through variables rather than being read from env() at each
+ * use, for one reason: there is no iPhone here and no browser on this machine
+ * produces a non-zero safe area. A check can set --safe-left to 59px on :root
+ * and measure a layout nothing here can otherwise render. `grep -- --safe-`
+ * then finds every place the notch has been accounted for.
+ *
+ * Anything that should run *under* the housing — the Aurora background — simply
+ * does not use them. Centred modals do not need them.
+ */
+:root {
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/*
+ * **Corrected after the check ran.** The plan for this change listed only the
+ * *fixed* chrome as needing insets, reasoning that ordinary page content was
+ * fine. That was wrong, and the forced-inset pass said so immediately: under
+ * viewport-fit=cover the whole layout viewport is full width, so every page's
+ * content runs under the housing too. It found buttons stranded on My Projects,
+ * Templates, Admin and the landing page.
+ *
+ * `#root` rather than `body`, because the page background is painted on `body`
+ * (`index.css`) and should keep bleeding edge to edge — insetting the ground as
+ * well would draw two bars down the sides of the screen, which is the very
+ * thing viewport-fit=cover exists to avoid. Fixed elements are positioned
+ * against the viewport, so this padding does not reach the navbar, the editor
+ * shell or the Aurora background; each of those says for itself what it does.
+ */
+#root {
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+}
+
+/*
+ * `max()` and not plain addition: Bootstrap's .container already carries a
+ * gutter, and on a device with no housing the inset is 0, so the padding has to
+ * fall back to the gutter rather than collapsing to nothing.
+ */
+.dc-nav-inner {
+  padding-left: max(0.75rem, var(--safe-left));
+  padding-right: max(0.75rem, var(--safe-right));
+}
+
 /* ── My Projects ─────────────────────────────────────────────────────────── */
 
 .dc-projects-grid {

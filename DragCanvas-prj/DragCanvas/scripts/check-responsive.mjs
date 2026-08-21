@@ -44,7 +44,22 @@ if (typeof WebSocket === 'undefined') {
 }
 
 const BASE = process.argv[2] || 'http://127.0.0.1:5199';
-const WIDTHS = [390, 768, 1440];
+const VIEWPORTS = [[390, 900], [768, 900], [1440, 900]];
+
+/*
+ * iPhone 17, both ways up. Landscape is here because a device report said the
+ * editor could not be reached even after rotating, and 874x402 is the size that
+ * claim has to be tested at.
+ */
+const PHONE_VIEWPORTS = [[402, 874], [874, 402]];
+
+/*
+ * Landscape sensor-housing insets, and the home indicator. No browser on this
+ * machine produces a non-zero safe area, so the second pass forces these onto
+ * :root over the env() defaults. Without it the safe-area work would be
+ * "verified" against insets of zero, which verifies nothing.
+ */
+const SAFE = { left: 59, right: 59, bottom: 34 };
 
 /*
  * `marker` is what proves the page actually rendered the thing being checked.
@@ -194,6 +209,66 @@ const PROBE = `(() => {
   };
 })()`;
 
+/*
+ * Left and right insets permanently overlay their strip and the page does not
+ * scroll sideways, so anything with a control in there is unreachable for good.
+ * The bottom is different: the home indicator floats over the viewport bottom
+ * and ordinary page content is expected to scroll under it. Only fixed chrome
+ * can be stranded there, so only fixed chrome is asked about.
+ */
+const INSET_PROBE = `(() => {
+  const cs = getComputedStyle(document.documentElement);
+  const num = (name) => parseFloat(cs.getPropertyValue(name)) || 0;
+  const left = num('--safe-left');
+  const right = num('--safe-right');
+  const bottom = num('--safe-bottom');
+
+  const isFixed = (el) => {
+    for (let p = el; p; p = p.parentElement) {
+      if (getComputedStyle(p).position === 'fixed') return true;
+    }
+    return false;
+  };
+
+  const describe = (el) => {
+    const cls = typeof el.className === 'string' && el.className
+      ? '.' + el.className.trim().split(/\\s+/).slice(0, 2).join('.') : '';
+    return el.tagName.toLowerCase() + cls + ' "' + el.innerText.trim().slice(0, 18) + '"';
+  };
+
+  // The same exemption the main probe makes, for the same reason: a control
+  // inside a horizontally scrollable strip is reachable by scrolling it out
+  // from under the housing. The chip row on the landing page and every
+  // .table-responsive in the admin panel are exactly that.
+  const scrollableAncestor = (el) => {
+    for (let p = el.parentElement; p; p = p.parentElement) {
+      const ovx = getComputedStyle(p).overflowX;
+      if (ovx === 'auto' || ovx === 'scroll') return true;
+    }
+    return false;
+  };
+
+  const stranded = [];
+  for (const el of document.querySelectorAll('a[href], button, input, select, textarea')) {
+    const r = el.getBoundingClientRect();
+    if (r.width === 0 && r.height === 0) continue;
+    if (r.bottom < 0 || r.top > window.innerHeight) continue;
+    const st = getComputedStyle(el);
+    if (st.opacity === '0' || st.visibility === 'hidden') continue;
+    if (el.closest('[inert]')) continue;
+    if (scrollableAncestor(el)) continue;
+
+    const where = [];
+    if (r.left < left) where.push('left inset');
+    if (r.right > window.innerWidth - right) where.push('right inset');
+    if (bottom && isFixed(el) && r.bottom > window.innerHeight - bottom) where.push('home indicator');
+    if (!where.length) continue;
+    stranded.push({ what: describe(el), where: where.join(' + ') });
+  }
+
+  return { insets: [left, right, bottom].join('/'), stranded: stranded.slice(0, 8) };
+})()`;
+
 /* ── a very small CDP client ─────────────────────────────────────────────── */
 
 class Cdp {
@@ -322,7 +397,7 @@ async function main() {
   let failures = 0;
   let skipped = 0;
 
-  console.log(`\n  ${BASE} — checking ${ROUTES.length} routes at ${WIDTHS.join(', ')}px\n`);
+  console.log(`\n  ${BASE} — ${ROUTES.length} routes, three passes`);
 
   // Runs before any app code on every navigation, so the screens have rows.
   await cdp.send('Page.addScriptToEvaluateOnNewDocument', { source: FIXTURES });
@@ -334,72 +409,115 @@ async function main() {
     `localStorage.setItem('currentUser', JSON.stringify({ User_ID: 1, UserName: 'checker', Email: 'checker@example.com', IsAdmin: true, IsSuperAdmin: true, token: 'fixture' }))`
   );
 
-  for (const route of ROUTES) {
-    for (const width of WIDTHS) {
-      await cdp.send('Emulation.setDeviceMetricsOverride', {
-        width,
-        height: 900,
-        deviceScaleFactor: 1,
-        mobile: false,
-      });
-      await cdp.send('Page.navigate', { url: BASE + route.path });
+  /* One route at one size. Returns 'ok' | 'skip' | 'fail'. */
+  const measure = async (route, width, height, { mobile = false, insets = false } = {}) => {
+    await cdp.send('Emulation.setDeviceMetricsOverride', {
+      width, height, deviceScaleFactor: 1, mobile,
+    });
+    await cdp.send('Page.navigate', { url: BASE + route.path });
 
-      let probe = null;
-      for (let attempt = 0; attempt < 25; attempt += 1) {
-        await sleep(500);
-        probe = await cdp.evaluate(PROBE);
-        if (probe?.ready && probe.text > 0) break;
+    let probe = null;
+    for (let attempt = 0; attempt < 25; attempt += 1) {
+      await sleep(500);
+      probe = await cdp.evaluate(PROBE);
+      if (probe?.ready && probe.text > 0) break;
+    }
+
+    const label = `${route.name.padEnd(12)} ${String(width).padStart(4)}x${height}`;
+
+    if (!probe?.ready || !probe.text) {
+      console.log(`  ?  ${label}  never finished loading — not measured`);
+      return 'skip';
+    }
+
+    if (insets) {
+      // No browser here produces a real safe area, so it is forced on :root.
+      // The variables are read at paint time, so injecting after load is enough
+      // and avoids managing a CDP script across passes.
+      await cdp.evaluate(`(() => {
+        document.getElementById('__safe')?.remove();
+        const st = document.createElement('style');
+        st.id = '__safe';
+        st.textContent = ':root{--safe-left:${SAFE.left}px;--safe-right:${SAFE.right}px;--safe-bottom:${SAFE.bottom}px}';
+        document.head.appendChild(st);
+      })()`);
+    }
+
+    // Settle, then measure. The editor turns Craft on 200ms after mount and the
+    // panels animate in; measuring during that reports a layout that exists for
+    // a quarter of a second and never again.
+    await sleep(1500);
+    probe = await cdp.evaluate(PROBE);
+
+    const hasMarker = await cdp.evaluate(
+      `!!document.querySelector(${JSON.stringify(route.marker)})`
+    );
+    if (!hasMarker) {
+      console.log(`  ?  ${label}  no \`${route.marker}\` on the page — not measured (backend down?)`);
+      return 'skip';
+    }
+
+    const problems = [];
+    for (const offender of probe.offenders) {
+      const by = offender.clippedBy ? `clipped by ${offender.clippedBy}` : 'no scrollable ancestor';
+      problems.push(`${offender.what} — right edge ${offender.right}px, ${by}`);
+    }
+
+    if (insets) {
+      const inset = await cdp.evaluate(INSET_PROBE);
+      if (inset.insets === '0/0/0') {
+        console.log(`  ?  ${label}  the forced insets did not apply — not measured`);
+        return 'skip';
       }
-
-      // Settle, then measure again. The editor turns Craft on 200ms after mount
-      // and the panels animate in; measuring during that reports a layout that
-      // exists for a quarter of a second and never again.
-      if (probe?.ready && probe.text > 0) {
-        await sleep(1500);
-        probe = await cdp.evaluate(PROBE);
-      }
-
-      const label = `${route.name.padEnd(12)} ${String(width).padStart(4)}px`;
-
-      if (!probe?.ready || !probe.text) {
-        console.log(`  ?  ${label}  never finished loading — not measured`);
-        skipped += 1;
-        continue;
-      }
-
-      const hasMarker = await cdp.evaluate(
-        `!!document.querySelector(${JSON.stringify(route.marker)})`
-      );
-      if (!hasMarker) {
-        console.log(`  ?  ${label}  no \`${route.marker}\` on the page — not measured (backend down?)`);
-        skipped += 1;
-        continue;
-      }
-
-      if (probe.offenders.length === 0) {
-        console.log(`  ok ${label}`);
-        continue;
-      }
-
-      failures += 1;
-      console.log(`  X  ${label}  ${probe.offenders.length} element(s) off-screen and unreachable`);
-      for (const offender of probe.offenders) {
-        const by = offender.clippedBy ? `clipped by ${offender.clippedBy}` : 'no scrollable ancestor';
-        console.log(`       ${offender.what} — right edge ${offender.right}px, ${by}`);
+      for (const item of inset.stranded) {
+        problems.push(`${item.what} — sits in the ${item.where}`);
       }
     }
-  }
+
+    if (problems.length === 0) {
+      console.log(`  ok ${label}`);
+      return 'ok';
+    }
+
+    console.log(`  X  ${label}  ${problems.length} problem(s)`);
+    for (const line of problems) console.log(`       ${line}`);
+    return 'fail';
+  };
+
+  const pass = async (title, viewports, options) => {
+    console.log(`\n  ${title}\n`);
+    for (const route of ROUTES) {
+      for (const [width, height] of viewports) {
+        const result = await measure(route, width, height, options);
+        if (result === 'fail') failures += 1;
+        if (result === 'skip') skipped += 1;
+      }
+    }
+  };
+
+  await pass('desktop widths, no safe area', VIEWPORTS, {});
+  await pass('iPhone 17, both orientations', PHONE_VIEWPORTS, { mobile: true });
+  await pass(
+    `iPhone 17, safe area forced to ${SAFE.left}/${SAFE.right}/${SAFE.bottom}px`,
+    PHONE_VIEWPORTS,
+    { mobile: true, insets: true }
+  );
 
   chrome.kill();
 
   console.log('');
   if (skipped) console.log(`  ${skipped} check(s) not measured — see above. Those are not passes.`);
   if (failures) {
-    console.log(`  ${failures} route/width combination(s) have unreachable content.\n`);
+    console.log(`  ${failures} route/size combination(s) have a problem.\n`);
     return 1;
   }
-  console.log('  Nothing off-screen and unreachable.');
-  console.log('  Not covered: touch, pointer: coarse, real device chrome.\n');
+  console.log('  Nothing off-screen, unreachable, or stranded in a safe area.');
+  console.log('');
+  console.log('  Not covered, and not answerable from here:');
+  console.log('   - touch: craft drags with HTML5 drag-and-drop, which no finger can start');
+  console.log('   - whether Safari reports the full innerWidth under viewport-fit=cover');
+  console.log('   - real device chrome, and whether 59/59/34 are this phone\'s real insets');
+  console.log('');
   return 0;
 }
 
