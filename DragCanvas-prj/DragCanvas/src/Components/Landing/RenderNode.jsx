@@ -36,6 +36,22 @@ const Btn = styled.a`
     top: -50%;
     left: -50%;
   }
+
+  /*
+   * A 15px icon is a fine mouse target and a poor finger one - and the move
+   * handle below is the only way to pick an element up, so on touch the drag
+   * bridge could work perfectly and reordering would still be missed more often
+   * than hit. 44px is the usual floor for a fingertip.
+   *
+   * Only on a coarse pointer: this toolbar is a small floating strip, and
+   * inflating it for the mouse would push the other controls around for nothing.
+   * The icons keep their size; the hit area grows around them.
+   */
+  @media (pointer: coarse) {
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+  }
 `;
 
 export const RenderNode = ({ render }) => {

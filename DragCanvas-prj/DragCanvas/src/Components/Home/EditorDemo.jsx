@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useReveal } from './useReveal.js';
 import { useMediaQuery } from '../../useMediaQuery.js';
+import { installTouchDrag } from '../../utils/touchDragBridge.js';
 
 import { Container } from '../Landing/Container';
 import { Text } from '../Landing/Text';
@@ -42,17 +43,22 @@ const TOOLBOX = [
 export default function EditorDemo() {
   const sectionRef = useRef(null);
   const introRef = useReveal();
-  // A phone must not be told to drag. Craft's drag is HTML5 drag-and-drop and a
-  // finger cannot start one, so "or drag it into the canvas" is an instruction
-  // half the audience will try, fail at, and reasonably conclude the demo is
-  // broken from - which is exactly what happened when this said only "Drag a
-  // block into the canvas".
+  // The wording follows what the pointer can actually do. Before the touch-drag
+  // bridge, a phone could only tap, and naming a gesture it could not perform
+  // was what made the demo read as broken. Now both work, and the difference is
+  // only which one to put first: a thumb should hear about the tap, since a
+  // drag there costs a deliberate press-and-hold.
   const coarse = useMediaQuery('(pointer: coarse)');
   // Without an observer there is no way to know when the section is reached, so
   // it starts mounted rather than never mounting. Decided at initialisation
   // rather than in the effect: writing it there would only schedule a second
   // render to correct the first.
   const [reached, setReached] = useState(() => typeof IntersectionObserver === 'undefined');
+
+  // Craft cannot drag by finger on its own; the bridge translates a held press
+  // into the drag events it listens for. Only once the section is mounted -
+  // there is nothing draggable on the page before that.
+  useEffect(() => (reached ? installTouchDrag() : undefined), [reached]);
 
   useEffect(() => {
     const node = sectionRef.current;
@@ -75,7 +81,9 @@ export default function EditorDemo() {
         <h2 className="editor-demo__title">And then you edit it</h2>
         <p className="editor-demo__subtitle">
           This is the real editor, not a picture of one.{' '}
-          {coarse ? 'Tap a block to add it.' : 'Drag a block into the canvas, or tap it to add.'}
+          {coarse
+            ? 'Tap a block to add it, or hold and drag it in.'
+            : 'Drag a block into the canvas, or tap it to add.'}
         </p>
       </div>
 

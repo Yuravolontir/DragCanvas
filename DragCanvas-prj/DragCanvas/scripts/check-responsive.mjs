@@ -318,13 +318,22 @@ const connect = (url) =>
 
 /* ── driving it ──────────────────────────────────────────────────────────── */
 
+/*
+ * Retried, and patient. A cold Vite dev server in WSL took 3.6s to answer its
+ * first request against a 4s timeout, so a single tight probe reported a live
+ * server as absent - and this script then printed SKIPPED, which is the one
+ * outcome it exists to make trustworthy.
+ */
 async function reachable(url) {
-  try {
-    await fetch(url, { signal: AbortSignal.timeout(4000) });
-    return true;
-  } catch {
-    return false;
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      await fetch(url, { signal: AbortSignal.timeout(15000) });
+      return true;
+    } catch {
+      await sleep(1000);
+    }
   }
+  return false;
 }
 
 function launchChrome(binary) {
@@ -514,7 +523,8 @@ async function main() {
   console.log('  Nothing off-screen, unreachable, or stranded in a safe area.');
   console.log('');
   console.log('  Not covered, and not answerable from here:');
-  console.log('   - touch: craft drags with HTML5 drag-and-drop, which no finger can start');
+  console.log('   - real touch: the drag bridge is measured by dispatched touch events in');
+  console.log('     Chrome, which models Safari and is not Safari');
   console.log('   - whether Safari reports the full innerWidth under viewport-fit=cover');
   console.log('   - real device chrome, and whether 59/59/34 are this phone\'s real insets');
   console.log('');

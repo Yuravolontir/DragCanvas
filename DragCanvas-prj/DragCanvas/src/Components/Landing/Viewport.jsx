@@ -11,6 +11,7 @@ import  AIAssistant  from
 import { deviceModeForWidth } from '../../utils/deviceModes.js';
 import { DeviceModeProvider } from '../../DeviceModeProvider.jsx';
 import { useMediaQuery } from '../../useMediaQuery.js';
+import { installTouchDrag } from '../../utils/touchDragBridge.js';
 
 /*
  * Three bands, and the numbers are measured rather than chosen. The shell is
@@ -125,6 +126,32 @@ export const Viewport = ({ children }) => {
       }, 200);
     });
   }, [setOptions, preview]);
+
+  /*
+   * Craft has no touch drag of its own. Called from here rather than at module
+   * scope so the listeners are tied to a mounted editor and torn down with it -
+   * a side effect on import would be invisible to whoever reads this later.
+   */
+  useEffect(() => installTouchDrag(), []);
+
+  /*
+   * Close the drawer the moment a drag begins.
+   *
+   * Found by measuring, and it was a bug in the drawer band from the day it
+   * shipped: the scrim that closes a panel on a tap outside also sits over the
+   * canvas, so a block dragged out of the panel was dropped onto the scrim and
+   * nothing happened. Mouse and finger alike - at 1440 a drag added a node, at
+   * 900 with a panel open it did not. Tap-to-insert is why nobody noticed.
+   *
+   * Closing rather than making the scrim transparent: with the panel still
+   * open it covers the part of the canvas nearest the block being dragged,
+   * which is exactly where someone is most likely to aim.
+   */
+  useEffect(() => {
+    const onDragStart = () => setOpenPanel(null);
+    window.addEventListener('dragstart', onDragStart, true);
+    return () => window.removeEventListener('dragstart', onDragStart, true);
+  }, []);
 
   useEffect(() => {
     const page = pageRef.current;
