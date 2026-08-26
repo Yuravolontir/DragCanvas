@@ -65,6 +65,8 @@ deploy*.
 | `CLOUDINARY_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | uploads |
 | `NETLIFY_TOKEN` | publishing a project as a live site |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `MAIL_FROM` | see below |
+| `TELEGRAM_BOT_TOKEN` | optional owner notifications for form submissions |
+| `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` | Checkout Sessions and signed payment webhooks |
 
 Mail is the one group that fails quietly. `mail.service.js` never throws: with
 no credentials it logs `[MAIL] SMTP is not configured` once and returns
@@ -88,13 +90,14 @@ a real admin session rather than a bare `curl`.
 
 ## Deploying
 
-1. **Set the variables first.** Any variable a new commit needs must exist
+1. **Apply database migrations.** From the Node project directory run `npm run db:migrate` with the production `DATABASE_URL`. The runner records each migration and is safe to run again.
+2. **Set the variables first.** Any variable a new commit needs must exist
    before the push, on the service that reads it. A push triggers all three
    deploys immediately, so a variable added afterwards means a window of
    500s - and on the reports service a missing `JWT_SECRET` is a hard 500 on
    every request.
-2. **Push `main`.** Render and Netlify pick it up on their own.
-3. **Run the checks below.** A green deploy log only means the process started.
+3. **Push `main`.** Render and Netlify pick it up on their own.
+4. **Run the checks below.** A green deploy log only means the process started.
 
 ## Checks after a deploy
 

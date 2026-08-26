@@ -59,4 +59,32 @@ export default class FormMdl {
         `, [ip, String(minutes)]);
         return parseInt(rows[0].recent, 10);
     }
+
+    static async getIntegrationsFromDB(projectId) {
+        const rows = await db.executeQuery(
+            'SELECT "WebhookUrl", "TelegramChatId", "GoogleSheetsWebhookUrl" FROM "TBProjectIntegrations" WHERE "Project_ID" = $1',
+            [projectId]
+        );
+        return rows[0] ?? { WebhookUrl: null, TelegramChatId: null };
+    }
+
+    static async saveIntegrationsToDB(projectId, webhookUrl, telegramChatId, googleSheetsWebhookUrl) {
+        const rows = await db.executeQuery(`
+            INSERT INTO "TBProjectIntegrations" ("Project_ID", "WebhookUrl", "TelegramChatId", "GoogleSheetsWebhookUrl", "UpdatedDate")
+            VALUES ($1, $2, $3, $4, NOW())
+            ON CONFLICT ("Project_ID") DO UPDATE
+            SET "WebhookUrl" = EXCLUDED."WebhookUrl", "TelegramChatId" = EXCLUDED."TelegramChatId", "GoogleSheetsWebhookUrl" = EXCLUDED."GoogleSheetsWebhookUrl", "UpdatedDate" = NOW()
+            RETURNING "WebhookUrl", "TelegramChatId", "GoogleSheetsWebhookUrl"
+        `, [projectId, webhookUrl || null, telegramChatId || null, googleSheetsWebhookUrl || null]);
+        return rows[0];
+    }
+
+    static async claimUploadInDB(projectId, tokenHash, submissionId) {
+        const rows = await db.executeQuery(`UPDATE "TBFormUploads" SET "Submission_ID"=$3 WHERE "Project_ID"=$1 AND "TokenHash"=$2 AND "Submission_ID" IS NULL AND "ExpiresDate">NOW() RETURNING "Url","OriginalName"`, [projectId, tokenHash, submissionId]);
+        return rows[0] ?? null;
+    }
+
+    static updateSubmissionDataInDB(submissionId, data) {
+        return db.executeCommand('UPDATE "TBFormSubmissions" SET "Data"=$2 WHERE "Submission_ID"=$1', [submissionId, JSON.stringify(data)]);
+    }
 }

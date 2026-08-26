@@ -22,6 +22,14 @@ export const formSubmitLimiter = rateLimit({
     handler: reject('Too many submissions. Please wait a minute and try again.'),
 });
 
+export const analyticsLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 120,
+    standardHeaders: true,
+    legacyHeaders: false,
+    handler: reject('Too many analytics events.'),
+});
+
 /**
  * Each AI call costs money at the provider. Signed in or not, nobody needs to
  * generate more than a handful of pages a minute.

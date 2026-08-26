@@ -1,5 +1,7 @@
 import AssetMdl from './asset.mdl.js';
-import { cloudinary, detectImageType } from '../../middlewares/files.js';
+import crypto from 'crypto';
+import { cloudinary, detectImageType, detectPublicFileType } from '../../middlewares/files.js';
+import FormMdl from '../forms/form.mdl.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
 
 /**
@@ -50,6 +52,21 @@ export async function uploadAsset(req, res) {
     } catch (error) {
         return res.status(500).json(buildErrorResponse(error.message));
     }
+}
+
+export async function uploadFormFile(req, res) {
+    try {
+        const projectId = Number(req.body?.projectId);
+        if (!req.file || !Number.isInteger(projectId)) return res.status(400).json(buildErrorResponse('File and projectId are required'));
+        if (!await FormMdl.getProjectOwnerFromDB(projectId)) return res.status(404).json(buildErrorResponse('Site not found'));
+        const realType = detectPublicFileType(req.file.buffer);
+        if (!realType) return res.status(400).json(buildErrorResponse('File contents do not match an allowed type'));
+        const token = crypto.randomBytes(32).toString('hex');
+        const dataURI = `data:${realType};base64,${req.file.buffer.toString('base64')}`;
+        const uploaded = await cloudinary.uploader.upload(dataURI, { folder: `dragcanvas/forms/${projectId}`, resource_type: realType === 'application/pdf' ? 'raw' : 'image' });
+        await AssetMdl.addFormUploadToDB({ projectId, tokenHash: crypto.createHash('sha256').update(token).digest('hex'), url: uploaded.secure_url, publicId: uploaded.public_id, originalName: req.file.originalname.slice(0, 255), mimeType: realType, bytes: uploaded.bytes });
+        return res.status(201).json(buildSuccessResponse({ token, name: req.file.originalname, bytes: uploaded.bytes }));
+    } catch (error) { return res.status(500).json(buildErrorResponse(error.message)); }
 }
 
 export async function getMyAssets(req, res) {

@@ -54,7 +54,8 @@
       "cont42",
       "cont46",
       "cont53",
-      "cont55"
+      "cont55",
+      "cont62"
     ],
     "linkedNodes": {}
   },
@@ -2142,6 +2143,233 @@
     },
     "isCanvas": true,
     "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "48",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 16,
+        "g": 18,
+        "b": 17,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Modern tools"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head56",
+      "tabs57",
+      "book58",
+      "colu59"
+    ],
+    "linkedNodes": {}
+  },
+  "head56": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Everything in one place",
+      "level": "2",
+      "fontSize": "28",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 244,
+        "g": 246,
+        "b": 242,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Modern tools heading"
+    },
+    "parent": "cont55",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "tabs57": {
+    "type": {
+      "resolvedName": "Tabs"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "What to expect",
+        "Clear steps and no surprises.",
+        "What is included",
+        "Everything described in your chosen option."
+      ],
+      "accent": {
+        "r": 196,
+        "g": 242,
+        "b": 75,
+        "a": 1
+      }
+    },
+    "displayName": "Tabs",
+    "custom": {
+      "displayName": "Quick facts"
+    },
+    "parent": "cont55",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "book58": {
+    "type": {
+      "resolvedName": "Booking"
+    },
+    "isCanvas": false,
+    "props": {
+      "heading": "Book a convenient time",
+      "buttonText": "Confirm booking",
+      "duration": 60,
+      "startHour": 9,
+      "endHour": 17,
+      "timeZone": "Asia/Jerusalem",
+      "accent": {
+        "r": 196,
+        "g": 242,
+        "b": 75,
+        "a": 1
+      }
+    },
+    "displayName": "Booking",
+    "custom": {
+      "displayName": "Appointment booking"
+    },
+    "parent": "cont55",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "colu59": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "24",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "3:2"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Stay connected"
+    },
+    "parent": "cont55",
+    "hidden": false,
+    "nodes": [
+      "news60",
+      "enga61"
+    ],
+    "linkedNodes": {}
+  },
+  "news60": {
+    "type": {
+      "resolvedName": "Newsletter"
+    },
+    "isCanvas": false,
+    "props": {
+      "heading": "Get the next useful update",
+      "placeholder": "you@example.com",
+      "buttonText": "Subscribe",
+      "successMessage": "Check your inbox to confirm.",
+      "accent": {
+        "r": 196,
+        "g": 242,
+        "b": 75,
+        "a": 1
+      },
+      "color": {
+        "r": 244,
+        "g": 246,
+        "b": 242,
+        "a": 1
+      }
+    },
+    "displayName": "Newsletter",
+    "custom": {
+      "displayName": "Newsletter signup"
+    },
+    "parent": "colu59",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "enga61": {
+    "type": {
+      "resolvedName": "Engagement"
+    },
+    "isCanvas": false,
+    "props": {
+      "mode": "review",
+      "heading": "Share your experience",
+      "options": [
+        "👍",
+        "❤️",
+        "👏"
+      ],
+      "accent": {
+        "r": 196,
+        "g": 242,
+        "b": 75,
+        "a": 1
+      }
+    },
+    "displayName": "Engagement",
+    "custom": {
+      "displayName": "Visitor feedback"
+    },
+    "parent": "colu59",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont62": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
       "flexDirection": "row",
       "alignItems": "center",
       "justifyContent": "space-between",
@@ -2182,12 +2410,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont56",
-      "soci59"
+      "cont63",
+      "soci66"
     ],
     "linkedNodes": {}
   },
-  "cont56": {
+  "cont63": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2230,15 +2458,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont55",
+    "parent": "cont62",
     "hidden": false,
     "nodes": [
-      "text57",
-      "text58"
+      "text64",
+      "text65"
     ],
     "linkedNodes": {}
   },
-  "text57": {
+  "text64": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2266,12 +2494,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont56",
+    "parent": "cont63",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text58": {
+  "text65": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2299,12 +2527,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont56",
+    "parent": "cont63",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci59": {
+  "soci66": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -2335,7 +2563,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont55",
+    "parent": "cont62",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

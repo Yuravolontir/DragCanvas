@@ -1,8 +1,10 @@
+import crypto from 'crypto';
 import FormMdl from './form.mdl.js';
 import ProjectMdl from '../projects/project.mdl.js';
 import mailService from '../../services/mail.service.js';
 import { wrapInLayout } from '../../services/notification.sender.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
+import AnalyticsMdl from '../analytics/analytics.mdl.js';
 
 /** Nobody needs to write an essay into a contact form. */
 const MAX_FIELDS = 20;
@@ -26,7 +28,7 @@ function escapeHtml(text) {
  */
 function sanitiseSubmission(body) {
     const entries = Object.entries(body || {})
-        .filter(([key]) => key !== 'projectId' && key !== '_hp')
+        .filter(([key]) => key !== 'projectId' && key !== '_hp' && key !== 'uploadToken')
         .slice(0, MAX_FIELDS);
 
     const clean = {};
@@ -80,6 +82,15 @@ export async function submitForm(req, res) {
         // Stored before the email is attempted: if the mail fails, the lead is
         // still captured and visible to the owner in their project.
         const submission = await FormMdl.addSubmissionToDB(projectId, clean, ip);
+        const uploadToken = String(req.body?.uploadToken || '');
+        if (/^[a-f0-9]{64}$/.test(uploadToken)) {
+            const attachment = await FormMdl.claimUploadInDB(projectId, crypto.createHash('sha256').update(uploadToken).digest('hex'), submission.Submission_ID);
+            if (attachment) {
+                clean.Attachment = `${attachment.OriginalName}: ${attachment.Url}`;
+                await FormMdl.updateSubmissionDataInDB(submission.Submission_ID, clean);
+            }
+        }
+        AnalyticsMdl.recordConversion(projectId).catch(e => console.error('[ANALYTICS] conversion failed:', e.message));
 
         notifyOwner(owner, clean).catch(e => console.error('[FORM] notify failed:', e.message));
 
@@ -113,6 +124,57 @@ async function notifyOwner(owner, data) {
     });
 
     if (!result.ok) console.log(`[FORM] could not notify ${owner.UserEmail}: ${result.error}`);
+
+    const integrations = await FormMdl.getIntegrationsFromDB(owner.Project_ID);
+    const payload = { event: 'form.submitted', projectId: owner.Project_ID, projectName: owner.ProjectName, data };
+    if (integrations.WebhookUrl) {
+        fetch(integrations.WebhookUrl, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+            signal: AbortSignal.timeout(8000),
+        }).catch(error => console.error('[FORM] webhook failed:', error.message));
+    }
+    if (integrations.GoogleSheetsWebhookUrl) {
+        fetch(integrations.GoogleSheetsWebhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), signal: AbortSignal.timeout(8000) }).catch(error => console.error('[FORM] Google Sheets failed:', error.message));
+    }
+    const telegramToken = process.env.TELEGRAM_BOT_TOKEN;
+    if (telegramToken && integrations.TelegramChatId) {
+        const text = [`New message from ${owner.ProjectName}`, ...Object.entries(data).map(([key, value]) => `${key}: ${value}`)].join('\n').slice(0, 4000);
+        fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: integrations.TelegramChatId, text }), signal: AbortSignal.timeout(8000),
+        }).catch(error => console.error('[FORM] telegram failed:', error.message));
+    }
+}
+
+const privateHost = /^(localhost|127\.|10\.|192\.168\.|169\.254\.|0\.|\[?::1\]?)/i;
+
+export async function getIntegrations(req, res) {
+    try {
+        const project = await ProjectMdl.getProjectByIdFromDB(req.params.projectId, req.user.userId);
+        if (!project) return res.status(404).json(buildErrorResponse('Project not found'));
+        return res.status(200).json(buildSuccessResponse(await FormMdl.getIntegrationsFromDB(req.params.projectId)));
+    } catch (error) { return res.status(500).json(buildErrorResponse(error.message)); }
+}
+
+export async function saveIntegrations(req, res) {
+    try {
+        const project = await ProjectMdl.getProjectByIdFromDB(req.params.projectId, req.user.userId);
+        if (!project) return res.status(404).json(buildErrorResponse('Project not found'));
+        const webhookUrl = String(req.body?.webhookUrl || '').trim();
+        if (webhookUrl) {
+            let parsed;
+            try { parsed = new URL(webhookUrl); } catch { return res.status(400).json(buildErrorResponse('Webhook must be a valid URL')); }
+            if (parsed.protocol !== 'https:' || privateHost.test(parsed.hostname)) {
+                return res.status(400).json(buildErrorResponse('Webhook must use HTTPS and a public host'));
+            }
+        }
+        const telegramChatId = String(req.body?.telegramChatId || '').trim();
+        if (telegramChatId && !/^-?\d{1,20}$/.test(telegramChatId)) return res.status(400).json(buildErrorResponse('Invalid Telegram chat ID'));
+        const googleSheetsWebhookUrl = String(req.body?.googleSheetsWebhookUrl || '').trim();
+        if (googleSheetsWebhookUrl) { let parsed; try { parsed = new URL(googleSheetsWebhookUrl); } catch { return res.status(400).json(buildErrorResponse('Google Sheets webhook must be a valid URL')); } if (parsed.protocol !== 'https:' || privateHost.test(parsed.hostname)) return res.status(400).json(buildErrorResponse('Google Sheets webhook must use HTTPS and a public host')); }
+        const saved = await FormMdl.saveIntegrationsToDB(req.params.projectId, webhookUrl, telegramChatId, googleSheetsWebhookUrl);
+        return res.status(200).json(buildSuccessResponse(saved));
+    } catch (error) { return res.status(500).json(buildErrorResponse(error.message)); }
 }
 
 /** The owner reads what came in. Ownership is checked, not assumed. */

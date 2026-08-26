@@ -53,7 +53,8 @@
       "cont36",
       "cont42",
       "cont50",
-      "cont52"
+      "cont52",
+      "cont60"
     ],
     "linkedNodes": {}
   },
@@ -1992,6 +1993,264 @@
     },
     "isCanvas": true,
     "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "48",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 249,
+        "g": 245,
+        "b": 240,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Modern tools"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head53",
+      "tabs54",
+      "coun55",
+      "prod56",
+      "colu57"
+    ],
+    "linkedNodes": {}
+  },
+  "head53": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Shop the essentials",
+      "level": "2",
+      "fontSize": "28",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 45,
+        "g": 32,
+        "b": 24,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Modern tools heading"
+    },
+    "parent": "cont52",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "tabs54": {
+    "type": {
+      "resolvedName": "Tabs"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "Delivery",
+        "Packed in 1–2 business days.",
+        "Returns",
+        "Return unused items within 30 days."
+      ],
+      "accent": {
+        "r": 178,
+        "g": 92,
+        "b": 48,
+        "a": 1
+      }
+    },
+    "displayName": "Tabs",
+    "custom": {
+      "displayName": "Quick facts"
+    },
+    "parent": "cont52",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "coun55": {
+    "type": {
+      "resolvedName": "Countdown"
+    },
+    "isCanvas": false,
+    "props": {
+      "target": "2030-01-01T00:00:00Z",
+      "label": "Seasonal offer ends in",
+      "expiredText": "This offer has ended.",
+      "accent": {
+        "r": 178,
+        "g": 92,
+        "b": 48,
+        "a": 1
+      }
+    },
+    "displayName": "Countdown",
+    "custom": {
+      "displayName": "Offer countdown"
+    },
+    "parent": "cont52",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "prod56": {
+    "type": {
+      "resolvedName": "ProductCatalog"
+    },
+    "isCanvas": false,
+    "props": {
+      "products": [
+        "Essential",
+        "A practical everyday choice",
+        "29.00",
+        "",
+        "Signature",
+        "Our most popular option",
+        "59.00",
+        ""
+      ],
+      "currency": "ILS",
+      "accent": {
+        "r": 178,
+        "g": 92,
+        "b": 48,
+        "a": 1
+      }
+    },
+    "displayName": "ProductCatalog",
+    "custom": {
+      "displayName": "Featured products"
+    },
+    "parent": "cont52",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "colu57": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "24",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "3:2"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Stay connected"
+    },
+    "parent": "cont52",
+    "hidden": false,
+    "nodes": [
+      "news58",
+      "enga59"
+    ],
+    "linkedNodes": {}
+  },
+  "news58": {
+    "type": {
+      "resolvedName": "Newsletter"
+    },
+    "isCanvas": false,
+    "props": {
+      "heading": "Get the next useful update",
+      "placeholder": "you@example.com",
+      "buttonText": "Subscribe",
+      "successMessage": "Check your inbox to confirm.",
+      "accent": {
+        "r": 178,
+        "g": 92,
+        "b": 48,
+        "a": 1
+      },
+      "color": {
+        "r": 45,
+        "g": 32,
+        "b": 24,
+        "a": 1
+      }
+    },
+    "displayName": "Newsletter",
+    "custom": {
+      "displayName": "Newsletter signup"
+    },
+    "parent": "colu57",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "enga59": {
+    "type": {
+      "resolvedName": "Engagement"
+    },
+    "isCanvas": false,
+    "props": {
+      "mode": "review",
+      "heading": "Share your experience",
+      "options": [
+        "👍",
+        "❤️",
+        "👏"
+      ],
+      "accent": {
+        "r": 178,
+        "g": 92,
+        "b": 48,
+        "a": 1
+      }
+    },
+    "displayName": "Engagement",
+    "custom": {
+      "displayName": "Visitor feedback"
+    },
+    "parent": "colu57",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont60": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
       "flexDirection": "row",
       "alignItems": "center",
       "justifyContent": "space-between",
@@ -2032,12 +2291,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont53",
-      "soci56"
+      "cont61",
+      "soci64"
     ],
     "linkedNodes": {}
   },
-  "cont53": {
+  "cont61": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2080,15 +2339,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont52",
+    "parent": "cont60",
     "hidden": false,
     "nodes": [
-      "text54",
-      "text55"
+      "text62",
+      "text63"
     ],
     "linkedNodes": {}
   },
-  "text54": {
+  "text62": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2116,12 +2375,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont53",
+    "parent": "cont61",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text55": {
+  "text63": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2149,12 +2408,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont53",
+    "parent": "cont61",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci56": {
+  "soci64": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -2185,7 +2444,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont52",
+    "parent": "cont60",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

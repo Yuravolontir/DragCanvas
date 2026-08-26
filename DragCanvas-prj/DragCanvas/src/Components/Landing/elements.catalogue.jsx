@@ -44,6 +44,12 @@ import { List } from './List';
 import { LogoStrip } from './LogoStrip';
 import { Map } from './Map';
 import { NavbarElement } from './NavbarElement';
+import { Newsletter } from './Newsletter';
+import { Booking } from './Booking';
+import { ProductCatalog } from './ProductCatalog';
+import { Engagement } from './Engagement';
+import { Tabs } from './Tabs';
+import { Countdown } from './Countdown';
 import { Pricing } from './Pricing';
 import { Quote } from './Quote';
 import { SocialLinks } from './SocialLinks';
@@ -281,6 +287,54 @@ export const ELEMENTS = [
     tip: 'A contact form',
     keywords: ['contact', 'input', 'fields', 'email'],
     element: () => <Form />,
+  },
+  {
+    name: 'Newsletter',
+    group: 'Conversion',
+    icon: 'mark_email_read',
+    tip: 'Email signup with confirmation and unsubscribe',
+    keywords: ['subscribe', 'mailing list', 'email updates'],
+    element: () => <Newsletter />,
+  },
+  {
+    name: 'Booking',
+    group: 'Conversion',
+    icon: 'calendar_month',
+    tip: 'Appointment slots with email confirmation',
+    keywords: ['appointment', 'reservation', 'schedule', 'calendar'],
+    element: () => <Booking />,
+  },
+  {
+    name: 'ProductCatalog',
+    group: 'Conversion',
+    icon: 'shopping_cart',
+    tip: 'Products with a persistent cart and checkout',
+    keywords: ['shop', 'store', 'products', 'ecommerce'],
+    element: () => <ProductCatalog />,
+  },
+  {
+    name: 'Engagement',
+    group: 'Conversion',
+    icon: 'thumb_up',
+    tip: 'Moderated reviews, reactions or a poll',
+    keywords: ['feedback', 'vote', 'survey', 'likes'],
+    element: () => <Engagement />,
+  },
+  {
+    name: 'Tabs',
+    group: 'Sections',
+    icon: 'tab',
+    tip: 'Compact switchable content panels',
+    keywords: ['panels', 'details'],
+    element: () => <Tabs />,
+  },
+  {
+    name: 'Countdown',
+    group: 'Conversion',
+    icon: 'timer',
+    tip: 'Live deadline for an offer or event',
+    keywords: ['deadline', 'sale', 'launch'],
+    element: () => <Countdown />,
   },
   {
     name: 'SocialLinks',

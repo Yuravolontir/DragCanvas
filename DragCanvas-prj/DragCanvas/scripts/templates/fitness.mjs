@@ -138,6 +138,7 @@ export default function fitness() {
     background: LIME, color: INK, buttonBackground: INK, buttonColor: LIME,
   });
 
+  b.modernSuite(root, { mode: 'service', background: INK, panel: PANEL, ink: BONE, accent: LIME });
   b.footer(root, {
     brand: 'FORGE',
     note: 'Open 05:30 to 22:00. First session is free.',

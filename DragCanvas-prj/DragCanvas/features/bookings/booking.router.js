@@ -1,0 +1,2 @@
+import { Router } from 'express'; import { verifyToken } from '../../middlewares/auth.js'; import { formSubmitLimiter } from '../../middlewares/rateLimit.js'; import * as ctrl from './booking.ctrl.js';
+const router = Router(); router.get('/availability', ctrl.availability); router.post('/', formSubmitLimiter, ctrl.create); router.get('/project/:projectId', verifyToken, ctrl.list); export default router;

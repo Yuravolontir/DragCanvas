@@ -15,6 +15,8 @@ formRouter.post('/submit', formSubmitLimiter, ctrl.submitForm);
 // Protected: only the project owner reads what came in
 formRouter
     .get('/project/:projectId', verifyToken, ctrl.getSubmissions)
+    .get('/project/:projectId/integrations', verifyToken, ctrl.getIntegrations)
+    .put('/project/:projectId/integrations', verifyToken, ctrl.saveIntegrations)
     .put('/project/:projectId/:submissionId/read', verifyToken, ctrl.markSubmissionRead)
 
 export default formRouter;

@@ -140,6 +140,7 @@ export default function portfolio() {
     background: GOLD, color: INK, buttonBackground: INK, buttonColor: GOLD,
   });
 
+  b.modernSuite(root, { mode: 'content', background: INK, panel: PANEL, ink: BONE, accent: GOLD });
   b.footer(root, {
     brand: 'Mara Kim',
     note: 'Art direction and design. Currently booking for spring.',

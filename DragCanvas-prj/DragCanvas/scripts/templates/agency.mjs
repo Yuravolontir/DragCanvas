@@ -117,6 +117,7 @@ export default function agency() {
     background: INK, color: PAPER, buttonBackground: RED, buttonColor: WHITE,
   });
 
+  b.modernSuite(root, { mode: 'service', background: PAPER, panel: PANEL, ink: INK, accent: RED });
   b.footer(root, {
     brand: 'FIELD',
     note: 'Design and art direction. Tel Aviv and remote.',

@@ -17,7 +17,10 @@ const data = {
   menu1: { type: { resolvedName: 'Container' }, isCanvas: true, nodes: [],
            props: { anchor: 'menu', width: '100%' } },
   form1: { type: { resolvedName: 'Form' }, nodes: [],
-           props: { submitText: 'Send request', successMessage: 'Got it, thanks!',
+           // The apostrophe is the point: this message is written into the
+           // inline script, and an unescaped one closed the string literal early
+           // and broke the whole handler. See 'скрипт формы компилируется'.
+           props: { submitText: 'Send request', successMessage: "Got it, you're on the list!",
                     radius: 10, accent: { r: 200, g: 80, b: 60, a: 1 },
                     fields: [
                       { label: 'Name', type: 'text', placeholder: 'Your name', required: true },
@@ -28,6 +31,20 @@ const data = {
 
 const { exportToHtml } = await import('../src/utils/exportToHtml.js');
 const html = exportToHtml(data, 'Test', { projectId: 42, apiUrl: 'https://dragcanvas.onrender.com' });
+
+/*
+ * Does every inline script the exporter wrote actually parse?
+ *
+ * A syntax error here is invisible to every other check: the HTML still
+ * contains the form, the message and the API address, so all of them pass while
+ * the published page has no working form at all. `new Function` compiles the
+ * source without running it, which is exactly the question being asked.
+ */
+const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+const scriptsCompile = scripts.length > 0 && scripts.every((source) => {
+  try { new Function(source); return true; }
+  catch (error) { console.log(`    ${error.message}`); return false; }
+});
 
 const checks = [
   ['навбар отрисован',        html.includes('<nav')],
@@ -44,8 +61,9 @@ const checks = [
   ['honeypot есть',           html.includes('name="_hp"')],
   ['projectId вшит',          /projectId:\s*42/.test(html)],
   ['адрес API вшит',          html.includes('https://dragcanvas.onrender.com/api/forms/submit')],
-  ['сообщение об успехе',     html.includes('Got it, thanks!')],
+  ['сообщение об успехе',     html.includes("Got it, you're on the list!")],
   ['текст кнопки',            html.includes('Send request')],
+  ['скрипт формы компилируется', scriptsCompile],
 ];
 let bad = 0;
 for (const [label, ok] of checks) { console.log((ok?'  ✓ ':'  ✗ ')+label); if(!ok) bad++; }

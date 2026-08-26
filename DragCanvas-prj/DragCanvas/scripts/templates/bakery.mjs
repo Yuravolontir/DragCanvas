@@ -104,6 +104,7 @@ export default function bakery() {
     background: TERRA, color: WHITE, buttonBackground: CREAM, buttonColor: INK, radius: 0,
   });
 
+  b.modernSuite(root, { mode: 'commerce', background: CREAM, panel: PANEL, ink: INK, accent: TERRA, currency: 'ILS' });
   b.footer(root, {
     brand: 'Lehem',
     note: 'Yehuda Halevi 21, Tel Aviv. Baked daily except Sunday.',

@@ -7,6 +7,11 @@ import db from '../../utils/db.sql.services.js';
  */
 export default class AssetMdl {
 
+    static async addFormUploadToDB(upload) {
+        const rows = await db.executeQuery(`INSERT INTO "TBFormUploads" ("Project_ID","TokenHash","Url","PublicId","OriginalName","MimeType","Bytes") VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING "Upload_ID"`, [upload.projectId, upload.tokenHash, upload.url, upload.publicId, upload.originalName, upload.mimeType, upload.bytes]);
+        return rows[0];
+    }
+
     static async addAssetToDB(asset) {
         const { userId, url, publicId, format, bytes } = asset;
         const rows = await db.executeQuery(`

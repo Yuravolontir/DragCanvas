@@ -126,6 +126,7 @@ export default function travel() {
     background: SEA, color: WHITE, buttonBackground: PAPER, buttonColor: INK,
   });
 
+  b.modernSuite(root, { mode: 'content', background: PAPER, panel: PANEL, ink: INK, accent: SEA });
   b.footer(root, {
     brand: 'Wanderlog',
     note: 'One long trip a month, written up slowly.',

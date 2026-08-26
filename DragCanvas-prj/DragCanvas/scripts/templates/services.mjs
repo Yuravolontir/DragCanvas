@@ -141,6 +141,7 @@ export default function services() {
     background: AMBER, color: WHITE, buttonBackground: PAPER, buttonColor: INK,
   });
 
+  b.modernSuite(root, { mode: 'service', background: PAPER, panel: PANEL, ink: INK, accent: AMBER });
   b.footer(root, {
     brand: 'Northside Joinery',
     note: 'Kitchens, wardrobes and one-off pieces. Free quotes.',

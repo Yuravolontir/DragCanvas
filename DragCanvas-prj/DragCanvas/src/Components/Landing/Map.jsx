@@ -92,6 +92,7 @@ Map.craft = {
     height: '300px',
     width: '100%',
     label: 'Netanya',
+    address: '',
   },
   related: {
     toolbar: MapSettings,

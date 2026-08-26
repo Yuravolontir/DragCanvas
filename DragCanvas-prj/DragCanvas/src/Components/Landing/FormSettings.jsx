@@ -3,7 +3,7 @@ import { useNode } from '@craftjs/core';
 import { ToolbarSection } from './Toolbar/ToolbarSection';
 import { ToolbarItem } from './Toolbar/ToolbarItem';
 
-const FIELD_TYPES = ['text', 'email', 'phone', 'textarea'];
+const FIELD_TYPES = ['text', 'email', 'phone', 'textarea', 'file'];
 
 /**
  * Field editor for the Form component.

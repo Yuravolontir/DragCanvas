@@ -61,6 +61,8 @@ export const Form = (props) => {
                 // In the editor the inputs must not steal the click
                 tabIndex={enabled ? -1 : 0}
               />
+            ) : field.type === 'file' ? (
+              <input type="file" accept="image/jpeg,image/png,image/gif,image/webp,application/pdf" style={inputStyle} disabled={enabled} />
             ) : (
               <input
                 type={field.type === 'email' ? 'email' : field.type === 'phone' ? 'tel' : 'text'}

@@ -303,6 +303,63 @@ export function createBuilder() {
       width: '100%', height: 'auto', ...props,
     }, { label });
 
+  const newsletter = (parent, props = {}, label = 'Newsletter') =>
+    node('Newsletter', parent, {
+      heading: 'Useful updates, occasionally', placeholder: 'you@example.com',
+      buttonText: 'Subscribe', successMessage: 'Check your inbox to confirm.',
+      accent: rgba(0, 64, 224), color: rgba(26, 28, 28), ...props,
+    }, { label });
+
+  const booking = (parent, props = {}, label = 'Booking') =>
+    node('Booking', parent, {
+      heading: 'Choose a time', buttonText: 'Confirm booking', duration: 60,
+      startHour: 9, endHour: 17, timeZone: 'Asia/Jerusalem', accent: rgba(0, 64, 224), ...props,
+    }, { label });
+
+  const productCatalog = (parent, products, props = {}, label = 'ProductCatalog') =>
+    node('ProductCatalog', parent, {
+      products, currency: 'USD', accent: rgba(0, 64, 224), ...props,
+    }, { label });
+
+  const engagement = (parent, props = {}, label = 'Engagement') =>
+    node('Engagement', parent, {
+      mode: 'review', heading: 'What did you think?', options: ['👍', '❤️', '👏'],
+      accent: rgba(0, 64, 224), ...props,
+    }, { label });
+
+  const tabs = (parent, items, props = {}, label = 'Tabs') =>
+    node('Tabs', parent, { items, accent: rgba(0, 64, 224), ...props }, { label });
+
+  const countdown = (parent, props = {}, label = 'Countdown') =>
+    node('Countdown', parent, {
+      target: '2030-01-01T00:00:00Z', label: 'Offer ends in',
+      expiredText: 'This offer has ended.', accent: rgba(0, 64, 224), ...props,
+    }, { label });
+
+  /** Add a compact, useful showcase of the newest conversion blocks. */
+  const modernSuite = (parent, { mode = 'service', background = WHITE, ink = rgba(26, 28, 28), accent = rgba(0, 64, 224), timeZone = 'Asia/Jerusalem', currency = 'USD' } = {}) => {
+    const section = container(parent, { background, padding: ['48', '48', '48', '48'], width: '100%' }, 'Modern tools');
+    heading(section, mode === 'commerce' ? 'Shop the essentials' : mode === 'event' ? 'Plan your visit' : mode === 'content' ? 'Keep exploring' : 'Everything in one place', { fontSize: '28', color: ink }, 'Modern tools heading');
+    tabs(section, mode === 'commerce'
+      ? ['Delivery', 'Packed in 1–2 business days.', 'Returns', 'Return unused items within 30 days.']
+      : ['What to expect', 'Clear steps and no surprises.', 'What is included', 'Everything described in your chosen option.'], { accent }, 'Quick facts');
+
+    if (mode === 'commerce') {
+      countdown(section, { label: 'Seasonal offer ends in', accent }, 'Offer countdown');
+      productCatalog(section, ['Essential', 'A practical everyday choice', '29.00', '', 'Signature', 'Our most popular option', '59.00', ''], { currency, accent }, 'Featured products');
+    } else if (mode === 'event') {
+      countdown(section, { label: 'Doors open in', accent }, 'Event countdown');
+      booking(section, { heading: 'Reserve your place', duration: 60, timeZone, accent }, 'Reservation');
+    } else if (mode === 'service') {
+      booking(section, { heading: 'Book a convenient time', duration: 60, timeZone, accent }, 'Appointment booking');
+    }
+
+    const connect = columns(section, { count: '2', gap: '24', ratio: '3:2', stack: 'yes' }, 'Stay connected');
+    newsletter(connect, { heading: 'Get the next useful update', accent, color: ink }, 'Newsletter signup');
+    engagement(connect, { mode: mode === 'content' ? 'reaction' : 'review', heading: mode === 'content' ? 'Was this useful?' : 'Share your experience', accent }, 'Visitor feedback');
+    return section;
+  };
+
   /**
    * The closing band.
    *
@@ -341,7 +398,8 @@ export function createBuilder() {
     map, root, node, container, text, button, image, video, link, carousel,
     heading, columns, spacer, divider, list, quote, icon, badge, accordion,
     pricing, testimonial, stats, teamGrid, timeline, ctaBanner, logoStrip,
-    socialLinks, navbar, map_, form, footer,
+    socialLinks, navbar, map_, form, newsletter, booking, productCatalog,
+    engagement, tabs, countdown, modernSuite, footer,
     backgroundVideo,
   };
 }

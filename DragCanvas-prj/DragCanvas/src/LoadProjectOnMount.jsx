@@ -53,7 +53,13 @@ import { useEffect } from 'react';
           console.log('✅ Project data received:', project.ProjectName);
 
           const projectData = JSON.parse(project.ProjectData);
-          actions.deserialize(projectData);
+          if (projectData?.__dragcanvasPages && Array.isArray(projectData.pages)) {
+            const first = projectData.pages.find(page => page.slug === projectData.currentSlug) || projectData.pages[0];
+            actions.deserialize(first.data);
+            window.dispatchEvent(new CustomEvent('dragcanvas:pages-loaded', { detail: { pages: projectData.pages, currentSlug: first.slug, siteSettings: projectData.siteSettings || {} } }));
+          } else {
+            actions.deserialize(projectData);
+          }
 
           console.log('✅ Project loaded into editor');
 

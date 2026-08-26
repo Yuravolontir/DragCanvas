@@ -48,7 +48,7 @@ class MailService {
     /**
      * @returns {Promise<{ok: boolean, messageId?: string, error?: string}>}
      */
-    async send({ to, subject, html, text }) {
+    async send({ to, subject, html, text, attachments }) {
         // A developer without mail credentials must still be able to run the
         // project, so this degrades instead of crashing.
         if (!this.isConfigured()) {
@@ -68,6 +68,7 @@ class MailService {
                 subject,
                 text: text || stripHtml(html || ''),
                 html,
+                attachments,
             });
             return { ok: true, messageId: info.messageId };
         } catch (error) {

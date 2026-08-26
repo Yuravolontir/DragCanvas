@@ -127,6 +127,7 @@ export default function restaurant() {
     background: TERRA, color: WHITE, buttonBackground: CREAM, buttonColor: INK,
   });
 
+  b.modernSuite(root, { mode: 'service', background: CREAM, panel: PANEL, ink: INK, accent: TERRA });
   b.footer(root, {
     brand: 'Casa Oliva',
     note: 'Dinner Tuesday to Saturday. Booking advised.',

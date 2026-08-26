@@ -16,7 +16,8 @@
     "check:responsive": "node scripts/check-responsive.mjs",
     "templates:build": "node scripts/generate-templates.mjs",
     "templates:dry": "node scripts/generate-templates.mjs --dry",
-    "check:template": "node scripts/check-template.mjs"
+    "check:template": "node scripts/check-template.mjs",
+    "db:migrate": "node scripts/migrate.mjs"
   },
   "dependencies": {
     "@craftjs/core": "^0.2.12",

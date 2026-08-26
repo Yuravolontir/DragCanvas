@@ -25,6 +25,7 @@ export const RESOLVED_NAMES = new Set([
   'Map', 'NavbarElement', 'Heading', 'Columns', 'Spacer', 'Divider', 'List',
   'Quote', 'Icon', 'Badge', 'Accordion', 'Pricing', 'Testimonial', 'Stats',
   'TeamGrid', 'Timeline', 'CTABanner', 'LogoStrip', 'SocialLinks',
+  'Newsletter', 'Booking', 'ProductCatalog', 'Engagement', 'Tabs', 'Countdown',
   'Custom1', 'Custom2', 'Custom2VideoDrop', 'Custom3', 'Custom3BtnDrop', 'OnlyButtons',
 ]);
 
@@ -240,6 +241,7 @@ export function validateTemplate(t) {
 const COMPOSED = new Set([
   'Accordion', 'Carousel', 'CTABanner', 'Form', 'Icon', 'LogoStrip', 'Map',
   'Pricing', 'Stats', 'TeamGrid', 'Testimonial', 'Timeline', 'Video', 'Quote',
+  'Newsletter', 'Booking', 'ProductCatalog', 'Engagement', 'Tabs', 'Countdown',
 ]);
 
 /**

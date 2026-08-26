@@ -158,6 +158,7 @@ export default function developer() {
     background: CYAN, color: INK, buttonBackground: INK, buttonColor: CYAN,
   });
 
+  b.modernSuite(root, { mode: 'content', background: INK, panel: PANEL, ink: BONE, accent: CYAN });
   b.footer(root, {
     brand: 'omer.dev',
     note: 'Backend and infrastructure. Open to contract work.',

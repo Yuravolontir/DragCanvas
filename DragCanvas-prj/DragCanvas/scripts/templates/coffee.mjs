@@ -113,6 +113,7 @@ export default function coffee() {
     background: RUST, color: WHITE, buttonBackground: PAPER, buttonColor: INK,
   });
 
+  b.modernSuite(root, { mode: 'commerce', background: PAPER, panel: PANEL, ink: INK, accent: RUST, currency: 'ILS' });
   b.footer(root, {
     brand: 'Harbour Roastery',
     note: 'Roasted on Tuesdays, shipped on Wednesdays.',

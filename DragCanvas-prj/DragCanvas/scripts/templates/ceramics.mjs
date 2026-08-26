@@ -143,6 +143,7 @@ export default function ceramics() {
     background: MOSS, color: WHITE, buttonBackground: SAND, buttonColor: INK,
   });
 
+  b.modernSuite(root, { mode: 'commerce', background: SAND, panel: PANEL, ink: INK, accent: MOSS, currency: 'ILS' });
   b.footer(root, {
     brand: 'Clay & Co',
     note: 'A small studio. Everything is thrown by hand.',

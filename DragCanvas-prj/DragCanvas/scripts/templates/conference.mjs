@@ -120,6 +120,7 @@ export default function conference() {
   const venueMap = b.container(venueSplit, { background: TRANSPARENT, width: '100%' }, 'Venue map');
   b.map_(venueMap, { lat: 32.7940, lng: 34.9896, zoom: 14, label: 'Haifa' });
 
+  b.modernSuite(root, { mode: 'event', background: NAVY, panel: PANEL, ink: BONE, accent: GOLD });
   b.footer(root, {
     brand: 'Interface 26',
     note: '12–13 November, Haifa Port. Tickets include both days.',

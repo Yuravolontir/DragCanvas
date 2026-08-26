@@ -122,6 +122,7 @@ export default function clinic() {
   const findMap = b.container(findSplit, { background: TRANSPARENT, width: '100%' }, 'Find map');
   b.map_(findMap, { lat: 32.0853, lng: 34.7818, zoom: 15, label: 'Meridian Dental' });
 
+  b.modernSuite(root, { mode: 'service', background: MIST, panel: PANEL, ink: INK, accent: TEAL });
   b.footer(root, {
     brand: 'Meridian Dental',
     note: 'Emergencies seen the same day. Most insurers accepted.',

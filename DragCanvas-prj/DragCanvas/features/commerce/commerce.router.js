@@ -1,0 +1,2 @@
+import { Router } from 'express'; import { verifyToken } from '../../middlewares/auth.js'; import { formSubmitLimiter } from '../../middlewares/rateLimit.js'; import * as ctrl from './commerce.ctrl.js';
+const router = Router(); router.get('/products/:projectId', ctrl.products); router.post('/checkout', formSubmitLimiter, ctrl.checkout); router.get('/orders/:projectId', verifyToken, ctrl.orders); export default router;

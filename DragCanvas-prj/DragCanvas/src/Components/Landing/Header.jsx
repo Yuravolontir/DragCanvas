@@ -8,10 +8,30 @@ import { apiFetch } from '../../api.js';
   import { useLocation } from 'react-router-dom';
   import html2canvas from 'html2canvas';
   import { exportToHtml } from '../../utils/exportToHtml';
+  import { inspectBeforePublish } from '../../utils/publishPreflight.js';
   import PublishInfoModal from '../PublishInfoModal';
 import AuthPromptModal from '../AuthPromptModal';
 
 const PY_API = import.meta.env.VITE_PY_API_URL || 'http://localhost:8000';
+
+const syncSharedChrome = (source, target) => {
+  if (!source?.ROOT || !target?.ROOT) return target;
+  const rootChildren = source.ROOT.nodes || [];
+  const sharedRoots = rootChildren.filter((id, index) => {
+    const node = source[id]; const type = node?.type?.resolvedName || node?.type;
+    const display = String(node?.custom?.displayName || node?.props?.anchor || '').toLowerCase();
+    return (index === 0 && type === 'NavbarElement') || display.includes('footer');
+  });
+  if (!sharedRoots.length) return target;
+  const next = { ...target };
+  const copyTree = (id) => {
+    if (!source[id]) return;
+    next[id] = structuredClone(source[id]);
+    [...(source[id].nodes || []), ...Object.values(source[id].linkedNodes || {})].forEach(copyTree);
+  };
+  sharedRoots.forEach(copyTree);
+  return next;
+};
 
 
 const HeaderDiv = styled.div`
@@ -116,6 +136,16 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
 
   const [projectName, setProjectName] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
+  const [siteLanguage, setSiteLanguage] = useState('en');
+  const [socialImage, setSocialImage] = useState('');
+  const [favicon, setFavicon] = useState('');
+  const [webhookUrl, setWebhookUrl] = useState('');
+  const [telegramChatId, setTelegramChatId] = useState('');
+  const [googleSheetsWebhookUrl, setGoogleSheetsWebhookUrl] = useState('');
+  const [sitePassword, setSitePassword] = useState('');
+  const [comingSoon, setComingSoon] = useState(false);
+  const [pages, setPages] = useState([{ name: 'Home', slug: 'home', data: null }]);
+  const [currentPageSlug, setCurrentPageSlug] = useState('home');
   const [showSaveModal, setShowSaveModal] = useState(false);
   // Read once during the first render rather than in an effect: the value is
   // already known, and setting it from an effect made the component render
@@ -156,6 +186,34 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
     canRedo: query.history.canRedo(),
   }));
 
+  useEffect(() => {
+    const loaded = (event) => {
+      setPages(event.detail.pages); setCurrentPageSlug(event.detail.currentSlug);
+      const settings = event.detail.siteSettings || {};
+      setSiteLanguage(settings.lang || 'en'); setSocialImage(settings.socialImage || ''); setFavicon(settings.favicon || ''); setComingSoon(!!settings.comingSoon);
+    };
+    window.addEventListener('dragcanvas:pages-loaded', loaded);
+    return () => window.removeEventListener('dragcanvas:pages-loaded', loaded);
+  }, []);
+
+  const switchPage = (slug) => {
+    const currentData = JSON.parse(query.serialize());
+    const nextPages = pages.map(page => page.slug === currentPageSlug ? { ...page, data: currentData } : page);
+    const target = nextPages.find(page => page.slug === slug);
+    if (!target?.data) return;
+    const syncedTarget = syncSharedChrome(currentData, target.data);
+    setPages(nextPages.map(page => page.slug === slug ? { ...page, data: syncedTarget } : page)); setCurrentPageSlug(slug); actions.deserialize(syncedTarget);
+  };
+
+  const addPage = () => {
+    const name = window.prompt('Page name'); if (!name) return;
+    const slug = name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40);
+    if (!slug || slug === 'home' || pages.some(page => page.slug === slug)) return showAlertModal('Choose a unique page name using Latin letters.', 'error');
+    const currentData = JSON.parse(query.serialize());
+    const next = pages.map(page => page.slug === currentPageSlug ? { ...page, data: currentData } : page).concat({ name, slug, data: currentData });
+    setPages(next); setCurrentPageSlug(slug); actions.deserialize(currentData);
+  };
+
  
 
    // If the loaded project was published before, restore its live URL (for the Published chip)
@@ -164,6 +222,13 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
      apiFetch(`/api/projects/${projectId}`)
        .then((project) => {
          if (project?.PublishedUrl) setPublishedUrl(project.PublishedUrl);
+         setProjectName(project?.ProjectName || '');
+         setProjectDescription(project?.ProjectDescription || '');
+         apiFetch(`/api/forms/project/${projectId}/integrations`).then((settings) => {
+           setWebhookUrl(settings?.WebhookUrl || '');
+           setTelegramChatId(settings?.TelegramChatId || '');
+           setGoogleSheetsWebhookUrl(settings?.GoogleSheetsWebhookUrl || '');
+         }).catch(() => {});
        })
        .catch(() => {});
    }, [projectId, currentUser]);
@@ -196,10 +261,12 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
 
   const saveproject = async () => {
     try {
-      const jsonData = query.serialize();
+      const currentData = JSON.parse(query.serialize());
+      const savedPages = pages.map(page => page.slug === currentPageSlug ? { ...page, data: currentData } : { ...page, data: syncSharedChrome(currentData, page.data) });
+      const jsonData = { __dragcanvasPages: true, currentSlug: currentPageSlug, pages: savedPages, siteSettings: { lang: siteLanguage, socialImage, favicon, comingSoon } };
       const jsonString = JSON.stringify(jsonData);
       const projectSizeKB = (jsonString.length / 1024).toFixed(2);
-      const nodes = Object.keys(jsonData).filter(key => key !==
+      const nodes = Object.keys(currentData).filter(key => key !==
   'ROOT');
       const componentCount = nodes.length;
 
@@ -223,7 +290,7 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
       const data = await apiFetch('/api/projects/save', {
         method: 'POST',
         body: {
-          projectId: null,
+          projectId: projectId || null,
           projectName: projectName,
           projectDescription: projectDescription || null,
           componentCount: componentCount,
@@ -235,14 +302,12 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
 
       // If "save as template" is checked, store it as a template too
       if (saveAsTemplate && templateName) {
-        await saveAsTemplateFunc(jsonString, componentCount);
+        await saveAsTemplateFunc(JSON.stringify(currentData), componentCount);
       }
 
       setSavedProjectId(data.projectId);
       showAlertModal(`Project saved successfully! ID: ${data.projectId}`, 'success');
       setShowSaveModal(false);
-      setProjectName('');
-      setProjectDescription('');
       setSaveAsTemplate(false);
       setTemplateName('');
     } catch (err) {
@@ -364,20 +429,76 @@ const handlePublish = async () => {
     setPublishing(true);
     try {
       const json = query.serialize();
-      const html = exportToHtml(JSON.parse(json), projectName, { projectId });
+      const projectNodes = JSON.parse(json);
+      const issues = inspectBeforePublish(projectNodes, { title: projectName });
+      if (issues.length) {
+        setPublishing(false);
+        setPublishModal(false);
+        showAlertModal(`Fix these items before publishing:\n\n${issues.map((issue) => `• ${issue.message}`).join('\n')}`, 'error');
+        return;
+      }
+      const canonicalUrl = publishTarget === 'custom'
+        ? `https://${customDomain.trim().replace(/^https?:\/\//, '').replace(/\/$/, '')}`
+        : publishedUrl;
+      const html = exportToHtml(projectNodes, projectName, {
+        projectId,
+        description: projectDescription,
+        lang: siteLanguage,
+        socialImage,
+        favicon,
+        canonicalUrl,
+        comingSoon,
+      });
+      const publishPages = pages.map(page => page.slug === currentPageSlug ? { ...page, data: projectNodes } : page);
+      const files = {};
+      for (const page of publishPages) {
+        if (comingSoon || page.slug === 'home' || !page.data) continue;
+        const pageCanonical = canonicalUrl ? `${canonicalUrl.replace(/\/$/, '')}/${page.slug}/` : `{{DRAGCANVAS_SITE_URL}}/${page.slug}/`;
+        files[`/${page.slug}/index.html`] = exportToHtml(page.data, `${page.name} — ${projectName}`, { projectId, description: projectDescription, lang: siteLanguage, socialImage, favicon, canonicalUrl: pageCanonical });
+      }
+      const sitemapBase = canonicalUrl ? canonicalUrl.replace(/\/$/, '') : '{{DRAGCANVAS_SITE_URL}}';
+      const sitemapUrls = publishPages.filter(page => page.data && (!comingSoon || page.slug === 'home')).map(page => page.slug === 'home' ? `${sitemapBase}/` : `${sitemapBase}/${page.slug}/`);
+      files['/robots.txt'] = `User-agent: *\nAllow: /\nSitemap: ${sitemapBase}/sitemap.xml\n`;
+      files['/sitemap.xml'] = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${sitemapUrls.map(url => `<url><loc>${url}</loc></url>`).join('')}</urlset>`;
+      const catalog = [];
+      let bookingSettings = null;
+      for (const page of publishPages) for (const node of Object.values(page.data || {})) {
+        const type = node?.type?.resolvedName || node?.type;
+        if (type === 'ProductCatalog') {
+          const lines = Array.isArray(node.props?.products) ? node.props.products : [];
+          const currency = String(node.props?.currency || 'USD').toLowerCase();
+          for (let index = 0; index < lines.length; index += 4) if (lines[index]) catalog.push({ name: lines[index], description: lines[index + 1] || '', priceMinor: Math.round(Number(lines[index + 2]) * 100), imageUrl: lines[index + 3] || '', currency });
+        }
+        if (type === 'Booking' && !bookingSettings) bookingSettings = {
+          duration: Number(node.props?.duration) || 60,
+          startHour: Number(node.props?.startHour) || 9,
+          endHour: Number(node.props?.endHour) || 17,
+          timeZone: String(node.props?.timeZone || 'UTC'),
+        };
+      }
       const data = await apiFetch('/api/publish/site', {
         method: 'POST',
         body: {
           projectId,
           html,
+          files,
+          password: sitePassword,
+          catalog,
+          bookingSettings,
           target: publishTarget,
           domain: publishTarget === 'custom' ? customDomain.trim() : null
         }
       });
+      await apiFetch(`/api/forms/project/${projectId}/integrations`, {
+        method: 'PUT', body: { webhookUrl, telegramChatId, googleSheetsWebhookUrl },
+      });
 
       if (publishTarget === 'custom') {
+        setPublishedUrl(data.publishedUrl);
         setPublishModal(false);
-        showAlertModal(`Published! Go to your domain registrar and add:\nA record: @ → your-server-ip\nCNAME: www → your-server-ip\nThen ${customDomain} will show your site.`, 'success');
+        showAlertModal(data.domainConnection?.ssl === 'provisioned'
+          ? `Published with HTTPS at ${data.publishedUrl}`
+          : `Domain connected. Point DNS to ${data.domainConnection?.netlifyUrl || 'your Netlify site'}; HTTPS will be provisioned after DNS resolves.`, 'success');
       } else {
         setPublishedUrl(data.publishedUrl);
         setPublishModal(false);
@@ -389,9 +510,24 @@ const handlePublish = async () => {
     setPublishing(false);
   };
 
+  const handlePreview = async () => {
+    if (!projectId) return showAlertModal('Save the project before creating a preview.', 'error');
+    try {
+      const html = exportToHtml(JSON.parse(query.serialize()), projectName || 'Preview', { projectId, description: projectDescription, lang: siteLanguage, socialImage, favicon, canonicalUrl: '', noindex: true });
+      const result = await apiFetch(`/api/publish/preview/${projectId}`, { method: 'POST', body: { html } });
+      window.open(result.previewUrl, '_blank', 'noopener,noreferrer');
+    } catch (error) { showAlertModal(error.message, 'error'); }
+  };
+
   return (
     <HeaderDiv className="header text-white transition w-full">
       <div className="items-center flex w-full px-2 justify-end">
+        <div style={{ display: 'flex', gap: 5, alignItems: 'center', marginRight: 8 }}>
+          <select aria-label="Current page" value={currentPageSlug} onChange={(event) => switchPage(event.target.value)} style={{ padding: '6px 8px', borderRadius: 8 }}>
+            {pages.map(page => <option key={page.slug} value={page.slug}>{page.name}</option>)}
+          </select>
+          <button type="button" onClick={addPage} title="Add page" style={{ border: 0, borderRadius: 8, padding: '6px 9px', cursor: 'pointer' }}>+</button>
+        </div>
         {onTogglePanel && (
           <div className="flex items-center">
             <Tooltip title="Elements" placement="bottom" describeChild>
@@ -628,7 +764,46 @@ const handlePublish = async () => {
         </label>
 
         <div style={{ marginBottom: '10px' }} />
+        <details style={{ marginBottom: '14px' }}>
+          <summary style={{ cursor: 'pointer', fontWeight: 600 }}>SEO &amp; sharing</summary>
+          <label style={{ display: 'block', marginTop: '10px', fontSize: '0.8rem' }}>
+            Page language
+            <select value={siteLanguage} onChange={(e) => setSiteLanguage(e.target.value)} style={{ width: '100%', padding: '8px', marginTop: '4px' }}>
+              <option value="en">English</option>
+              <option value="ru">Русский</option>
+              <option value="he">עברית</option>
+              <option value="uk">Українська</option>
+            </select>
+          </label>
+          <label style={{ display: 'block', marginTop: '8px', fontSize: '0.8rem' }}>
+            Social preview image URL (optional)
+            <input value={socialImage} onChange={(e) => setSocialImage(e.target.value)} placeholder="https://…/preview.jpg" style={{ width: '100%', padding: '8px', marginTop: '4px' }} />
+          </label>
+          <label style={{ display: 'block', marginTop: '8px', fontSize: '0.8rem' }}>
+            Favicon URL (optional)
+            <input value={favicon} onChange={(e) => setFavicon(e.target.value)} placeholder="https://…/favicon.png" style={{ width: '100%', padding: '8px', marginTop: '4px' }} />
+          </label>
+          <small style={{ display: 'block', marginTop: '8px', color: 'var(--hint)' }}>Title and description come from the saved project.</small>
+        </details>
+        <details style={{ marginBottom: '14px' }}>
+          <summary style={{ cursor: 'pointer', fontWeight: 600 }}>Access protection</summary>
+          <label style={{ display: 'block', marginTop: '10px', fontSize: '0.8rem' }}>Site password (optional)<input type="password" value={sitePassword} onChange={(e) => setSitePassword(e.target.value)} style={{ width: '100%', padding: '8px', marginTop: '4px' }} /></label>
+          <label style={{ display: 'flex', gap: 8, marginTop: 10, fontSize: '0.85rem' }}><input type="checkbox" checked={comingSoon} onChange={(e) => setComingSoon(e.target.checked)} />Publish a “coming soon” page</label>
+        </details>
+        <details style={{ marginBottom: '14px' }}>
+          <summary style={{ cursor: 'pointer', fontWeight: 600 }}>Lead notifications</summary>
+          <label style={{ display: 'block', marginTop: '10px', fontSize: '0.8rem' }}>
+            HTTPS webhook URL
+            <input value={webhookUrl} onChange={(e) => setWebhookUrl(e.target.value)} placeholder="https://…" style={{ width: '100%', padding: '8px', marginTop: '4px' }} />
+          </label>
+          <label style={{ display: 'block', marginTop: '8px', fontSize: '0.8rem' }}>
+            Telegram chat ID
+            <input value={telegramChatId} onChange={(e) => setTelegramChatId(e.target.value)} placeholder="123456789" style={{ width: '100%', padding: '8px', marginTop: '4px' }} />
+          </label>
+          <label style={{ display: 'block', marginTop: '8px', fontSize: '0.8rem' }}>Google Sheets Apps Script webhook<input value={googleSheetsWebhookUrl} onChange={(e) => setGoogleSheetsWebhookUrl(e.target.value)} placeholder="https://script.google.com/…" style={{ width: '100%', padding: '8px', marginTop: '4px' }} /></label>
+        </details>
         <div style={{ display: 'flex', gap: '8px' }}>
+          <button type="button" onClick={handlePreview} disabled={publishing} style={{ padding: '10px 14px', background: 'transparent', color: 'var(--primary)', border: '1px solid var(--primary)', borderRadius: '9999px', cursor: 'pointer' }}>Preview</button>
           <button
             onClick={handlePublish}
             disabled={publishing}

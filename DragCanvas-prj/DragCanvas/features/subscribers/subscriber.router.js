@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import { verifyToken } from '../../middlewares/auth.js';
+import { formSubmitLimiter } from '../../middlewares/rateLimit.js';
+import * as ctrl from './subscriber.ctrl.js';
+const router = Router();
+router.post('/subscribe', formSubmitLimiter, ctrl.subscribe);
+router.get('/confirm', ctrl.confirm);
+router.get('/unsubscribe', ctrl.unsubscribe);
+router.get('/project/:projectId', verifyToken, ctrl.list);
+router.post('/project/:projectId/send', verifyToken, ctrl.send);
+export default router;

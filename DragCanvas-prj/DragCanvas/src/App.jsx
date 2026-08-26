@@ -15,6 +15,7 @@ const MyProject = lazy(() => import('./MyProject'));
 const InspireMe = lazy(() => import('./InspireMe'));
 const AdminPanel = lazy(() => import('./AdminPanel'));
 const NotificationsPage = lazy(() => import('./NotificationsPage'));
+const ProjectOperations = lazy(() => import('./ProjectOperations'));
 
 const route = (_Page) => (
   <RouteErrorBoundary>
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
     {
       path: "/my-projects",
       element: route(MyProject)
+    },
+    {
+      path: "/projects/:projectId/operations",
+      element: route(ProjectOperations)
     },
     {
       path: "/inspire-me",

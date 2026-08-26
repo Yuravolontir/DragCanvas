@@ -7,6 +7,7 @@ export const MapSettings = () => {
     <React.Fragment>
       <ToolbarSection title="Location">
         <ToolbarItem full={true} propKey="label" type="text" label="Label" />
+        <ToolbarItem full={true} propKey="address" type="text" label="Street address" />
         <ToolbarItem full={true} propKey="lat" type="number" label="Latitude" />
         <ToolbarItem full={true} propKey="lng" type="number" label="Longitude" />
       </ToolbarSection>

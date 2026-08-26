@@ -36,9 +36,9 @@ const LEGACY_ONLY = ['BackgroundVideo'];
 
 function resolverComponents() {
     const source = fs.readFileSync('src/CreateNewProject.jsx', 'utf8');
-    const block = source.match(/resolver=\{\{([\s\S]*?)\}\}/);
+    const block = source.match(/resolver=\{\{([\s\S]*?)\}\}/) || source.match(/const resolver\s*=\s*\{([\s\S]*?)\n\};/);
     if (!block) throw new Error('resolver not found in CreateNewProject.jsx');
-    return [...block[1].matchAll(/^\s*(\w+):/gm)].map(m => m[1]);
+    return [...block[1].matchAll(/\b(\w+)\s*:\s*Landing\./g)].map(m => m[1]);
 }
 
 function componentProps(name) {

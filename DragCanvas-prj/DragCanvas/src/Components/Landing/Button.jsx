@@ -26,6 +26,7 @@ const actionHref = (action, value) => {
   if (action === 'section') return `#${clean.replace(/^#/, '')}`;
   if (action === 'email') return `mailto:${clean.replace(/^mailto:/, '')}`;
   if (action === 'phone') return `tel:${clean.replace(/^tel:/, '')}`;
+  if (action === 'page') return `/${clean.replace(/^\/+|\/+$/g, '')}/`;
   if (/^(https?:\/\/|\/|\.\/|\.\.\/)/i.test(clean)) return clean;
   return `https://${clean}`;
 };

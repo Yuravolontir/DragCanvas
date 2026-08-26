@@ -389,6 +389,7 @@ export default function MyProject() {
 
                     {/* Actions */}
                     <div style={{ display: 'flex', gap: '8px' }}>
+                      <button onClick={() => navigate(`/projects/${project.Project_ID}/operations`)} title="Analytics, bookings, orders and reviews" style={{ padding: '10px 12px', background: 'transparent', color: 'var(--primary)', border: '1px solid var(--primary)', borderRadius: '12px', cursor: 'pointer' }}><span className="material-symbols-outlined" style={{ fontSize: '16px' }}>monitoring</span></button>
                       <button
                         onClick={() => loadProject(project.Project_ID)}
                         style={{

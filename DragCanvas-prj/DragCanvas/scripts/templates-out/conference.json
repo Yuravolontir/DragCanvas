@@ -55,7 +55,8 @@
       "cont38",
       "cont42",
       "cont48",
-      "cont56"
+      "cont56",
+      "cont64"
     ],
     "linkedNodes": {}
   },
@@ -2124,6 +2125,259 @@
     },
     "isCanvas": true,
     "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "48",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 15,
+        "g": 27,
+        "b": 52,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Modern tools"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head57",
+      "tabs58",
+      "coun59",
+      "book60",
+      "colu61"
+    ],
+    "linkedNodes": {}
+  },
+  "head57": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Plan your visit",
+      "level": "2",
+      "fontSize": "28",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 238,
+        "g": 243,
+        "b": 251,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Modern tools heading"
+    },
+    "parent": "cont56",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "tabs58": {
+    "type": {
+      "resolvedName": "Tabs"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "What to expect",
+        "Clear steps and no surprises.",
+        "What is included",
+        "Everything described in your chosen option."
+      ],
+      "accent": {
+        "r": 255,
+        "g": 194,
+        "b": 71,
+        "a": 1
+      }
+    },
+    "displayName": "Tabs",
+    "custom": {
+      "displayName": "Quick facts"
+    },
+    "parent": "cont56",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "coun59": {
+    "type": {
+      "resolvedName": "Countdown"
+    },
+    "isCanvas": false,
+    "props": {
+      "target": "2030-01-01T00:00:00Z",
+      "label": "Doors open in",
+      "expiredText": "This offer has ended.",
+      "accent": {
+        "r": 255,
+        "g": 194,
+        "b": 71,
+        "a": 1
+      }
+    },
+    "displayName": "Countdown",
+    "custom": {
+      "displayName": "Event countdown"
+    },
+    "parent": "cont56",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "book60": {
+    "type": {
+      "resolvedName": "Booking"
+    },
+    "isCanvas": false,
+    "props": {
+      "heading": "Reserve your place",
+      "buttonText": "Confirm booking",
+      "duration": 60,
+      "startHour": 9,
+      "endHour": 17,
+      "timeZone": "Asia/Jerusalem",
+      "accent": {
+        "r": 255,
+        "g": 194,
+        "b": 71,
+        "a": 1
+      }
+    },
+    "displayName": "Booking",
+    "custom": {
+      "displayName": "Reservation"
+    },
+    "parent": "cont56",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "colu61": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "24",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "3:2"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Stay connected"
+    },
+    "parent": "cont56",
+    "hidden": false,
+    "nodes": [
+      "news62",
+      "enga63"
+    ],
+    "linkedNodes": {}
+  },
+  "news62": {
+    "type": {
+      "resolvedName": "Newsletter"
+    },
+    "isCanvas": false,
+    "props": {
+      "heading": "Get the next useful update",
+      "placeholder": "you@example.com",
+      "buttonText": "Subscribe",
+      "successMessage": "Check your inbox to confirm.",
+      "accent": {
+        "r": 255,
+        "g": 194,
+        "b": 71,
+        "a": 1
+      },
+      "color": {
+        "r": 238,
+        "g": 243,
+        "b": 251,
+        "a": 1
+      }
+    },
+    "displayName": "Newsletter",
+    "custom": {
+      "displayName": "Newsletter signup"
+    },
+    "parent": "colu61",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "enga63": {
+    "type": {
+      "resolvedName": "Engagement"
+    },
+    "isCanvas": false,
+    "props": {
+      "mode": "review",
+      "heading": "Share your experience",
+      "options": [
+        "👍",
+        "❤️",
+        "👏"
+      ],
+      "accent": {
+        "r": 255,
+        "g": 194,
+        "b": 71,
+        "a": 1
+      }
+    },
+    "displayName": "Engagement",
+    "custom": {
+      "displayName": "Visitor feedback"
+    },
+    "parent": "colu61",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont64": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
       "flexDirection": "row",
       "alignItems": "center",
       "justifyContent": "space-between",
@@ -2164,12 +2418,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont57",
-      "soci60"
+      "cont65",
+      "soci68"
     ],
     "linkedNodes": {}
   },
-  "cont57": {
+  "cont65": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2212,15 +2466,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont56",
+    "parent": "cont64",
     "hidden": false,
     "nodes": [
-      "text58",
-      "text59"
+      "text66",
+      "text67"
     ],
     "linkedNodes": {}
   },
-  "text58": {
+  "text66": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2248,12 +2502,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont57",
+    "parent": "cont65",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text59": {
+  "text67": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2281,12 +2535,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont57",
+    "parent": "cont65",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci60": {
+  "soci68": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -2317,7 +2571,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont56",
+    "parent": "cont64",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

@@ -44,6 +44,18 @@ const resolveImageSrc = (src) => {
   }
 };
 
+const cloudinaryVariant = (src, width) => {
+  const resolved = resolveImageSrc(src);
+  if (!/res\.cloudinary\.com\/.+\/image\/upload\//.test(resolved)) return resolved;
+  return resolved.replace('/image/upload/', `/image/upload/f_auto,q_auto,w_${width},c_limit/`);
+};
+
+const responsiveImageAttrs = (src) => {
+  const resolved = resolveImageSrc(src);
+  if (!/res\.cloudinary\.com\/.+\/image\/upload\//.test(resolved)) return '';
+  return ` srcset="${[480, 768, 1280].map((width) => `${escapeAttribute(cloudinaryVariant(resolved, width))} ${width}w`).join(', ')}" sizes="(max-width: 768px) 100vw, 1280px"`;
+};
+
 // Helper: Generate unique ID for CSS rules
 let ruleCounter = 0;
 const generateClass = (prefix) => {
@@ -245,7 +257,8 @@ const converters = {
     if (anchor) knownAnchors.add(anchor);
     const idAttr = anchor ? ` id="${escapeAttribute(anchor)}"` : '';
 
-    return `  <div${idAttr} class="${className}">\n${childrenHtml}  </div>\n`;
+    const revealAttr = isRoot ? '' : ' data-reveal';
+    return `  <div${idAttr}${revealAttr} class="${className}">\n${childrenHtml}  </div>\n`;
   },
 
   /**
@@ -648,7 +661,7 @@ ${items}
 .${className} .role { font-size: 13px; opacity: 0.65; }`);
 
     const face = props.avatar
-      ? `<img src="${escapeAttribute(resolveImageSrc(props.avatar))}" alt="">`
+      ? `<img src="${escapeAttribute(cloudinaryVariant(props.avatar, 480))}"${responsiveImageAttrs(props.avatar)} alt="" loading="lazy" decoding="async">`
       : `<span class="initial">${escapeHtmlText((props.author || '?').trim().charAt(0).toUpperCase())}</span>`;
 
     return `    <figure class="${className}">
@@ -737,7 +750,7 @@ ${items}
 
     const html = records.map(([name, role, photo]) => {
       const face = photo
-        ? `<img src="${escapeAttribute(resolveImageSrc(photo))}" alt="">`
+        ? `<img src="${escapeAttribute(cloudinaryVariant(photo, 480))}"${responsiveImageAttrs(photo)} alt="" loading="lazy" decoding="async">`
         : `<span class="initial">${escapeHtmlText((name || '?').trim().charAt(0).toUpperCase())}</span>`;
       return `      <figure>
         ${face}
@@ -871,7 +884,7 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
     // LogoStrip component for why that is the more useful reading.
     const html = logos
       .map(entry => (/^(https?:\/\/|data:|\/)/i.test(String(entry).trim())
-        ? `      <img src="${escapeAttribute(resolveImageSrc(entry))}" alt="">`
+        ? `      <img src="${escapeAttribute(cloudinaryVariant(entry, 768))}"${responsiveImageAttrs(entry)} alt="" loading="lazy" decoding="async">`
         : `      <span>${escapeHtmlText(String(entry))}</span>`))
       .join('\n');
 
@@ -985,15 +998,16 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
     const text = props.text || 'Button';
     const value = String(props.actionValue || '').trim();
     let href = '';
-    if (props.action === 'url' && value) {
+    if ((props.action === 'url' || props.action === 'payment') && value) {
       if (/^(https?:\/\/|\/|\.\/|\.\.\/)/i.test(value)) href = value;
       else if (!/^[a-z][a-z0-9+.-]*:/i.test(value)) href = `https://${value}`;
     }
     if (props.action === 'section' && value) href = `#${slugifyAnchor(value.replace(/^#/, ''))}`;
     if (props.action === 'email' && value) href = `mailto:${value.replace(/^mailto:/i, '')}`;
     if (props.action === 'phone' && value) href = `tel:${value.replace(/^tel:/i, '')}`;
+    if (props.action === 'page' && value) href = `/${slugifyAnchor(value)}/`;
     if (href) {
-      const target = props.action === 'url' && props.newTab ? ' target="_blank" rel="noopener noreferrer"' : '';
+      const target = (props.action === 'payment' || (props.action === 'url' && props.newTab)) ? ' target="_blank" rel="noopener noreferrer"' : '';
       return `    <a class="${className}" href="${escapeAttribute(href)}"${target}>${escapeHtmlText(text)}</a>\n`;
     }
     return `    <button class="${className}" type="button">${escapeHtmlText(text)}</button>\n`;
@@ -1074,7 +1088,7 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
       mobileRules.push(`  .${className} {\n  width: 100%;\n  }`);
     }
 
-    return `    <img class="${className}" src="${escapeAttribute(resolveImageSrc(props.src))}" alt="${escapeAttribute(props.alt || '')}" />\n`;
+    return `    <img class="${className}" src="${escapeAttribute(cloudinaryVariant(props.src, 1280))}"${responsiveImageAttrs(props.src)} alt="${escapeAttribute(props.alt || '')}" loading="lazy" decoding="async" />\n`;
   },
 
   /**
@@ -1214,7 +1228,7 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
         </div>\n`
         : '';
       slideHtml += `      <div class="slide" role="group" aria-roledescription="slide" aria-label="${i + 1} of ${slides.length}">
-        <img src="${escapeAttribute(resolveImageSrc(slide.src))}" alt="${escapeAttribute(slide.alt)}" loading="lazy" decoding="async">
+        <img src="${escapeAttribute(cloudinaryVariant(slide.src, 1280))}"${responsiveImageAttrs(slide.src)} alt="${escapeAttribute(slide.alt)}" loading="lazy" decoding="async">
 ${caption}      </div>\n`;
     });
 
@@ -1390,6 +1404,76 @@ ${script}    </div>\n`;
    * project id has to be baked in at export time - the page has no other way
    * to know which site it belongs to.
    */
+  Tabs: (node) => {
+    const props=node.props||{},className=generateClass('tabs'),rows=pairUp(props.items);
+    cssRules.push(`.${className}{width:100%}.${className} details{border-bottom:1px solid #ddd;padding:10px}.${className} summary{cursor:pointer;font-weight:700;color:${rgbaToString(props.accent)}}.${className} p{margin-top:8px}`);
+    return `    <div class="${className}">${rows.map(([label,content],i)=>`<details${i===0?' open':''}><summary>${escapeHtmlText(label)}</summary><p>${escapeHtmlText(content)}</p></details>`).join('')}</div>\n`;
+  },
+
+  Countdown: (node) => {
+    const props=node.props||{},className=generateClass('countdown'),id=`${className}-value`,target=Number(new Date(props.target));
+    cssRules.push(`.${className}{width:100%;text-align:center}.${className} strong{display:block;font-size:32px;color:${rgbaToString(props.accent)}}`);
+    return `    <div class="${className}"><strong id="${id}">00 : 00 : 00 : 00</strong><span>${escapeHtmlText(props.label||'Time remaining')}</span><script>(function(){var value=document.getElementById(${JSON.stringify(id)}),target=${JSON.stringify(Number.isFinite(target)?target:0)},label=value.nextElementSibling,timer;function update(){var left=Math.max(0,target-Date.now()),days=Math.floor(left/86400000),hours=Math.floor(left/3600000)%24,minutes=Math.floor(left/60000)%60,seconds=Math.floor(left/1000)%60;value.textContent=[days,hours,minutes,seconds].map(function(n){return String(n).padStart(2,'0')}).join(' : ');if(!left){label.textContent=${JSON.stringify(props.expiredText||'This offer has ended.')};clearInterval(timer)}}update();timer=setInterval(update,1000)})();</script></div>\n`;
+  },
+
+  Engagement: (node, data, depth, nodeId) => {
+    const props=node.props||{},mode=['review','reaction','poll'].includes(props.mode)?props.mode:'review',className=generateClass('engagement'),rootId=`${className}-root`,apiUrl=exportContext.apiUrl||'',options=Array.isArray(props.options)?props.options.slice(0,20):[];
+    cssRules.push(`.${className}{width:100%;padding:20px;border:1px solid #ddd;border-radius:12px}. ${className} h3{margin-bottom:12px}.${className} input,.${className} textarea{display:block;width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:8px;font:inherit}.${className} button{margin:4px;padding:10px 14px;border:0;border-radius:8px;background:${rgbaToString(props.accent)};color:#fff;cursor:pointer}.${className} .entry{padding:12px 0;border-bottom:1px solid #eee}`.replace('. '+className,'.'+className));
+    const controls=mode==='review'?`<form><input name="author" required maxlength="120" placeholder="Your name"><textarea name="content" required maxlength="3000" placeholder="Your review"></textarea><button type="submit">Submit for approval</button></form>`:`<div class="choices">${options.map(option=>`<button type="button" data-option="${escapeAttribute(option)}">${escapeHtmlText(option)} <span></span></button>`).join('')}</div>`;
+    return `    <section class="${className}" id="${rootId}"><h3>${escapeHtmlText(props.heading||'Your opinion')}</h3>${controls}<p class="status" aria-live="polite"></p><div class="entries"></div><script>
+(function(){var root=document.getElementById(${JSON.stringify(rootId)}),status=root.querySelector('.status'),entries=root.querySelector('.entries'),endpoint=${JSON.stringify(`${apiUrl}/api/engagement`)},projectId=${JSON.stringify(exportContext.projectId)},widgetKey=${JSON.stringify(String(nodeId||className))},mode=${JSON.stringify(mode)},visitorKey='dragcanvas-visitor';var visitor=localStorage.getItem(visitorKey);if(!visitor){visitor=(crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random());localStorage.setItem(visitorKey,visitor)}function load(){fetch(endpoint+'/public/'+projectId+'/'+encodeURIComponent(widgetKey)).then(function(r){return r.json()}).then(function(body){var rows=body.data||body;if(mode==='review'){entries.textContent='';rows.filter(function(row){return row.Kind==='review'}).forEach(function(row){var article=document.createElement('article');article.className='entry';var strong=document.createElement('strong');strong.textContent=row.Author;var p=document.createElement('p');p.textContent=row.Content;article.append(strong,p);entries.appendChild(article)})}else{var counts={};rows.forEach(function(row){counts[row.OptionValue]=(counts[row.OptionValue]||0)+1});root.querySelectorAll('[data-option]').forEach(function(button){button.querySelector('span').textContent='('+ (counts[button.dataset.option]||0) +')'})}})}if(mode==='review'){root.querySelector('form').addEventListener('submit',function(event){event.preventDefault();var form=event.currentTarget;fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({projectId:projectId,widgetKey:widgetKey,kind:mode,author:form.author.value,content:form.content.value})}).then(function(r){if(!r.ok)throw new Error();status.textContent='Thank you. Your review will appear after approval.';form.reset()}).catch(function(){status.textContent='Could not submit the review.'})})}else root.querySelectorAll('[data-option]').forEach(function(button){button.addEventListener('click',function(){fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({projectId:projectId,widgetKey:widgetKey,kind:mode,option:button.dataset.option,visitorId:visitor})}).then(function(r){if(!r.ok)throw new Error();status.textContent='Response recorded.';load()}).catch(function(){status.textContent='You already responded.'})})});load()})();
+</script></section>\n`;
+  },
+
+  ProductCatalog: (node) => {
+    const props = node.props || {}; const className = generateClass('catalog'); const apiUrl = exportContext.apiUrl || ''; const rootId = `${className}-root`;
+    cssRules.push(`.${className} .products { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px; } .${className} article { border:1px solid #ddd;border-radius:12px;overflow:hidden;padding:16px; } .${className} article img { width:100%;aspect-ratio:4/3;object-fit:cover; } .${className} button { background:${rgbaToString(props.accent)};color:#fff;border:0;border-radius:8px;padding:10px 14px;cursor:pointer; } .${className} .cart { margin-top:18px;padding:16px;border:1px solid #ddd;border-radius:12px; }`);
+    mobileRules.push(`  .${className} .products { grid-template-columns: 1fr; }`);
+    return `    <section class="${className}" id="${rootId}"><div class="products"><p>Loading products…</p></div><div class="cart"><strong>Cart: <span class="count">0</span></strong> <button class="checkout" type="button" disabled>Checkout</button></div><p class="status" aria-live="polite"></p><script>
+(function(){var root=document.getElementById(${JSON.stringify(rootId)}),grid=root.querySelector('.products'),count=root.querySelector('.count'),checkout=root.querySelector('.checkout'),status=root.querySelector('.status'),key='dragcanvas-cart-'+${JSON.stringify(exportContext.projectId)},products=[];function cart(){try{return JSON.parse(localStorage.getItem(key))||{}}catch(e){return {}}}function save(value){localStorage.setItem(key,JSON.stringify(value));renderCart()}function renderCart(){var value=cart(),total=Object.values(value).reduce(function(sum,n){return sum+n},0);count.textContent=total;checkout.disabled=!total}function card(product){var article=document.createElement('article');if(product.ImageUrl){var image=document.createElement('img');image.src=product.ImageUrl;image.alt=product.Name;image.loading='lazy';article.appendChild(image)}var h=document.createElement('h3');h.textContent=product.Name;article.appendChild(h);var p=document.createElement('p');p.textContent=product.Description||'';article.appendChild(p);var price=document.createElement('strong');price.textContent=(product.PriceMinor/100).toFixed(2)+' '+product.Currency.toUpperCase();article.appendChild(price);var button=document.createElement('button');button.type='button';button.textContent='Add to cart';button.addEventListener('click',function(){var value=cart();value[product.Product_ID]=(value[product.Product_ID]||0)+1;save(value)});article.appendChild(button);return article}fetch(${JSON.stringify(`${apiUrl}/api/commerce/products/${exportContext.projectId}`)}).then(function(r){if(!r.ok)throw new Error();return r.json()}).then(function(body){products=body.data||body;grid.textContent='';products.forEach(function(product){grid.appendChild(card(product))})}).catch(function(){grid.textContent='Could not load products.'});checkout.addEventListener('click',function(){checkout.disabled=true;var items=Object.entries(cart()).map(function(entry){return {productId:entry[0],quantity:entry[1]}});fetch(${JSON.stringify(`${apiUrl}/api/commerce/checkout`)},{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({projectId:${JSON.stringify(exportContext.projectId)},items:items})}).then(function(r){if(!r.ok)throw new Error();return r.json()}).then(function(body){location.href=(body.data||body).checkoutUrl}).catch(function(){status.textContent='Checkout is unavailable. Please try again.';checkout.disabled=false})});renderCart()})();
+</script></section>\n`;
+  },
+
+  Booking: (node) => {
+    const props = node.props || {}; const className = generateClass('booking'); const formId = `${className}-form`; const apiUrl = exportContext.apiUrl || '';
+    cssRules.push(`.${className} { width: 100%; } .${className} strong { display:block;margin-bottom:10px; } .${className} .fields { display:grid;grid-template-columns:1fr 1fr;gap:8px; } .${className} input,.${className} select,.${className} textarea { width:100%;padding:11px;border:1px solid #ccc;border-radius:8px;font:inherit; } .${className} button { margin-top:8px;padding:12px 18px;border:0;border-radius:8px;background:${rgbaToString(props.accent)};color:#fff;cursor:pointer; } .${className} .status { margin-top:8px; }`);
+    mobileRules.push(`  .${className} .fields { grid-template-columns: 1fr; }`);
+    return `    <div class="${className}"><strong>${escapeHtmlText(props.heading || 'Book an appointment')}</strong><form id="${formId}"><div class="fields"><input name="date" type="date" required><select name="startAt" required disabled><option value="">Choose a date first</option></select><input name="name" autocomplete="name" required placeholder="Name"><input name="email" type="email" autocomplete="email" required placeholder="Email"><textarea name="notes" placeholder="Notes (optional)"></textarea></div><button type="submit">${escapeHtmlText(props.buttonText || 'Confirm booking')}</button></form><p class="status" aria-live="polite"></p><script>
+(function(){var form=document.getElementById(${JSON.stringify(formId)}),slots=form.startAt,status=form.nextElementSibling,date=form.date;date.min=new Date().toISOString().slice(0,10);date.addEventListener('change',function(){slots.disabled=true;slots.innerHTML='<option>Loading…</option>';fetch(${JSON.stringify(`${apiUrl}/api/bookings/availability`)}+'?projectId='+encodeURIComponent(${JSON.stringify(exportContext.projectId)})+'&date='+encodeURIComponent(date.value)).then(function(r){if(!r.ok)throw new Error();return r.json();}).then(function(body){var values=body.data||body;slots.innerHTML=values.length?values.map(function(value){return '<option value="'+value+'">'+new Date(value).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</option>';}).join(''):'<option value="">No slots available</option>';slots.disabled=!values.length;}).catch(function(){slots.innerHTML='<option value="">Could not load slots</option>';});});form.addEventListener('submit',function(event){event.preventDefault();var button=form.querySelector('button');button.disabled=true;fetch(${JSON.stringify(`${apiUrl}/api/bookings`)},{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({projectId:${JSON.stringify(exportContext.projectId)},startAt:slots.value,name:form.name.value,email:form.email.value,notes:form.notes.value})}).then(function(r){if(!r.ok)throw new Error();status.textContent='Booking confirmed. Check your email.';form.reset();slots.disabled=true;}).catch(function(){status.textContent='That slot is unavailable. Please choose another.';}).finally(function(){button.disabled=false;});});})();
+</script></div>\n`;
+  },
+
+  Newsletter: (node) => {
+    const props = node.props || {};
+    const className = generateClass('newsletter');
+    const formId = `${className}-form`;
+    const apiUrl = exportContext.apiUrl || '';
+    cssRules.push(`.${className} { width: 100%; color: ${rgbaToString(props.color)}; }
+.${className} strong { display: block; margin-bottom: 10px; }
+.${className} form { display: flex; gap: 8px; }
+.${className} input { min-width: 0; flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font: inherit; }
+.${className} button { padding: 12px 18px; border: 0; border-radius: 8px; background: ${rgbaToString(props.accent)}; color: #fff; cursor: pointer; }
+.${className} .status { margin-top: 8px; font-size: 14px; }`);
+    mobileRules.push(`  .${className} form { flex-direction: column; }`);
+    return `    <div class="${className}">
+      <strong>${escapeHtmlText(props.heading || 'Get updates')}</strong>
+      <form id="${formId}"><input type="email" name="email" autocomplete="email" required placeholder="${escapeAttribute(props.placeholder || 'you@example.com')}"><button type="submit">${escapeHtmlText(props.buttonText || 'Subscribe')}</button></form>
+      <p class="status" aria-live="polite"></p>
+      <script>
+      (function () {
+        var form = document.getElementById(${JSON.stringify(formId)}), status = form.nextElementSibling;
+        form.addEventListener('submit', function (event) {
+          event.preventDefault(); var button = form.querySelector('button'); button.disabled = true;
+          fetch(${JSON.stringify(`${apiUrl}/api/subscribers/subscribe`)}, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ projectId: ${JSON.stringify(exportContext.projectId)}, email: form.email.value }) })
+            .then(function (response) { if (!response.ok) throw new Error(); status.textContent = ${JSON.stringify(props.successMessage || 'Check your email to confirm.')}; form.reset(); })
+            .catch(function () { status.textContent = 'Could not subscribe. Please try again.'; })
+            .finally(function () { button.disabled = false; });
+        });
+      })();
+      </script>
+    </div>\n`;
+  },
+
   Form: (node) => {
     const context = exportContext;
     const props = node.props || {};
@@ -1450,6 +1534,9 @@ ${script}    </div>\n`;
       if (field.type === 'textarea') {
         return `      <label>${label}</label>\n      <textarea name="${escapeAttribute(name)}" rows="4" placeholder="${placeholder}"${required}></textarea>`;
       }
+      if (field.type === 'file') {
+        return `      <label>${label}</label>\n      <input type="file" name="attachment" accept="image/jpeg,image/png,image/gif,image/webp,application/pdf"${required}>`;
+      }
       const inputType = field.type === 'email' ? 'email' : field.type === 'phone' ? 'tel' : 'text';
       return `      <label>${label}</label>\n      <input type="${inputType}" name="${escapeAttribute(name)}" placeholder="${placeholder}"${required}>`;
     }).join('\n');
@@ -1457,7 +1544,19 @@ ${script}    </div>\n`;
     const formId = `${className}-el`;
     const apiUrl = context.apiUrl || '';
     const projectId = context.projectId ?? '';
-    const successMessage = escapeHtmlText(props.successMessage || 'Thank you!');
+    /*
+     * The success message is written into the inline script, so escaping it for
+     * HTML is not enough: it also has to survive being a JavaScript string.
+     * "Thanks, you're in!" used to close the literal early, which is a syntax
+     * error - the whole IIFE then failed to parse, no submit handler was
+     * attached, and the form on the published page did a native submit and
+     * navigated away. JSON.stringify emits the quotes and the escapes.
+     * escapeHtmlText still runs first, so `<` is already `&lt;` and the markup
+     * below cannot grow a `</script>`.
+     */
+    const successHtml = JSON.stringify(
+      `<p class="form-done">${escapeHtmlText(props.successMessage || 'Thank you!')}</p>`
+    );
 
     return `    <div class="${className}">
       <form id="${formId}">
@@ -1474,14 +1573,20 @@ ${inputs}
           var button = form.querySelector('button');
           button.disabled = true;
           var payload = { projectId: ${JSON.stringify(projectId)} };
-          new FormData(form).forEach(function (value, key) { payload[key] = value; });
-          fetch('${apiUrl}/api/forms/submit', {
+          new FormData(form).forEach(function (value, key) { if (!(value instanceof File)) payload[key] = value; });
+          var file = form.querySelector('input[type="file"]');
+          var upload = Promise.resolve(null);
+          if (file && file.files[0]) {
+            var uploadBody = new FormData(); uploadBody.append('projectId', ${JSON.stringify(projectId)}); uploadBody.append('file', file.files[0]);
+            upload = fetch('${apiUrl}/api/assets/form-upload', { method: 'POST', body: uploadBody }).then(function (response) { if (!response.ok) throw new Error('upload failed'); return response.json(); }).then(function (body) { return (body.data || body).token; });
+          }
+          upload.then(function (uploadToken) { if (uploadToken) payload.uploadToken = uploadToken; return fetch('${apiUrl}/api/forms/submit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
-          }).then(function (response) {
+          }); }).then(function (response) {
             if (!response.ok) throw new Error('failed');
-            form.outerHTML = '<p class="form-done">${successMessage}</p>';
+            form.outerHTML = ${successHtml};
           }).catch(function () {
             button.disabled = false;
             alert('Could not send. Please try again.');
@@ -1539,6 +1644,18 @@ ${inputs}
 .${className} .links a:hover { opacity: 1; text-decoration: underline; }
 .${className} .links .dead { color: ${textColor}; opacity: 0.55; }`);
 
+    mobileRules.push(`  .${className} { flex-wrap: wrap; gap: 12px; }
+  .${className} .menu-toggle-label { display: grid; }
+  .${className} .links { display: none; flex: 0 0 100%; flex-direction: column; gap: 0; }
+  .${className} .links a, .${className} .links .dead { padding: 10px 0; }
+  .${className} .menu-toggle:checked ~ .links { display: flex; }`);
+
+    cssRules.push(`.${className} .menu-toggle { position: absolute; opacity: 0; pointer-events: none; }
+.${className} .menu-toggle-label {
+  display: none; width: 42px; height: 42px; place-items: center; cursor: pointer;
+  border: 1px solid currentColor; border-radius: 8px; color: ${textColor}; font-size: 24px;
+}`);
+
     /**
      * A link is only a link if it leads somewhere.
      *
@@ -1560,12 +1677,16 @@ ${inputs}
         if (/^(https?:)?\/\//.test(href) || href.startsWith('mailto:') || href.startsWith('tel:')) {
           return `        <a href="${escapeAttribute(href)}">${label}</a>`;
         }
+        if (/^\/[a-z0-9][a-z0-9-]*\/?$/.test(href)) return `        <a href="${escapeAttribute(href.endsWith('/') ? href : `${href}/`)}">${label}</a>`;
         return `        <span class="dead">${label}</span>`;
       })
       .join('\n');
 
+    const toggleId = `${className}-toggle`;
     return `    <nav class="${className}">
       <a class="brand" href="#">${escapeHtmlText(props.brand || '')}</a>
+      <input class="menu-toggle" id="${toggleId}" type="checkbox" aria-label="Toggle navigation">
+      <label class="menu-toggle-label" for="${toggleId}" aria-hidden="true">☰</label>
       <div class="links">
 ${links}
       </div>
@@ -1673,6 +1794,19 @@ a {
 
 button {
   font-family: inherit;
+}
+
+.dc-scroll-progress { position: fixed; inset: 0 0 auto; height: 3px; z-index: 10000; transform-origin: left; transform: scaleX(0); background: #0060ac; }
+.dc-back-top { position: fixed; right: 18px; bottom: 18px; z-index: 9999; width: 44px; height: 44px; border: 0; border-radius: 50%; background: #0060ac; color: #fff; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .2s; }
+.dc-back-top.visible { opacity: 1; pointer-events: auto; }
+dialog.dc-lightbox { border: 0; padding: 0; max-width: min(92vw, 1200px); max-height: 92vh; background: transparent; }
+dialog.dc-lightbox::backdrop { background: rgba(0,0,0,.82); }
+dialog.dc-lightbox img { display: block; max-width: 92vw; max-height: 88vh; object-fit: contain; }
+[data-reveal] { opacity: 0; transform: translateY(16px); transition: opacity .45s ease, transform .45s ease; }
+[data-reveal].revealed { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
 }`);
 
   // serializedData is the flat node map from query.serialize(): ROOT is a top-level key
@@ -1693,18 +1827,128 @@ button {
     css += `\n\n@media (max-width: 768px) {\n${mobileRules.join('\n\n')}\n}`;
   }
 
+  const pageTitle = escapeHtmlText(title || 'My Website');
+  const description = escapeAttribute(options.description || '');
+  const canonicalUrl = escapeAttribute(options.canonicalUrl || '{{DRAGCANVAS_SITE_URL}}');
+  const language = /^[a-z]{2,3}(?:-[A-Z]{2})?$/.test(options.lang || '') ? options.lang : 'en';
+  const firstImage = Object.values(serializedData || {}).map((node) => {
+    const props = node?.props || {};
+    return props.src || props.image || props.backgroundImage || props.slides?.[0]?.src || props.src1;
+  }).find(Boolean);
+  const socialImage = escapeAttribute(resolveImageSrc(options.socialImage || firstImage || ''));
+  const favicon = escapeAttribute(resolveImageSrc(options.favicon || ''));
+  const descriptionTags = description ? `
+  <meta name="description" content="${description}">
+  <meta property="og:description" content="${description}">
+  <meta name="twitter:description" content="${description}">` : '';
+  const imageTags = socialImage ? `
+  <meta property="og:image" content="${socialImage}">
+  <meta name="twitter:image" content="${socialImage}">` : '';
+  const faviconTag = favicon ? `
+  <link rel="icon" href="${favicon}">` : '';
+  const graph = [];
+  for (const node of Object.values(serializedData || {})) {
+    const type = node?.type?.resolvedName || node?.type;
+    const props = node?.props || {};
+    if (type === 'Accordion') {
+      const mainEntity = pairUp(props.items).filter(([question, answer]) => question && answer)
+        .map(([question, answer]) => ({
+          '@type': 'Question',
+          name: String(question),
+          acceptedAnswer: { '@type': 'Answer', text: String(answer) },
+        }));
+      if (mainEntity.length) graph.push({ '@type': 'FAQPage', mainEntity });
+    }
+    if (type === 'Map') {
+      graph.push({
+        '@type': 'LocalBusiness',
+        name: props.label || title || 'Business',
+        ...(props.address ? { address: { '@type': 'PostalAddress', streetAddress: String(props.address) } } : {}),
+        url: options.canonicalUrl || '{{DRAGCANVAS_SITE_URL}}',
+        geo: { '@type': 'GeoCoordinates', latitude: Number(props.lat), longitude: Number(props.lng) },
+      });
+    }
+    if (type === 'Pricing') {
+      const offers = groupLines(props.tiers, 5).map(([name, price]) => ({
+        '@type': 'Offer',
+        name: String(name || ''),
+        price: String(price || '').replace(/[^0-9.,]/g, '').replace(',', '.') || '0',
+      }));
+      if (offers.length) graph.push({ '@type': 'Product', name: title || 'Services', offers });
+    }
+    if (type === 'TeamGrid') {
+      const employee = groupLines(props.people, 3).filter(([name]) => name)
+        .map(([name, jobTitle]) => ({ '@type': 'Person', name: String(name), jobTitle: String(jobTitle || '') }));
+      if (employee.length) graph.push({ '@type': 'Organization', name: title || 'Organization', employee });
+    }
+  }
+  const structuredData = graph.length
+    ? `\n  <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c')}</script>`
+    : '';
+
+  const bodyContent = options.comingSoon
+    ? `<main style="min-height:100vh;display:grid;place-items:center;padding:32px;text-align:center"><div><h1>${pageTitle}</h1><p>${description || 'We are getting ready. Please check back soon.'}</p></div></main>`
+    : htmlContent;
+
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="${language}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${title}</title>
+  ${options.noindex ? '<meta name="robots" content="noindex,nofollow">' : ''}
+  <title>${pageTitle}</title>${descriptionTags}
+  <link rel="canonical" href="${canonicalUrl}">${faviconTag}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="${escapeAttribute(title || 'My Website')}">
+  <meta property="og:url" content="${canonicalUrl}">${imageTags}
+  <meta name="twitter:card" content="${socialImage ? 'summary_large_image' : 'summary'}">
+  <meta name="twitter:title" content="${escapeAttribute(title || 'My Website')}">${structuredData}
   <style>
 ${css}
   </style>
 </head>
 <body>
-${htmlContent}
+<div class="dc-scroll-progress" aria-hidden="true"></div>
+${bodyContent}
+<button class="dc-back-top" type="button" aria-label="Back to top">↑</button>
+<dialog class="dc-lightbox" aria-label="Image preview"><img alt=""><form method="dialog"><button aria-label="Close preview">×</button></form></dialog>
+<script>
+(function () {
+  var progress = document.querySelector('.dc-scroll-progress');
+  var backTop = document.querySelector('.dc-back-top');
+  var update = function () {
+    var max = document.documentElement.scrollHeight - innerHeight;
+    progress.style.transform = 'scaleX(' + (max > 0 ? scrollY / max : 0) + ')';
+    backTop.classList.toggle('visible', scrollY > 500);
+  };
+  addEventListener('scroll', update, { passive: true }); update();
+  backTop.addEventListener('click', function () { scrollTo({ top: 0, behavior: 'smooth' }); });
+
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reveal = document.querySelectorAll('[data-reveal]');
+  if (reduced || !('IntersectionObserver' in window)) reveal.forEach(function (el) { el.classList.add('revealed'); });
+  else {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) { if (entry.isIntersecting) { entry.target.classList.add('revealed'); observer.unobserve(entry.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    reveal.forEach(function (el) { observer.observe(el); });
+  }
+
+  var lightbox = document.querySelector('.dc-lightbox');
+  var preview = lightbox.querySelector('img');
+  document.querySelectorAll('img').forEach(function (img) {
+    img.addEventListener('click', function () { preview.src = img.currentSrc || img.src; preview.alt = img.alt; lightbox.showModal(); });
+  });
+  lightbox.addEventListener('click', function (event) { if (event.target === lightbox) lightbox.close(); });
+  var analyticsUrl = ${JSON.stringify(`${exportContext.apiUrl}/api/analytics/hit`)};
+  var projectId = ${JSON.stringify(exportContext.projectId)};
+  if (projectId) {
+    var analyticsBody = JSON.stringify({ projectId: projectId, referrer: document.referrer, screenWidth: screen.width });
+    if (navigator.sendBeacon) navigator.sendBeacon(analyticsUrl, new Blob([analyticsBody], { type: 'application/json' }));
+    else fetch(analyticsUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: analyticsBody, keepalive: true }).catch(function () {});
+  }
+})();
+</script>
 </body>
 </html>`;
 };

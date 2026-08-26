@@ -56,7 +56,8 @@
       "cont61",
       "cont67",
       "cont74",
-      "cont76"
+      "cont76",
+      "cont82"
     ],
     "linkedNodes": {}
   },
@@ -2960,6 +2961,204 @@
     },
     "isCanvas": true,
     "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "48",
+        "48",
+        "48",
+        "48"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 14,
+        "g": 16,
+        "b": 20,
+        "a": 1
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Modern tools"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "head77",
+      "tabs78",
+      "colu79"
+    ],
+    "linkedNodes": {}
+  },
+  "head77": {
+    "type": {
+      "resolvedName": "Heading"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "Keep exploring",
+      "level": "2",
+      "fontSize": "28",
+      "fontWeight": "700",
+      "textAlign": "left",
+      "color": {
+        "r": 233,
+        "g": 236,
+        "b": 241,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "displayName": "Heading",
+    "custom": {
+      "displayName": "Modern tools heading"
+    },
+    "parent": "cont76",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "tabs78": {
+    "type": {
+      "resolvedName": "Tabs"
+    },
+    "isCanvas": false,
+    "props": {
+      "items": [
+        "What to expect",
+        "Clear steps and no surprises.",
+        "What is included",
+        "Everything described in your chosen option."
+      ],
+      "accent": {
+        "r": 86,
+        "g": 204,
+        "b": 218,
+        "a": 1
+      }
+    },
+    "displayName": "Tabs",
+    "custom": {
+      "displayName": "Quick facts"
+    },
+    "parent": "cont76",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "colu79": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "24",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "3:2"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Stay connected"
+    },
+    "parent": "cont76",
+    "hidden": false,
+    "nodes": [
+      "news80",
+      "enga81"
+    ],
+    "linkedNodes": {}
+  },
+  "news80": {
+    "type": {
+      "resolvedName": "Newsletter"
+    },
+    "isCanvas": false,
+    "props": {
+      "heading": "Get the next useful update",
+      "placeholder": "you@example.com",
+      "buttonText": "Subscribe",
+      "successMessage": "Check your inbox to confirm.",
+      "accent": {
+        "r": 86,
+        "g": 204,
+        "b": 218,
+        "a": 1
+      },
+      "color": {
+        "r": 233,
+        "g": 236,
+        "b": 241,
+        "a": 1
+      }
+    },
+    "displayName": "Newsletter",
+    "custom": {
+      "displayName": "Newsletter signup"
+    },
+    "parent": "colu79",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "enga81": {
+    "type": {
+      "resolvedName": "Engagement"
+    },
+    "isCanvas": false,
+    "props": {
+      "mode": "reaction",
+      "heading": "Was this useful?",
+      "options": [
+        "👍",
+        "❤️",
+        "👏"
+      ],
+      "accent": {
+        "r": 86,
+        "g": 204,
+        "b": 218,
+        "a": 1
+      }
+    },
+    "displayName": "Engagement",
+    "custom": {
+      "displayName": "Visitor feedback"
+    },
+    "parent": "colu79",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "cont82": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
       "flexDirection": "row",
       "alignItems": "center",
       "justifyContent": "space-between",
@@ -3000,12 +3199,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont77",
-      "soci80"
+      "cont83",
+      "soci86"
     ],
     "linkedNodes": {}
   },
-  "cont77": {
+  "cont83": {
     "type": {
       "resolvedName": "Container"
     },
@@ -3048,15 +3247,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont76",
+    "parent": "cont82",
     "hidden": false,
     "nodes": [
-      "text78",
-      "text79"
+      "text84",
+      "text85"
     ],
     "linkedNodes": {}
   },
-  "text78": {
+  "text84": {
     "type": {
       "resolvedName": "Text"
     },
@@ -3084,12 +3283,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont77",
+    "parent": "cont83",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text79": {
+  "text85": {
     "type": {
       "resolvedName": "Text"
     },
@@ -3117,12 +3316,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont77",
+    "parent": "cont83",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci80": {
+  "soci86": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -3153,7 +3352,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont76",
+    "parent": "cont82",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

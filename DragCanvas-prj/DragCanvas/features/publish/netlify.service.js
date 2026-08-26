@@ -15,7 +15,7 @@ export function slugify(text) {
  * Creates the site on the first publish and re-deploys to the same site
  * (same URL) afterwards.
  */
-export async function deployToNetlify(html, siteName, existingSiteId) {
+export async function deployToNetlify(html, siteName, existingSiteId, extraFiles = {}, siteOptions = {}) {
     const token = process.env.NETLIFY_TOKEN;
     if (!token) throw new Error('NETLIFY_TOKEN is not configured on the server');
 
@@ -25,7 +25,7 @@ export async function deployToNetlify(html, siteName, existingSiteId) {
         let name = siteName;
         for (let attempt = 0; attempt < 3; attempt++) {
             const response = await fetch(`${NETLIFY_API}/sites`, {
-                method: 'POST', headers: jsonHeaders, body: JSON.stringify({ name }),
+                method: 'POST', headers: jsonHeaders, body: JSON.stringify({ name, ...(siteOptions.password ? { password: siteOptions.password } : {}) }),
             });
             if (response.ok) return response.json();
             if (response.status === 422) {
@@ -45,13 +45,36 @@ export async function deployToNetlify(html, siteName, existingSiteId) {
         const site = await createSite();
         siteId = site.id;
         siteUrl = site.ssl_url || site.url;
+    } else if (html.includes('{{DRAGCANVAS_SITE_URL}}')) {
+        // A loaded project's URL normally comes from the client. Keep the
+        // server correct for stale tabs and direct API callers as well.
+        const siteResponse = await fetch(`${NETLIFY_API}/sites/${siteId}`, { headers: jsonHeaders });
+        if (siteResponse.ok) {
+            const site = await siteResponse.json();
+            siteUrl = site.ssl_url || site.url;
+        }
+    }
+    if (existingSiteId && siteOptions.password !== undefined) {
+        const updateSite = await fetch(`${NETLIFY_API}/sites/${siteId}`, { method: 'PATCH', headers: jsonHeaders, body: JSON.stringify({ password: siteOptions.password || null }) });
+        if (!updateSite.ok) throw new Error(`Netlify site protection failed (${updateSite.status}): ${await updateSite.text()}`);
+    }
+
+    // The public URL does not exist until Netlify creates the site. The exporter
+    // leaves this token in canonical/OG tags so the first deploy is correct too.
+    const publicUrl = siteUrl || `https://${siteName}.netlify.app`;
+    html = html.replaceAll('{{DRAGCANVAS_SITE_URL}}', publicUrl);
+    const deployFiles = { '/index.html': html };
+    for (const [path, content] of Object.entries(extraFiles || {})) {
+        if ((/^\/[a-z0-9][a-z0-9-]*\/index\.html$/.test(path) || path === '/robots.txt' || path === '/sitemap.xml') && typeof content === 'string') {
+            deployFiles[path] = content.replaceAll('{{DRAGCANVAS_SITE_URL}}', publicUrl);
+        }
     }
 
     // 2. Announce the deploy by file digest (Netlify's SHA1 method)
-    const sha1 = crypto.createHash('sha1').update(html).digest('hex');
+    const digests = Object.fromEntries(Object.entries(deployFiles).map(([path, content]) => [path, crypto.createHash('sha1').update(content).digest('hex')]));
     const createDeploy = () => fetch(`${NETLIFY_API}/sites/${siteId}/deploys`, {
         method: 'POST', headers: jsonHeaders,
-        body: JSON.stringify({ files: { '/index.html': sha1 } }),
+        body: JSON.stringify({ files: digests }),
     });
 
     let deployResponse = await createDeploy();
@@ -70,16 +93,26 @@ export async function deployToNetlify(html, siteName, existingSiteId) {
     const deploy = await deployResponse.json();
 
     // 3. Upload the content only if Netlify does not have this digest yet
-    if ((deploy.required || []).includes(sha1)) {
-        const uploadResponse = await fetch(`${NETLIFY_API}/deploys/${deploy.id}/files/index.html`, {
-            method: 'PUT',
-            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/octet-stream' },
-            body: html,
-        });
-        if (!uploadResponse.ok) {
-            throw new Error(`Netlify file upload failed (${uploadResponse.status}): ${await uploadResponse.text()}`);
+    for (const [path, content] of Object.entries(deployFiles)) {
+        if ((deploy.required || []).includes(digests[path])) {
+            const uploadResponse = await fetch(`${NETLIFY_API}/deploys/${deploy.id}/files${path}`, {
+                method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/octet-stream' }, body: content,
+            });
+            if (!uploadResponse.ok) throw new Error(`Netlify file upload failed (${uploadResponse.status}): ${await uploadResponse.text()}`);
         }
     }
 
     return { siteId, url: siteUrl || deploy.ssl_url || deploy.url };
+}
+
+export async function connectCustomDomain(siteId, domain) {
+    const token = process.env.NETLIFY_TOKEN;
+    const headers = { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
+    const update = await fetch(`${NETLIFY_API}/sites/${siteId}`, { method: 'PATCH', headers, body: JSON.stringify({ custom_domain: domain, force_ssl: true }) });
+    if (!update.ok) throw new Error(`Netlify domain connection failed (${update.status}): ${await update.text()}`);
+    const site = await update.json();
+    let ssl = 'pending_dns';
+    const provision = await fetch(`${NETLIFY_API}/sites/${siteId}/ssl`, { method: 'POST', headers });
+    if (provision.ok) ssl = 'provisioned';
+    return { domain: site.custom_domain || domain, ssl, netlifyUrl: site.ssl_url || site.url };
 }

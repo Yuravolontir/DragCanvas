@@ -1,9 +1,11 @@
 import { Router } from 'express';
 import * as ctrl from './asset.ctrl.js';
 import { verifyToken } from '../../middlewares/auth.js';
-import { saveToMemory } from '../../middlewares/files.js';
+import { saveToMemory, savePublicFormFile } from '../../middlewares/files.js';
+import { formSubmitLimiter } from '../../middlewares/rateLimit.js';
 
 const assetRouter = Router();
+assetRouter.post('/form-upload', formSubmitLimiter, savePublicFormFile.single('file'), ctrl.uploadFormFile);
 
 // saveToMemory.single('file') is the file-processing middleware:
 // it parses the multipart body and puts the file on req.file

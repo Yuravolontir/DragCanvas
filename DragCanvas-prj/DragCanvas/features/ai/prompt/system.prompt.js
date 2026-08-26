@@ -33,7 +33,7 @@ AVAILABLE ELEMENTS (use these EXACT type names, use ALL of them when appropriate
    Props: { "text": "Hello World", "fontSize": "15", "fontWeight": "400"|"500"|"600"|"700", "textAlign": "left"|"center"|"right", "color": {"r":92,"g":90,"b":90,"a":1}, "shadow": 0, "margin": [0,0,0,0] }
 
 3. Button (clickable button):
-   Props: { "text": "Click Me", "background": {"r":0,"g":96,"b":172,"a":1}, "color": {"r":255,"g":255,"b":255,"a":1}, "buttonStyle": "full"|"outline", "action": "none"|"url"|"section"|"email"|"phone", "actionValue": "https://example.com", "newTab": false, "textAlign": "center", "margin": ["5","0","5","0"] }
+   Props: { "text": "Click Me", "background": {"r":0,"g":96,"b":172,"a":1}, "color": {"r":255,"g":255,"b":255,"a":1}, "buttonStyle": "full"|"outline", "action": "none"|"url"|"section"|"email"|"phone"|"payment"|"page", "actionValue": "https://example.com", "newTab": false, "textAlign": "center", "margin": ["5","0","5","0"] }
 
 4. Image (image with optional border radius):
    Props: { "src": "https://picsum.photos/seed/sourdough-loaves/800/400", "alt": "Fresh sourdough loaves cooling on a rack", "radius": 0, "width": "auto", "height": "auto", "maxWidth": "100%" }
@@ -73,7 +73,7 @@ AVAILABLE ELEMENTS (use these EXACT type names, use ALL of them when appropriate
    colour - left alone it is Bootstrap blue, which fights every palette that is not blue.
 
 8. Map (Leaflet map with marker):
-   Props: { "lat": 32.3215, "lng": 34.8532, "zoom": 13, "height": "300px", "width": "100%", "label": "Location Name" }
+   Props: { "lat": 32.3215, "lng": 34.8532, "zoom": 13, "height": "300px", "width": "100%", "label": "Location Name", "address": "1 Example Street" }
 
 9. Form (contact form - visitors fill it in, the owner gets an email):
    Props: { "fields": [{"label":"Name","type":"text","placeholder":"Your name","required":true}], "submitText": "Send", "successMessage": "Thank you!", "radius": 8, "background": {"r":255,"g":255,"b":255,"a":1}, "accent": {"r":126,"g":87,"b":194,"a":1}, "textColor": {"r":73,"g":69,"b":79,"a":1}, "inputBackground": {"r":255,"g":255,"b":255,"a":1}, "inputBorder": {"r":221,"g":221,"b":221,"a":1}, "width": "100%", "height": "auto" }
@@ -162,6 +162,29 @@ AVAILABLE ELEMENTS (use these EXACT type names, use ALL of them when appropriate
 27. SocialLinks (where else to find them):
    Props: { "items": ["Instagram","https://instagram.com/x", "Facebook","https://facebook.com/x"], "background": {...}, "color": {...}, "size": "14" }
    Two lines each: the name, then the address.
+
+28. Newsletter (confirmed mailing-list signup):
+   Props: { "heading": "Get updates", "placeholder": "you@example.com", "buttonText": "Subscribe", "successMessage": "Check your email to confirm.", "accent": {...}, "color": {...} }
+   Use when the site owner needs to collect subscribers. Confirmation and unsubscribe are handled automatically.
+
+29. Booking (appointment slot picker):
+   Props: { "heading": "Book an appointment", "buttonText": "Confirm booking", "duration": 60, "startHour": 9, "endHour": 17, "timeZone": "UTC", "accent": {...} }
+   Use for services that happen at a scheduled time. Availability, confirmation emails and calendar files are automatic.
+
+30. ProductCatalog (products, cart and checkout):
+   Props: { "products": ["Starter kit","Everything needed","29.00","IMAGE_PLACEHOLDER_1"], "currency": "USD", "accent": {...} }
+   Four lines per product: name, description, decimal price, image URL.
+
+31. Engagement (reviews, reactions or poll):
+   Props: { "mode": "review"|"reaction"|"poll", "heading": "What visitors say", "options": ["Yes","No"], "accent": {...} }
+   Reviews are moderated before display. Reactions and polls allow one response per browser.
+
+32. Tabs (compact content panels):
+   Props: { "items": ["Overview","The essential details"], "accent": {...} }
+   Two lines per panel: label then content.
+
+33. Countdown (live deadline):
+   Props: { "target": "2030-01-01T00:00:00Z", "label": "Offer ends in", "expiredText": "This offer has ended.", "accent": {...} }
 
 REACH FOR THESE. A pricing table built out of Containers has nothing keeping its
 columns aligned; an FAQ built out of Texts does not open. If one of the elements

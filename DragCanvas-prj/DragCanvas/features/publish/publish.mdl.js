@@ -43,4 +43,14 @@ export default class PublishMdl {
         );
         return rows[0]?.PublishedHtml ?? null;
     }
+
+    static async saveVersionInDB(projectId, html, files, url) {
+        const rows = await db.executeQuery(`INSERT INTO "TBPublishedVersions" ("Project_ID","Html","Files","PublishedUrl") VALUES ($1,$2,$3,$4) RETURNING "Version_ID","CreatedDate"`, [projectId, html, JSON.stringify(files || {}), url || null]);
+        await db.executeCommand(`DELETE FROM "TBPublishedVersions" WHERE "Project_ID"=$1 AND "Version_ID" NOT IN (SELECT "Version_ID" FROM "TBPublishedVersions" WHERE "Project_ID"=$1 ORDER BY "CreatedDate" DESC LIMIT 20)`, [projectId]);
+        return rows[0];
+    }
+    static listVersionsFromDB(projectId) { return db.executeQuery('SELECT "Version_ID","PublishedUrl","CreatedDate" FROM "TBPublishedVersions" WHERE "Project_ID"=$1 ORDER BY "CreatedDate" DESC', [projectId]); }
+    static async getVersionFromDB(projectId, versionId) { const rows = await db.executeQuery('SELECT * FROM "TBPublishedVersions" WHERE "Project_ID"=$1 AND "Version_ID"=$2', [projectId, versionId]); return rows[0] ?? null; }
+    static savePreviewInDB(projectId, html, tokenHash) { return db.executeCommand(`UPDATE "TBProjects" SET "PreviewHtml"=$2,"PreviewTokenHash"=$3,"PreviewExpiresDate"=NOW()+interval '7 days' WHERE "Project_ID"=$1`, [projectId, html, tokenHash]); }
+    static async getPreviewFromDB(projectId, tokenHash) { const rows = await db.executeQuery('SELECT "PreviewHtml" FROM "TBProjects" WHERE "Project_ID"=$1 AND "PreviewTokenHash"=$2 AND "PreviewExpiresDate">NOW()', [projectId, tokenHash]); return rows[0]?.PreviewHtml ?? null; }
 }

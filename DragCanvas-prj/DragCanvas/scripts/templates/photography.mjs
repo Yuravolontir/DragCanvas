@@ -134,6 +134,7 @@ export default function photography() {
     background: AMBER, color: INK, buttonBackground: INK, buttonColor: AMBER,
   });
 
+  b.modernSuite(root, { mode: 'service', background: INK, panel: PANEL, ink: BONE, accent: AMBER });
   b.footer(root, {
     brand: 'STILL',
     note: 'A studio in Florentin. Bookings two weeks out.',

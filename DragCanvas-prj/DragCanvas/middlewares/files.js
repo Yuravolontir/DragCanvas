@@ -68,4 +68,21 @@ export const saveToMemory = multer({
     },
 });
 
+const PUBLIC_UPLOAD_MIME = new Set([...ALLOWED_MIME, 'application/pdf']);
+export const savePublicFormFile = multer({
+    storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024, files: 1 },
+    fileFilter(req, file, cb) {
+        if (!PUBLIC_UPLOAD_MIME.has(file.mimetype)) {
+            const error = new Error('Only JPEG, PNG, GIF, WEBP and PDF files are allowed'); error.status = 400; return cb(error);
+        }
+        return cb(null, true);
+    },
+});
+
+export function detectPublicFileType(buffer) {
+    const image = detectImageType(buffer); if (image) return image;
+    if (buffer?.subarray(0, 5).toString('ascii') === '%PDF-') return 'application/pdf';
+    return null;
+}
+
 export { cloudinary };

@@ -21,9 +21,11 @@ export const ButtonSettings = () => {
             <option value="section">Go to section</option>
             <option value="email">Send email</option>
             <option value="phone">Call phone number</option>
+            <option value="payment">Payment link</option>
+            <option value="page">Open project page</option>
           </select>
-          {action !== 'none' && <ToolbarItem full={true} propKey="actionValue" type="text" label={action === 'section' ? 'Section ID' : action === 'email' ? 'Email address' : action === 'phone' ? 'Phone number' : 'URL'} />}
-          {action === 'url' && <label style={{ display: 'flex', gap: 6, fontSize: 12, color: 'var(--muted)' }}><input type="checkbox" checked={newTab} onChange={(e) => setProp((p) => { p.newTab = e.target.checked; })} />Open in new tab</label>}
+          {action !== 'none' && <ToolbarItem full={true} propKey="actionValue" type="text" label={action === 'section' ? 'Section ID' : action === 'page' ? 'Page slug' : action === 'email' ? 'Email address' : action === 'phone' ? 'Phone number' : 'URL'} />}
+          {(action === 'url' || action === 'payment') && <label style={{ display: 'flex', gap: 6, fontSize: 12, color: 'var(--muted)' }}><input type="checkbox" checked={newTab} onChange={(e) => setProp((p) => { p.newTab = e.target.checked; })} />Open in new tab</label>}
         </div>
       </ToolbarSection>
       <ToolbarSection

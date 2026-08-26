@@ -2,321 +2,70 @@ import React from 'react';
 import { Editor, Frame, Element } from '@craftjs/core';
 import { createTheme, ThemeProvider } from '@mui/material';
 import NavBar from './NavBar';
-
 import LoadProjectOnMount from './LoadProjectOnMount';
-  
 import * as Landing from './Components/Landing';
 
-const theme = createTheme({
-  typography: {
-    fontFamily: ['Plus Jakarta Sans', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
-  },
-  palette: {
-    primary: { main: '#0060ac' },
-    secondary: { main: '#a93349' },
-  },
-});
+const theme = createTheme({ typography: { fontFamily: ['Plus Jakarta Sans', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'].join(',') }, palette: { primary: { main: '#0060ac' }, secondary: { main: '#a93349' } } });
+const resolver = {
+  Container: Landing.Container, Text: Landing.Text, Custom1: Landing.Custom1, Custom2: Landing.Custom2,
+  Custom2VideoDrop: Landing.Custom2VideoDrop, Custom3: Landing.Custom3, Custom3BtnDrop: Landing.Custom3BtnDrop,
+  OnlyButtons: Landing.OnlyButtons, Button: Landing.Button, Video: Landing.Video, BackgroundVideo: Landing.BackgroundVideo,
+  Link: Landing.Link, Form: Landing.Form, Image: Landing.Image, Carousel: Landing.Carousel, Map: Landing.Map,
+  NavbarElement: Landing.NavbarElement, Heading: Landing.Heading, Columns: Landing.Columns, Spacer: Landing.Spacer,
+  Divider: Landing.Divider, List: Landing.List, Quote: Landing.Quote, Icon: Landing.Icon, Badge: Landing.Badge,
+  Accordion: Landing.Accordion, Pricing: Landing.Pricing, Testimonial: Landing.Testimonial, Stats: Landing.Stats,
+  TeamGrid: Landing.TeamGrid, Timeline: Landing.Timeline, CTABanner: Landing.CTABanner, LogoStrip: Landing.LogoStrip,
+  SocialLinks: Landing.SocialLinks, Newsletter: Landing.Newsletter, Booking: Landing.Booking,
+  ProductCatalog: Landing.ProductCatalog, Engagement: Landing.Engagement, Tabs: Landing.Tabs, Countdown: Landing.Countdown,
+};
+const BLUE = { r: 37, g: 99, b: 235, a: 1 }; const INK = { r: 15, g: 23, b: 42, a: 1 };
+const MUTED = { r: 71, g: 85, b: 105, a: 1 }; const WHITE = { r: 255, g: 255, b: 255, a: 1 };
+const PALE = { r: 239, g: 246, b: 255, a: 1 }; const TRANSPARENT = { r: 0, g: 0, b: 0, a: 0 };
 
-function CreateNewProject() {
-
-
-
-  return (
-    <>
-    <NavBar />
-    <ThemeProvider theme={theme}>
-      <div className="h-full h-screen">
-        <Editor
-          resolver={{
-            Container: Landing.Container,
-            Text: Landing.Text,
-            Custom1: Landing.Custom1,
-            Custom2: Landing.Custom2,
-            Custom2VideoDrop: Landing.Custom2VideoDrop,
-            Custom3: Landing.Custom3,
-            Custom3BtnDrop: Landing.Custom3BtnDrop,
-            OnlyButtons: Landing.OnlyButtons,
-            Button: Landing.Button,
-            Video: Landing.Video,
-            BackgroundVideo: Landing.BackgroundVideo,
-            Link: Landing.Link,
-            Form: Landing.Form,
-            Image: Landing.Image,
-            Carousel: Landing.Carousel,
-            Map: Landing.Map,
-            NavbarElement: Landing.NavbarElement,
-            Heading: Landing.Heading,
-            Columns: Landing.Columns,
-            Spacer: Landing.Spacer,
-            Divider: Landing.Divider,
-            List: Landing.List,
-            Quote: Landing.Quote,
-            Icon: Landing.Icon,
-            Badge: Landing.Badge,
-            Accordion: Landing.Accordion,
-            Pricing: Landing.Pricing,
-            Testimonial: Landing.Testimonial,
-            Stats: Landing.Stats,
-            TeamGrid: Landing.TeamGrid,
-            Timeline: Landing.Timeline,
-            CTABanner: Landing.CTABanner,
-            LogoStrip: Landing.LogoStrip,
-            SocialLinks: Landing.SocialLinks,
-          }}
-          enabled={false}
-          onRender={Landing.RenderNode}
-        >
-           <LoadProjectOnMount />                       
-           
-           <Landing.Viewport>
-            <Frame>
-              <Element
-                canvas
-                is={Landing.Container}
-                width="800px"
-                height="auto"
-                background={{ r: 255, g: 255, b: 255, a: 1 }}
-                padding={['40', '40', '40', '40']}
-                custom={{ displayName: 'App' }}
-              >
-                <Element
-                  canvas
-                  is={Landing.Container}
-                  flexDirection="row"
-                  width="100%"
-                  height="auto"
-                  padding={['40', '40', '40', '40']}
-                  margin={['0', '0', '40', '0']}
-                  custom={{ displayName: 'Introduction' }}
-                >
-                  <Element
-                    canvas
-                    is={Landing.Container}
-                    width="40%"
-                    height="100%"
-                    padding={['0', '20', '0', '20']}
-                    custom={{ displayName: 'Heading' }}
-                  >
-                    <Landing.Text
-                      fontSize="23"
-                      fontWeight="400"
-                      text="Craft.js is a React framework for building powerful &amp; feature-rich drag-n-drop page editors."
-                    />
-                  </Element>
-                  <Element
-                    canvas
-                    is={Landing.Container}
-                    width="60%"
-                    height="100%"
-                    padding={['0', '20', '0', '20']}
-                    custom={{ displayName: 'Description' }}
-                  >
-                    <Landing.Text
-                      fontSize="14"
-                      fontWeight="400"
-                      text="Everything you see here, including the editor, itself is made of React components. Craft.js comes only with the building blocks for a page editor; it provides a drag-n-drop system and handles the way user components should be rendered, updated and moved, among other things. <br /> <br /> You control the way your editor looks and behave."
-                    />
-                  </Element>
-                </Element>
-
-                <Element
-                  canvas
-                  is={Landing.Container}
-                  background={{ r: 39, g: 41, b: 41, a: 1 }}
-                  flexDirection="column"
-                  width="100%"
-                  height="auto"
-                  padding={['40', '40', '40', '40']}
-                  margin={['0', '0', '40', '0']}
-                  custom={{ displayName: 'ComplexSection' }}
-                >
-                  <Element
-                    canvas
-                    background={{ r: 76, g: 78, b: 78, a: 0 }}
-                    is={Landing.Container}
-                    flexDirection="row"
-                    margin={['0', '0', '0', '0']}
-                    width="100%"
-                    height="auto"
-                    alignItems="center"
-                    custom={{ displayName: 'Wrapper' }}
-                  >
-                    <Element
-                      canvas
-                      background={{ r: 0, g: 0, b: 0, a: 0 }}
-                      is={Landing.Container}
-                      alignItems="center"
-                      padding={['0', '0', '0', '0']}
-                      flexDirection="row"
-                      width="350px"
-                      height="250px"
-                      custom={{ displayName: 'Square' }}
-                    >
-                      <Element
-                        canvas
-                        is={Landing.Container}
-                        justifyContent="center"
-                        alignItems="center"
-                        background={{ r: 76, g: 78, b: 78, a: 1 }}
-                        shadow={25}
-                        width="90%"
-                        height="90%"
-                        padding={['10', '20', '10', '20']}
-                        custom={{ displayName: 'Outer' }}
-                      >
-                        <Element
-                          canvas
-                          is={Landing.Container}
-                          justifyContent="center"
-                          alignItems="center"
-                          background={{ r: 76, g: 78, b: 78, a: 1 }}
-                          shadow={50}
-                          width="80%"
-                          height="80%"
-                          padding={['10', '20', '10', '20']}
-                          custom={{ displayName: 'Middle' }}
-                        >
-                          <Element
-                            canvas
-                            is={Landing.Container}
-                            justifyContent="center"
-                            alignItems="center"
-                            background={{ r: 76, g: 78, b: 78, a: 1 }}
-                            shadow={50}
-                            width="60%"
-                            height="60%"
-                            padding={['10', '20', '10', '20']}
-                            custom={{ displayName: 'Inner' }}
-                          />
-                        </Element>
-                      </Element>
-                    </Element>
-                    <Element
-                      canvas
-                      background={{ r: 0, g: 0, b: 0, a: 0 }}
-                      is={Landing.Container}
-                      padding={['0', '0', '0', '20']}
-                      flexDirection="column"
-                      width="55%"
-                      height="100%"
-                      fillSpace="yes"
-                      custom={{ displayName: 'Content' }}
-                    >
-                      <Landing.Text
-                        color={{ r: '255', g: '255', b: '255', a: '1' }}
-                        margin={['0', '0', '18', '0']}
-                        fontSize="20"
-                        text="Design complex components"
-                      />
-                      <Landing.Text
-                        color={{ r: '255', g: '255', b: '255', a: '0.8' }}
-                        fontSize="14"
-                        fontWeight="400"
-                        text="You can define areas within your React component which users can drop other components into. <br/><br />You can even design how the component should be edited — content editable, drag to resize, have inputs on toolbars — anything really."
-                      />
-                    </Element>
-                  </Element>
-                </Element>
-                <Element
-                  canvas
-                  is={Landing.Container}
-                  background={{ r: 234, g: 245, b: 250, a: 1 }}
-                  flexDirection="column"
-                  width="100%"
-                  height="auto"
-                  padding={['40', '40', '40', '40']}
-                  margin={['0', '0', '40', '0']}
-                  custom={{ displayName: 'Programmatic' }}
-                >
-                  <Element
-                    canvas
-                    background={{ r: 76, g: 78, b: 78, a: 0 }}
-                    is={Landing.Container}
-                    flexDirection="column"
-                    margin={['0,', '0', '20', '0']}
-                    width="100%"
-                    height="auto"
-                    custom={{ displayName: 'Heading' }}
-                  >
-                    <Landing.Text
-                      color={{ r: '46', g: '47', b: '47', a: '1' }}
-                      fontSize="23"
-                      text="Programmatic drag &amp; drop"
-                    />
-                    <Landing.Text
-                      fontSize="14"
-                      fontWeight="400"
-                      text="Govern what goes in and out of your components"
-                    />
-                  </Element>
-                  <Element
-                    canvas
-                    background={{ r: 76, g: 78, b: 78, a: 0 }}
-                    is={Landing.Container}
-                    flexDirection="row"
-                    margin={['30', '0', '0', '0']}
-                    width="100%"
-                    height="auto"
-                    custom={{ displayName: 'Content' }}
-                  >
-                    <Element
-                      canvas
-                      background={{ r: 0, g: 0, b: 0, a: 0 }}
-                      is={Landing.Container}
-                      padding={['0', '20', '0', '0']}
-                      flexDirection="row"
-                      width="45%"
-                      custom={{ displayName: 'Left' }}
-                    >
-                      <Landing.Custom1
-                        background={{ r: 119, g: 219, b: 165, a: 1 }}
-                        height="auto"
-                        width="100%"
-                        padding={['20', '20', '20', '20']}
-                        margin={['0', '0', '0', '0']}
-                        shadow={40}
-                      />
-                    </Element>
-                    <Element
-                      canvas
-                      background={{ r: 0, g: 0, b: 0, a: 0 }}
-                      is={Landing.Container}
-                      padding={['0', '0', '0', '20']}
-                      flexDirection="column"
-                      width="55%"
-                      custom={{ displayName: 'Right' }}
-                    >
-                      <Landing.Custom2
-                        background={{ r: 108, g: 126, b: 131, a: 1 }}
-                        height="125px"
-                        width="100%"
-                        padding={['0', '0', '0', '20']}
-                        margin={['0', '0', '0', '0']}
-                        shadow={40}
-                        flexDirection="row"
-                        alignItems="center"
-                      />
-                      <Landing.Custom3
-                        background={{ r: 134, g: 187, b: 201, a: 1 }}
-                        height="auto"
-                        width="100%"
-                        padding={['20', '20', '20', '20']}
-                        margin={['20', '0', '0', '0']}
-                        shadow={40}
-                        flexDirection="column"
-                      />
-                    </Element>
-                  </Element>
-                </Element>
-              </Element>
-            </Frame>
-          </Landing.Viewport>
-        </Editor>
-      </div>
-    </ThemeProvider>
-     </>
-  );
-   
+function DefaultProjectCanvas() {
+  return <Element canvas is={Landing.Container} width="800px" height="auto" background={WHITE} padding={['0', '0', '0', '0']} custom={{ displayName: 'App' }}>
+    <Landing.NavbarElement brand="Northstar Studio" sticky links={[{ text: 'Home', href: '#home' }, { text: 'Services', href: '#services' }, { text: 'Pricing', href: '#pricing' }, { text: 'Contact', href: '#contact' }]} />
+    <Element canvas is={Landing.Container} anchor="home" width="100%" background={INK} color={WHITE} padding={['72', '48', '64', '48']} custom={{ displayName: 'Hero' }}>
+      <Landing.Badge text="A complete modern starter site" background={BLUE} color={WHITE} />
+      <Landing.Heading level="1" text="Turn a good idea into a site that works" fontSize="52" fontWeight="800" color={WHITE} margin={['18', '0', '16', '0']} />
+      <Landing.Text text="Edit every block, publish multiple pages, accept bookings and payments, and learn what visitors do next." fontSize="19" color={{ r: 203, g: 213, b: 225, a: 1 }} />
+      <Landing.Button text="Explore the sections" action="anchor" actionValue="services" background={BLUE} color={WHITE} margin={['24', '0', '8', '0']} />
+      <Landing.Countdown target="2030-01-01T00:00:00Z" label="Launch offer ends in" expiredText="The launch offer has ended." accent={{ r: 96, g: 165, b: 250, a: 1 }} />
+    </Element>
+    <Element canvas is={Landing.Container} width="100%" background={WHITE} padding={['48', '48', '48', '48']} custom={{ displayName: 'Proof' }}>
+      <Landing.Stats items={['1,200+', 'sites published', '4 min', 'from idea to first draft', '24/7', 'lead capture']} accent={BLUE} color={MUTED} />
+    </Element>
+    <Element canvas is={Landing.Container} anchor="services" width="100%" background={PALE} padding={['56', '48', '56', '48']} custom={{ displayName: 'Services' }}>
+      <Landing.Heading text="Everything your visitors need" fontSize="34" color={INK} />
+      <Landing.Tabs items={['Build', 'Compose a responsive site from reusable sections.', 'Publish', 'Deploy pages, metadata, sitemap and a custom domain.', 'Grow', 'Collect leads, subscribers, bookings, reviews and orders.']} accent={BLUE} />
+      <Landing.Divider color={{ r: 148, g: 163, b: 184, a: 0.45 }} spacing="28" />
+      <Landing.ProductCatalog products={['Starter audit', 'A focused review with an action plan', '49.00', '', 'Launch package', 'Design, build and publishing support', '199.00', '', 'Growth session', 'Analytics and conversion improvements', '89.00', '']} currency="USD" accent={BLUE} />
+    </Element>
+    <Element canvas is={Landing.Container} anchor="pricing" width="100%" background={WHITE} padding={['56', '48', '56', '48']} custom={{ displayName: 'Pricing' }}>
+      <Landing.Heading text="Choose your starting point" fontSize="34" color={INK} />
+      <Landing.Pricing tiers={['Starter', '$19', '/month', 'Start', 'One site;Analytics;Forms', 'Studio', '$49', '/month', 'Choose Studio', 'Five sites;Bookings;Commerce', 'Agency', '$99', '/month', 'Contact us', 'Unlimited sites;Priority support;Team access']} featured={2} accent={BLUE} background={WHITE} color={INK} />
+      <Landing.Accordion items={['Can I change the content?', 'Yes. Every element is editable in the visual canvas.', 'Can I use my own domain?', 'Yes. Connect it during publishing and SSL is provisioned automatically.', 'Are payments stored here?', 'No card details touch DragCanvas; checkout is handled by Stripe.']} background={PALE} color={INK} />
+    </Element>
+    <Element canvas is={Landing.Container} width="100%" background={PALE} padding={['56', '48', '56', '48']} custom={{ displayName: 'Conversions' }}>
+      <Landing.Heading text="Make the next step effortless" fontSize="34" color={INK} />
+      <Landing.Booking heading="Book a discovery call" buttonText="Confirm booking" duration={60} startHour={9} endHour={17} timeZone="Asia/Jerusalem" accent={BLUE} />
+      <Landing.Spacer height="28" />
+      <Landing.Newsletter heading="Get one useful growth note a month" placeholder="you@example.com" buttonText="Subscribe" successMessage="Check your inbox to confirm." accent={BLUE} color={INK} />
+      <Landing.Spacer height="28" />
+      <Landing.Engagement mode="review" heading="Share your experience" options={['👍', '❤️', '👏']} accent={BLUE} />
+    </Element>
+    <Element canvas is={Landing.Container} anchor="contact" width="100%" background={WHITE} padding={['56', '48', '56', '48']} custom={{ displayName: 'Contact' }}>
+      <Landing.Heading text="Tell us what you are building" fontSize="34" color={INK} />
+      <Landing.Form fields={[{ label: 'Name', type: 'text', placeholder: 'Your name', required: true }, { label: 'Email', type: 'email', placeholder: 'you@example.com', required: true }, { label: 'Brief', type: 'textarea', placeholder: 'A few useful details' }, { label: 'Attachment', type: 'file', placeholder: '' }]} submitText="Send the brief" successMessage="Thanks — we will be in touch." background={PALE} accent={BLUE} textColor={INK} inputBackground={WHITE} inputBorder={{ r: 203, g: 213, b: 225, a: 1 }} width="100%" />
+      <Landing.Map lat={32.0853} lng={34.7818} zoom={14} height="300px" width="100%" label="Northstar Studio" address="Tel Aviv, Israel" />
+    </Element>
+    <Element canvas is={Landing.Container} width="100%" background={INK} color={WHITE} padding={['40', '48', '40', '48']} custom={{ displayName: 'Footer' }}>
+      <Landing.CTABanner title="Ready to make it yours?" text="Select any block and start editing." cta="Back to top" href="#home" background={BLUE} color={WHITE} buttonBackground={WHITE} buttonColor={BLUE} />
+      <Landing.SocialLinks items={['Instagram', 'https://instagram.com/', 'LinkedIn', 'https://linkedin.com/', 'Email', 'mailto:hello@example.com']} background={TRANSPARENT} color={WHITE} size="16" />
+    </Element>
+  </Element>;
 }
 
-export default CreateNewProject;
+export default function CreateNewProject() {
+  return <><NavBar /><ThemeProvider theme={theme}><div className="h-full h-screen"><Editor resolver={resolver} enabled={false} onRender={Landing.RenderNode}><LoadProjectOnMount /><Landing.Viewport><Frame>{DefaultProjectCanvas()}</Frame></Landing.Viewport></Editor></div></ThemeProvider></>;
+}
