@@ -32,6 +32,34 @@ export default class ProjectMdl {
         return parseInt(rows[0].cnt, 10);
     }
 
+    /**
+     * Writes the site settings back into the stored project, leaving everything
+     * else in the row alone.
+     *
+     * Deliberately not saveProjectToDB: that one replaces the pages, the
+     * thumbnail and the counts as well, which is right for the Save button and
+     * quite wrong for publishing - a publish must not silently commit canvas
+     * edits, nor blank a thumbnail it never generated.
+     */
+    static async updateSiteSettingsInDB(projectId, userId, settings) {
+        const rows = await db.executeQuery(
+            'SELECT "ProjectData" FROM "TBProjects" WHERE "Project_ID" = $1 AND "User_ID" = $2 AND "IsDeleted" = false',
+            [projectId, userId]
+        );
+        if (!rows[0]) return false;
+
+        let data;
+        try { data = JSON.parse(rows[0].ProjectData); } catch { return false; }
+        if (!data || typeof data !== 'object') return false;
+
+        data.siteSettings = { ...(data.siteSettings || {}), ...settings };
+        await db.executeCommand(
+            'UPDATE "TBProjects" SET "ProjectData" = $1, "ModifiedDate" = NOW() WHERE "Project_ID" = $2 AND "User_ID" = $3',
+            [JSON.stringify(data), projectId, userId]
+        );
+        return true;
+    }
+
     static async saveProjectToDB(project) {
         const {
             projectId, userId, projectName, projectDescription,

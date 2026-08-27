@@ -931,6 +931,13 @@ const handlePublish = async () => {
       await apiFetch(`/api/forms/project/${projectId}/integrations`, {
         method: 'PUT', body: { webhookUrl, telegramChatId, googleSheetsWebhookUrl },
       });
+      // What was just published has to survive the tab being closed. These
+      // settings used to reach the database only through Save project, so the
+      // next publish rebuilt the page from empty fields and dropped the favicon
+      // that the live site already had.
+      await apiFetch(`/api/projects/${projectId}/site-settings`, {
+        method: 'PUT', body: { lang: siteLanguage, socialImage, favicon, comingSoon },
+      });
 
       if (publishTarget === 'custom') {
         setPublishedUrl(data.publishedUrl);

@@ -9,6 +9,7 @@ projectRouter
     .get('/user', verifyToken, ctrl.getProjectsByUser)
     .get('/:projectId', verifyToken, ctrl.getProjectById)
     .post('/save', verifyToken, ctrl.saveProject)
+    .put('/:projectId/site-settings', verifyToken, ctrl.saveSiteSettings)
     .delete('/:projectId', verifyToken, ctrl.deleteProject)
 
 export default projectRouter;
