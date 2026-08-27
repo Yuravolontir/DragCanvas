@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNode, useEditor } from '@craftjs/core';
 import { ToolbarSection } from './Toolbar/ToolbarSection';
 import { ToolbarItem } from './Toolbar/ToolbarItem';
 import { ToolbarRadio } from './Toolbar/ToolbarRadio';
 
 export const NavbarSettings = () => {
+  const [projectPages, setProjectPages] = useState(() => window.__dragcanvasPages || []);
+  useEffect(() => {
+    const update = (event) => setProjectPages(event.detail || []);
+    window.addEventListener('dragcanvas:pages-changed', update);
+    return () => window.removeEventListener('dragcanvas:pages-changed', update);
+  }, []);
   const {
     actions: { setProp },
     props,
@@ -130,12 +136,17 @@ export const NavbarSettings = () => {
                 cursor: 'pointer',
               }}
             >
-              <option value="#" disabled>Select section</option>
+              <option value="#" disabled>Select a page or section</option>
+              {projectPages.length > 0 && <optgroup label="Pages">
+                {projectPages.map((page) => <option key={page.slug} value={page.slug === 'home' ? '/' : `/${page.slug}/`}>{page.name}</option>)}
+              </optgroup>}
+              <optgroup label="Sections on this page">
               {canvasElements.map((el) => (
                 <option key={el.id} value={`#${el.id}`}>
                   {el.name}
                 </option>
               ))}
+              </optgroup>
             </select>
           </div>
         ))}

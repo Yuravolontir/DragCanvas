@@ -9,30 +9,11 @@ import { apiFetch } from '../../api.js';
   import html2canvas from 'html2canvas';
   import { exportToHtml } from '../../utils/exportToHtml';
   import { inspectBeforePublish } from '../../utils/publishPreflight.js';
+  import { blankPageFrom, syncSharedChrome } from '../../utils/projectPages.js';
   import PublishInfoModal from '../PublishInfoModal';
 import AuthPromptModal from '../AuthPromptModal';
 
 const PY_API = import.meta.env.VITE_PY_API_URL || 'http://localhost:8000';
-
-const syncSharedChrome = (source, target) => {
-  if (!source?.ROOT || !target?.ROOT) return target;
-  const rootChildren = source.ROOT.nodes || [];
-  const sharedRoots = rootChildren.filter((id, index) => {
-    const node = source[id]; const type = node?.type?.resolvedName || node?.type;
-    const display = String(node?.custom?.displayName || node?.props?.anchor || '').toLowerCase();
-    return (index === 0 && type === 'NavbarElement') || display.includes('footer');
-  });
-  if (!sharedRoots.length) return target;
-  const next = { ...target };
-  const copyTree = (id) => {
-    if (!source[id]) return;
-    next[id] = structuredClone(source[id]);
-    [...(source[id].nodes || []), ...Object.values(source[id].linkedNodes || {})].forEach(copyTree);
-  };
-  sharedRoots.forEach(copyTree);
-  return next;
-};
-
 
 const HeaderDiv = styled.div`
   width: 100%;
@@ -196,6 +177,11 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
     return () => window.removeEventListener('dragcanvas:pages-loaded', loaded);
   }, []);
 
+  useEffect(() => {
+    window.__dragcanvasPages = pages.map(({ name, slug }) => ({ name, slug }));
+    window.dispatchEvent(new CustomEvent('dragcanvas:pages-changed', { detail: window.__dragcanvasPages }));
+  }, [pages]);
+
   const switchPage = (slug) => {
     const currentData = JSON.parse(query.serialize());
     const nextPages = pages.map(page => page.slug === currentPageSlug ? { ...page, data: currentData } : page);
@@ -210,8 +196,30 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
     const slug = name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40);
     if (!slug || slug === 'home' || pages.some(page => page.slug === slug)) return showAlertModal('Choose a unique page name using Latin letters.', 'error');
     const currentData = JSON.parse(query.serialize());
-    const next = pages.map(page => page.slug === currentPageSlug ? { ...page, data: currentData } : page).concat({ name, slug, data: currentData });
+    const blank = blankPageFrom(currentData);
+    const next = pages.map(page => page.slug === currentPageSlug ? { ...page, data: currentData } : page).concat({ name: name.trim().slice(0, 80), slug, data: blank });
+    setPages(next); setCurrentPageSlug(slug); actions.deserialize(blank);
+  };
+
+  const duplicatePage = () => {
+    const currentData = JSON.parse(query.serialize()); const current = pages.find(page => page.slug === currentPageSlug);
+    const name = window.prompt('Name for the duplicated page', `${current?.name || 'Page'} copy`); if (!name) return;
+    const base = name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 34) || 'page';
+    let slug = base; let number = 2; while (slug === 'home' || pages.some(page => page.slug === slug)) slug = `${base}-${number++}`;
+    const next = pages.map(page => page.slug === currentPageSlug ? { ...page, data: currentData } : page).concat({ name: name.trim().slice(0, 80), slug, data: structuredClone(currentData) });
     setPages(next); setCurrentPageSlug(slug); actions.deserialize(currentData);
+  };
+
+  const renamePage = () => {
+    const current = pages.find(page => page.slug === currentPageSlug); const name = window.prompt('Page name', current?.name || ''); if (!name?.trim()) return;
+    setPages(value => value.map(page => page.slug === currentPageSlug ? { ...page, name: name.trim().slice(0, 80) } : page));
+  };
+
+  const deletePage = () => {
+    if (currentPageSlug === 'home') return showAlertModal('The Home page cannot be deleted.', 'error');
+    if (!window.confirm('Delete this page? This cannot be undone.')) return;
+    const remaining = pages.filter(page => page.slug !== currentPageSlug); const target = remaining.find(page => page.slug === 'home') || remaining[0];
+    setPages(remaining); setCurrentPageSlug(target.slug); actions.deserialize(target.data);
   };
 
  
@@ -428,9 +436,14 @@ const handlePublish = async () => {
     }
     setPublishing(true);
     try {
-      const json = query.serialize();
-      const projectNodes = JSON.parse(json);
-      const issues = inspectBeforePublish(projectNodes, { title: projectName });
+      const projectNodes = JSON.parse(query.serialize());
+      const savedPages = pages.map(page => page.slug === currentPageSlug ? { ...page, data: projectNodes } : page);
+      const publishPages = savedPages.map(page => ({
+        ...page,
+        data: page.slug === currentPageSlug ? projectNodes : syncSharedChrome(projectNodes, page.data),
+      }));
+      const issues = publishPages.flatMap(page => inspectBeforePublish(page.data, { title: page.name })
+        .map(issue => ({ ...issue, message: `${page.name}: ${issue.message}` })));
       if (issues.length) {
         setPublishing(false);
         setPublishModal(false);
@@ -440,7 +453,8 @@ const handlePublish = async () => {
       const canonicalUrl = publishTarget === 'custom'
         ? `https://${customDomain.trim().replace(/^https?:\/\//, '').replace(/\/$/, '')}`
         : publishedUrl;
-      const html = exportToHtml(projectNodes, projectName, {
+      const homePage = publishPages.find(page => page.slug === 'home') || publishPages[0];
+      const html = exportToHtml(homePage.data, projectName, {
         projectId,
         description: projectDescription,
         lang: siteLanguage,
@@ -449,7 +463,6 @@ const handlePublish = async () => {
         canonicalUrl,
         comingSoon,
       });
-      const publishPages = pages.map(page => page.slug === currentPageSlug ? { ...page, data: projectNodes } : page);
       const files = {};
       for (const page of publishPages) {
         if (comingSoon || page.slug === 'home' || !page.data) continue;
@@ -482,7 +495,7 @@ const handlePublish = async () => {
           projectId,
           html,
           files,
-          password: sitePassword,
+          ...(sitePassword ? { password: sitePassword } : {}),
           catalog,
           bookingSettings,
           target: publishTarget,
@@ -527,6 +540,15 @@ const handlePublish = async () => {
             {pages.map(page => <option key={page.slug} value={page.slug}>{page.name}</option>)}
           </select>
           <button type="button" onClick={addPage} title="Add page" style={{ border: 0, borderRadius: 8, padding: '6px 9px', cursor: 'pointer' }}>+</button>
+          <button type="button" onClick={duplicatePage} title="Duplicate current page" aria-label="Duplicate current page" style={{ border: 0, borderRadius: 8, padding: '6px 9px', cursor: 'pointer' }}>
+            <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: 17 }}>content_copy</span>
+          </button>
+          <button type="button" onClick={renamePage} title="Rename current page" aria-label="Rename current page" style={{ border: 0, borderRadius: 8, padding: '6px 9px', cursor: 'pointer' }}>
+            <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: 17 }}>edit</span>
+          </button>
+          <button type="button" onClick={deletePage} disabled={currentPageSlug === 'home'} title="Delete current page" aria-label="Delete current page" style={{ border: 0, borderRadius: 8, padding: '6px 9px', cursor: currentPageSlug === 'home' ? 'not-allowed' : 'pointer', opacity: currentPageSlug === 'home' ? .45 : 1 }}>
+            <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: 17 }}>delete</span>
+          </button>
         </div>
         {onTogglePanel && (
           <div className="flex items-center">

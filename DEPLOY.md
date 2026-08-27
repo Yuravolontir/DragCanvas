@@ -66,7 +66,13 @@ deploy*.
 | `NETLIFY_TOKEN` | publishing a project as a live site |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `MAIL_FROM` | see below |
 | `TELEGRAM_BOT_TOKEN` | optional owner notifications for form submissions |
-| `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` | Checkout Sessions and signed payment webhooks |
+| `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` | platform key and signed Connect payment webhooks |
+| `STRIPE_CONNECT_CLIENT_ID` | Connect client ID from Stripe platform settings |
+
+For Stripe Connect, register this OAuth redirect URI in Stripe:
+`https://dragcanvas.onrender.com/api/commerce/stripe/callback`. Configure the
+Connect webhook endpoint as `https://dragcanvas.onrender.com/api/commerce/webhook`
+and subscribe it to `checkout.session.completed` for connected accounts.
 
 Mail is the one group that fails quietly. `mail.service.js` never throws: with
 no credentials it logs `[MAIL] SMTP is not configured` once and returns

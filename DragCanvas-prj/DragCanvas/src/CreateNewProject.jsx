@@ -29,7 +29,7 @@ function DefaultProjectCanvas() {
       <Landing.Badge text="A complete modern starter site" background={BLUE} color={WHITE} />
       <Landing.Heading level="1" text="Turn a good idea into a site that works" fontSize="52" fontWeight="800" color={WHITE} margin={['18', '0', '16', '0']} />
       <Landing.Text text="Edit every block, publish multiple pages, accept bookings and payments, and learn what visitors do next." fontSize="19" color={{ r: 203, g: 213, b: 225, a: 1 }} />
-      <Landing.Button text="Explore the sections" action="anchor" actionValue="services" background={BLUE} color={WHITE} margin={['24', '0', '8', '0']} />
+      <Landing.Button text="Explore the sections" action="section" actionValue="services" background={BLUE} color={WHITE} margin={['24', '0', '8', '0']} />
       <Landing.Countdown target="2030-01-01T00:00:00Z" label="Launch offer ends in" expiredText="The launch offer has ended." accent={{ r: 96, g: 165, b: 250, a: 1 }} />
     </Element>
     <Element canvas is={Landing.Container} width="100%" background={WHITE} padding={['48', '48', '48', '48']} custom={{ displayName: 'Proof' }}>
