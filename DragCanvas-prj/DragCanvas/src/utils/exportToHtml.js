@@ -1752,9 +1752,15 @@ export const exportToHtml = (serializedData, title = 'My Website', options = {})
 
   // A published page has no way of knowing which project it came from, so the
   // id is baked in here; the API address is the one this build points at.
+  // localhost is useful only while Vite itself is running locally. A missing
+  // Netlify build variable must never make a public site call the visitor's
+  // own computer.
+  const defaultApiUrl = import.meta.env?.PROD
+    ? 'https://dragcanvas.onrender.com'
+    : 'http://localhost:3001';
   exportContext = {
     projectId: options.projectId ?? null,
-    apiUrl: options.apiUrl || import.meta.env?.VITE_API_URL || 'http://localhost:3001',
+    apiUrl: options.apiUrl || import.meta.env?.VITE_API_URL || defaultApiUrl,
   };
 
   // Which anchors exist has to be known before the first link is written, and
