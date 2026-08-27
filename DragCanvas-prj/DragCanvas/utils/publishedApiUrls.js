@@ -1,10 +1,20 @@
 const LOOPBACK_API = /https?:\/\/(?:localhost|127\.0\.0\.1)(?::\d+)?/gi;
+const PRODUCTION_API = 'https://dragcanvas.onrender.com';
+
+function isLoopback(value) {
+    LOOPBACK_API.lastIndex = 0;
+    return LOOPBACK_API.test(String(value || ''));
+}
 
 export function publicApiBase(req, configured = process.env.PUBLIC_API_URL) {
     const explicit = String(configured || '').trim().replace(/\/$/, '');
-    if (explicit && !LOOPBACK_API.test(explicit)) return explicit;
-    LOOPBACK_API.lastIndex = 0;
-    return `${req.protocol}://${req.get('host')}`.replace(/\/$/, '');
+    if (explicit && !isLoopback(explicit)) return explicit;
+
+    const requestOrigin = `${req.protocol}://${req.get('host')}`.replace(/\/$/, '');
+    // Publishing can legitimately be initiated through the local development
+    // server. The generated public site still has to call the production API,
+    // not the developer's (or a visitor's) loopback interface.
+    return isLoopback(requestOrigin) ? PRODUCTION_API : requestOrigin;
 }
 
 export function rewritePublishedApiUrls(content, apiBase) {

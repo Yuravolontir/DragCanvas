@@ -26,3 +26,9 @@ test('Render request origin is used when PUBLIC_API_URL is absent or local', () 
     assert.equal(publicApiBase(req, 'http://localhost:3001'), 'https://dragcanvas-api.onrender.com');
     assert.equal(publicApiBase(req, 'https://api.example.com/'), 'https://api.example.com');
 });
+
+test('publishing through the local API still targets the production API', () => {
+    const req = { protocol: 'http', get: () => 'localhost:3001' };
+    assert.equal(publicApiBase(req, ''), 'https://dragcanvas.onrender.com');
+    assert.equal(publicApiBase(req, 'http://localhost:3001'), 'https://dragcanvas.onrender.com');
+});
