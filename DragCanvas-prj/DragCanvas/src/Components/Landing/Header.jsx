@@ -519,8 +519,17 @@ const handlePublish = async () => {
   const handlePreview = async () => {
     if (!projectId) return showAlertModal('Save the project before creating a preview.', 'error');
     try {
-      const html = exportToHtml(JSON.parse(query.serialize()), projectName || 'Preview', { projectId, description: projectDescription, lang: siteLanguage, socialImage, favicon, canonicalUrl: '', noindex: true });
-      const result = await apiFetch(`/api/publish/preview/${projectId}`, { method: 'POST', body: { html } });
+      const currentData = JSON.parse(query.serialize());
+      const previewPages = pages.map(page => ({
+        ...page,
+        data: page.slug === currentPageSlug ? currentData : syncSharedChrome(currentData, page.data),
+      }));
+      const home = previewPages.find(page => page.slug === 'home') || previewPages[0];
+      const html = exportToHtml(home.data, projectName || 'Preview', { projectId, description: projectDescription, lang: siteLanguage, socialImage, favicon, canonicalUrl: '', noindex: true });
+      const files = Object.fromEntries(previewPages
+        .filter(page => page.slug !== 'home' && page.data)
+        .map(page => [`/${page.slug}/index.html`, exportToHtml(page.data, `${page.name} — ${projectName || 'Preview'}`, { projectId, description: projectDescription, lang: siteLanguage, socialImage, favicon, canonicalUrl: '', noindex: true })]));
+      const result = await apiFetch(`/api/publish/preview/${projectId}`, { method: 'POST', body: { html, files } });
       window.open(result.previewUrl, '_blank', 'noopener,noreferrer');
     } catch (error) { showAlertModal(error.message, 'error'); }
   };

@@ -3,6 +3,7 @@ import PublishMdl from './publish.mdl.js';
 import { connectCustomDomain, deployToNetlify, slugify } from './netlify.service.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
 import BookingMdl from '../bookings/booking.mdl.js';
+import { createPreviewBundle, previewPage } from '../../utils/previewBundle.js';
 
 export async function publishSite(req, res) {
     try {
@@ -93,15 +94,21 @@ export async function createPreview(req, res) {
     if (!info || info.User_ID !== req.user.userId) return res.status(404).json(buildErrorResponse('Project not found'));
     const html = String(req.body?.html || ''); if (!html) return res.status(400).json(buildErrorResponse('HTML required'));
     const token = crypto.randomBytes(24).toString('hex'); const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
-    await PublishMdl.savePreviewInDB(req.params.projectId, html, tokenHash);
+    const previewPath = `/api/publish/preview/${req.params.projectId}`;
+    const stored = createPreviewBundle(html, req.body?.files, previewPath, token);
+    await PublishMdl.savePreviewInDB(req.params.projectId, stored, tokenHash);
     const base = process.env.PUBLIC_API_URL || `${req.protocol}://${req.get('host')}`;
     return res.status(201).json(buildSuccessResponse({ previewUrl: `${base}/api/publish/preview/${req.params.projectId}?token=${token}` }));
 }
 
 export async function getPreview(req, res) {
     const token = String(req.query.token || ''); if (!/^[a-f0-9]{48}$/.test(token)) return res.status(404).send('Preview not found');
-    const html = await PublishMdl.getPreviewFromDB(req.params.projectId, crypto.createHash('sha256').update(token).digest('hex'));
-    if (!html) return res.status(404).send('Preview expired');
+    const stored = await PublishMdl.getPreviewFromDB(req.params.projectId, crypto.createHash('sha256').update(token).digest('hex'));
+    if (!stored) return res.status(404).send('Preview expired');
+    const slug = String(req.query.page || 'home').toLowerCase();
+    if (!/^[a-z0-9][a-z0-9-]*$/.test(slug)) return res.status(404).send('Preview page not found');
+    const html = previewPage(stored, slug);
+    if (!html) return res.status(404).send('Preview page not found');
     res.setHeader('Content-Type', 'text/html'); res.setHeader('X-Robots-Tag', 'noindex, nofollow'); return res.send(html);
 }
 
