@@ -72,10 +72,24 @@ const SidebarItem = ({ visible, icon, title, children, height, onChange, classNa
 export const SidebarDiv = styled.div`
   width: 300px;
   opacity: ${(props) => (props.$enabled ? 1 : 0)};
-  background: var(--surface-container-low, var(--surface-dim));
-  border-left: 1px solid var(--outline-light, var(--outline-light));
+  /* Properties are a work surface. Keeping their own quiet, light palette makes
+     controls legible beside both light and dark websites on the canvas. */
+  --surface: #ffffff;
+  --surface-dim: #f6f7fb;
+  --surface-container-low: #fbfbfd;
+  --surface-container: #eef1f7;
+  --surface-container-high: #e7ebf3;
+  --on-surface: #1b2333;
+  --on-surface-variant: #3f4a5f;
+  --muted: #68748a;
+  --hint: #7a8599;
+  --outline: #cbd3e1;
+  --outline-light: #dce2ec;
+  --outline-variant: #cbd3e1;
+  background: var(--surface-container-low);
+  border-left: 1px solid var(--outline-light);
   margin-right: ${(props) => (props.$enabled ? 0 : -300)}px;
-  box-shadow: -2px 0 14px color-mix(in oklab, var(--paper) 6%, transparent);
+  box-shadow: -8px 0 28px rgb(15 23 42 / 0.09);
 `;
 
 /* See Toolbox: a closed drawer must leave the tab order, not just the screen. */

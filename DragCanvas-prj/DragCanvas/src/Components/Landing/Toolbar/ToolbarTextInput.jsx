@@ -15,7 +15,7 @@
 
     React.useEffect(() => {
       let val = value;
-      if (type === 'color' || type === 'bg')
+      if ((type === 'color' || type === 'bg') && value && typeof value === 'object')
         val = `rgba(${Object.values(value)})`;
       setInternalValue(val);
     }, [value, type]);
@@ -74,12 +74,20 @@
             marginTop: 7,
             position: 'relative',
             '.MuiInputBase-input': {
-              background: '#f7f4ec',
+              background: 'var(--surface-dim)',
+              color: 'var(--on-surface)',
+              border: '1px solid var(--outline-light)',
               borderRadius: '100px',
               fontSize: '0.85rem',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               position: 'relative',
-              paddingLeft: '28px',
+              padding: '9px 12px',
+              paddingLeft: ['color', 'bg'].includes(type) ? '34px' : '12px',
+              transition: 'border-color 150ms ease, box-shadow 150ms ease',
+              '&:focus': {
+                borderColor: 'var(--primary)',
+                boxShadow: '0 0 0 3px color-mix(in oklab, var(--primary) 14%, transparent)',
+              },
             },
           }}
           InputProps={{

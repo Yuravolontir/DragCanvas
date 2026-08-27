@@ -344,6 +344,16 @@ function stageLabel(stage) {
     };
 
     return (
+      <>
+      {loading && (
+        <div className="ai-generation-backdrop" role="status" aria-live="polite" aria-label={stageLabel(stage)}>
+          <div className="ai-generation-modal">
+            <div className="ai-generation-spinner" aria-hidden="true" />
+            <strong>{stageLabel(stage)}</strong>
+            <span>AI is building your site. This can take a little while.</span>
+          </div>
+        </div>
+      )}
       <div style={{
         padding: '12px 16px',
         margin: '0 auto 10px',
@@ -502,5 +512,6 @@ function stageLabel(stage) {
           </p>
         )}
       </div>
+      </>
     );
   }

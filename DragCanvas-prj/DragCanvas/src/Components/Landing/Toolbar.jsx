@@ -16,7 +16,7 @@ export const Toolbar = () => {
 
   return (
     <div className="py-1 h-full">
-      {active && related.toolbar && React.createElement(related.toolbar)}
+      {active && related?.toolbar && React.createElement(related.toolbar)}
       {active && <ResponsiveSettings nodeId={active} nodeProps={nodeProps || {}} />}
       {!active && (
         <div

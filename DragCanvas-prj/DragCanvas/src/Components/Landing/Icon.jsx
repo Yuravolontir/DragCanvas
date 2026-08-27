@@ -24,8 +24,10 @@ export const Icon = ({ name, size, color, background, padded }) => {
         width: padded === 'yes' ? `${box * 2}px` : 'auto',
         height: padded === 'yes' ? `${box * 2}px` : 'auto',
         borderRadius: padded === 'yes' ? '50%' : 0,
-        background: padded === 'yes' && background ? `rgba(${Object.values(background)})` : 'transparent',
-        color: color ? `rgba(${Object.values(color)})` : undefined,
+        background: padded === 'yes' && background && typeof background === 'object'
+          ? `rgba(${Object.values(background)})`
+          : (padded === 'yes' ? background : 'transparent'),
+        color: color && typeof color === 'object' ? `rgba(${Object.values(color)})` : color,
       }}
     >
       <span className="material-symbols-outlined" style={{ fontSize: `${box}px` }}>
@@ -45,9 +47,8 @@ const SYMBOLS = [
 
 const IconPicker = () => {
   const [search, setSearch] = useState('');
-  const { selected, setProp } = useNode((node) => ({
+  const { selected, actions: { setProp } } = useNode((node) => ({
     selected: node.data.props.name || 'star',
-    setProp: node.actions.setProp,
   }));
   const shown = SYMBOLS.filter((name) => name.includes(search.trim().toLowerCase().replace(/\s+/g, '_')));
 
