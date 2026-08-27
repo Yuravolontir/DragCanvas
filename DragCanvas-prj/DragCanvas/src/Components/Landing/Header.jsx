@@ -453,6 +453,38 @@ const TestResult = styled.p`
   }
 `;
 
+const Steps = styled.ol`
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: dc-step;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--hint);
+
+  li {
+    counter-increment: dc-step;
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 8px;
+    padding: 5px 0;
+  }
+  li::before {
+    content: counter(dc-step);
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+  strong { color: var(--on-surface); font-weight: 600; }
+  a { color: var(--primary); }
+`;
+
 const PublishPrimary = styled.button`
   flex: 1 1 auto;
   padding: 11px 18px;
@@ -1335,26 +1367,37 @@ const handlePublish = async () => {
                   onChange={(e) => { setTelegramChatId(e.target.value); setTelegramTest(null); }}
                   placeholder="123456789"
                 />
-                <Hint>
-                  {telegramBot?.username ? (
-                    <>
-                      Receive each lead as a Telegram message, in two steps.
-                      {' '}
-                      <strong>First</strong>, open{' '}
-                      <a href={`https://t.me/${telegramBot.username}`} target="_blank" rel="noreferrer">@{telegramBot.username}</a>
-                      {' '}and press Start — for a team chat, add that bot to the group instead. Telegram does not let a bot
-                      write to anybody who has not started it, so nothing arrives until this is done.
-                      {' '}
-                      <strong>Second</strong>, paste your chat ID above: it is a number, and the bot called userinfobot replies
-                      with yours. A group ID begins with a minus. Then send a test message to be sure.
-                    </>
-                  ) : (
-                    <>
-                      Receive each lead as a Telegram message. The chat ID is a number: the bot called userinfobot replies with
-                      yours, and a group ID begins with a minus.
-                    </>
-                  )}
-                </Hint>
+                <Hint>Receive each lead as a Telegram message. Three steps, about a minute:</Hint>
+                <Steps>
+                  <li>
+                    <span>
+                      <strong>Let our bot write to you.</strong>{' '}
+                      {telegramBot?.username ? (
+                        <>
+                          Open <a href={`https://t.me/${telegramBot.username}`} target="_blank" rel="noreferrer">@{telegramBot.username}</a>{' '}
+                          and press Start. For a team chat, add that bot to the group instead.
+                        </>
+                      ) : (
+                        <>Open our bot in Telegram and press Start, or add it to your group.</>
+                      )}
+                      {' '}Telegram blocks a bot from writing to anybody who has not done this.
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <strong>Copy your chat ID.</strong> For your own Telegram, message{' '}
+                      <a href="https://t.me/userinfobot" target="_blank" rel="noreferrer">@userinfobot</a> and it replies with the
+                      number. For a group, add <a href="https://t.me/getmyid_bot" target="_blank" rel="noreferrer">@getmyid_bot</a>{' '}
+                      to it, copy what it posts, then remove it. A group ID starts with a minus.
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <strong>Paste it above and press the button below.</strong> A test message arriving means you are done —
+                      it saves the settings for you, with no need to publish.
+                    </span>
+                  </li>
+                </Steps>
               </Field>
               {telegramBot && !telegramBot.username && (
                 <Note>
