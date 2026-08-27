@@ -21,8 +21,11 @@ const IndicatorDiv = styled.div`
   }
 `;
 
-const Btn = styled.a`
+const Btn = styled.button`
   padding: 0 0px;
+  border: 0;
+  color: inherit;
+  background: transparent;
   opacity: 0.9;
   display: flex;
   align-items: center;
@@ -145,6 +148,7 @@ export const RenderNode = ({ render }) => {
               <h2 className="flex-1 mr-4">{name}</h2>
               {moveable ? (
                 <Btn
+                  type="button"
                   className="mr-2 cursor-move"
                   ref={(dom) => {
                     drag(dom);
@@ -155,8 +159,12 @@ export const RenderNode = ({ render }) => {
               ) : null}
               {id !== ROOT_NODE && (
                 <Btn
+                  type="button"
                   className="mr-2 cursor-pointer"
-                  onClick={() => {
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
                     actions.selectNode(parent);
                   }}
                 >
@@ -165,9 +173,18 @@ export const RenderNode = ({ render }) => {
               )}
               {deletable ? (
                 <Btn
+                  type="button"
                   className="cursor-pointer"
-                  onMouseDown={(e) => {
-                    e.stopPropagation();
+                  aria-label={`Delete ${name}`}
+                  onPointerDown={(event) => {
+                    // In particular, do not let an iframe/video selection
+                    // gesture reach Craft before the click deletes this node.
+                    event.preventDefault();
+                    event.stopPropagation();
+                  }}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
                     actions.delete(id);
                   }}
                 >
