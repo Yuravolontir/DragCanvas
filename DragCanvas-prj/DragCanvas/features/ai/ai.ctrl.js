@@ -1,6 +1,8 @@
 import * as aiService from './ai.service.js';
 import { safeParseAIJson, normalizeLayout, replacePlaceholdersInJson } from '../../utils/ai.helpers.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
+import { cloudinary } from '../../middlewares/files.js';
+import AssetMdl from '../assets/asset.mdl.js';
 
 const MAX_ATTEMPTS = 3;
 /** Fewer sections than this and the model clearly gave up - ask again. */
@@ -180,11 +182,8 @@ export async function refineWebsite(req, res) {
 }
 
 /**
- * One generated image, returned as the PNG itself.
- *
- * The client asks for a blob and hands it to an <img> as an object URL, which
- * is how the admin charts already work: the bytes travel through us so the
- * provider key stays on the server.
+ * One generated image, persisted in Cloudinary and returned as an HTTPS URL.
+ * A browser blob URL dies on refresh and can never work on a published site.
  */
 export async function generateImage(req, res) {
     const { prompt } = req.body || {};
@@ -195,8 +194,25 @@ export async function generateImage(req, res) {
 
     try {
         const { buffer, contentType } = await aiService.generateImage(String(prompt).trim());
-        res.set('Content-Type', contentType);
-        return res.send(buffer);
+        const dataURI = `data:${contentType};base64,${buffer.toString('base64')}`;
+        const uploaded = await cloudinary.uploader.upload(dataURI, {
+            folder: `dragcanvas/ai/${req.user.userId}`,
+            resource_type: 'image',
+        });
+        try {
+            const asset = await AssetMdl.addAssetToDB({
+                userId: req.user.userId,
+                url: uploaded.secure_url,
+                publicId: uploaded.public_id,
+                format: uploaded.format,
+                bytes: uploaded.bytes,
+            });
+            return res.status(201).json(buildSuccessResponse({ url: uploaded.secure_url, asset }));
+        } catch (dbError) {
+            await cloudinary.uploader.destroy(uploaded.public_id)
+                .catch(e => console.error('[AI] orphan image cleanup failed:', e.message));
+            throw dbError;
+        }
     } catch (error) {
         console.log(`[AI] image generation failed: ${error.message}`);
         // A single failed image is not a failed page: the caller drops it and

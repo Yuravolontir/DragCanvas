@@ -160,9 +160,9 @@ function stageLabel(stage) {
      * This used to call Stability straight from the browser with the key in an
      * import.meta.env variable, which Vite compiles into the bundle every
      * visitor downloads - the key was readable by anyone who opened the site.
-     * The server holds it now and returns the PNG, exactly as the admin charts
-     * do. A null means "leave the placeholder", so one failed image never
-     * costs the whole page.
+     * The server holds it now, stores the result in Cloudinary and returns a
+     * permanent HTTPS URL. A null means "leave the placeholder", so one failed
+     * image never costs the whole page.
      */
     const generateImage = async (imagePrompt) => {
       try {
@@ -176,8 +176,8 @@ function stageLabel(stage) {
         });
 
         if (!res.ok) return null;
-        const blob = await res.blob();
-        return URL.createObjectURL(blob);
+        const payload = await res.json();
+        return payload?.data?.url || null;
       } catch (e) {
         console.error('Image generation error:', e);
         return null;
@@ -203,6 +203,17 @@ function stageLabel(stage) {
                 images.push({ path: el, key, seed, prompt: `${desc}${heading ? ', ' + heading : ''}, professional website photo, high quality` });
               }
             });
+            if (Array.isArray(el.props?.slides)) {
+              el.props.slides.forEach((slide, i) => {
+                if (!slide?.src?.includes('picsum.photos/seed/')) return;
+                const seed = slide.src.split('/seed/')[1]?.split('/')[0] || `slide-${i + 1}`;
+                images.push({ path: slide, key: 'src', prompt: `${seed.replace(/[-_]/g, ' ')}, ${slide.heading || ''}, professional website photo, high quality` });
+              });
+            }
+          }
+          if (el.props?.backgroundImage?.includes('picsum.photos/seed/')) {
+            const seed = el.props.backgroundImage.split('/seed/')[1]?.split('/')[0] || 'website background';
+            images.push({ path: el.props, key: 'backgroundImage', prompt: `${seed.replace(/[-_]/g, ' ')}, professional wide website background, high quality` });
           }
           if (el.children) walk(el.children);
         }
@@ -212,53 +223,43 @@ function stageLabel(stage) {
     };
 
     /**
-     * Fill in the pictures on a page that is already on screen.
-     *
-     * Each generated image takes several seconds, so they are requested together
-     * and each one is placed the moment it arrives rather than waiting for the
-     * slowest. A failure leaves that placeholder alone: one image nobody could
-     * draw should not cost the other five.
+     * Replace every Picsum placeholder before Craft serialises the pages. This
+     * includes ordinary images, section backgrounds, legacy carousels and the
+     * current slides-array carousel format.
      */
-    const fillInImages = async (sections, nodeIdOf) => {
+    const fillInImages = async (sections) => {
       const images = collectImageInfo(sections);
       if (images.length === 0) return;
 
-      const prompts = [...new Set(images.map(i => i.prompt))].slice(0, 6);
+      const prompts = [...new Set(images.map(i => i.prompt))];
       let remaining = prompts.length;
       setStage({ name: 'images', remaining });
 
-      await Promise.all(prompts.map(async (imagePrompt) => {
-        const url = await generateImage(imagePrompt);
-        remaining -= 1;
-        setStage({ name: 'images', remaining });
-        if (!url) return;
-
-        for (const img of images) {
-          if (img.prompt !== imagePrompt) continue;
-          const nodeId = nodeIdOf.get(img.path);
-          if (!nodeId) continue;
-          try {
-            actions.setProp(nodeId, props => { props[img.key || 'src'] = url; });
-          } catch {
-            // The node is gone - the person deleted it while we were drawing.
-            // That is their prerogative, and not an error.
+      // Keep provider pressure modest while still replacing every placeholder.
+      for (let index = 0; index < prompts.length; index += 3) {
+        await Promise.all(prompts.slice(index, index + 3).map(async (imagePrompt) => {
+          const url = await generateImage(imagePrompt);
+          remaining -= 1;
+          setStage({ name: 'images', remaining });
+          if (!url) return;
+          for (const img of images) {
+            if (img.prompt === imagePrompt) img.path[img.key || 'src'] = url;
           }
-        }
-      }));
+        }));
+      }
     };
 
     /**
      * Put a layout on the canvas and remember it for the next refinement.
      *
-     * The page goes up before the images exist. It used to wait for every one of
-     * them, so a generation that took fifty seconds showed a blank canvas for all
-     * fifty and then everything at once. The images take just as long now; the
-     * difference is that there is something to look at while they arrive.
+     * Images are persisted before Craft serialises the pages, so saving,
+     * switching pages and publishing can never capture temporary blob URLs.
      */
     const applyLayout = async (nextLayout) => {
       const sourcePages = Array.isArray(nextLayout.pages) && nextLayout.pages.length
         ? nextLayout.pages
         : [{ name: 'Home', slug: 'home', sections: nextLayout.sections || [] }];
+      await fillInImages(sourcePages.flatMap(page => page.sections || []));
       const builtPages = sourcePages.map((page, index) => {
         const slug = index === 0 ? 'home' : page.slug;
         const built = buildCraftTree(page.sections, `${slug}-`);
@@ -277,7 +278,6 @@ function stageLabel(stage) {
       window.dispatchEvent(new CustomEvent('dragcanvas:pages-loaded', { detail: pageState }));
       setLayout(nextLayout);
 
-      await fillInImages(first.sections, first.nodeIdOf);
     };
 
     /**
