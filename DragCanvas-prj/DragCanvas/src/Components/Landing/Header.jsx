@@ -5,6 +5,8 @@ import { apiFetch } from '../../api.js';
   import cx from 'classnames';
   import React, { useEffect, useState } from 'react';
   import styled from 'styled-components';
+  import { createPortal } from 'react-dom';
+  import { APP_NAV_Z_INDEX } from '../../utils/appNavigation.js';
   import { useLocation } from 'react-router-dom';
   import html2canvas from 'html2canvas';
   import { exportToHtml } from '../../utils/exportToHtml';
@@ -113,6 +115,384 @@ const PanelToggle = styled.button`
   }
 `;
 
+/*
+ * ── The Publish dialog ────────────────────────────────────────
+ *
+ * Two things this markup is careful about.
+ *
+ * Height. The card is centred, and a centred flex child taller than its
+ * container overflows in both directions - the top half then cannot be reached
+ * by scrolling at all. So the scrollbar lives on the body row, the card is
+ * capped in `dvh` (the visible height, which `vh` is not on a phone with a
+ * retracting URL bar), and the head and foot stay put while the middle moves.
+ *
+ * Where it renders. The dialog is portalled to <body>. Its markup sits inside
+ * the editor header, a flex row that on small screens becomes a horizontally
+ * scrolling rail - not somewhere a dialog can be laid out sanely, whatever its
+ * position value.
+ *
+ * The copy is deliberately long: this dialog is where somebody meets the words
+ * "SEO", "webhook" and "DNS" for the first time, so every control explains
+ * itself. The sections are closed by default, and anyone who already knows what
+ * they are doing sees only two radio buttons and a Publish button.
+ */
+const PublishOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  /*
+   * Above the app NavBar, which is fixed at APP_NAV_Z_INDEX. Below that number
+   * the bar paints over the head of the dialog, and on a short screen the part
+   * it covers is the title and the first line of the explanation.
+   */
+  z-index: ${APP_NAV_Z_INDEX + 100};
+  display: grid;
+  place-items: center;
+  padding: clamp(12px, 3vw, 28px);
+  background: rgb(5 7 13 / 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: dc-publish-fade 0.18s ease;
+
+  @keyframes dc-publish-fade {
+    from { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+`;
+
+const PublishCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: min(540px, 100%);
+  max-height: 92vh;
+  max-height: 92dvh;
+  overflow: hidden;
+  border: 1px solid var(--outline-light);
+  border-radius: var(--radius-xl, 24px);
+  background: var(--surface);
+  color: var(--on-surface);
+  box-shadow: 0 32px 80px rgb(0 0 0 / 0.35);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  animation: dc-publish-rise 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+
+  @keyframes dc-publish-rise {
+    from { opacity: 0; transform: translateY(12px) scale(0.985); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+`;
+
+const PublishHead = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 22px 24px 16px;
+  border-bottom: 1px solid var(--outline-light);
+
+  .dc-publish-badge {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+  h3 {
+    margin: 0 0 2px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  p {
+    margin: 0;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--hint);
+  }
+
+  /* A phone in landscape has ~400px of height in total. The introduction is
+     the one thing here that can go without taking a control with it. */
+  @media (max-height: 540px) {
+    padding: 16px 18px 12px;
+    p { display: none; }
+  }
+`;
+
+const PublishClose = styled.button`
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin: -4px -6px 0 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background: var(--surface-dim);
+    color: var(--on-surface);
+  }
+  .material-symbols-outlined { font-size: 20px; }
+`;
+
+const PublishBody = styled.div`
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 18px 24px 22px;
+  scrollbar-width: thin;
+`;
+
+const PublishFoot = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px 18px;
+  border-top: 1px solid var(--outline-light);
+  background: var(--surface);
+
+  @media (max-width: 460px) {
+    flex-wrap: wrap;
+    > * { flex: 1 1 auto; }
+  }
+`;
+
+const SectionLabel = styled.div`
+  margin: ${(props) => (props.$spaced ? '22px 0 10px' : '0 0 10px')};
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  span {
+    display: block;
+    margin-top: 3px;
+    font-size: 0.76rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--hint);
+  }
+`;
+
+/* A radio rendered as a card: the whole block is the hit area. */
+const TargetCard = styled.label`
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+  border: 1px solid ${(props) => (props.$active ? 'var(--primary)' : 'var(--outline-light)')};
+  border-radius: 14px;
+  background: ${(props) => (props.$active ? 'var(--primary-light)' : 'var(--surface)')};
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    border-color: var(--primary);
+  }
+  input[type='radio'] {
+    margin-top: 2px;
+    accent-color: var(--primary);
+    width: 16px;
+    height: 16px;
+    flex: 0 0 auto;
+  }
+  .dc-target-name {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+`;
+
+/* One collapsed explainer section. The chevron replaces the default marker. */
+const PublishSection = styled.details`
+  margin-bottom: 10px;
+  border: 1px solid var(--outline-light);
+  border-radius: 14px;
+  background: var(--surface);
+  overflow: hidden;
+
+  &[open] {
+    background: color-mix(in oklab, var(--on-surface) 3%, var(--surface));
+  }
+  > summary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.4;
+    cursor: pointer;
+    list-style: none;
+    transition: background 0.15s ease;
+  }
+  > summary::-webkit-details-marker { display: none; }
+  > summary:hover { background: var(--surface-dim); }
+  > summary .material-symbols-outlined {
+    margin-left: auto;
+    font-size: 20px;
+    color: var(--muted);
+    transition: transform 0.18s ease;
+  }
+  &[open] > summary .material-symbols-outlined { transform: rotate(180deg); }
+  .dc-section-inner { padding: 0 14px 16px; }
+`;
+
+const Explainer = styled.p`
+  margin: 0 0 4px;
+  padding: 11px 13px;
+  border: 1px solid var(--outline-light);
+  border-radius: 11px;
+  background: var(--surface-container, var(--surface-dim));
+  font-size: 0.78rem;
+  line-height: 1.65;
+  color: var(--on-surface-variant, var(--on-surface));
+`;
+
+/* For the two places where the behaviour would otherwise catch people out. */
+const Note = styled.p`
+  display: flex;
+  gap: 9px;
+  margin: 10px 0 0;
+  padding: 11px 13px;
+  border: 1px solid var(--primary);
+  border-radius: 11px;
+  background: var(--primary-light);
+  font-size: 0.78rem;
+  line-height: 1.6;
+
+  .material-symbols-outlined {
+    flex: 0 0 auto;
+    font-size: 18px;
+    color: var(--primary);
+  }
+`;
+
+const Field = styled.label`
+  display: block;
+  margin-top: 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  input,
+  select {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    padding: 10px 12px;
+    border: 1px solid var(--outline-light);
+    border-radius: 11px;
+    background: var(--surface-container-high, var(--surface-dim));
+    color: var(--on-surface);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 400;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  input::placeholder { color: var(--hint); }
+  input:focus,
+  select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+  }
+`;
+
+const CheckField = styled.label`
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 16px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  input[type='checkbox'] {
+    margin-top: 2px;
+    width: 16px;
+    height: 16px;
+    flex: 0 0 auto;
+    accent-color: var(--primary);
+  }
+`;
+
+const Hint = styled.small`
+  display: block;
+  margin-top: 6px;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--hint);
+
+  a { color: var(--primary); }
+`;
+
+const TestResult = styled.p`
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border: 1px solid ${(props) => (props.$ok ? 'var(--success, #4caf6a)' : 'var(--error, #e5484d)')};
+  border-radius: 11px;
+  background: color-mix(in oklab, ${(props) => (props.$ok ? 'var(--success, #4caf6a)' : 'var(--error, #e5484d)')} 12%, transparent);
+  font-size: 0.78rem;
+  line-height: 1.6;
+
+  .material-symbols-outlined {
+    flex: 0 0 auto;
+    font-size: 18px;
+    color: ${(props) => (props.$ok ? 'var(--success, #4caf6a)' : 'var(--error, #e5484d)')};
+  }
+`;
+
+const PublishPrimary = styled.button`
+  flex: 1 1 auto;
+  padding: 11px 18px;
+  border: 0;
+  border-radius: var(--radius-full, 9999px);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.15s ease;
+
+  &:hover:not(:disabled) { filter: brightness(1.07); transform: translateY(-1px); }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+`;
+
+const PublishGhost = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 16px;
+  border: 1px solid ${(props) => (props.$quiet ? 'var(--outline-light)' : 'var(--primary)')};
+  border-radius: var(--radius-full, 9999px);
+  background: transparent;
+  color: ${(props) => (props.$quiet ? 'var(--muted)' : 'var(--primary)')};
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: ${(props) => (props.$quiet ? 'var(--surface-dim)' : 'var(--primary-light)')};
+    color: ${(props) => (props.$quiet ? 'var(--on-surface)' : 'var(--primary)')};
+  }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+  .material-symbols-outlined { font-size: 18px; }
+`;
+
 export const Header = ({ openPanel = null, onTogglePanel = null }) => {
 
   const [projectName, setProjectName] = useState('');
@@ -149,6 +529,8 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
   const [templateName, setTemplateName] = useState('');
   const [templateCategory, setTemplateCategory] = useState('Landing Page');
 
+  const [telegramTest, setTelegramTest] = useState(null);
+  const [telegramTesting, setTelegramTesting] = useState(false);
   const [publishModal, setPublishModal] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [customDomain, setCustomDomain] = useState('');
@@ -523,6 +905,27 @@ const handlePublish = async () => {
     setPublishing(false);
   };
 
+  /*
+   * Telegram refuses a bot that the owner has never started, and says so with a
+   * plain 403 rather than a failure - which is invisible until a real lead is
+   * lost. One test message while the dialog is still open turns that into an
+   * answer on the spot.
+   */
+  const handleTelegramTest = async () => {
+    if (!projectId) return setTelegramTest({ ok: false, message: 'Save the project first, then test the connection.' });
+    setTelegramTesting(true);
+    setTelegramTest(null);
+    try {
+      const result = await apiFetch(`/api/forms/project/${projectId}/integrations/telegram/test`, {
+        method: 'POST', body: { telegramChatId: telegramChatId.trim() },
+      });
+      setTelegramTest({ ok: true, message: result.message });
+    } catch (error) {
+      setTelegramTest({ ok: false, message: error.message });
+    }
+    setTelegramTesting(false);
+  };
+
   const handlePreview = async () => {
     if (!projectId) return showAlertModal('Save the project before creating a preview.', 'error');
     try {
@@ -738,109 +1141,215 @@ const handlePublish = async () => {
                 </Modal.Footer>
               </Modal>
 
-  {publishModal && (
-    <div style={{ position: 'fixed', inset: 0, background:
-  'var(--shadow-md)', display: 'flex', alignItems: 'center',
-  justifyContent: 'center', zIndex: 99999 }}>
-      <div style={{ background: 'var(--surface)', padding: '32px',
-  borderRadius: '20px', width: '420px', color: 'var(--on-surface)', boxShadow: '0 16px 48px rgba(0,0,0,0.12)' }}>
-        <h3 style={{ marginBottom: '20px', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>Publish Your Site</h3>
-
-        <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '12px', marginBottom: '10px', background: publishTarget === 'netlify' ? 'var(--primary-light)' : 'var(--surface-dim)', border: `1px solid ${publishTarget === 'netlify' ? 'var(--primary)' : 'var(--outline-light)'}`, borderRadius: '12px', cursor: 'pointer' }}>
-          <input
-            type="radio"
-            name="publishTarget"
-            checked={publishTarget === 'netlify'}
-            onChange={() => setPublishTarget('netlify')}
-            style={{ marginTop: '3px' }}
-          />
-          <span>
-            <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>Netlify subdomain</span>
-            <span style={{ display: 'block', fontSize: '0.8rem', color: 'var(--hint)' }}>Free instant URL (*.netlify.app) + QR code</span>
+  {publishModal && createPortal(
+    <PublishOverlay role="presentation" onMouseDown={(e) => { if (e.target === e.currentTarget) setPublishModal(false); }}>
+      <PublishCard role="dialog" aria-modal="true" aria-label="Publish your site" onMouseDown={(e) => e.stopPropagation()}>
+        <PublishHead>
+          <span className="dc-publish-badge">
+            <span className="material-symbols-outlined" aria-hidden="true">rocket_launch</span>
           </span>
-        </label>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <h3>Publish your site</h3>
+            <p>
+              Publishing turns your pages into a real website that anybody can open with a link. We check the pages for common mistakes, put them online and hand you the address. You can publish again as often as you like, and the address stays the same.
+            </p>
+          </div>
+          <PublishClose type="button" onClick={() => setPublishModal(false)} aria-label="Close">
+            <span className="material-symbols-outlined" aria-hidden="true">close</span>
+          </PublishClose>
+        </PublishHead>
 
-        <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '12px', marginBottom: '10px', background: publishTarget === 'custom' ? 'var(--primary-light)' : 'var(--surface-dim)', border: `1px solid ${publishTarget === 'custom' ? 'var(--primary)' : 'var(--outline-light)'}`, borderRadius: '12px', cursor: 'pointer' }}>
-          <input
-            type="radio"
-            name="publishTarget"
-            checked={publishTarget === 'custom'}
-            onChange={() => setPublishTarget('custom')}
-            style={{ marginTop: '3px' }}
-          />
-          <span style={{ flex: 1 }}>
-            <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>My own domain</span>
-            <span style={{ display: 'block', fontSize: '0.8rem', color: 'var(--hint)' }}>
-              Buy a domain on <a href='https://www.namecheap.com/'>Namecheap</a> or <a href='https://www.godaddy.com/en'>GoDaddy</a>, then enter it here
+        <PublishBody>
+          <SectionLabel>Where should your site live?</SectionLabel>
+
+          <TargetCard $active={publishTarget === 'netlify'}>
+            <input
+              type="radio"
+              name="publishTarget"
+              checked={publishTarget === 'netlify'}
+              onChange={() => setPublishTarget('netlify')}
+            />
+            <span>
+              <span className="dc-target-name">Free address, ready in seconds</span>
+              <Hint>
+                We create the address for you, something like my-site.netlify.app. There is nothing to buy and nothing to set up. You also get a QR code, so the site opens on a phone by pointing the camera at it.
+              </Hint>
             </span>
-            {publishTarget === 'custom' && (
-              <input
-                placeholder="mysite.com"
-                value={customDomain}
-                onChange={(e) => setCustomDomain(e.target.value)}
-                style={{ width: '100%', padding: '10px', margin: '8px 0 0', background: 'var(--surface)', border: '1px solid var(--outline-light)', borderRadius: '12px', color: 'var(--on-surface)', fontSize: '0.95rem', outline: 'none' }}
-              />
-            )}
-          </span>
-        </label>
+          </TargetCard>
 
-        <div style={{ marginBottom: '10px' }} />
-        <details style={{ marginBottom: '14px' }}>
-          <summary style={{ cursor: 'pointer', fontWeight: 600 }}>SEO &amp; sharing</summary>
-          <label style={{ display: 'block', marginTop: '10px', fontSize: '0.8rem' }}>
-            Page language
-            <select value={siteLanguage} onChange={(e) => setSiteLanguage(e.target.value)} style={{ width: '100%', padding: '8px', marginTop: '4px' }}>
-              <option value="en">English</option>
-              <option value="ru">Русский</option>
-              <option value="he">עברית</option>
-              <option value="uk">Українська</option>
-            </select>
-          </label>
-          <label style={{ display: 'block', marginTop: '8px', fontSize: '0.8rem' }}>
-            Social preview image URL (optional)
-            <input value={socialImage} onChange={(e) => setSocialImage(e.target.value)} placeholder="https://…/preview.jpg" style={{ width: '100%', padding: '8px', marginTop: '4px' }} />
-          </label>
-          <label style={{ display: 'block', marginTop: '8px', fontSize: '0.8rem' }}>
-            Favicon URL (optional)
-            <input value={favicon} onChange={(e) => setFavicon(e.target.value)} placeholder="https://…/favicon.png" style={{ width: '100%', padding: '8px', marginTop: '4px' }} />
-          </label>
-          <small style={{ display: 'block', marginTop: '8px', color: 'var(--hint)' }}>Title and description come from the saved project.</small>
-        </details>
-        <details style={{ marginBottom: '14px' }}>
-          <summary style={{ cursor: 'pointer', fontWeight: 600 }}>Access protection</summary>
-          <label style={{ display: 'block', marginTop: '10px', fontSize: '0.8rem' }}>Site password (optional)<input type="password" value={sitePassword} onChange={(e) => setSitePassword(e.target.value)} style={{ width: '100%', padding: '8px', marginTop: '4px' }} /></label>
-          <label style={{ display: 'flex', gap: 8, marginTop: 10, fontSize: '0.85rem' }}><input type="checkbox" checked={comingSoon} onChange={(e) => setComingSoon(e.target.checked)} />Publish a “coming soon” page</label>
-        </details>
-        <details style={{ marginBottom: '14px' }}>
-          <summary style={{ cursor: 'pointer', fontWeight: 600 }}>Lead notifications</summary>
-          <label style={{ display: 'block', marginTop: '10px', fontSize: '0.8rem' }}>
-            HTTPS webhook URL
-            <input value={webhookUrl} onChange={(e) => setWebhookUrl(e.target.value)} placeholder="https://…" style={{ width: '100%', padding: '8px', marginTop: '4px' }} />
-          </label>
-          <label style={{ display: 'block', marginTop: '8px', fontSize: '0.8rem' }}>
-            Telegram chat ID
-            <input value={telegramChatId} onChange={(e) => setTelegramChatId(e.target.value)} placeholder="123456789" style={{ width: '100%', padding: '8px', marginTop: '4px' }} />
-          </label>
-          <label style={{ display: 'block', marginTop: '8px', fontSize: '0.8rem' }}>Google Sheets Apps Script webhook<input value={googleSheetsWebhookUrl} onChange={(e) => setGoogleSheetsWebhookUrl(e.target.value)} placeholder="https://script.google.com/…" style={{ width: '100%', padding: '8px', marginTop: '4px' }} /></label>
-        </details>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button type="button" onClick={handlePreview} disabled={publishing} style={{ padding: '10px 14px', background: 'transparent', color: 'var(--primary)', border: '1px solid var(--primary)', borderRadius: '9999px', cursor: 'pointer' }}>Preview</button>
-          <button
-            onClick={handlePublish}
-            disabled={publishing}
-            style={{ flex: 1, padding: '10px', background: publishing ? 'color-mix(in oklab, var(--primary) 55%, transparent)' : 'var(--primary)', color: 'var(--on-primary)', border: 'none', borderRadius: '9999px', cursor: publishing ? 'not-allowed' : 'pointer', fontWeight: 600, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-          >
-            {publishing ? 'Publishing...' : 'Publish'}
-          </button>
-          <button
-            onClick={() => setPublishModal(false)}
-            style={{ padding: '10px 20px', background: 'transparent', color: 'var(--muted)', border: '1px solid var(--outline-light)', borderRadius: '9999px', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-          >
+          <TargetCard $active={publishTarget === 'custom'}>
+            <input
+              type="radio"
+              name="publishTarget"
+              checked={publishTarget === 'custom'}
+              onChange={() => setPublishTarget('custom')}
+            />
+            <span style={{ flex: 1, minWidth: 0 }}>
+              <span className="dc-target-name">My own domain, such as mysite.com</span>
+              <Hint>
+                A domain is the name people type to reach you. You buy it yourself, for a yearly fee, at <a href="https://www.namecheap.com/" target="_blank" rel="noreferrer">Namecheap</a> or <a href="https://www.godaddy.com/en" target="_blank" rel="noreferrer">GoDaddy</a>, and then type it here.
+              </Hint>
+              {publishTarget === 'custom' && (
+                <>
+                  <Field as="div" style={{ marginTop: '10px' }}>
+                    <input
+                      placeholder="mysite.com"
+                      value={customDomain}
+                      onChange={(e) => setCustomDomain(e.target.value)}
+                    />
+                  </Field>
+                  <Note>
+                    <span className="material-symbols-outlined" aria-hidden="true">info</span>
+                    <span>
+                      One step stays with you. In the control panel of the company you bought the name from, the name has to be pointed at this site. Until that is done, the address will not open. Right after publishing we show you exactly what to point it at, and the padlock that means a secure connection is switched on for you once the name starts working, usually within a few hours.
+                    </span>
+                  </Note>
+                </>
+              )}
+            </span>
+          </TargetCard>
+
+          <SectionLabel $spaced>
+            Optional settings
+            <span>You can publish without touching any of these. Open a section to see what it does.</span>
+          </SectionLabel>
+
+          <PublishSection>
+            <summary>
+              SEO and sharing — how your site looks to other people
+              <span className="material-symbols-outlined" aria-hidden="true">expand_more</span>
+            </summary>
+            <div className="dc-section-inner">
+              <Explainer>
+                When somebody sends your link in WhatsApp, Telegram or Facebook, a small preview card usually appears instead of a bare link: a picture, a title and a line of text. This is where that card is set up. The same information helps Google understand and show your site.
+              </Explainer>
+              <Field>
+                Page language
+                <select value={siteLanguage} onChange={(e) => setSiteLanguage(e.target.value)}>
+                  <option value="en">English</option>
+                  <option value="ru">Русский</option>
+                  <option value="he">עברית</option>
+                  <option value="uk">Українська</option>
+                </select>
+                <Hint>The language your text is written in. It stops the browser from offering to translate a page that the visitor can already read, and it helps search engines.</Hint>
+              </Field>
+              <Field>
+                Social preview image URL (optional)
+                <input value={socialImage} onChange={(e) => setSocialImage(e.target.value)} placeholder="https://…/preview.jpg" />
+                <Hint>The picture shown in that preview card. Leave it empty and we use the first image on your page.</Hint>
+              </Field>
+              <Field>
+                Favicon URL (optional)
+                <input value={favicon} onChange={(e) => setFavicon(e.target.value)} placeholder="https://…/favicon.png" />
+                <Hint>The tiny icon on the browser tab, next to the name of the page. It is how people spot your tab among twenty open ones.</Hint>
+              </Field>
+              <Explainer style={{ marginTop: '16px' }}>
+                The title and the line of text in the card are taken from the name and the description you gave this project when you saved it. The list of pages that search engines read is written for you automatically, so there is nothing else to do here.
+              </Explainer>
+            </div>
+          </PublishSection>
+
+          <PublishSection>
+            <summary>
+              Access protection — who is allowed to see the site
+              <span className="material-symbols-outlined" aria-hidden="true">expand_more</span>
+            </summary>
+            <div className="dc-section-inner">
+              <Explainer>
+                By default anybody who has the link can open the site. These two options keep it closed while you are still working on it.
+              </Explainer>
+              <Field>
+                Site password (optional)
+                <input type="password" value={sitePassword} onChange={(e) => setSitePassword(e.target.value)} />
+                <Hint>Visitors are asked for this password before they see anything. Useful when the site should be visible to one client only. Leave it empty for a site that is open to everyone.</Hint>
+              </Field>
+              <Note>
+                <span className="material-symbols-outlined" aria-hidden="true">info</span>
+                <span>
+                  The password is not remembered between sessions. If you publish again with this field empty, the protection is removed and the site becomes public, so type the password in each time you publish.
+                </span>
+              </Note>
+              <CheckField>
+                <input type="checkbox" checked={comingSoon} onChange={(e) => setComingSoon(e.target.checked)} />
+                <span>
+                  Publish a “coming soon” page
+                  <Hint>Puts one short holding page online, saying the site is being prepared, instead of your real pages. Nothing is lost: clear the tick, publish again, and the whole site appears.</Hint>
+                </span>
+              </CheckField>
+            </div>
+          </PublishSection>
+
+          <PublishSection>
+            <summary>
+              Lead notifications — where to tell you about new enquiries
+              <span className="material-symbols-outlined" aria-hidden="true">expand_more</span>
+            </summary>
+            <div className="dc-section-inner">
+              <Explainer>
+                A lead is a visitor who fills in a form on your site and leaves a name, a phone number or a question. Every lead is saved in your project and sent to you by e-mail in any case. The three fields below are extra ways to hear about it straight away, and all of them are optional.
+              </Explainer>
+              <Field>
+                HTTPS webhook URL
+                <input value={webhookUrl} onChange={(e) => setWebhookUrl(e.target.value)} placeholder="https://…" />
+                <Hint>For automation services such as Zapier or Make. Each new lead is sent to this address and your service decides what happens next. The address has to start with https. Leave it empty if you do not use anything like that.</Hint>
+              </Field>
+              <Field>
+                Telegram chat ID
+                <input
+                  value={telegramChatId}
+                  onChange={(e) => { setTelegramChatId(e.target.value); setTelegramTest(null); }}
+                  placeholder="123456789"
+                />
+                <Hint>
+                  Receive each lead as a Telegram message. Two steps: find our bot in Telegram and press Start (for a team chat, add the bot to the group instead), then paste the chat ID here. The ID is a number, and the bot called userinfobot replies with yours - a group ID begins with a minus. Telegram does not let a bot write to somebody who has never started it, so use the button below to make sure the two are connected.
+                </Hint>
+              </Field>
+              <div style={{ marginTop: '10px' }}>
+                <PublishGhost
+                  type="button"
+                  onClick={handleTelegramTest}
+                  disabled={telegramTesting || !telegramChatId.trim()}
+                >
+                  <span className="material-symbols-outlined" aria-hidden="true">send</span>
+                  {telegramTesting ? 'Sending…' : 'Send a test message'}
+                </PublishGhost>
+                {telegramTest && (
+                  <TestResult $ok={telegramTest.ok} role="status">
+                    <span className="material-symbols-outlined" aria-hidden="true">
+                      {telegramTest.ok ? 'check_circle' : 'error'}
+                    </span>
+                    <span>{telegramTest.message}</span>
+                  </TestResult>
+                )}
+              </div>
+              <Field>
+                Google Sheets Apps Script webhook
+                <input value={googleSheetsWebhookUrl} onChange={(e) => setGoogleSheetsWebhookUrl(e.target.value)} placeholder="https://script.google.com/…" />
+                <Hint>Writes every lead as a new row in your Google spreadsheet, instead of you keeping a list by hand. It is set up once inside the sheet: Extensions, then Apps Script, then deploy it as a web app, and paste the link it gives you here.</Hint>
+              </Field>
+            </div>
+          </PublishSection>
+
+          <Hint style={{ marginTop: '16px' }}>
+            Preview builds a private copy of the site that only people with your link can open. It is hidden from search engines and disappears after seven days, so it is a safe way to check everything before going live.
+          </Hint>
+        </PublishBody>
+
+        <PublishFoot>
+          <PublishGhost type="button" onClick={handlePreview} disabled={publishing}>
+            <span className="material-symbols-outlined" aria-hidden="true">visibility</span>
+            Preview
+          </PublishGhost>
+          <PublishPrimary type="button" onClick={handlePublish} disabled={publishing}>
+            {publishing ? 'Publishing…' : 'Publish'}
+          </PublishPrimary>
+          <PublishGhost type="button" $quiet onClick={() => setPublishModal(false)}>
             Cancel
-          </button>
-        </div>
-      </div>
-    </div>
+          </PublishGhost>
+        </PublishFoot>
+      </PublishCard>
+    </PublishOverlay>,
+    document.body,
   )}
 
   <PublishInfoModal

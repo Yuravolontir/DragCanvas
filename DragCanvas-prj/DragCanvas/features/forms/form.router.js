@@ -17,6 +17,7 @@ formRouter
     .get('/project/:projectId', verifyToken, ctrl.getSubmissions)
     .get('/project/:projectId/integrations', verifyToken, ctrl.getIntegrations)
     .put('/project/:projectId/integrations', verifyToken, ctrl.saveIntegrations)
+    .post('/project/:projectId/integrations/telegram/test', verifyToken, ctrl.testTelegram)
     .put('/project/:projectId/:submissionId/read', verifyToken, ctrl.markSubmissionRead)
 
 export default formRouter;

@@ -128,21 +128,49 @@ async function notifyOwner(owner, data) {
     const integrations = await FormMdl.getIntegrationsFromDB(owner.Project_ID);
     const payload = { event: 'form.submitted', projectId: owner.Project_ID, projectName: owner.ProjectName, data };
     if (integrations.WebhookUrl) {
-        fetch(integrations.WebhookUrl, {
+        await deliver('webhook', fetch(integrations.WebhookUrl, {
             method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
             signal: AbortSignal.timeout(8000),
-        }).catch(error => console.error('[FORM] webhook failed:', error.message));
+        }));
     }
     if (integrations.GoogleSheetsWebhookUrl) {
-        fetch(integrations.GoogleSheetsWebhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), signal: AbortSignal.timeout(8000) }).catch(error => console.error('[FORM] Google Sheets failed:', error.message));
+        await deliver('Google Sheets', fetch(integrations.GoogleSheetsWebhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), signal: AbortSignal.timeout(8000) }));
     }
     const telegramToken = process.env.TELEGRAM_BOT_TOKEN;
+    if (integrations.TelegramChatId && !telegramToken) {
+        // The owner asked for Telegram and this server cannot deliver it. Saying
+        // nothing reads exactly like a message that was sent and not noticed.
+        console.error(`[FORM] telegram skipped for project ${owner.Project_ID}: TELEGRAM_BOT_TOKEN is not set on this server`);
+    }
     if (telegramToken && integrations.TelegramChatId) {
         const text = [`New message from ${owner.ProjectName}`, ...Object.entries(data).map(([key, value]) => `${key}: ${value}`)].join('\n').slice(0, 4000);
-        fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+        await deliver('telegram', fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ chat_id: integrations.TelegramChatId, text }), signal: AbortSignal.timeout(8000),
-        }).catch(error => console.error('[FORM] telegram failed:', error.message));
+        }));
+    }
+}
+
+
+/**
+ * Reports what a delivery actually did.
+ *
+ * fetch() rejects when the connection breaks but resolves for 403 just the
+ * same, so a bare .catch() reads "the bot was never added to that chat" as a
+ * success. A lead that reached nobody then leaves no trace at all - not in the
+ * logs, not anywhere - which is the state this exists to end. Failure is still
+ * only reported and never thrown: the lead is in the database before this runs,
+ * and one dead integration must not take the others down with it.
+ */
+async function deliver(label, request) {
+    try {
+        const response = await request;
+        if (!response.ok) {
+            const detail = await response.text().catch(() => '');
+            console.error(`[FORM] ${label} rejected (${response.status}): ${detail.slice(0, 300)}`);
+        }
+    } catch (error) {
+        console.error(`[FORM] ${label} failed:`, error.message);
     }
 }
 
@@ -174,6 +202,55 @@ export async function saveIntegrations(req, res) {
         if (googleSheetsWebhookUrl) { let parsed; try { parsed = new URL(googleSheetsWebhookUrl); } catch { return res.status(400).json(buildErrorResponse('Google Sheets webhook must be a valid URL')); } if (parsed.protocol !== 'https:' || privateHost.test(parsed.hostname)) return res.status(400).json(buildErrorResponse('Google Sheets webhook must use HTTPS and a public host')); }
         const saved = await FormMdl.saveIntegrationsToDB(req.params.projectId, webhookUrl, telegramChatId, googleSheetsWebhookUrl);
         return res.status(200).json(buildSuccessResponse(saved));
+    } catch (error) { return res.status(500).json(buildErrorResponse(error.message)); }
+}
+
+/**
+ * Sends one test message to the chat the owner typed in, and says plainly what
+ * happened.
+ *
+ * Telegram will not let a bot write to somebody who has not started it, and the
+ * refusal arrives as an ordinary 403 rather than a failed request. Without a
+ * button like this the owner pastes a number, sees it saved, and finds out that
+ * nothing works only when a real lead is lost - so the checking happens here,
+ * while there is still somebody looking at the screen.
+ */
+export async function testTelegram(req, res) {
+    try {
+        const project = await ProjectMdl.getProjectByIdFromDB(req.params.projectId, req.user.userId);
+        if (!project) return res.status(404).json(buildErrorResponse('Project not found'));
+
+        const chatId = String(req.body?.telegramChatId || '').trim();
+        if (!/^-?\d{1,20}$/.test(chatId)) return res.status(400).json(buildErrorResponse('Enter a Telegram chat ID first - digits only, with a leading minus for a group.'));
+
+        const token = process.env.TELEGRAM_BOT_TOKEN;
+        if (!token) return res.status(503).json(buildErrorResponse('This server has no Telegram bot configured yet, so no message can be sent. Ask the administrator to set TELEGRAM_BOT_TOKEN.'));
+
+        const bot = await fetch(`https://api.telegram.org/bot${token}/getMe`, { signal: AbortSignal.timeout(8000) })
+            .then(response => response.json())
+            .catch(() => null);
+        const botName = bot?.ok ? bot.result.username : null;
+        if (!botName) return res.status(502).json(buildErrorResponse('Telegram rejected this server’s bot token. The token is wrong or the bot was deleted.'));
+
+        const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: chatId, text: `Test message from DragCanvas. Leads from "${project.ProjectName}" will arrive here.` }),
+            signal: AbortSignal.timeout(8000),
+        });
+        const result = await response.json().catch(() => ({}));
+
+        if (result.ok) return res.status(200).json(buildSuccessResponse({ botName, message: `Sent. Check the chat - the message is from @${botName}.` }));
+
+        // Telegram's own wording is accurate but not friendly. The three refusals
+        // below are the ones this flow actually produces, and each has a fix the
+        // owner can carry out; anything else is passed through as it came.
+        const description = String(result.description || `Telegram refused the message (${response.status})`);
+        const advice = /chat not found/i.test(description)
+            ? `No chat with this ID that @${botName} can see. Open Telegram, find @${botName} and press Start - or, for a group, add @${botName} to it - then try again.`
+            : /bot was blocked|bot can.t initiate|not a member|kicked/i.test(description)
+                ? `@${botName} is not allowed to write there. Press Start in a chat with @${botName}, or add it to the group, and try again.`
+                : `Telegram says: ${description}`;
+        return res.status(400).json(buildErrorResponse(advice));
     } catch (error) { return res.status(500).json(buildErrorResponse(error.message)); }
 }
 
