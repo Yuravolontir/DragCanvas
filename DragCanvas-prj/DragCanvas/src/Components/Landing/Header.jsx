@@ -125,8 +125,8 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
   const [googleSheetsWebhookUrl, setGoogleSheetsWebhookUrl] = useState('');
   const [sitePassword, setSitePassword] = useState('');
   const [comingSoon, setComingSoon] = useState(false);
-  const [pages, setPages] = useState([{ name: 'Home', slug: 'home', data: null }]);
-  const [currentPageSlug, setCurrentPageSlug] = useState('home');
+  const [pages, setPages] = useState(() => window.__dragcanvasPageState?.pages || [{ name: 'Home', slug: 'home', data: null }]);
+  const [currentPageSlug, setCurrentPageSlug] = useState(() => window.__dragcanvasPageState?.currentSlug || 'home');
   const [showSaveModal, setShowSaveModal] = useState(false);
   // Read once during the first render rather than in an effect: the value is
   // already known, and setting it from an effect made the component render
@@ -179,8 +179,9 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
 
   useEffect(() => {
     window.__dragcanvasPages = pages.map(({ name, slug }) => ({ name, slug }));
+    window.__dragcanvasPageState = { ...(window.__dragcanvasPageState || {}), pages, currentSlug: currentPageSlug };
     window.dispatchEvent(new CustomEvent('dragcanvas:pages-changed', { detail: window.__dragcanvasPages }));
-  }, [pages]);
+  }, [pages, currentPageSlug]);
 
   const switchPage = (slug) => {
     const currentData = JSON.parse(query.serialize());

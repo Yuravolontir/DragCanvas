@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useEditor } from '@craftjs/core';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import { Resizer } from './Resizer';
 import { NavbarSettings } from './NavbarSettings';
-import { pageSlugFromHref } from '../../utils/projectPages.js';
 
 const toCssColor = (color) => {
   if (!color) return '#ffffff';
@@ -16,8 +14,6 @@ const toCssColor = (color) => {
 
 export const NavbarElement = ({ variant, brand, links, textColor, height, sticky }) => {
   const [projectPages, setProjectPages] = useState(() => window.__dragcanvasPages || []);
-  const { enabled } = useEditor((state) => ({ enabled: state.options.enabled }));
-
   useEffect(() => {
     const update = (event) => setProjectPages(event.detail || []);
     window.addEventListener('dragcanvas:pages-changed', update);
@@ -38,16 +34,6 @@ export const NavbarElement = ({ variant, brand, links, textColor, height, sticky
     dark: 'dark',
     primary: 'primary',
     light: 'light',
-  };
-
-  const previewPage = (event, href) => {
-    if (enabled) return;
-    const slug = pageSlugFromHref(href);
-    if (!slug) return;
-    event.preventDefault();
-    if (projectPages.some((page) => page.slug === slug)) {
-      window.dispatchEvent(new CustomEvent('dragcanvas:page-navigate', { detail: { slug } }));
-    }
   };
 
   return (
@@ -78,7 +64,6 @@ export const NavbarElement = ({ variant, brand, links, textColor, height, sticky
           <Container>
             <Navbar.Brand
               href={projectPages.length > 1 ? '/' : '#home'}
-              onClick={(event) => previewPage(event, projectPages.length > 1 ? '/' : '#home')}
               style={{
                 color: cssColor,
                 fontWeight: 600,
@@ -92,7 +77,6 @@ export const NavbarElement = ({ variant, brand, links, textColor, height, sticky
                 <Nav.Link
                   key={i}
                   href={link.href}
-                  onClick={(event) => previewPage(event, link.href)}
                   style={{
                     color: cssColor,
                     fontFamily: "'Plus Jakarta Sans', sans-serif",

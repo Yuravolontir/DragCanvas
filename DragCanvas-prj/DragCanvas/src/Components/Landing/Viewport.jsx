@@ -8,6 +8,7 @@ import { Toolbox } from './Toolbox';
 
 import  AIAssistant  from
   '../../AIAssistant';
+import { pageSlugFromHref } from '../../utils/projectPages.js';
 import { deviceModeForWidth } from '../../utils/deviceModes.js';
 import { DeviceModeProvider } from '../../DeviceModeProvider.jsx';
 import { useMediaQuery } from '../../useMediaQuery.js';
@@ -177,6 +178,16 @@ export const Viewport = ({ children }) => {
       // Letting the editor's dark palette reach it would mean designing
       // against one set of colours and shipping another.
       className={`craftjs-renderer paper flex-1 h-full w-full transition pb-8 overflow-auto ${enabled ? '' : ''}`}
+      onClickCapture={(event) => {
+        if (enabled) return;
+        const link = event.target.closest?.('a[href]');
+        if (!link) return;
+        const slug = pageSlugFromHref(link.getAttribute('href'));
+        if (!slug) return;
+        event.preventDefault();
+        event.stopPropagation();
+        window.dispatchEvent(new CustomEvent('dragcanvas:page-navigate', { detail: { slug } }));
+      }}
       style={{ background: enabled ? 'var(--surface-dim, #f7f4ec)' : 'transparent' }}
       ref={(ref) => {
         connectors.select(connectors.hover(ref, null), null);

@@ -268,13 +268,13 @@ function stageLabel(stage) {
 
       setStage({ name: 'placing' });
       actions.deserialize(first.data);
-      window.dispatchEvent(new CustomEvent('dragcanvas:pages-loaded', {
-        detail: {
+      const pageState = {
           pages: builtPages.map(({ name, slug, data }) => ({ name, slug, data })),
           currentSlug: first.slug,
           siteSettings: {},
-        },
-      }));
+      };
+      window.__dragcanvasPageState = pageState;
+      window.dispatchEvent(new CustomEvent('dragcanvas:pages-loaded', { detail: pageState }));
       setLayout(nextLayout);
 
       await fillInImages(first.sections, first.nodeIdOf);
