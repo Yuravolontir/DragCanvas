@@ -1,5 +1,5 @@
 import { apiFetch } from './api.js';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -8,6 +8,7 @@ import { useUserContext } from './userContext.js';
 import { APP_NAV_ITEMS, APP_NAV_Z_INDEX, userDisplayName } from './utils/appNavigation.js';
 
 export default function NavBar() {
+  const navbarRef = useRef(null);
   const navigate = useNavigate();
   const { currentUser, logout, isAdmin, isSuperAdmin, notificationsVersion } = useUserContext();
   const [unreadCount, setUnreadCount] = useState(0);
@@ -20,6 +21,18 @@ export default function NavBar() {
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const navbar = navbarRef.current;
+    if (!navbar) return undefined;
+    const updateHeight = () => {
+      document.documentElement.style.setProperty('--app-nav-height', `${navbar.getBoundingClientRect().height}px`);
+    };
+    updateHeight();
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(navbar);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -46,6 +59,7 @@ export default function NavBar() {
 
   return (
     <Navbar
+      ref={navbarRef}
       expand="lg"
       fixed="top"
       className="dragcanvas-app-navbar"
@@ -62,7 +76,7 @@ export default function NavBar() {
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         borderBottom: scrolled ? '1px solid var(--nav-border)' : '1px solid transparent',
-        padding: '0',
+        padding: 'var(--safe-top, 0px) 0 0',
         transition: 'all 0.3s ease',
         boxShadow: scrolled ? '0 1px 8px rgba(0,0,0,0.04)' : 'none',
       }}

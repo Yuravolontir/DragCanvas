@@ -121,8 +121,18 @@ const FIXTURES = `
 })();
 `;
 
+/*
+ * Windows is listed because this project is developed on it, and until it was,
+ * the only way to run this check here was to set CHROME_PATH by hand on every
+ * invocation - which is how a verification step quietly stops being run.
+ * Environment first, so an unusual install still wins.
+ */
 const CHROME_CANDIDATES = [
   process.env.CHROME_PATH,
+  process.env.PROGRAMFILES && `${process.env.PROGRAMFILES}/Google/Chrome/Application/chrome.exe`,
+  process.env['PROGRAMFILES(X86)'] && `${process.env['PROGRAMFILES(X86)']}/Google/Chrome/Application/chrome.exe`,
+  process.env.LOCALAPPDATA && `${process.env.LOCALAPPDATA}/Google/Chrome/Application/chrome.exe`,
+  process.env.PROGRAMFILES && `${process.env.PROGRAMFILES}/Microsoft/Edge/Application/msedge.exe`,
   '/usr/bin/google-chrome',
   '/usr/bin/google-chrome-stable',
   '/usr/bin/chromium',
@@ -467,6 +477,145 @@ async function main() {
     }
 
     const problems = [];
+
+    /*
+     * A phone held upright gets the rotate screen instead of the editor, so the
+     * panels are not there to be measured and asking for them would fail every
+     * portrait run. What is checked instead is that the swap actually happened:
+     * the notice is on screen, and no half-built editor chrome came with it.
+     */
+    const portraitPhone = width < 768 && height > width;
+
+    if (route.name === 'Editor' && portraitPhone) {
+      const rotate = await cdp.evaluate(`(() => {
+        const notice = [...document.querySelectorAll('[role="status"]')]
+          .find((el) => /sideways|rotate|turn your phone/i.test(el.innerText));
+        const r = notice?.getBoundingClientRect();
+        return {
+          notice: !!notice && r.width > 0 && r.height > 0 && r.top >= 0 && r.top < innerHeight,
+          bar: !!document.querySelector('.dc-mobile-editor-bar'),
+          header: !!document.querySelector('.dc-editor-header'),
+          canvas: !!document.querySelector('.craftjs-renderer'),
+        };
+      })()`);
+      if (!rotate.notice) problems.push('portrait phone: no "turn your phone sideways" notice on screen');
+      if (rotate.bar) problems.push('portrait phone: the editor panel bar is still rendered');
+      if (rotate.header) problems.push('portrait phone: the editor header is still rendered, so the project can be saved from a screen that cannot edit it');
+      if (!rotate.canvas) problems.push('portrait phone: the read-only page is not shown, so this is a dead end');
+    } else if (mobile && route.name === 'Editor') {
+      const mobileEditor = await cdp.evaluate(`(async () => {
+        const describe = (el) => el
+          ? el.tagName.toLowerCase() + (el.id ? '#' + el.id : '') +
+            (typeof el.className === 'string' && el.className ? '.' + el.className.trim().split(/\\s+/).slice(0, 2).join('.') : '')
+          : 'nothing';
+
+        /*
+         * Give the canvas something with a z-index before asking what is on
+         * top. A new project's navbar ships with sticky off, so nothing on the
+         * default canvas carries a z-index at all - and an on-top assertion
+         * against that page passes without touching the thing it is meant to
+         * check. Ticking "Sticky" in the navbar settings produces exactly this:
+         * position sticky, z-index 1000, inside .craftjs-renderer.
+         */
+        const host = document.querySelector('.craftjs-renderer .device-canvas') || document.querySelector('.craftjs-renderer');
+        if (host && !document.getElementById('__zprobe')) {
+          const nav = document.createElement('div');
+          nav.id = '__zprobe';
+          nav.textContent = 'sticky navbar';
+          nav.setAttribute('style', 'position:sticky;top:0;z-index:1000;height:64px;background:#1b2333;color:#fff');
+          host.prepend(nav);
+        }
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        const bar = document.querySelector('.dc-mobile-editor-bar');
+        const buttons = [...(bar?.querySelectorAll('button') || [])];
+        const visible = (el) => {
+          if (!el) return false;
+          const r = el.getBoundingClientRect();
+          const s = getComputedStyle(el);
+          return r.width >= 44 && r.height >= 44 && r.top >= 0 && r.bottom <= innerHeight && s.display !== 'none' && s.visibility !== 'hidden';
+        };
+
+        /*
+         * Visible is not the same as on top, and a single sample is not the
+         * same as the whole panel. The point-in-the-middle version of this
+         * check reported three clean panels while a sticky navbar covered a
+         * quarter of two of them - the one sample happened to land in a gap.
+         * So walk a grid over the box and report what covered it.
+         */
+        const onTop = (el) => {
+          if (!el) return { ok: false, by: 'missing' };
+          const r = el.getBoundingClientRect();
+          if (r.width < 1 || r.height < 1) return { ok: false, by: 'zero-sized' };
+          const covered = [];
+          for (let fx = 0.1; fx <= 0.9; fx += 0.2) {
+            for (let fy = 0.05; fy <= 0.95; fy += 0.1) {
+              const x = r.left + r.width * fx;
+              const y = r.top + r.height * fy;
+              if (x < 0 || y < 0 || x > innerWidth || y > innerHeight) continue;
+              const hit = document.elementFromPoint(x, y);
+              if (!(hit && (el === hit || el.contains(hit)))) covered.push(describe(hit));
+            }
+          }
+          return { ok: covered.length === 0, by: [...new Set(covered)].slice(0, 3).join(', '), count: covered.length };
+        };
+
+        /*
+         * Inside the viewport on both axes. Only the horizontal pair was
+         * checked here before, and the Elements drawer was running 56px past
+         * the foot of a 874px screen with its last row of elements stranded
+         * down there - a bug this check watched happen and called a pass.
+         */
+        const within = (el) => {
+          if (!el || el.hasAttribute('inert')) return false;
+          const r = el.getBoundingClientRect();
+          return r.left >= -1 && r.right <= innerWidth + 1 && r.top >= -1 && r.bottom <= innerHeight + 1;
+        };
+
+        const result = {
+          bar: visible(bar), barOnTop: onTop(bar),
+          labels: buttons.map((b) => b.innerText.trim()),
+          toolbox: false, sidebar: false,
+          toolboxOnTop: { ok: false }, sidebarOnTop: { ok: false },
+          toolboxRect: null, sidebarRect: null,
+        };
+        const box = (el) => { const r = el.getBoundingClientRect(); return Math.round(r.left) + ',' + Math.round(r.top) + ' to ' + Math.round(r.right) + ',' + Math.round(r.bottom) + ' in ' + innerWidth + 'x' + innerHeight; };
+
+        buttons.find((b) => /Elements/i.test(b.innerText))?.click();
+        await new Promise((resolve) => setTimeout(resolve, 600));
+        const toolbox = document.querySelector('.toolbox');
+        result.toolbox = within(toolbox);
+        result.toolboxOnTop = onTop(toolbox);
+        if (toolbox) result.toolboxRect = box(toolbox);
+
+        buttons.find((b) => /Properties/i.test(b.innerText))?.click();
+        await new Promise((resolve) => setTimeout(resolve, 600));
+        const sidebar = document.querySelector('.sidebar');
+        result.sidebar = within(sidebar);
+        result.sidebarOnTop = onTop(sidebar);
+        if (sidebar) result.sidebarRect = box(sidebar);
+        return result;
+      })()`);
+      if (!mobileEditor.bar) problems.push('mobile editor bar is missing or outside the visible viewport');
+      if (!mobileEditor.labels.some((label) => /Elements/i.test(label)) || !mobileEditor.labels.some((label) => /Properties/i.test(label))) {
+        problems.push('mobile editor bar does not expose Elements and Properties');
+      }
+      if (!mobileEditor.toolbox) {
+        problems.push(`Elements drawer did not open, or is not fully on screen — ${mobileEditor.toolboxRect ?? 'no box'}`);
+      }
+      if (!mobileEditor.sidebar) {
+        problems.push(`Properties drawer did not open, or is not fully on screen — ${mobileEditor.sidebarRect ?? 'no box'}`);
+      }
+      if (!mobileEditor.barOnTop.ok) {
+        problems.push(`the panel bar is painted over by ${mobileEditor.barOnTop.by}`);
+      }
+      if (mobileEditor.toolbox && !mobileEditor.toolboxOnTop.ok) {
+        problems.push(`Elements drawer is open but painted over by ${mobileEditor.toolboxOnTop.by} (${mobileEditor.toolboxOnTop.count} points)`);
+      }
+      if (mobileEditor.sidebar && !mobileEditor.sidebarOnTop.ok) {
+        problems.push(`Properties drawer is open but painted over by ${mobileEditor.sidebarOnTop.by} (${mobileEditor.sidebarOnTop.count} points)`);
+      }
+    }
     for (const offender of probe.offenders) {
       const by = offender.clippedBy ? `clipped by ${offender.clippedBy}` : 'no scrollable ancestor';
       problems.push(`${offender.what} — right edge ${offender.right}px, ${by}`);

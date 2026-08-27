@@ -387,8 +387,18 @@ export default function MyProject() {
                       <span>{new Date(project.CreatedDate).toLocaleDateString()}</span>
                     </div>
 
-                    {/* Actions */}
-                    <div style={{ display: 'flex', gap: '8px' }}>
+                    {/*
+                      Actions
+
+                      Wrapping, because this row is not a fixed set: analytics and
+                      Open are always here, the inbox button appears once a form has
+                      been filled in, and the QR button once the site is published.
+                      At four or five buttons in the width a phone leaves after the
+                      sensor-housing inset, a nowrap row pushed the last one - delete
+                      - into the inset, where it cannot be tapped at all. Found by
+                      check-responsive at 402x874 with the insets forced on.
+                    */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                       <button onClick={() => navigate(`/projects/${project.Project_ID}/operations`)} title="Analytics, bookings, orders and reviews" style={{ padding: '10px 12px', background: 'transparent', color: 'var(--primary)', border: '1px solid var(--primary)', borderRadius: '12px', cursor: 'pointer' }}><span className="material-symbols-outlined" style={{ fontSize: '16px' }}>monitoring</span></button>
                       <button
                         onClick={() => loadProject(project.Project_ID)}

@@ -28,7 +28,47 @@ import { installTouchDrag } from '../../utils/touchDragBridge.js';
  * below 768 there is no pretence of editing.
  */
 const DRAWERS = '(max-width: 1023px)';
-const PreviewBanner = styled.div``;
+
+/*
+ * A phone is edited in landscape or not at all.
+ *
+ * Both panels now run the full width of the shell, and in portrait that width
+ * is ~400px: the open drawer covers the canvas completely, so every insert is
+ * made blind and the settings panel edits something you cannot see. Turned the
+ * other way the same drawer is 874px, the elements fall into a grid four or
+ * five across, and there is a canvas worth looking at between openings.
+ *
+ * The bound is the phone one rather than the drawer one: a tablet held upright
+ * is 768px and has room for both, so it keeps the editor.
+ */
+const ROTATE = '(max-width: 767px) and (orientation: portrait)';
+
+const PreviewBanner = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px calc(14px + var(--safe-bottom, 0px));
+  border-bottom: 1px solid var(--outline-light, #dce2ec);
+  background: var(--surface, #fff);
+  color: var(--on-surface-variant, #3f4a5f);
+  font: 500 13px/1.45 'Plus Jakarta Sans', sans-serif;
+  strong {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--on-surface, #1b2333);
+    font-size: 15px;
+  }
+  .material-symbols-outlined {
+    font-size: 20px;
+  }
+  a {
+    align-self: flex-start;
+    margin-top: 2px;
+    color: var(--primary, #4e5ba6);
+    font-weight: 700;
+  }
+`;
 
   const ViewportDiv = styled.div`
     /*
@@ -39,10 +79,25 @@ const PreviewBanner = styled.div``;
      */
     .viewport {
       position: fixed;
-      top: 56px;
+      top: var(--app-nav-height, 56px);
       left: var(--safe-left, 0px);
       right: var(--safe-right, 0px);
       bottom: var(--safe-bottom, 0px);
+    }
+
+    /*
+     * The canvas gets a stacking context of its own.
+     *
+     * What is rendered inside it is the user's website, and it is allowed to
+     * carry any z-index it likes - a sticky navbar ships with 1000. Without a
+     * context here that number competed directly with the editor's own chrome,
+     * which sits at 30 (drawers) and 40 (the phone panel bar), so adding a
+     * navbar to the page hid the Elements panel and the panel bar behind it.
+     * The isolation property confines those numbers to the page they belong
+     * to and costs no layout, so sticky keeps working exactly as it did.
+     */
+    .craftjs-renderer {
+      isolation: isolate;
     }
 
     .device-canvas {
@@ -65,13 +120,16 @@ const Scrim = styled.div`
   background: color-mix(in oklab, var(--paper, #000) 35%, transparent);
 `;
 
+const MobilePanelBar = styled.nav``;
+
 export const Viewport = ({ children }) => {
-  // Phone editing is supported through the same overlay drawers as tablets.
-  const preview = false;
   const [deviceMode, setDeviceMode] = useState(() => deviceModeForWidth(window.innerWidth));
   const [openPanel, setOpenPanel] = useState(null);
   const pageRef = useRef(null);
   const drawers = useMediaQuery(DRAWERS);
+  // Turning the phone re-runs the query and the editor appears; nothing is
+  // unmounted on the way, so the project in Craft's store survives the rotation.
+  const preview = useMediaQuery(ROTATE);
   const {
     enabled,
     connectors,
@@ -166,10 +224,10 @@ export const Viewport = ({ children }) => {
   );
 
   /*
-   * Below 768: the real project, read-only, at the phone's real width. Not a
-   * dead end and not a shrunken editor — no Header means no save control, and
-   * there is no autosave in this codebase, so a phone cannot overwrite a
-   * project even by accident.
+   * A phone held upright: the real project, read-only, at the phone's real
+   * width. Not a dead end and not a shrunken editor — no Header means no save
+   * control, and there is no autosave in this codebase, so a phone in portrait
+   * cannot overwrite a project even by accident.
    */
   if (preview) {
     return (
@@ -178,7 +236,12 @@ export const Viewport = ({ children }) => {
           <div className="viewport">
             <div ref={pageRef} className="flex h-full flex-col w-full">
               <PreviewBanner role="status">
-                <strong>Editing needs a wider screen</strong>
+                <strong>
+                  <span className="material-symbols-outlined" aria-hidden="true">
+                    screen_rotation
+                  </span>
+                  Turn your phone sideways to edit
+                </strong>
                 {/*
                   Not "this is your published site". The canvas keeps the width
                   the page was authored at, while the exporter gives a published
@@ -186,10 +249,10 @@ export const Viewport = ({ children }) => {
                   that would not scroll there. Saying otherwise would make this
                   screen lie about the one thing it is for.
                 */}
-                The elements and settings panels need about 1024px beside the
-                canvas, and there is nowhere to put them here. Below is your page,
-                read-only — the editor canvas rather than the published layout, so
-                wide sections scroll sideways here.{' '}
+                The elements and settings panels each take the full width of the
+                screen, and upright that leaves nothing of the page to edit
+                against. Below is your page, read-only — the editor canvas rather
+                than the published layout, so wide sections scroll sideways here.{' '}
                 <a href="/my-projects">Back to My Projects</a>
               </PreviewBanner>
               {canvas(false)}
@@ -205,8 +268,8 @@ export const Viewport = ({ children }) => {
     <ViewportDiv>
       <div className="viewport" data-panel={activePanel || undefined}>
         <div className="dc-editor-row flex h-full overflow-hidden flex-row w-full">
-          <Toolbox offCanvas={drawers && activePanel !== 'toolbox'} />
-          <div ref={pageRef} className="page-container flex flex-1 h-full flex-col">
+          <Toolbox drawer={drawers} offCanvas={drawers && activePanel !== 'toolbox'} />
+          <div ref={pageRef} className="page-container flex flex-1 h-full min-w-0 flex-col">
             <Header
               openPanel={activePanel}
               onTogglePanel={drawers ? (panel) => setOpenPanel((open) => (open === panel ? null : panel)) : null}
@@ -218,6 +281,27 @@ export const Viewport = ({ children }) => {
 
           {activePanel && (
             <Scrim className="dc-drawer-scrim" onClick={() => setOpenPanel(null)} aria-hidden="true" />
+          )}
+
+          {drawers && enabled && (
+            <MobilePanelBar className="dc-mobile-editor-bar" aria-label="Editor panels">
+              <button
+                type="button"
+                aria-pressed={activePanel === 'toolbox'}
+                onClick={() => setOpenPanel((open) => (open === 'toolbox' ? null : 'toolbox'))}
+              >
+                <span className="material-symbols-outlined" aria-hidden="true">widgets</span>
+                Elements
+              </button>
+              <button
+                type="button"
+                aria-pressed={activePanel === 'sidebar'}
+                onClick={() => setOpenPanel((open) => (open === 'sidebar' ? null : 'sidebar'))}
+              >
+                <span className="material-symbols-outlined" aria-hidden="true">tune</span>
+                Properties
+              </button>
+            </MobilePanelBar>
           )}
         </div>
       </div>

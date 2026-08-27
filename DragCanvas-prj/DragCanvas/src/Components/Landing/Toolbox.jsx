@@ -160,7 +160,7 @@ const Empty = styled.div`
  * accessibility tree — an off-screen panel whose buttons you can still Tab into
  * is worse than one that is simply not there.
  */
-export const Toolbox = ({ offCanvas = false }) => {
+export const Toolbox = ({ offCanvas = false, drawer = false }) => {
   const {
     enabled,
     selectedId,
@@ -215,6 +215,7 @@ export const Toolbox = ({ offCanvas = false }) => {
   const renderItem = (entry) => (
     <div
       key={entry.name}
+      className="dc-toolbox-item"
       ref={(ref) => {
         create(ref, entry.element());
       }}
@@ -246,7 +247,10 @@ export const Toolbox = ({ offCanvas = false }) => {
     <ToolboxDiv
       $enabled={enabled && enabled}
       className="toolbox transition h-full flex flex-col"
-      style={{ width: enabled ? '104px' : 0 }}
+      // A column down the left, not a full-width sheet. The width is shared
+      // with the Sidebar column opposite and defined in responsive.css, which
+      // is also where the reason for the formula is written down.
+      style={{ width: enabled ? (drawer ? 'var(--dc-drawer-width, 280px)' : '104px') : 0 }}
       inert={offCanvas || undefined}
       aria-hidden={offCanvas || undefined}
     >
@@ -262,14 +266,14 @@ export const Toolbox = ({ offCanvas = false }) => {
           if (e.key === 'Escape') setSearch('');
         }}
       />
-      <div className="flex flex-1 flex-col items-center gap-1 overflow-y-auto pb-4">
+      <div className="dc-toolbox-items flex flex-1 flex-col items-center gap-1 overflow-y-auto pb-4">
         {searching ? (
           // A query that matches two groups should not be split across two
           // headers, so results are one flat list.
           matches.length ? (
             matches.map(renderItem)
           ) : (
-            <Empty>Nothing matches “{search.trim()}”</Empty>
+            <Empty className="dc-toolbox-span">Nothing matches “{search.trim()}”</Empty>
           )
         ) : (
           ELEMENT_GROUPS.map((group) => {
@@ -279,6 +283,7 @@ export const Toolbox = ({ offCanvas = false }) => {
             return (
               <React.Fragment key={group}>
                 <GroupHeader
+                  className="dc-toolbox-span"
                   type="button"
                   aria-expanded={!isCollapsed}
                   onClick={() =>

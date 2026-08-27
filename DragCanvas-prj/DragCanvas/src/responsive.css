@@ -45,6 +45,7 @@
  * does not use them. Centred modals do not need them.
  */
 :root {
+  --safe-top: env(safe-area-inset-top, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -276,12 +277,39 @@
  */
 @media (max-width: 1023px) {
   /*
+   * How far the floating panel bar sits off the bottom edge. `max()` and not
+   * the inset alone: on a phone with no home indicator the inset is 0, and the
+   * bar would sit flush against the edge of the screen.
+   */
+  :root {
+    --dc-panel-bar-offset: max(8px, var(--safe-bottom, 0px));
+
+    /*
+     * Both columns run to the foot of the screen, so the floating panel bar has
+     * to fit in the gap between them rather than below them. 316px is the bar's
+     * own 300px plus an 8px gap each side; whatever is left over is split
+     * between the two columns, capped at the 280px they want.
+     *
+     * The cap alone was not enough: on a phone with landscape insets the shell
+     * is 756px, two 280px columns leave 196px, and the bar overlapped both of
+     * them by ~52px. `100%` resolves where the variable is used — against
+     * .dc-editor-row, which is the shell the columns actually sit in — so this
+     * follows the safe area without needing to know what it is.
+     */
+    --dc-drawer-width: min(280px, calc((100% - 316px) / 2));
+  }
+
+  /*
    * The row becomes the containing block, so a closed drawer is clipped by the
    * row's own `overflow: hidden` instead of resolving against the fixed
    * .viewport and leaving a phantom 300px of scrollable nothing.
    */
   .dc-editor-row {
     position: relative;
+  }
+
+  .dc-editor-row .page-container {
+    min-width: 0;
   }
 
   /*
@@ -294,10 +322,27 @@
   .viewport .sidebar {
     position: absolute;
     top: 56px;
+    /*
+     * All the way down. The column runs from under the editor header — the bar
+     * with Preview, Export, Save Project and Publish — to the foot of the
+     * screen, the same as the desktop columns it stands in for. It used to stop
+     * short to clear the floating panel bar; the columns are narrow enough now
+     * that the bar sits in the gap between them instead, so the height is no
+     * longer worth spending on it.
+     */
     bottom: 0;
     z-index: 30;
     margin: 0;
     transition: transform 0.18s ease;
+    /*
+     * The Toolbox carries Tailwind's `h-full`, and for an absolutely positioned
+     * element an explicit height wins outright — the `bottom` above is dropped
+     * as over-constrained. Measured at 402x874 the drawer ran to 930px: 56px
+     * past the foot of the screen, with the elements down there unreachable.
+     * `auto` hands the height back to the top/bottom pair. The Sidebar has no
+     * `h-full` and was always correct, which is why only one panel showed it.
+     */
+    height: auto;
   }
 
   .dc-editor-row .dc-drawer-scrim {
@@ -314,8 +359,9 @@
     transform: translateX(100%);
   }
 
+  /* A column down the right, the same width as the Toolbox column opposite. */
   .viewport .sidebar.sidebar {
-    width: min(300px, 100%);
+    width: var(--dc-drawer-width, 280px);
   }
 
   .viewport[data-panel='toolbox'] .toolbox,
@@ -351,6 +397,82 @@
   .dc-editor-header__pages,
   .dc-editor-header__rail > .flex {
     flex: 0 0 auto;
+  }
+
+  .dc-mobile-editor-bar.dc-mobile-editor-bar {
+    position: absolute;
+    left: 50%;
+    bottom: var(--dc-panel-bar-offset);
+    z-index: 40;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(112px, 1fr));
+    gap: 6px;
+    width: min(300px, calc(100% - 24px));
+    padding: 6px;
+    transform: translateX(-50%);
+    border: 1px solid var(--outline-light, #dce2ec);
+    border-radius: 18px;
+    background: color-mix(in oklab, var(--surface, #fff) 94%, transparent);
+    box-shadow: 0 10px 32px rgb(15 23 42 / 0.22);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .dc-mobile-editor-bar button {
+    display: flex;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    border: 0;
+    border-radius: 13px;
+    background: transparent;
+    color: var(--on-surface-variant, #3f4a5f);
+    font: 700 12px/1 'Plus Jakarta Sans', sans-serif;
+    touch-action: manipulation;
+  }
+
+  .dc-mobile-editor-bar button[aria-pressed='true'] {
+    background: var(--primary, #4e5ba6);
+    color: var(--on-primary, #fff);
+  }
+
+  .dc-mobile-editor-bar .material-symbols-outlined {
+    font-size: 20px;
+  }
+
+  /*
+   * One 78px button per row down the middle of a full-width drawer wasted the
+   * width and turned thirty-odd elements into a very long scroll. A grid fits
+   * four or five to a row at 874px and the list stops being a column of stamps.
+   *
+   * This lived under `max-width: 768px` while the drawer was only full-width on
+   * a phone. Both panels now run edge to edge for the whole drawer band, so the
+   * grid has to cover the same band — under the old bound a landscape phone at
+   * 874px got the full width and still stacked one button per row.
+   */
+  .viewport .toolbox .dc-toolbox-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    align-content: start;
+    gap: 2px;
+    padding: 0 6px;
+  }
+
+  /* Headings and the empty state are not cells; they introduce the row below. */
+  .viewport .toolbox .dc-toolbox-span {
+    grid-column: 1 / -1;
+  }
+
+  .viewport .toolbox .dc-toolbox-item {
+    width: 100%;
+  }
+
+  /* The button carries a fixed 78px and an 8px margin of its own; in a grid
+     the cell decides the width and the gap decides the spacing. */
+  .viewport .toolbox .dc-toolbox-item > button {
+    width: 100%;
+    margin: 0;
   }
 }
 

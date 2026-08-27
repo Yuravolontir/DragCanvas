@@ -67,5 +67,5 @@ function DefaultProjectCanvas() {
 }
 
 export default function CreateNewProject() {
-  return <><NavBar /><ThemeProvider theme={theme}><div className="h-full h-screen"><Editor resolver={resolver} enabled={false} onRender={Landing.RenderNode}><LoadProjectOnMount /><Landing.Viewport><Frame>{DefaultProjectCanvas()}</Frame></Landing.Viewport></Editor></div></ThemeProvider></>;
+  return <><NavBar /><ThemeProvider theme={theme}><div className="h-full h-screen"><Editor resolver={resolver} enabled onRender={Landing.RenderNode}><LoadProjectOnMount /><Landing.Viewport><Frame>{DefaultProjectCanvas()}</Frame></Landing.Viewport></Editor></div></ThemeProvider></>;
 }
