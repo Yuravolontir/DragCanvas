@@ -5,6 +5,12 @@ export const sharedRootIds = (data) => (data?.ROOT?.nodes || []).filter((id, ind
   return (index === 0 && type === 'NavbarElement') || display.includes('footer');
 });
 
+export const pageSlugFromHref = (href) => {
+  const value = String(href || '').trim();
+  if (!/^\/(?:[a-z0-9][a-z0-9-]*\/?)?$/.test(value)) return null;
+  return value.replace(/^\/+|\/+$/g, '') || 'home';
+};
+
 const collectTreeIds = (data, roots) => {
   const ids = new Set();
   const visit = (id) => {

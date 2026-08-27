@@ -1,6 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { blankPageFrom, syncSharedChrome } from '../src/utils/projectPages.js';
+import { blankPageFrom, pageSlugFromHref, syncSharedChrome } from '../src/utils/projectPages.js';
+
+test('editor preview recognizes project-page links without hijacking external or anchor links', () => {
+  assert.equal(pageSlugFromHref('/'), 'home');
+  assert.equal(pageSlugFromHref('/about/'), 'about');
+  assert.equal(pageSlugFromHref('/our-menu'), 'our-menu');
+  assert.equal(pageSlugFromHref('#menu'), null);
+  assert.equal(pageSlugFromHref('https://example.com'), null);
+});
 
 const page = (heroText) => ({
   ROOT: { nodes: ['nav', 'hero', 'footer'] },

@@ -191,6 +191,12 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
     setPages(nextPages.map(page => page.slug === slug ? { ...page, data: syncedTarget } : page)); setCurrentPageSlug(slug); actions.deserialize(syncedTarget);
   };
 
+  useEffect(() => {
+    const navigatePage = (event) => switchPage(event.detail?.slug);
+    window.addEventListener('dragcanvas:page-navigate', navigatePage);
+    return () => window.removeEventListener('dragcanvas:page-navigate', navigatePage);
+  });
+
   const addPage = () => {
     const name = window.prompt('Page name'); if (!name) return;
     const slug = name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40);
