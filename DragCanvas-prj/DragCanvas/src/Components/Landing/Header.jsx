@@ -529,6 +529,8 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
   const [templateName, setTemplateName] = useState('');
   const [templateCategory, setTemplateCategory] = useState('Landing Page');
 
+  const [telegramBot, setTelegramBot] = useState(null);
+  const [integrationsSaved, setIntegrationsSaved] = useState(false);
   const [telegramTest, setTelegramTest] = useState(null);
   const [telegramTesting, setTelegramTesting] = useState(false);
   const [publishModal, setPublishModal] = useState(false);
@@ -614,6 +616,16 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
  
 
    // If the loaded project was published before, restore its live URL (for the Published chip)
+  // "Press Start" is the first step of connecting Telegram, and nobody can take
+  // it without knowing which bot to press it on. Asked when the dialog opens
+  // rather than at mount: most sessions never open it.
+  useEffect(() => {
+    if (!publishModal || !currentUser || telegramBot) return;
+    apiFetch('/api/forms/telegram/bot')
+      .then((bot) => setTelegramBot(bot || { username: null }))
+      .catch(() => setTelegramBot({ username: null }));
+  }, [publishModal, currentUser, telegramBot]);
+
    useEffect(() => {
      if (!projectId || !currentUser) return;
      apiFetch(`/api/projects/${projectId}`)
@@ -911,6 +923,26 @@ const handlePublish = async () => {
    * lost. One test message while the dialog is still open turns that into an
    * answer on the spot.
    */
+  /*
+   * Notification settings used to reach the database only as a side effect of
+   * publishing, so typing a chat ID and closing the dialog threw it away -
+   * quietly, after the owner had watched a test message arrive.
+   */
+  const saveIntegrations = async () => {
+    if (!projectId) return false;
+    try {
+      await apiFetch(`/api/forms/project/${projectId}/integrations`, {
+        method: 'PUT', body: { webhookUrl, telegramChatId, googleSheetsWebhookUrl },
+      });
+      setIntegrationsSaved(true);
+      setTimeout(() => setIntegrationsSaved(false), 2500);
+      return true;
+    } catch (error) {
+      showAlertModal(error.message, 'error');
+      return false;
+    }
+  };
+
   const handleTelegramTest = async () => {
     if (!projectId) return setTelegramTest({ ok: false, message: 'Save the project first, then test the connection.' });
     setTelegramTesting(true);
@@ -920,6 +952,9 @@ const handlePublish = async () => {
         method: 'POST', body: { telegramChatId: telegramChatId.trim() },
       });
       setTelegramTest({ ok: true, message: result.message });
+      // A connection just proven and then lost on Cancel is the worst of both:
+      // the owner watched it work and believes it is set up.
+      await saveIntegrations();
     } catch (error) {
       setTelegramTest({ ok: false, message: error.message });
     }
@@ -1301,9 +1336,32 @@ const handlePublish = async () => {
                   placeholder="123456789"
                 />
                 <Hint>
-                  Receive each lead as a Telegram message. Two steps: find our bot in Telegram and press Start (for a team chat, add the bot to the group instead), then paste the chat ID here. The ID is a number, and the bot called userinfobot replies with yours - a group ID begins with a minus. Telegram does not let a bot write to somebody who has never started it, so use the button below to make sure the two are connected.
+                  {telegramBot?.username ? (
+                    <>
+                      Receive each lead as a Telegram message, in two steps.
+                      {' '}
+                      <strong>First</strong>, open{' '}
+                      <a href={`https://t.me/${telegramBot.username}`} target="_blank" rel="noreferrer">@{telegramBot.username}</a>
+                      {' '}and press Start — for a team chat, add that bot to the group instead. Telegram does not let a bot
+                      write to anybody who has not started it, so nothing arrives until this is done.
+                      {' '}
+                      <strong>Second</strong>, paste your chat ID above: it is a number, and the bot called userinfobot replies
+                      with yours. A group ID begins with a minus. Then send a test message to be sure.
+                    </>
+                  ) : (
+                    <>
+                      Receive each lead as a Telegram message. The chat ID is a number: the bot called userinfobot replies with
+                      yours, and a group ID begins with a minus.
+                    </>
+                  )}
                 </Hint>
               </Field>
+              {telegramBot && !telegramBot.username && (
+                <Note>
+                  <span className="material-symbols-outlined" aria-hidden="true">info</span>
+                  <span>{telegramBot.reason || 'Telegram notifications are not available on this site yet. E-mail still works.'}</span>
+                </Note>
+              )}
               <div style={{ marginTop: '10px' }}>
                 <PublishGhost
                   type="button"
@@ -1327,6 +1385,16 @@ const handlePublish = async () => {
                 <input value={googleSheetsWebhookUrl} onChange={(e) => setGoogleSheetsWebhookUrl(e.target.value)} placeholder="https://script.google.com/…" />
                 <Hint>Writes every lead as a new row in your Google spreadsheet, instead of you keeping a list by hand. It is set up once inside the sheet: Extensions, then Apps Script, then deploy it as a web app, and paste the link it gives you here.</Hint>
               </Field>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '14px', flexWrap: 'wrap' }}>
+                <PublishGhost type="button" $quiet onClick={saveIntegrations} disabled={!projectId}>
+                  <span className="material-symbols-outlined" aria-hidden="true">save</span>
+                  Save these settings
+                </PublishGhost>
+                {integrationsSaved && (
+                  <Hint style={{ margin: 0, color: 'var(--primary)' }}>Saved.</Hint>
+                )}
+              </div>
+              <Hint>Publishing saves them too. This button is for when you want to keep them without publishing yet.</Hint>
             </div>
           </PublishSection>
 

@@ -206,6 +206,36 @@ export async function saveIntegrations(req, res) {
 }
 
 /**
+ * Which bot this server sends with, so the dialog can name it.
+ *
+ * Telegram will not let a bot write to somebody who has never started it, which
+ * makes "press Start" the first step of the whole flow - and a step nobody can
+ * take without knowing which bot to press it on. The name lives in the token,
+ * so it is asked of Telegram rather than configured twice and left to drift.
+ */
+let botNameCache = { username: null, until: 0 };
+
+export async function getTelegramBot(req, res) {
+    try {
+        const token = process.env.TELEGRAM_BOT_TOKEN;
+        if (!token) return res.status(200).json(buildSuccessResponse({ username: null, reason: 'This site has no Telegram bot set up yet, so Telegram notifications cannot be delivered. E-mail still works.' }));
+
+        if (botNameCache.username && botNameCache.until > Date.now()) {
+            return res.status(200).json(buildSuccessResponse({ username: botNameCache.username }));
+        }
+        const bot = await fetch(`https://api.telegram.org/bot${token}/getMe`, { signal: AbortSignal.timeout(8000) })
+            .then(response => response.json())
+            .catch(() => null);
+        if (!bot?.ok) return res.status(200).json(buildSuccessResponse({ username: null, reason: 'Telegram did not accept this server’s bot token, so Telegram notifications cannot be delivered right now.' }));
+
+        // The username changes only when the administrator swaps the token, so an
+        // hour of cache saves a call to Telegram on every open of the dialog.
+        botNameCache = { username: bot.result.username, until: Date.now() + 3600_000 };
+        return res.status(200).json(buildSuccessResponse({ username: bot.result.username }));
+    } catch (error) { return res.status(500).json(buildErrorResponse(error.message)); }
+}
+
+/**
  * Sends one test message to the chat the owner typed in, and says plainly what
  * happened.
  *

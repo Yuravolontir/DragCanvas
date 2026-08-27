@@ -12,6 +12,9 @@ const formRouter = Router();
  */
 formRouter.post('/submit', formSubmitLimiter, ctrl.submitForm);
 
+// Protected: which bot this server speaks through - the dialog names it
+formRouter.get('/telegram/bot', verifyToken, ctrl.getTelegramBot);
+
 // Protected: only the project owner reads what came in
 formRouter
     .get('/project/:projectId', verifyToken, ctrl.getSubmissions)
