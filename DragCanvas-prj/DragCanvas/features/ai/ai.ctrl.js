@@ -121,9 +121,8 @@ export async function generateWebsite(req, res) {
  * section". The model receives the current layout and one instruction, and
  * returns the whole updated layout.
  *
- * v1 refines the last layout the generator produced. Edits made by hand in the
- * editor afterwards are not part of it - reconstructing them would mean
- * translating the editor's node map back into this shape.
+ * The client reconstructs this layout from the live Craft node map, so reopened
+ * projects and edits made by hand are included in the instruction.
  */
 export async function refineWebsite(req, res) {
     const { layout, instruction } = req.body || {};

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import API_URL, { apiFetch, getToken } from './api.js';
 import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
+import { craftProjectToAiLayout } from './utils/craftToAiLayout.js';
 
 /**
  * What to call the current stage on the button.
@@ -38,12 +39,11 @@ function stageLabel(stage) {
     // low / balanced / bold -> temperature on the server
     const [creativity, setCreativity] = useState('balanced');
     const [multiPage, setMultiPage] = useState(false);
-    // The layout the generator produced, kept so it can be refined afterwards
-    const [layout, setLayout] = useState(null);
+    const [canRefine, setCanRefine] = useState(Boolean(window.__dragcanvasPageState));
     const [refinement, setRefinement] = useState('');
     const [history, setHistory] = useState([]);
 
-    const { actions } = useEditor();
+    const { actions, query } = useEditor();
 
     /**
      * Pick up a prompt typed on the landing page.
@@ -57,6 +57,12 @@ function stageLabel(stage) {
     useEffect(() => {
       const pending = consumePendingPrompt();
       if (pending) setPrompt(pending);
+    }, []);
+
+    useEffect(() => {
+      const projectLoaded = () => setCanRefine(true);
+      window.addEventListener('dragcanvas:project-loaded', projectLoaded);
+      return () => window.removeEventListener('dragcanvas:project-loaded', projectLoaded);
     }, []);
 
     /**
@@ -276,7 +282,7 @@ function stageLabel(stage) {
       };
       window.__dragcanvasPageState = pageState;
       window.dispatchEvent(new CustomEvent('dragcanvas:pages-loaded', { detail: pageState }));
-      setLayout(nextLayout);
+      setCanRefine(true);
 
     };
 
@@ -285,7 +291,16 @@ function stageLabel(stage) {
      * "add a pricing section". The server edits the layout we hold in state.
      */
     const refineWebsite = async () => {
-      if (!refinement.trim() || !layout) return;
+      if (!refinement.trim()) return;
+
+      const currentLayout = craftProjectToAiLayout(
+        window.__dragcanvasPageState,
+        JSON.parse(query.serialize()),
+      );
+      if (!currentLayout.sections?.length && !currentLayout.pages?.some(page => page.sections.length)) {
+        setError('Add or load some content before asking AI to refine it.');
+        return;
+      }
 
       setLoading(true);
       setError(null);
@@ -294,7 +309,7 @@ function stageLabel(stage) {
       try {
         const refined = await apiFetch('/api/ai/refine', {
           method: 'POST',
-          body: { layout, instruction: refinement }
+          body: { layout: currentLayout, instruction: refinement }
         });
 
         if (!refined?.sections?.length && !refined?.pages?.length) {
@@ -445,7 +460,7 @@ function stageLabel(stage) {
         </div>
 
         {/* Once a page exists, the user can keep asking for changes to it */}
-        {layout && (
+        {canRefine && (
           <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--surface-container)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
               <span className="material-symbols-outlined" style={{ fontSize: '16px', color: 'var(--haze)' }}>tune</span>

@@ -61,7 +61,10 @@ import { useEffect } from 'react';
             window.dispatchEvent(new CustomEvent('dragcanvas:pages-loaded', { detail: pageState }));
           } else {
             actions.deserialize(projectData);
+            delete window.__dragcanvasPageState;
           }
+
+          window.dispatchEvent(new CustomEvent('dragcanvas:project-loaded'));
 
           console.log('✅ Project loaded into editor');
 
