@@ -4,6 +4,7 @@ import { connectCustomDomain, deployToNetlify, slugify } from './netlify.service
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
 import BookingMdl from '../bookings/booking.mdl.js';
 import { createPreviewBundle, previewPage } from '../../utils/previewBundle.js';
+import { publicApiBase, rewritePublishedApiUrls, rewritePublishedFiles } from '../../utils/publishedApiUrls.js';
 
 export async function publishSite(req, res) {
     try {
@@ -39,13 +40,21 @@ export async function publishSite(req, res) {
             return res.status(400).json(buildErrorResponse('Domain already connected to another project'));
         }
 
+        // Never ship a developer-machine URL to Netlify. The client normally
+        // exports with VITE_API_URL, but a stale/misconfigured frontend build
+        // must not turn every form, booking and analytics request into
+        // localhost on the visitor's device.
+        const apiBase = publicApiBase(req);
+        const publishHtml = rewritePublishedApiUrls(html, apiBase);
+        const publishFiles = rewritePublishedFiles(files, apiBase);
+
         // Save the HTML first: even if Netlify fails, publishing can be retried
-        await PublishMdl.savePublishedHtmlInDB(projectId, html, domain);
+        await PublishMdl.savePublishedHtmlInDB(projectId, publishHtml, domain);
 
         let deployment;
         try {
             const siteName = slugify(`dragcanvas-${info.UserName}-${info.ProjectName}`);
-            deployment = await deployToNetlify(html, siteName, info.NetlifySiteID, files, { password: String(password || '').slice(0, 100) });
+            deployment = await deployToNetlify(publishHtml, siteName, info.NetlifySiteID, publishFiles, { password: String(password || '').slice(0, 100) });
         } catch (netlifyError) {
             return res.status(502).json(buildErrorResponse(`Deploy failed: ${netlifyError.message}`));
         }
@@ -57,7 +66,7 @@ export async function publishSite(req, res) {
             publishedUrl = `https://${domainConnection.domain}`;
         }
         await PublishMdl.saveDeploymentInDB(projectId, deployment.siteId, publishedUrl);
-        await PublishMdl.saveVersionInDB(projectId, html, files, publishedUrl);
+        await PublishMdl.saveVersionInDB(projectId, publishHtml, publishFiles, publishedUrl);
 
         return res.status(200).json(buildSuccessResponse({
             publishedUrl,
