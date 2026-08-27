@@ -190,36 +190,40 @@ function stageLabel(stage) {
       }
     };
 
-    const collectImageInfo = (sections) => {
+    const collectImageInfo = (sections, replaceExisting = false) => {
       const images = [];
+      const replaceable = value => typeof value === 'string' && (replaceExisting
+        ? /^https?:\/\//i.test(value)
+        : value.includes('picsum.photos/seed/'));
+      const description = (value, fallback) => value?.includes('/seed/')
+        ? value.split('/seed/')[1]?.split('/')[0]?.replace(/[-_]/g, ' ')
+        : fallback;
       const walk = (elements) => {
         if (!Array.isArray(elements)) return;
         for (const el of elements) {
-          if (el.type === 'Image' && el.props?.src?.includes('picsum.photos/seed/')) {
-            const seed = el.props.src.split('/seed/')[1]?.split('/')[0] || 'image';
-            const desc = seed.replace(/[-_]/g, ' ');
-            images.push({ path: el, seed, prompt: `${desc}, professional website photo, high quality` });
+          if (el.type === 'Image' && replaceable(el.props?.src)) {
+            const desc = description(el.props.src, el.props?.alt || el.props?.title || 'website image');
+            images.push({ path: el, prompt: `${desc}, professional website photo, high quality` });
           }
           if (el.type === 'Carousel') {
             ['src1', 'src2', 'src3'].forEach((key, i) => {
-              if (el.props?.[key]?.includes('picsum.photos/seed/')) {
-                const seed = el.props[key].split('/seed/')[1]?.split('/')[0] || `slide${i + 1}`;
+              if (replaceable(el.props?.[key])) {
+                const seed = description(el.props[key], `carousel slide ${i + 1}`);
                 const heading = el.props?.[`heading${i + 1}`] || '';
-                const desc = seed.replace(/[-_]/g, ' ');
-                images.push({ path: el, key, seed, prompt: `${desc}${heading ? ', ' + heading : ''}, professional website photo, high quality` });
+                images.push({ path: el, key, prompt: `${seed}${heading ? ', ' + heading : ''}, professional website photo, high quality` });
               }
             });
             if (Array.isArray(el.props?.slides)) {
               el.props.slides.forEach((slide, i) => {
-                if (!slide?.src?.includes('picsum.photos/seed/')) return;
-                const seed = slide.src.split('/seed/')[1]?.split('/')[0] || `slide-${i + 1}`;
-                images.push({ path: slide, key: 'src', prompt: `${seed.replace(/[-_]/g, ' ')}, ${slide.heading || ''}, professional website photo, high quality` });
+                if (!replaceable(slide?.src)) return;
+                const desc = description(slide.src, slide.alt || slide.heading || `carousel slide ${i + 1}`);
+                images.push({ path: slide, key: 'src', prompt: `${desc}, professional website photo, high quality` });
               });
             }
           }
-          if (el.props?.backgroundImage?.includes('picsum.photos/seed/')) {
-            const seed = el.props.backgroundImage.split('/seed/')[1]?.split('/')[0] || 'website background';
-            images.push({ path: el.props, key: 'backgroundImage', prompt: `${seed.replace(/[-_]/g, ' ')}, professional wide website background, high quality` });
+          if (replaceable(el.props?.backgroundImage)) {
+            const desc = description(el.props.backgroundImage, el.props?.anchor || 'website background');
+            images.push({ path: el.props, key: 'backgroundImage', prompt: `${desc}, professional wide website background, high quality` });
           }
           if (el.children) walk(el.children);
         }
@@ -233,8 +237,8 @@ function stageLabel(stage) {
      * includes ordinary images, section backgrounds, legacy carousels and the
      * current slides-array carousel format.
      */
-    const fillInImages = async (sections) => {
-      const images = collectImageInfo(sections);
+    const fillInImages = async (sections, replaceExisting = false) => {
+      const images = collectImageInfo(sections, replaceExisting);
       if (images.length === 0) return;
 
       const prompts = [...new Set(images.map(i => i.prompt))];
@@ -261,11 +265,11 @@ function stageLabel(stage) {
      * Images are persisted before Craft serialises the pages, so saving,
      * switching pages and publishing can never capture temporary blob URLs.
      */
-    const applyLayout = async (nextLayout) => {
+    const applyLayout = async (nextLayout, { replaceImages = false } = {}) => {
       const sourcePages = Array.isArray(nextLayout.pages) && nextLayout.pages.length
         ? nextLayout.pages
         : [{ name: 'Home', slug: 'home', sections: nextLayout.sections || [] }];
-      await fillInImages(sourcePages.flatMap(page => page.sections || []));
+      await fillInImages(sourcePages.flatMap(page => page.sections || []), replaceImages);
       const builtPages = sourcePages.map((page, index) => {
         const slug = index === 0 ? 'home' : page.slug;
         const built = buildCraftTree(page.sections, `${slug}-`);
@@ -307,6 +311,13 @@ function stageLabel(stage) {
       setStage({ name: 'refining' });
 
       try {
+        const imageOnly = /(?:replace|refresh|regenerate|update|change).{0,30}(?:image|images|photo|photos|picture|pictures)|(?:замени|обнови|поменяй|перегенерируй).{0,30}(?:картин|изображен|фото)/i.test(refinement);
+        if (imageOnly) {
+          await applyLayout(currentLayout, { replaceImages: true });
+          setHistory(prev => [...prev, refinement]);
+          setRefinement('');
+          return;
+        }
         const refined = await apiFetch('/api/ai/refine', {
           method: 'POST',
           body: { layout: currentLayout, instruction: refinement }

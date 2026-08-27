@@ -9,6 +9,38 @@ const MAX_ATTEMPTS = 3;
 const MIN_SECTIONS = 3;
 const pagesOf = layout => Array.isArray(layout?.pages) ? layout.pages : [{ name: 'Home', slug: 'home', sections: layout?.sections || [] }];
 const sectionCount = layout => pagesOf(layout).reduce((total, page) => total + (page.sections || []).length, 0);
+const PAGE_REFINE_TOKENS = Number(process.env.AI_PAGE_MAX_TOKENS) || 12000;
+
+async function mapConcurrent(items, concurrency, work) {
+    const results = new Array(items.length);
+    let next = 0;
+    async function worker() {
+        while (next < items.length) {
+            const index = next++;
+            results[index] = await work(items[index], index);
+        }
+    }
+    await Promise.all(Array.from({ length: Math.min(concurrency, items.length) }, worker));
+    return results;
+}
+
+async function refinePagesInParallel(layout, instruction) {
+    const pages = pagesOf(layout);
+    const navigation = pages.map(page => `${page.name} (/${page.slug === 'home' ? '' : `${page.slug}/`})`).join(', ');
+    return mapConcurrent(pages, 2, async page => {
+        const pageInstruction = `${instruction}\nYou are editing only the ${page.name} page. Keep its navigation consistent with these pages: ${navigation}.`;
+        const raw = await aiService.refineLayout({ sections: page.sections }, pageInstruction, { maxTokens: PAGE_REFINE_TOKENS });
+        let parsed;
+        try { parsed = safeParseAIJson(raw); }
+        catch { parsed = safeParseAIJson(await aiService.repairLayoutJson(raw)); }
+        const normalized = normalizeLayout(parsed);
+        const sections = pagesOf(normalized)[0]?.sections || [];
+        if (sections.length < Math.max(1, page.sections.length - 3)) {
+            throw new Error(`${page.name} shrank from ${page.sections.length} to ${sections.length} sections`);
+        }
+        return { ...page, sections };
+    });
+}
 
 /**
  * Some failures are an answer, not an accident.
@@ -138,6 +170,21 @@ export async function refineWebsite(req, res) {
     const sectionsBefore = sectionCount(layout);
     const pagesBefore = pagesOf(layout).length;
     let lastProblem = 'unknown';
+
+    // Each page is an independent JSON document once the shared navigation
+    // contract is known. Two provider calls at a time cut multipage latency
+    // without creating a burst large enough to trip ordinary rate limits.
+    if (pagesBefore > 1) {
+        try {
+            const pages = await refinePagesInParallel(layout, cleanInstruction);
+            console.log(`[AI] refined ${pages.length} pages with concurrency=2`);
+            return res.status(200).json(buildSuccessResponse({ pages }));
+        } catch (error) {
+            lastProblem = error.message;
+            console.log(`[AI] parallel refine failed, falling back to whole-site refinement: ${error.message}`);
+            if (providerRefusal(error)) return res.status(502).json(buildErrorResponse(error.message));
+        }
+    }
 
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
         try {

@@ -132,13 +132,13 @@ export async function generateLayout(prompt, creativity) {
  * Deliberately colder than generation: refinement should change what was asked
  * and leave the rest alone, which is the opposite of creative freedom.
  */
-export function refineLayout(layout, instruction) {
+export function refineLayout(layout, instruction, options = {}) {
     return callModel(
         [
             { role: 'system', content: buildRefinePrompt() },
             { role: 'user', content: buildRefineMessage(layout, instruction) },
         ],
-        { temperature: 0.3 }
+        { temperature: 0.3, maxTokens: options.maxTokens || MAX_OUTPUT_TOKENS }
     );
 }
 
