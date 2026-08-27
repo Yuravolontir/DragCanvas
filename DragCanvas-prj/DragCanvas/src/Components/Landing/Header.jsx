@@ -542,9 +542,24 @@ const handlePublish = async () => {
   };
 
   return (
-    <HeaderDiv className="header text-white transition w-full">
-      <div className="items-center flex w-full px-2 justify-end">
-        <div style={{ display: 'flex', gap: 5, alignItems: 'center', marginRight: 8 }}>
+    <HeaderDiv className="header dc-editor-header text-white transition w-full">
+      <div className="dc-editor-header__rail items-center flex w-full px-2 justify-end">
+        {onTogglePanel && (
+          <div className="dc-editor-header__panels flex items-center">
+            <Tooltip title="Elements" placement="bottom" describeChild>
+              <PanelToggle $on={openPanel === 'toolbox'} aria-pressed={openPanel === 'toolbox'} aria-label="Elements panel" onClick={() => onTogglePanel('toolbox')}>
+                <span className="material-symbols-outlined" aria-hidden="true">widgets</span>
+              </PanelToggle>
+            </Tooltip>
+            <Tooltip title="Settings and layers" placement="bottom" describeChild>
+              <PanelToggle $on={openPanel === 'sidebar'} aria-pressed={openPanel === 'sidebar'} aria-label="Settings panel" onClick={() => onTogglePanel('sidebar')}>
+                <span className="material-symbols-outlined" aria-hidden="true">tune</span>
+              </PanelToggle>
+            </Tooltip>
+            <Divider />
+          </div>
+        )}
+        <div className="dc-editor-header__pages" style={{ display: 'flex', gap: 5, alignItems: 'center', marginRight: 8 }}>
           <select aria-label="Current page" value={currentPageSlug} onChange={(event) => switchPage(event.target.value)} style={{ padding: '6px 8px', borderRadius: 8 }}>
             {pages.map(page => <option key={page.slug} value={page.slug}>{page.name}</option>)}
           </select>
@@ -559,31 +574,6 @@ const handlePublish = async () => {
             <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: 17 }}>delete</span>
           </button>
         </div>
-        {onTogglePanel && (
-          <div className="flex items-center">
-            <Tooltip title="Elements" placement="bottom" describeChild>
-              <PanelToggle
-                $on={openPanel === 'toolbox'}
-                aria-pressed={openPanel === 'toolbox'}
-                aria-label="Elements panel"
-                onClick={() => onTogglePanel('toolbox')}
-              >
-                <span className="material-symbols-outlined" aria-hidden="true">widgets</span>
-              </PanelToggle>
-            </Tooltip>
-            <Tooltip title="Settings and layers" placement="bottom" describeChild>
-              <PanelToggle
-                $on={openPanel === 'sidebar'}
-                aria-pressed={openPanel === 'sidebar'}
-                aria-label="Settings panel"
-                onClick={() => onTogglePanel('sidebar')}
-              >
-                <span className="material-symbols-outlined" aria-hidden="true">tune</span>
-              </PanelToggle>
-            </Tooltip>
-            <Divider />
-          </div>
-        )}
         {enabled && (
           <div className="flex-1 flex">
             <Tooltip title="Undo last change" placement="bottom">

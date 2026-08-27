@@ -28,7 +28,7 @@ import { installTouchDrag } from '../../utils/touchDragBridge.js';
  * below 768 there is no pretence of editing.
  */
 const DRAWERS = '(max-width: 1023px)';
-const PREVIEW = '(max-width: 767px)';
+const PreviewBanner = styled.div``;
 
   const ViewportDiv = styled.div`
     /*
@@ -57,37 +57,6 @@ const PREVIEW = '(max-width: 767px)';
     }
   `;
 
-const PreviewBanner = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 12px;
-  padding: 12px 16px;
-  background: var(--surface-container-low, var(--surface-dim));
-  border-bottom: 1px solid var(--outline-light);
-  color: var(--on-surface-variant);
-  font-size: 13px;
-  line-height: 1.45;
-
-  strong {
-    display: block;
-    width: 100%;
-    color: var(--on-surface);
-    font-size: 14px;
-  }
-
-  a {
-    color: var(--primary);
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  a:hover,
-  a:focus-visible {
-    text-decoration: underline;
-  }
-`;
-
 /* Tapping the canvas beside an open drawer should close it, as every drawer does. */
 const Scrim = styled.div`
   position: absolute;
@@ -97,36 +66,18 @@ const Scrim = styled.div`
 `;
 
 export const Viewport = ({ children }) => {
+  // Phone editing is supported through the same overlay drawers as tablets.
+  const preview = false;
   const [deviceMode, setDeviceMode] = useState(() => deviceModeForWidth(window.innerWidth));
   const [openPanel, setOpenPanel] = useState(null);
   const pageRef = useRef(null);
   const drawers = useMediaQuery(DRAWERS);
-  const preview = useMediaQuery(PREVIEW);
   const {
     enabled,
     connectors,
-    actions: { setOptions },
   } = useEditor((state) => ({
     enabled: state.options.enabled,
   }));
-
-  useEffect(() => {
-    if (!window) {
-      return;
-    }
-
-    window.requestAnimationFrame(() => {
-      setTimeout(() => {
-        setOptions((options) => {
-          // Below 768 this is a preview, so Craft stays off: no drag, no drop,
-          // no selection. It is also written as `!preview` rather than skipped
-          // so that resizing *out* of the preview turns editing back on without
-          // a reload.
-          options.enabled = !preview;
-        });
-      }, 200);
-    });
-  }, [setOptions, preview]);
 
   /*
    * Craft has no touch drag of its own. Called from here rather than at module
@@ -162,7 +113,7 @@ export const Viewport = ({ children }) => {
     const observer = new ResizeObserver(update);
     observer.observe(page);
     return () => observer.disconnect();
-  }, [preview]);
+  }, []);
 
   /*
    * Derived rather than reset in an effect: above 1024 the panels are columns,

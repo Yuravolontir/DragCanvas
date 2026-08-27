@@ -314,9 +314,43 @@
     transform: translateX(100%);
   }
 
+  .viewport .sidebar.sidebar {
+    width: min(300px, 100%);
+  }
+
   .viewport[data-panel='toolbox'] .toolbox,
   .viewport[data-panel='sidebar'] .sidebar {
     transform: none;
+  }
+
+  .dc-editor-header {
+    padding: 0 4px;
+  }
+
+  .dc-editor-header__rail {
+    min-width: 0;
+    overflow-x: auto;
+    justify-content: flex-start;
+    scrollbar-width: none;
+  }
+
+  .dc-editor-header__rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .dc-editor-header__panels {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    flex: 0 0 auto;
+    min-height: 55px;
+    padding-left: 4px;
+    background: var(--surface, #fff);
+  }
+
+  .dc-editor-header__pages,
+  .dc-editor-header__rail > .flex {
+    flex: 0 0 auto;
   }
 }
 
