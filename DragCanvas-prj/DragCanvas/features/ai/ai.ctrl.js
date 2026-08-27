@@ -8,6 +8,25 @@ const MIN_SECTIONS = 3;
 const pagesOf = layout => Array.isArray(layout?.pages) ? layout.pages : [{ name: 'Home', slug: 'home', sections: layout?.sections || [] }];
 const sectionCount = layout => pagesOf(layout).reduce((total, page) => total + (page.sections || []).length, 0);
 
+/**
+ * Some failures are an answer, not an accident.
+ *
+ * A missing key, a rejected one, or a refusal on credit says exactly the same
+ * thing on the third attempt as on the first. Retrying those spends nothing but
+ * the user's patience, and the generic "please try again" at the bottom of the
+ * loop then buries the one sentence that says what to actually do - which is
+ * how "you can only afford 14190 tokens" reached the screen dressed as a
+ * transient provider fault.
+ *
+ * The provider's own status is deliberately not passed on: a 401 from
+ * OpenRouter travelling out of our API is read by the client as an expired
+ * session and signs the user out.
+ */
+function providerRefusal(error) {
+    if (/Missing OPENROUTER_API_KEY/.test(error.message)) return true;
+    return [401, 402, 403].includes(error.status);
+}
+
 /** Does this layout still contain IMAGE_PLACEHOLDER_n / VIDEO_PLACEHOLDER_n? */
 function hasMediaPlaceholders(layout) {
     return /(IMAGE|VIDEO)_PLACEHOLDER_\d+/.test(JSON.stringify(layout));
@@ -83,9 +102,9 @@ export async function generateWebsite(req, res) {
             lastProblem = error.message;
             console.log(`[AI] attempt ${attempt}/${MAX_ATTEMPTS} failed: ${error.message}`);
 
-            // A configuration problem will not fix itself by asking again
-            if (error.status === 500 && /Missing OPENROUTER_API_KEY/.test(error.message)) {
-                return res.status(500).json(buildErrorResponse(error.message));
+            // A configuration or billing problem will not fix itself by asking again
+            if (providerRefusal(error)) {
+                return res.status(502).json(buildErrorResponse(error.message));
             }
         }
     }
@@ -148,6 +167,10 @@ export async function refineWebsite(req, res) {
         } catch (error) {
             lastProblem = error.message;
             console.log(`[AI] refine attempt ${attempt}/${MAX_ATTEMPTS} failed: ${error.message}`);
+
+            if (providerRefusal(error)) {
+                return res.status(502).json(buildErrorResponse(error.message));
+            }
         }
     }
 

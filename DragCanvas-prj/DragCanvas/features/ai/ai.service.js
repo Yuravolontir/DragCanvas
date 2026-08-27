@@ -9,7 +9,15 @@ const DEFAULT_MODEL = 'google/gemini-2.5-flash';
 // A full page is a lot of JSON. Left to the provider default the answer gets
 // truncated mid-structure, which is exactly what made one generation in five
 // fail with "Unexpected end of JSON input" before this moved to the server.
-const MAX_OUTPUT_TOKENS = 32000;
+//
+// OpenRouter reserves this many tokens' worth of credit before it runs
+// anything, so a nearly empty key is refused up front with 402 rather than
+// running out halfway. AI_MAX_TOKENS lowers the reservation for a key that
+// cannot afford a full one - at the price of the truncation described above,
+// so it is a way to keep working on a thin budget, not a fix.
+const MAX_OUTPUT_TOKENS = Number(process.env.AI_MAX_TOKENS) || 32000;
+const MIN_USEFUL_OUTPUT_TOKENS = 4096;
+const CREDIT_BUFFER_TOKENS = 256;
 
 // Images are served through our own proxy so the editor canvas is not tainted
 const PUBLIC_API_URL = process.env.PUBLIC_API_URL || 'http://localhost:3001';
@@ -21,6 +29,24 @@ export function temperatureFor(creativity) {
     return TEMPERATURES[creativity] ?? TEMPERATURES.balanced;
 }
 
+export function affordableTokenLimit(message, requestedTokens) {
+    const match = String(message || '').match(/can only afford\s+(\d+)/i);
+    if (!match) return null;
+    const affordable = Number(match[1]);
+    if (!Number.isFinite(affordable) || affordable < MIN_USEFUL_OUTPUT_TOKENS) return null;
+    return Math.min(requestedTokens - 1, Math.max(MIN_USEFUL_OUTPUT_TOKENS, affordable - CREDIT_BUFFER_TOKENS));
+}
+
+export function publicProviderError(status) {
+    if (status === 402) {
+        return 'The AI account does not have enough OpenRouter credits for this generation. Add credits or lower AI_MAX_TOKENS on the server.';
+    }
+    if (status === 401 || status === 403) {
+        return 'The AI provider credentials are invalid or do not have access to the selected model.';
+    }
+    return `AI provider error (${status})`;
+}
+
 async function callModel(messages, { temperature = 0.8, jsonOnly = true, maxTokens = MAX_OUTPUT_TOKENS } = {}) {
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) {
@@ -29,27 +55,43 @@ async function callModel(messages, { temperature = 0.8, jsonOnly = true, maxToke
         throw error;
     }
 
-    const response = await fetch(OPENROUTER_API, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`,
-            'HTTP-Referer': process.env.FRONTEND_URL || 'http://localhost:5173',
-            'X-Title': 'DragCanvas',
-        },
-        body: JSON.stringify({
-            model: process.env.AI_MODEL || DEFAULT_MODEL,
-            messages,
-            temperature,
-            max_tokens: maxTokens,
-            ...(jsonOnly ? { response_format: { type: 'json_object' } } : {}),
-        }),
-    });
+    let tokenLimit = maxTokens;
+    let response;
+    let data;
 
-    const data = await response.json();
+    for (let creditAttempt = 0; creditAttempt < 2; creditAttempt++) {
+        response = await fetch(OPENROUTER_API, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`,
+                'HTTP-Referer': process.env.FRONTEND_URL || 'http://localhost:5173',
+                'X-Title': 'DragCanvas',
+            },
+            body: JSON.stringify({
+                model: process.env.AI_MODEL || DEFAULT_MODEL,
+                messages,
+                temperature,
+                max_tokens: tokenLimit,
+                ...(jsonOnly ? { response_format: { type: 'json_object' } } : {}),
+            }),
+        });
+
+        data = await response.json().catch(() => ({}));
+        if (response.ok) break;
+
+        const providerMessage = data?.error?.message || '';
+        const fallback = response.status === 402
+            ? affordableTokenLimit(providerMessage, tokenLimit)
+            : null;
+        if (!fallback) break;
+
+        console.log(`[AI] OpenRouter credit limit: retrying with max_tokens=${fallback}`);
+        tokenLimit = fallback;
+    }
 
     if (!response.ok) {
-        const error = new Error(data?.error?.message || `AI provider error (${response.status})`);
+        const error = new Error(publicProviderError(response.status));
         error.status = response.status;
         error.retryable = response.status === 429 || response.status >= 500;
         throw error;
