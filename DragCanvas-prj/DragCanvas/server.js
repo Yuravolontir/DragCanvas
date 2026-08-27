@@ -10,7 +10,6 @@ import { imageProxy } from './features/assets/asset.ctrl.js';
 import { requestId, requestLog, hideInternalErrors, notFoundHandler, errorHandler } from './middlewares/error.js';
 import { startScheduleProcessor } from './jobs/schedule.processor.js';
 import { startBirthdayJob } from './jobs/birthday.job.js';
-import { webhook as stripeWebhook } from './features/commerce/commerce.ctrl.js';
 
 const PORT = process.env.PORT || 3001;
 
@@ -65,9 +64,7 @@ server.use('/api/analytics/hit', cors({ origin: '*', methods: ['POST', 'OPTIONS'
 server.use('/api/subscribers/subscribe', cors({ origin: '*', methods: ['POST', 'OPTIONS'] }));
 server.use('/api/bookings', cors({ origin: '*', methods: ['GET', 'POST', 'OPTIONS'] }));
 server.use('/api/assets/form-upload', cors({ origin: '*', methods: ['POST', 'OPTIONS'] }));
-server.use('/api/commerce', cors({ origin: '*', methods: ['GET', 'POST', 'DELETE', 'OPTIONS'] }));
 server.use('/api/engagement', cors({ origin: '*', methods: ['GET', 'POST', 'OPTIONS'] }));
-server.post('/api/commerce/webhook', express.raw({ type: 'application/json', limit: '1mb' }), stripeWebhook);
 
 server.use(cors({
     origin: [

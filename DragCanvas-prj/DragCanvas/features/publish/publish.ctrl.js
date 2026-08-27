@@ -2,12 +2,11 @@ import crypto from 'crypto';
 import PublishMdl from './publish.mdl.js';
 import { connectCustomDomain, deployToNetlify, slugify } from './netlify.service.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
-import CommerceMdl from '../commerce/commerce.mdl.js';
 import BookingMdl from '../bookings/booking.mdl.js';
 
 export async function publishSite(req, res) {
     try {
-        const { projectId, html, target, files, password, catalog, bookingSettings } = req.body;
+        const { projectId, html, target, files, password, bookingSettings } = req.body;
         const domain = String(req.body?.domain || '').trim().toLowerCase().replace(/^https?:\/\//, '').replace(/\/$/, '');
 
         if (!projectId || !html) {
@@ -24,10 +23,6 @@ export async function publishSite(req, res) {
         // Only the owner may publish this project
         if (info.User_ID !== req.user.userId) {
             return res.status(403).json(buildErrorResponse('This project belongs to another user'));
-        }
-        if (Array.isArray(catalog)) {
-            const safeProducts = catalog.slice(0, 200).filter(product => product && String(product.name || '').trim() && Number.isInteger(product.priceMinor) && product.priceMinor >= 0 && /^[a-z]{3}$/i.test(product.currency || '')).map(product => ({ name: String(product.name).trim().slice(0, 200), description: String(product.description || '').slice(0, 2000), priceMinor: product.priceMinor, currency: String(product.currency).toLowerCase(), imageUrl: String(product.imageUrl || '').slice(0, 2000) }));
-            await CommerceMdl.syncProducts(projectId, safeProducts);
         }
         if (bookingSettings) {
             const timeZone = String(bookingSettings.timeZone || 'UTC').slice(0, 100);

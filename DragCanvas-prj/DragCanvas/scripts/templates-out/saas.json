@@ -2132,6 +2132,8 @@
         "59.00",
         ""
       ],
+      "paymentLinks": [],
+      "buttonText": "Buy now",
       "currency": "USD",
       "accent": {
         "r": 99,

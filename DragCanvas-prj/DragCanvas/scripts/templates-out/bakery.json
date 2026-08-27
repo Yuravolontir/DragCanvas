@@ -2589,6 +2589,8 @@
         "59.00",
         ""
       ],
+      "paymentLinks": [],
+      "buttonText": "Buy now",
       "currency": "ILS",
       "accent": {
         "r": 164,

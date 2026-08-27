@@ -1,5 +1,5 @@
 import { columnTracks } from './columnTracks.js';
-import { pairUp, groupLines } from './elementData.js';
+import { pairUp, groupLines, normalizePaymentUrl } from './elementData.js';
 import { readSlides } from './carouselSlides.js';
 
 /**
@@ -1426,12 +1426,14 @@ ${script}    </div>\n`;
   },
 
   ProductCatalog: (node) => {
-    const props = node.props || {}; const className = generateClass('catalog'); const apiUrl = exportContext.apiUrl || ''; const rootId = `${className}-root`;
-    cssRules.push(`.${className} .products { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px; } .${className} article { border:1px solid #ddd;border-radius:12px;overflow:hidden;padding:16px; } .${className} article img { width:100%;aspect-ratio:4/3;object-fit:cover; } .${className} button { background:${rgbaToString(props.accent)};color:#fff;border:0;border-radius:8px;padding:10px 14px;cursor:pointer; } .${className} .cart { margin-top:18px;padding:16px;border:1px solid #ddd;border-radius:12px; }`);
-    mobileRules.push(`  .${className} .products { grid-template-columns: 1fr; }`);
-    return `    <section class="${className}" id="${rootId}"><div class="products"><p>Loading products…</p></div><div class="cart"><strong>Cart: <span class="count">0</span></strong> <button class="checkout" type="button" disabled>Checkout</button></div><p class="status" aria-live="polite"></p><script>
-(function(){var root=document.getElementById(${JSON.stringify(rootId)}),grid=root.querySelector('.products'),count=root.querySelector('.count'),checkout=root.querySelector('.checkout'),status=root.querySelector('.status'),key='dragcanvas-cart-'+${JSON.stringify(exportContext.projectId)},products=[];function cart(){try{return JSON.parse(localStorage.getItem(key))||{}}catch(e){return {}}}function save(value){localStorage.setItem(key,JSON.stringify(value));renderCart()}function renderCart(){var value=cart(),total=Object.values(value).reduce(function(sum,n){return sum+n},0);count.textContent=total;checkout.disabled=!total}function card(product){var article=document.createElement('article');if(product.ImageUrl){var image=document.createElement('img');image.src=product.ImageUrl;image.alt=product.Name;image.loading='lazy';article.appendChild(image)}var h=document.createElement('h3');h.textContent=product.Name;article.appendChild(h);var p=document.createElement('p');p.textContent=product.Description||'';article.appendChild(p);var price=document.createElement('strong');price.textContent=(product.PriceMinor/100).toFixed(2)+' '+product.Currency.toUpperCase();article.appendChild(price);var button=document.createElement('button');button.type='button';button.textContent='Add to cart';button.addEventListener('click',function(){var value=cart();value[product.Product_ID]=(value[product.Product_ID]||0)+1;save(value)});article.appendChild(button);return article}fetch(${JSON.stringify(`${apiUrl}/api/commerce/products/${exportContext.projectId}`)}).then(function(r){if(!r.ok)throw new Error();return r.json()}).then(function(body){products=body.data||body;grid.textContent='';products.forEach(function(product){grid.appendChild(card(product))})}).catch(function(){grid.textContent='Could not load products.'});checkout.addEventListener('click',function(){checkout.disabled=true;var items=Object.entries(cart()).map(function(entry){return {productId:entry[0],quantity:entry[1]}});fetch(${JSON.stringify(`${apiUrl}/api/commerce/checkout`)},{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({projectId:${JSON.stringify(exportContext.projectId)},items:items})}).then(function(r){if(!r.ok)throw new Error();return r.json()}).then(function(body){location.href=(body.data||body).checkoutUrl}).catch(function(){status.textContent='Checkout is unavailable. Please try again.';checkout.disabled=false})});renderCart()})();
-</script></section>\n`;
+    const props = node.props || {}; const className = generateClass('catalog'); const rows = groupLines(props.products, 4); const links = Array.isArray(props.paymentLinks) ? props.paymentLinks : [];
+    cssRules.push(`.${className} { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px; } .${className} article { border:1px solid #ddd;border-radius:12px;overflow:hidden;padding:16px; } .${className} article img { width:100%;aspect-ratio:4/3;object-fit:cover; } .${className} article a { display:block;width:fit-content;margin-top:10px;background:${rgbaToString(props.accent)};color:#fff;border-radius:8px;padding:10px 14px;text-decoration:none; }`);
+    mobileRules.push(`  .${className} { grid-template-columns: 1fr; }`);
+    const cards = rows.map(([name, description, price, image], index) => {
+      const href = normalizePaymentUrl(links[index]);
+      return `<article>${image ? `<img src="${escapeAttribute(image)}" alt="" loading="lazy">` : ''}<h3>${escapeHtmlText(name)}</h3><p>${escapeHtmlText(description)}</p><strong>${escapeHtmlText(price)} ${escapeHtmlText(String(props.currency || 'USD').toUpperCase())}</strong>${href ? `<a href="${escapeAttribute(href)}" target="_blank" rel="noopener noreferrer">${escapeHtmlText(props.buttonText || 'Buy now')}</a>` : ''}</article>`;
+    }).join('');
+    return `    <section class="${className}">${cards}</section>\n`;
   },
 
   Booking: (node) => {

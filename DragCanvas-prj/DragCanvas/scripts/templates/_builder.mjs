@@ -318,7 +318,7 @@ export function createBuilder() {
 
   const productCatalog = (parent, products, props = {}, label = 'ProductCatalog') =>
     node('ProductCatalog', parent, {
-      products, currency: 'USD', accent: rgba(0, 64, 224), ...props,
+      products, paymentLinks: [], buttonText: 'Buy now', currency: 'USD', accent: rgba(0, 64, 224), ...props,
     }, { label });
 
   const engagement = (parent, props = {}, label = 'Engagement') =>

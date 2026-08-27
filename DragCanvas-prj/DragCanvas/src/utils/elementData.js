@@ -38,3 +38,17 @@ export function groupLines(items, size) {
   }
   return out;
 }
+
+/** Accept only browser-safe payment destinations. Bare domains gain HTTPS. */
+export function normalizePaymentUrl(value) {
+  const clean = String(value || '').trim();
+  if (!clean) return '';
+  if (/^[a-z][a-z0-9+.-]*:/i.test(clean) && !/^https?:\/\//i.test(clean)) return '';
+  const candidate = /^https?:\/\//i.test(clean) ? clean : `https://${clean}`;
+  try {
+    const url = new URL(candidate);
+    return ['http:', 'https:'].includes(url.protocol) && url.hostname ? url.href : '';
+  } catch {
+    return '';
+  }
+}

@@ -39,12 +39,12 @@ function DefaultProjectCanvas() {
       <Landing.Heading text="Everything your visitors need" fontSize="34" color={INK} />
       <Landing.Tabs items={['Build', 'Compose a responsive site from reusable sections.', 'Publish', 'Deploy pages, metadata, sitemap and a custom domain.', 'Grow', 'Collect leads, subscribers, bookings, reviews and orders.']} accent={BLUE} />
       <Landing.Divider color={{ r: 148, g: 163, b: 184, a: 0.45 }} spacing="28" />
-      <Landing.ProductCatalog products={['Starter audit', 'A focused review with an action plan', '49.00', '', 'Launch package', 'Design, build and publishing support', '199.00', '', 'Growth session', 'Analytics and conversion improvements', '89.00', '']} currency="USD" accent={BLUE} />
+      <Landing.ProductCatalog products={['Starter audit', 'A focused review with an action plan', '49.00', '', 'Launch package', 'Design, build and publishing support', '199.00', '', 'Growth session', 'Analytics and conversion improvements', '89.00', '']} paymentLinks={['', '', '']} buttonText="Buy now" currency="USD" accent={BLUE} />
     </Element>
     <Element canvas is={Landing.Container} anchor="pricing" width="100%" background={WHITE} padding={['56', '48', '56', '48']} custom={{ displayName: 'Pricing' }}>
       <Landing.Heading text="Choose your starting point" fontSize="34" color={INK} />
       <Landing.Pricing tiers={['Starter', '$19', '/month', 'Start', 'One site;Analytics;Forms', 'Studio', '$49', '/month', 'Choose Studio', 'Five sites;Bookings;Commerce', 'Agency', '$99', '/month', 'Contact us', 'Unlimited sites;Priority support;Team access']} featured={2} accent={BLUE} background={WHITE} color={INK} />
-      <Landing.Accordion items={['Can I change the content?', 'Yes. Every element is editable in the visual canvas.', 'Can I use my own domain?', 'Yes. Connect it during publishing and SSL is provisioned automatically.', 'Are payments stored here?', 'No card details touch DragCanvas; checkout is handled by Stripe.']} background={PALE} color={INK} />
+      <Landing.Accordion items={['Can I change the content?', 'Yes. Every element is editable in the visual canvas.', 'Can I use my own domain?', 'Yes. Connect it during publishing and SSL is provisioned automatically.', 'Are payments stored here?', 'No. Each Buy button opens the payment link supplied by the site owner.']} background={PALE} color={INK} />
     </Element>
     <Element canvas is={Landing.Container} width="100%" background={PALE} padding={['56', '48', '56', '48']} custom={{ displayName: 'Conversions' }}>
       <Landing.Heading text="Make the next step effortless" fontSize="34" color={INK} />

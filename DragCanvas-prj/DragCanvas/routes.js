@@ -12,7 +12,6 @@ import formRouter from './features/forms/form.router.js';
 import analyticsRouter from './features/analytics/analytics.router.js';
 import subscriberRouter from './features/subscribers/subscriber.router.js';
 import bookingRouter from './features/bookings/booking.router.js';
-import commerceRouter from './features/commerce/commerce.router.js';
 import engagementRouter from './features/engagement/engagement.router.js';
 
 const router = Router();
@@ -30,7 +29,6 @@ router.use('/forms', formRouter);                  // /api/forms/... (submit is 
 router.use('/analytics', analyticsRouter);          // /api/analytics/hit is public; reports require ownership
 router.use('/subscribers', subscriberRouter);
 router.use('/bookings', bookingRouter);
-router.use('/commerce', commerceRouter);
 router.use('/engagement', engagementRouter);
 
 export default router;

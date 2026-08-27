@@ -171,9 +171,9 @@ AVAILABLE ELEMENTS (use these EXACT type names, use ALL of them when appropriate
    Props: { "heading": "Book an appointment", "buttonText": "Confirm booking", "duration": 60, "startHour": 9, "endHour": 17, "timeZone": "UTC", "accent": {...} }
    Use for services that happen at a scheduled time. Availability, confirmation emails and calendar files are automatic.
 
-30. ProductCatalog (products, cart and checkout):
-   Props: { "products": ["Starter kit","Everything needed","29.00","IMAGE_PLACEHOLDER_1"], "currency": "USD", "accent": {...} }
-   Four lines per product: name, description, decimal price, image URL.
+30. ProductCatalog (products linked to the owner's payment provider):
+   Props: { "products": ["Starter kit","Everything needed","29.00","IMAGE_PLACEHOLDER_1"], "paymentLinks": ["https://provider.example/pay/item"], "buttonText": "Buy now", "currency": "USD", "accent": {...} }
+   Four product lines per item: name, description, decimal price, image URL. paymentLinks has one HTTPS checkout link per product. Never invent a live payment URL; leave it blank for the owner to configure.
 
 31. Engagement (reviews, reactions or poll):
    Props: { "mode": "review"|"reaction"|"poll", "heading": "What visitors say", "options": ["Yes","No"], "accent": {...} }

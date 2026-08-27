@@ -473,15 +473,9 @@ const handlePublish = async () => {
       const sitemapUrls = publishPages.filter(page => page.data && (!comingSoon || page.slug === 'home')).map(page => page.slug === 'home' ? `${sitemapBase}/` : `${sitemapBase}/${page.slug}/`);
       files['/robots.txt'] = `User-agent: *\nAllow: /\nSitemap: ${sitemapBase}/sitemap.xml\n`;
       files['/sitemap.xml'] = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${sitemapUrls.map(url => `<url><loc>${url}</loc></url>`).join('')}</urlset>`;
-      const catalog = [];
       let bookingSettings = null;
       for (const page of publishPages) for (const node of Object.values(page.data || {})) {
         const type = node?.type?.resolvedName || node?.type;
-        if (type === 'ProductCatalog') {
-          const lines = Array.isArray(node.props?.products) ? node.props.products : [];
-          const currency = String(node.props?.currency || 'USD').toLowerCase();
-          for (let index = 0; index < lines.length; index += 4) if (lines[index]) catalog.push({ name: lines[index], description: lines[index + 1] || '', priceMinor: Math.round(Number(lines[index + 2]) * 100), imageUrl: lines[index + 3] || '', currency });
-        }
         if (type === 'Booking' && !bookingSettings) bookingSettings = {
           duration: Number(node.props?.duration) || 60,
           startHour: Number(node.props?.startHour) || 9,
@@ -496,7 +490,6 @@ const handlePublish = async () => {
           html,
           files,
           ...(sitePassword ? { password: sitePassword } : {}),
-          catalog,
           bookingSettings,
           target: publishTarget,
           domain: publishTarget === 'custom' ? customDomain.trim() : null

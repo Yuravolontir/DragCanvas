@@ -1,3 +1,5 @@
+import { normalizePaymentUrl } from './elementData.js';
+
 const typeOf = (node) => node?.type?.resolvedName || node?.type;
 
 export function inspectBeforePublish(nodes, { title = '' } = {}) {
@@ -25,6 +27,13 @@ export function inspectBeforePublish(nodes, { title = '' } = {}) {
     }
     if (type === 'Link' && !String(props.href || '').trim().replace(/^#$/, '')) {
       issues.push({ code: 'dead-link', message: 'A link has no destination.' });
+    }
+    if (type === 'ProductCatalog') {
+      const productCount = Math.ceil((Array.isArray(props.products) ? props.products.length : 0) / 4);
+      const links = Array.isArray(props.paymentLinks) ? props.paymentLinks : [];
+      if ((productCount && links.slice(0, productCount).some((link) => !normalizePaymentUrl(link))) || links.length < productCount) {
+        issues.push({ code: 'missing-payment-link', message: 'Every catalog product needs its own payment link.' });
+      }
     }
     const text = [props.text, props.label, props.description].filter(Boolean).join(' ');
     if (/lorem ipsum/i.test(text)) {
