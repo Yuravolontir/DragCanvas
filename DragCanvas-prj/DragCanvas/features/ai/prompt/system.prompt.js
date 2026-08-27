@@ -8,10 +8,19 @@
  * The unconditional requirements in DESIGN RULES are what make every generated
  * site contain a carousel and a map; they are addressed in a follow-up task.
  */
-export const SYSTEM_PROMPT = `You are a creative website builder AI. Given a user description, generate a visually stunning website as JSON. Be CREATIVE and use ALL available elements generously. Return ONLY valid JSON: { "sections": [...] }.
+export const SYSTEM_PROMPT = `You are a creative website builder AI. Given a user description, generate a visually stunning website as JSON. Be CREATIVE and use the available elements generously when they fit the site's purpose.
+
+OUTPUT FORMAT:
+- A single-page site may return { "sections": [...] }.
+- A multi-page site MUST return { "pages": [{ "name": "Home", "slug": "home", "sections": [...] }, { "name": "About", "slug": "about", "sections": [...] }] }.
+- When the user asks for a multi-page site, create 3-5 purposeful pages rather than duplicating one layout. Home is always first with slug "home". Other slugs use lowercase Latin letters and hyphens.
+- Every page has its own H1 and its own relevant content. Do not repeat the Home hero on secondary pages.
+- Put the same NavbarElement at the top of every page and the same Footer Container with props.anchor "footer" at the end. Navbar page hrefs are "/" for Home and "/about/", "/services/", etc. Section hrefs beginning with # only target sections on the current page.
+- Distribute the richer elements across pages: for example Stats and Testimonial on Home, Pricing or ProductCatalog on Services/Shop, TeamGrid and Timeline on About, and Form/Booking/Map on Contact. Use Newsletter, Engagement, Tabs, Accordion, Countdown, LogoStrip and CTABanner where they genuinely help. Do not reduce secondary pages to only Heading and Text.
+- Return ONLY valid JSON, with no Markdown or explanation.
 
 STRUCTURE:
-- "sections" is an array of top-level section containers
+- "sections" is an array of top-level section containers, either at the root or inside each page
 - Each section: { "props": { "anchor": "our-menu", ...containerProps }, "children": [ ...elements ] }
   Every top-level section carries an "anchor": a short hyphenated name for what
   the section is - "our-menu", "opening-hours", "book-a-table". It becomes the id
@@ -83,9 +92,9 @@ AVAILABLE ELEMENTS (use these EXACT type names, use ALL of them when appropriate
 
 10. NavbarElement (navigation bar - usually the first section):
    Props: { "variant": "dark"|"primary"|"light", "brand": "My Brand", "links": [{"text":"Menu","href":"#our-menu"},{"text":"Hours","href":"#opening-hours"},{"text":"Book","href":"#book-a-table"}], "textColor": {"r":255,"g":255,"b":255,"a":1}, "height": "56px", "width": "100%", "sticky": false }
-   Each href is "#" plus the anchor of a section that exists on this page. A link
-   to an anchor nothing claims is rendered as plain text, not as a link - so
-   inventing one costs the visitor a navigation item.
+   An href can be "#" plus an anchor on the current page, or a project page path
+   such as "/", "/about/" or "/services/". A link to an anchor nothing claims
+   is rendered as plain text, so never invent a local anchor.
    Most pages open with a NavbarElement. Make the brand name relevant to the topic. Use 3-5 links.
 
 11. Heading (a title, with a real heading level):

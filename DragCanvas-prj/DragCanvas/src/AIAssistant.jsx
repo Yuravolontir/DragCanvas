@@ -37,6 +37,7 @@ function stageLabel(stage) {
     const [error, setError] = useState(null);
     // low / balanced / bold -> temperature on the server
     const [creativity, setCreativity] = useState('balanced');
+    const [multiPage, setMultiPage] = useState(false);
     // The layout the generator produced, kept so it can be refined afterwards
     const [layout, setLayout] = useState(null);
     const [refinement, setRefinement] = useState('');
@@ -67,7 +68,7 @@ function stageLabel(stage) {
      * this mapping the only way back would be to deserialise a second time, which
      * would throw away anything the person had touched in the meantime.
      */
-    const buildCraftTree = (sections) => {
+    const buildCraftTree = (sections, idPrefix = '') => {
       const nodes = {};
       const nodeIdOf = new Map();
 
@@ -84,14 +85,14 @@ function stageLabel(stage) {
       let idCounter = 1;
 
       const buildNode = (element, parentId) => {
-        const nodeId = `node-${idCounter++}`;
+        const nodeId = `${idPrefix}node-${idCounter++}`;
         const resolvedName = element.type
           ? element.type.charAt(0).toUpperCase() + element.type.slice(1)
           : 'Container';
 
         nodes[nodeId] = {
           type: { resolvedName },
-          isCanvas: element.type === 'container' || (element.type === 'video' && element.props?.sourceType === 'background'),
+          isCanvas: resolvedName === 'Container' || (resolvedName === 'Video' && element.props?.sourceType === 'background'),
           props: element.props || {},
           displayName: resolvedName,
           custom: {},
@@ -111,7 +112,7 @@ function stageLabel(stage) {
       };
 
       for (const section of sections) {
-        const sectionId = `section-${idCounter++}`;
+        const sectionId = `${idPrefix}section-${idCounter++}`;
 
         /**
          * A top-level section is usually a Container, but not always.
@@ -255,13 +256,28 @@ function stageLabel(stage) {
      * difference is that there is something to look at while they arrive.
      */
     const applyLayout = async (nextLayout) => {
-      const { nodes, nodeIdOf } = buildCraftTree(nextLayout.sections);
+      const sourcePages = Array.isArray(nextLayout.pages) && nextLayout.pages.length
+        ? nextLayout.pages
+        : [{ name: 'Home', slug: 'home', sections: nextLayout.sections || [] }];
+      const builtPages = sourcePages.map((page, index) => {
+        const slug = index === 0 ? 'home' : page.slug;
+        const built = buildCraftTree(page.sections, `${slug}-`);
+        return { ...page, slug, data: built.nodes, nodeIdOf: built.nodeIdOf };
+      });
+      const first = builtPages[0];
 
       setStage({ name: 'placing' });
-      actions.deserialize(nodes);
+      actions.deserialize(first.data);
+      window.dispatchEvent(new CustomEvent('dragcanvas:pages-loaded', {
+        detail: {
+          pages: builtPages.map(({ name, slug, data }) => ({ name, slug, data })),
+          currentSlug: first.slug,
+          siteSettings: {},
+        },
+      }));
       setLayout(nextLayout);
 
-      await fillInImages(nextLayout.sections, nodeIdOf);
+      await fillInImages(first.sections, first.nodeIdOf);
     };
 
     /**
@@ -281,7 +297,7 @@ function stageLabel(stage) {
           body: { layout, instruction: refinement }
         });
 
-        if (!refined?.sections?.length) {
+        if (!refined?.sections?.length && !refined?.pages?.length) {
           throw new Error('AI did not return a valid layout');
         }
 
@@ -308,11 +324,11 @@ function stageLabel(stage) {
         // response goes through parse -> repair -> normalise before we get it
         const parsed = await apiFetch('/api/ai/generate', {
           method: 'POST',
-          body: { prompt, creativity }
+          body: { prompt, creativity, multiPage }
         });
 
-        if (!parsed?.sections || !Array.isArray(parsed.sections)) {
-          throw new Error('AI did not return valid sections');
+        if (!Array.isArray(parsed?.sections) && !Array.isArray(parsed?.pages)) {
+          throw new Error('AI did not return valid pages or sections');
         }
 
         await applyLayout(parsed);
@@ -412,6 +428,10 @@ function stageLabel(stage) {
               {option.label}
             </button>
           ))}
+          <label style={{ marginLeft: 8, display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: 'var(--muted)', cursor: loading ? 'not-allowed' : 'pointer' }}>
+            <input type="checkbox" checked={multiPage} disabled={loading} onChange={(event) => setMultiPage(event.target.checked)} />
+            Multi-page site
+          </label>
         </div>
 
         {/* Once a page exists, the user can keep asking for changes to it */}
@@ -420,7 +440,7 @@ function stageLabel(stage) {
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
               <span className="material-symbols-outlined" style={{ fontSize: '16px', color: 'var(--haze)' }}>tune</span>
               <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '12px', fontWeight: 700, color: 'var(--on-surface-variant)' }}>
-                Refine this page
+                Refine this site
               </span>
             </div>
 
@@ -471,7 +491,7 @@ function stageLabel(stage) {
             )}
 
             <p style={{ marginTop: 8, marginBottom: 0, fontSize: 11, color: '#a09aa8', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              Refines the generated page. Changes you make by hand in the editor are not included.
+              Refines the generated site. Changes you make by hand in the editor are not included.
             </p>
           </div>
         )}

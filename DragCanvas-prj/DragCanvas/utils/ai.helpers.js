@@ -78,6 +78,18 @@ export function normalizeNode(node) {
 }
 
 export function normalizeLayout(parsed) {
+    if (parsed && Array.isArray(parsed.pages)) {
+        const used = new Set();
+        const pages = parsed.pages.slice(0, 8).map((page, index) => {
+            const name = String(page?.name || (index === 0 ? 'Home' : `Page ${index + 1}`)).trim().slice(0, 80);
+            let slug = index === 0 ? 'home' : String(page?.slug || name).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40);
+            if (!slug || slug === 'home' || used.has(slug)) slug = index === 0 ? 'home' : `page-${index + 1}`;
+            used.add(slug);
+            const wrapped = wrapToSections(page);
+            return { name, slug, sections: (wrapped.sections || []).map(normalizeNode) };
+        }).filter((page) => page.sections.length);
+        return { pages };
+    }
     const wrapped = wrapToSections(parsed);
     return { sections: (wrapped.sections || []).map(normalizeNode) };
 }

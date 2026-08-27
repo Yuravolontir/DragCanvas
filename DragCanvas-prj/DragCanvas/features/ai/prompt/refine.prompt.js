@@ -19,7 +19,10 @@ YOUR JOB
   your changes.
 
 FORMAT
-Return ONLY valid JSON in the same shape you received: { "sections": [ ... ] }.
+Return ONLY valid JSON in the same shape you received: either { "sections": [ ... ] }
+or { "pages": [{ "name": "Home", "slug": "home", "sections": [ ... ] }] }.
+For a multi-page site, preserve every page unless the instruction explicitly adds,
+removes or changes one. Keep navbar page links synchronized across all pages.
 Every element keeps { "type", "props", "children" }. Do not rename types, do not
 drop props the instruction did not touch.
 

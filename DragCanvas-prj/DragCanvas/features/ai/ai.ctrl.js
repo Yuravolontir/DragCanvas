@@ -5,6 +5,8 @@ import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.b
 const MAX_ATTEMPTS = 3;
 /** Fewer sections than this and the model clearly gave up - ask again. */
 const MIN_SECTIONS = 3;
+const pagesOf = layout => Array.isArray(layout?.pages) ? layout.pages : [{ name: 'Home', slug: 'home', sections: layout?.sections || [] }];
+const sectionCount = layout => pagesOf(layout).reduce((total, page) => total + (page.sections || []).length, 0);
 
 /** Does this layout still contain IMAGE_PLACEHOLDER_n / VIDEO_PLACEHOLDER_n? */
 function hasMediaPlaceholders(layout) {
@@ -40,21 +42,25 @@ async function attemptGeneration(prompt, creativity) {
  * all and the API key visible in the bundle.
  */
 export async function generateWebsite(req, res) {
-    const { prompt, creativity } = req.body || {};
+    const { prompt, creativity, multiPage } = req.body || {};
 
     if (!prompt || !String(prompt).trim()) {
         return res.status(400).json(buildErrorResponse('Missing prompt'));
     }
 
     const cleanPrompt = String(prompt).trim();
+    const generationPrompt = multiPage
+        ? `${cleanPrompt}\n\nCreate a complete multi-page site with 3-5 purposeful pages. Use real page links in every navbar.`
+        : cleanPrompt;
     let lastProblem = 'unknown';
 
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
         try {
-            const layout = await attemptGeneration(cleanPrompt, creativity);
+            const layout = await attemptGeneration(generationPrompt, creativity);
 
-            if (layout.sections.length < MIN_SECTIONS) {
-                lastProblem = `only ${layout.sections.length} section(s) generated`;
+            const totalSections = sectionCount(layout);
+            if (totalSections < MIN_SECTIONS || (multiPage && pagesOf(layout).length < 2)) {
+                lastProblem = multiPage && pagesOf(layout).length < 2 ? 'only one page generated' : `only ${totalSections} section(s) generated`;
                 console.log(`[AI] attempt ${attempt}/${MAX_ATTEMPTS}: ${lastProblem}`);
                 continue;
             }
@@ -104,12 +110,13 @@ export async function refineWebsite(req, res) {
     if (!instruction || !String(instruction).trim()) {
         return res.status(400).json(buildErrorResponse('Missing instruction'));
     }
-    if (!layout?.sections?.length) {
+    if (!layout?.sections?.length && !layout?.pages?.length) {
         return res.status(400).json(buildErrorResponse('Missing layout to refine'));
     }
 
     const cleanInstruction = String(instruction).trim();
-    const sectionsBefore = layout.sections.length;
+    const sectionsBefore = sectionCount(layout);
+    const pagesBefore = pagesOf(layout).length;
     let lastProblem = 'unknown';
 
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
@@ -124,15 +131,19 @@ export async function refineWebsite(req, res) {
             }
 
             const refined = normalizeLayout(parsed);
+            const pagesAfter = pagesOf(refined).length;
 
             // A refinement that loses most of the page is not a refinement
-            if (refined.sections.length < Math.max(MIN_SECTIONS, sectionsBefore - 3)) {
-                lastProblem = `page shrank from ${sectionsBefore} to ${refined.sections.length} sections`;
+            const sectionsAfter = sectionCount(refined);
+            if (pagesAfter < pagesBefore || sectionsAfter < Math.max(MIN_SECTIONS, sectionsBefore - 3)) {
+                lastProblem = pagesAfter < pagesBefore
+                    ? `site lost ${pagesBefore - pagesAfter} page(s)`
+                    : `site shrank from ${sectionsBefore} to ${sectionsAfter} sections`;
                 console.log(`[AI] refine attempt ${attempt}/${MAX_ATTEMPTS}: ${lastProblem}`);
                 continue;
             }
 
-            console.log(`[AI] refined: "${cleanInstruction}" (${sectionsBefore} -> ${refined.sections.length} sections)`);
+            console.log(`[AI] refined: "${cleanInstruction}" (${sectionsBefore} -> ${sectionsAfter} sections)`);
             return res.status(200).json(buildSuccessResponse(refined));
         } catch (error) {
             lastProblem = error.message;
