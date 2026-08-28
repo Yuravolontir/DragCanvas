@@ -28,3 +28,13 @@ test('legacy single-page AI output stays supported', () => {
   assert.equal(result.sections.length, 1);
   assert.equal(result.sections[0].type, 'Heading');
 });
+
+test('malformed and unknown AI children cannot reach Craft deserialization', () => {
+  const result = normalizeLayout({ sections: [{
+    type: 'container',
+    props: {},
+    children: [null, 'broken', { type: 'MadeUpWidget', props: {} }, { type: 'heading', props: { text: 'Safe' } }],
+  }] });
+  assert.equal(result.sections[0].type, 'Container');
+  assert.deepEqual(result.sections[0].children.map(node => node.type), ['Heading']);
+});

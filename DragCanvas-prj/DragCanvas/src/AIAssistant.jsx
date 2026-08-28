@@ -91,6 +91,7 @@ function stageLabel(stage) {
       let idCounter = 1;
 
       const buildNode = (element, parentId) => {
+        if (!element || typeof element !== 'object') return;
         const nodeId = `${idPrefix}node-${idCounter++}`;
         const resolvedName = element.type
           ? element.type.charAt(0).toUpperCase() + element.type.slice(1)
@@ -118,6 +119,7 @@ function stageLabel(stage) {
       };
 
       for (const section of sections) {
+        if (!section || typeof section !== 'object') continue;
         const sectionId = `${idPrefix}section-${idCounter++}`;
 
         /**
@@ -527,7 +529,7 @@ function stageLabel(stage) {
             )}
 
             <p style={{ marginTop: 8, marginBottom: 0, fontSize: 11, color: '#a09aa8', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              Refines the generated site. Changes you make by hand in the editor are not included.
+              Refines the current saved or generated site, including changes you made by hand in the editor.
             </p>
           </div>
         )}

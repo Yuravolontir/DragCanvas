@@ -58,22 +58,47 @@ export function wrapToSections(parsed) {
 }
 
 /** Guarantee every node has { type, props, children }. */
+export const SUPPORTED_ELEMENT_TYPES = new Set([
+    'Container', 'Text', 'Custom1', 'Custom2', 'Custom2VideoDrop', 'Custom3',
+    'Custom3BtnDrop', 'OnlyButtons', 'Button', 'Video', 'BackgroundVideo',
+    'Link', 'Form', 'Image', 'Carousel', 'Map', 'NavbarElement', 'Heading',
+    'Columns', 'Spacer', 'Divider', 'List', 'Quote', 'Icon', 'Badge',
+    'Accordion', 'Pricing', 'Testimonial', 'Stats', 'TeamGrid', 'Timeline',
+    'CTABanner', 'LogoStrip', 'SocialLinks', 'Newsletter', 'Booking',
+    'ProductCatalog', 'Engagement', 'Tabs', 'Countdown',
+]);
+
+const TYPE_ALIASES = { section: 'Container', div: 'Container', paragraph: 'Text', youtube: 'Video' };
+
+function canonicalType(value) {
+    const raw = String(value || '').trim();
+    if (!raw) return 'Container';
+    if (TYPE_ALIASES[raw.toLowerCase()]) return TYPE_ALIASES[raw.toLowerCase()];
+    return [...SUPPORTED_ELEMENT_TYPES].find(type => type.toLowerCase() === raw.toLowerCase()) || null;
+}
+
 export function normalizeNode(node) {
-    if (!node || typeof node !== 'object') return node;
+    if (!node || typeof node !== 'object' || Array.isArray(node)) return null;
+
+    const safeType = canonicalType(node.type);
+    if (!safeType) return null;
+    const safeChildren = Array.isArray(node.children)
+        ? node.children.map(normalizeNode).filter(Boolean)
+        : [];
 
     if (node.type && node.props) {
         return {
-            type: node.type,
+            type: safeType,
             props: node.props || {},
-            children: Array.isArray(node.children) ? node.children.map(normalizeNode) : [],
+            children: safeChildren,
         };
     }
 
     const { type, children, props, ...rest } = node;
     return {
-        type: type || 'container',
+        type: canonicalType(type) || 'Container',
         props: { ...(props || {}), ...(rest || {}) },
-        children: Array.isArray(children) ? children.map(normalizeNode) : [],
+        children: safeChildren,
     };
 }
 
@@ -86,12 +111,12 @@ export function normalizeLayout(parsed) {
             if (!slug || slug === 'home' || used.has(slug)) slug = index === 0 ? 'home' : `page-${index + 1}`;
             used.add(slug);
             const wrapped = wrapToSections(page);
-            return { name, slug, sections: (wrapped.sections || []).map(normalizeNode) };
+            return { name, slug, sections: (wrapped.sections || []).map(normalizeNode).filter(Boolean) };
         }).filter((page) => page.sections.length);
         return { pages };
     }
     const wrapped = wrapToSections(parsed);
-    return { sections: (wrapped.sections || []).map(normalizeNode) };
+    return { sections: (wrapped.sections || []).map(normalizeNode).filter(Boolean) };
 }
 
 /** Swap IMAGE_PLACEHOLDER_n / VIDEO_PLACEHOLDER_n for real media, in place. */
