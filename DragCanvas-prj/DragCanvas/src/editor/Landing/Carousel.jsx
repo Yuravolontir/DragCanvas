@@ -72,6 +72,16 @@ const SlideImage = styled.img`
 `;
 
 /* Absolutely positioned, so a long caption can never make the strip taller. */
+/*
+ * The scrim starts at 60%, not at transparent.
+ *
+ * The slide's heading is the topmost line in this box, so a gradient starting
+ * at transparent put it straight onto the photograph - white on a bright frame
+ * measures 1:1. Every carousel in the gallery captions its slides, which made
+ * twenty-one headings depend on which picture somebody happened to choose.
+ * White over 60% black clears 5.74:1 against pure white, so the caption reads
+ * whatever is behind it.
+ */
 const Caption = styled.div`
   position: absolute;
   left: 0;
@@ -79,7 +89,7 @@ const Caption = styled.div`
   bottom: 0;
   padding: 24px 32px;
   color: #fff;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.65));
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9));
   h3 {
     margin: 0 0 4px;
   }

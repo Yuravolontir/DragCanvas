@@ -1433,7 +1433,7 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
   bottom: 0;
   padding: 24px 32px;
   color: #fff;
-  background: linear-gradient(transparent, rgba(0,0,0,0.65));
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9));
 }
 .${className} .caption h3 { margin: 0 0 4px; }
 .${className} .caption p { margin: 0; font-size: 14px; }
