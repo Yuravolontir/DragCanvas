@@ -214,7 +214,22 @@ function stageLabel(stage) {
       const images = collectImageTasks(layout, options);
       if (images.length === 0) return;
 
-      const prompts = [...new Set(images.map(i => i.prompt))];
+      // How many pictures one generation is allowed to buy.
+      //
+      // There was no limit here, and collectImageTasks walks every page: a
+      // four-page site with five pictures a page bought twenty in one click.
+      // At 6.5 credits each that is 130 credits for one press of Generate, and
+      // a morning of trying things out cost 300.
+      //
+      // Six covers what a visitor actually sees before deciding to stay - the
+      // hero and the first row - and the rest keep the seeded placeholder,
+      // which is a real photograph rather than a broken image.
+      const IMAGE_BUDGET = 6;
+      const wanted = [...new Set(images.map(i => i.prompt))];
+      const prompts = wanted.slice(0, IMAGE_BUDGET);
+      if (wanted.length > prompts.length) {
+        console.log(`[AI] ${wanted.length} pictures asked for, generating the first ${prompts.length}`);
+      }
       const total = prompts.length;
       let remaining = total;
       setStage({ name: 'images', remaining, total });

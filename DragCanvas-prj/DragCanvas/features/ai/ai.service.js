@@ -220,7 +220,21 @@ export async function fetchPexelsVideos(query, count = 5) {
     }
 }
 
-const STABILITY_API = 'https://api.stability.ai/v2beta/stable-image/generate/sd3';
+/**
+ * Stable Image Core rather than SD 3.5 Large.
+ *
+ * These are backdrops for text, not artwork: a hero photograph behind a scrim
+ * and a few card images. Large costs 6.5 credits a picture and Core costs 3,
+ * for a difference nobody looking at the finished page can point to. A morning
+ * of generating burned 300 credits on Large, which is what made the arithmetic
+ * worth doing.
+ *
+ * Same endpoint shape - multipart, same prompt/aspect_ratio/output_format, same
+ * `accept: image/*` - so this is a URL, not a rewrite. STABILITY_MODEL_URL
+ * overrides it without a deploy if a page ever does want the expensive one.
+ */
+const STABILITY_API = process.env.STABILITY_MODEL_URL
+    || 'https://api.stability.ai/v2beta/stable-image/generate/core';
 
 // A generated 16:9 PNG is well under this; anything larger means something is
 // wrong upstream and is not worth buffering into memory.
