@@ -4,6 +4,7 @@ import { useReveal } from './useReveal.js';
 import { Link } from 'react-router-dom';
 
 import { apiFetch } from '../../api.js';
+import TemplatePreview from '../TemplatePreview.jsx';
 import './TemplatesStrip.css';
 
 /**
@@ -18,6 +19,11 @@ import './TemplatesStrip.css';
  * Fetched on mount rather than on scroll. The request is small, the section is
  * below the fold, and the server sleeps between visits - starting early means
  * the rows are usually there by the time anyone scrolls to them.
+ *
+ * Every card opens its own template. All eight used to link to /inspire-me,
+ * so picking the bakery out of a row of eight and landing on the gallery — with
+ * the gallery showing whichever template happened to be first — made the choice
+ * a visitor had just made count for nothing.
  */
 
 const SKELETON_COUNT = 4;
@@ -65,19 +71,16 @@ export default function TemplatesStrip() {
             ))
           : templates.map(template => (
               <li key={template.Template_ID} className="templates-strip__card">
-                <Link className="templates-strip__link" to="/inspire-me">
-                  <div className="templates-strip__thumb">
-                    {template.ThumbnailURL && (
-                      <img
-                        src={template.ThumbnailURL}
-                        alt=""
-                        loading="lazy"
-                        // A dead thumbnail leaves the tinted panel behind rather
-                        // than a broken-image icon.
-                        onError={event => { event.currentTarget.style.display = 'none'; }}
-                      />
-                    )}
-                  </div>
+                <Link
+                  className="templates-strip__link"
+                  to="/create-new-project"
+                  state={{ templateId: template.Template_ID }}
+                >
+                  <TemplatePreview
+                    className="templates-strip__thumb"
+                    template={template}
+                    height={0.625}
+                  />
                   <span className="templates-strip__name">{template.TemplateName}</span>
                   <span className="templates-strip__meta">
                     {template.Category}

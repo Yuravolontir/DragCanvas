@@ -91,7 +91,8 @@
         "a": 1
       },
       "height": "56px",
-      "width": "100%"
+      "width": "100%",
+      "animation": "none"
     },
     "displayName": "NavbarElement",
     "custom": {
@@ -547,7 +548,8 @@
       "shadow": 0,
       "radius": 10,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
@@ -664,7 +666,8 @@
       "shadow": 0,
       "radius": 10,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
@@ -781,7 +784,8 @@
       "shadow": 0,
       "radius": 10,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 180
     },
     "displayName": "Container",
     "custom": {
@@ -898,7 +902,8 @@
       "shadow": 0,
       "radius": 10,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 270
     },
     "displayName": "Container",
     "custom": {
@@ -1141,7 +1146,8 @@
       "shadow": 0,
       "radius": 10,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
@@ -1290,7 +1296,8 @@
       "shadow": 0,
       "radius": 10,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
@@ -1439,7 +1446,8 @@
       "shadow": 0,
       "radius": 10,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 180
     },
     "displayName": "Container",
     "custom": {
@@ -1803,7 +1811,8 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
@@ -1917,7 +1926,8 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
@@ -2825,9 +2835,9 @@
         "a": 1
       },
       "textColor": {
-        "r": 73,
-        "g": 69,
-        "b": 79,
+        "r": 233,
+        "g": 236,
+        "b": 241,
         "a": 1
       },
       "inputBackground": {
@@ -2843,13 +2853,7 @@
         "a": 1
       },
       "width": "100%",
-      "height": "auto",
-      "color": {
-        "r": 233,
-        "g": 236,
-        "b": 241,
-        "a": 1
-      }
+      "height": "auto"
     },
     "displayName": "Form",
     "custom": {

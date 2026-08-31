@@ -13,6 +13,9 @@ export default function services() {
   const PANEL = rgba(240, 240, 238);
   const INK = rgba(28, 30, 30);
   const AMBER = rgba(214, 138, 30);
+  // Amber is a fill, not an ink: dark type reads on it, white type does not,
+  // and the colour itself is far too pale to write with on paper.
+  const AMBER_INK = rgba(146, 94, 20);
   const MUTED = rgba(104, 108, 108);
 
   const root = b.root({ background: PAPER, width: '100%' });
@@ -25,18 +28,18 @@ export default function services() {
   const hero = b.container(root, { background: PAPER, padding: ['64', '48', '40', '48'], width: '100%', backgroundImage: P.joinery.shop(1600), overlay: rgba(28, 30, 30, 0.66) }, 'Hero');
   const top = b.columns(hero, { count: '2', gap: '40', align: 'center' });
   const words = b.container(top, { background: TRANSPARENT, padding: ['0', '0', '0', '0'] }, 'Words');
-  b.badge(words, 'Booking three weeks ahead', { background: PANEL, color: AMBER });
+  b.badge(words, 'Booking three weeks ahead', { background: PANEL, color: AMBER_INK });
   b.heading(words, 'Fitted properly, first time', { level: '1', fontSize: '44', color: PAPER, margin: ['12', '0', '10', '0'] });
   b.text(words, 'Kitchens, wardrobes and stairs. One joiner, no subcontractors, and a written quote before anything is cut.', {
     fontSize: '17', color: rgba(255, 255, 255, 0.82),
   });
-  b.button(words, 'Get a quote', { background: AMBER, color: WHITE, buttonStyle: 'full' });
+  b.button(words, 'Get a quote', { background: AMBER, color: INK, buttonStyle: 'full' });
   b.image(top, P.joinery.bench(900), { alt: 'Joiner shaping timber at a workshop bench', radius: 10, width: '100%', height: '400px' });
 
   // ── the joinery in three numbers ────────────────────────────────
   const num = b.container(root, { background: PAPER, padding: ['32', '48', '8', '48'], width: '100%' }, 'Numbers');
   b.stats(num, ['18', 'years at the bench', '6 wks', 'a kitchen, start to finish', '10 yr', 'guarantee, in writing'], {
-    accent: AMBER, color: MUTED,
+    accent: AMBER_INK, color: MUTED,
   });
 
   const work = b.container(root, { background: PAPER, padding: ['32', '48', '40', '48'], width: '100%', anchor: 'work' }, 'Work');
@@ -60,7 +63,7 @@ export default function services() {
     ['Fixed for ten years', 'handshake', 'Hinges, runners and drawer bottoms, in writing. A squeak is my problem.'],
   ]) {
     const card = b.container(holdCols, { background: PANEL, padding: ['24', '22', '24', '22'], radius: 10 }, name);
-    b.icon(card, symbol, { color: PANEL, background: AMBER });
+    b.icon(card, symbol, { color: INK, background: AMBER });
     b.heading(card, name, { level: '3', fontSize: '18', color: INK, margin: ['14', '0', '6', '0'] });
     b.text(card, copy, { fontSize: '15', color: MUTED });
   }
@@ -73,7 +76,7 @@ export default function services() {
     'Day 1', 'The measure', 'An hour at yours with a tape and a coffee. The written quote follows within two days.',
     'Week 2', 'The build', 'Cut and finished in the shop. Clients visit mid-build to see their kitchen in the raw.',
     'Week 6', 'The fit', 'Two or three days in the house. We vacuum every evening and take the old units away.',
-  ], { accent: AMBER, color: INK });
+  ], { accent: AMBER_INK, color: INK });
 
   const prices = b.container(root, { background: PAPER, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'prices' }, 'Prices');
   b.heading(prices, 'What things cost', { fontSize: '30', color: INK });
@@ -138,10 +141,10 @@ export default function services() {
     title: 'The awkward rooms are the best ones',
     text: 'Odd corners, wonky walls, a staircase that has been wrong since 1962 — send one sentence about it.',
     cta: 'Get a quote', href: '#quote',
-    background: AMBER, color: WHITE, buttonBackground: PAPER, buttonColor: INK,
+    background: AMBER, color: INK, buttonBackground: PAPER, buttonColor: INK,
   });
 
-  b.modernSuite(root, { mode: 'service', background: PAPER, panel: PANEL, ink: INK, accent: AMBER });
+  b.modernSuite(root, { mode: 'service', background: PAPER, panel: PANEL, ink: INK, accent: AMBER_INK });
   b.footer(root, {
     brand: 'Northside Joinery',
     note: 'Kitchens, wardrobes and one-off pieces. Free quotes.',

@@ -1,5 +1,6 @@
 import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
+import { clipFor } from '../../src/utils/stockVideo.js';
 
 /**
  * Travel Blog — Wanderlog (replaces template 16)
@@ -13,7 +14,7 @@ export default function travel() {
   const PANEL = rgba(240, 233, 222);
   const INK = rgba(38, 34, 30);
   const SEA = rgba(24, 108, 122);
-  const MUTED = rgba(120, 110, 98);
+  const MUTED = rgba(111, 101, 90);
 
   const root = b.root({ background: PAPER, width: '100%' });
   b.navbar(root, 'Wanderlog', [
@@ -22,9 +23,16 @@ export default function travel() {
     { text: 'Subscribe', href: '#subscribe' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: PAPER, padding: ['72', '48', '40', '48'], width: '100%', backgroundImage: P.travel.ridge(1600), overlay: rgba(38, 34, 30, 0.55) }, 'Hero');
-  b.badge(hero, 'One letter a month', { background: PANEL, color: SEA });
-  b.heading(hero, 'Slow routes, written down', { level: '1', fontSize: '48', color: PAPER, margin: ['14', '0', '10', '0'] });
+  // A blog about slow routes, opening on a road actually moving.
+  const hero = b.backgroundVideo(root, {
+    src: clipFor('travel').url,
+    poster: P.travel.ridge(1600),
+    overlay: 55,
+    minHeight: '540px',
+  }, 'Hero');
+  const heroText = b.container(hero, { background: TRANSPARENT, padding: ['72', '48', '40', '48'], width: '100%' }, 'Hero text');
+  b.badge(heroText, 'One letter a month', { background: PANEL, color: SEA });
+  b.heading(heroText, 'Slow routes, written down', { level: '1', fontSize: '48', color: PAPER, margin: ['14', '0', '10', '0'] });
   b.text(hero, 'Trains, ferries and long walks. Notes from the places in between the places people go.', {
     fontSize: '18', color: rgba(255, 255, 255, 0.82), margin: ['0', '0', '24', '0'],
   });

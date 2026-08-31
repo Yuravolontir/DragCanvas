@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { Text } from './Text';
 import { ButtonSettings } from './ButtonSettings';
+import { normalizePaymentUrl } from '../../utils/elementData.js';
 
 const StyledButton = styled.button`
   background: ${(props) =>
@@ -27,6 +28,9 @@ const actionHref = (action, value) => {
   if (action === 'email') return `mailto:${clean.replace(/^mailto:/, '')}`;
   if (action === 'phone') return `tel:${clean.replace(/^tel:/, '')}`;
   if (action === 'page') return `/${clean.replace(/^\/+|\/+$/g, '')}/`;
+  // A checkout page from any provider. Same reading as the published page, and
+  // the same refusal of anything that is not an ordinary web address.
+  if (action === 'payment') return normalizePaymentUrl(clean) || undefined;
   if (/^(https?:\/\/|\/|\.\/|\.\.\/)/i.test(clean)) return clean;
   return `https://${clean}`;
 };
@@ -50,14 +54,34 @@ export const Button = ({ text, textComponent, color, buttonStyle, background, ma
   }));
   const { enabled } = useEditor((state) => ({ enabled: state.options.enabled }));
   const href = actionHref(action, actionValue);
+  /*
+   * A real link only outside the editor.
+   *
+   * On the canvas the button has to be an inert control: an <a href> here means
+   * one click sends the author off their own page. In preview and in the
+   * published output it is a link again, which is what makes it work.
+   */
+  const live = !enabled && href;
+  const newWindow = action === 'payment' || (action === 'url' && newTab);
+
+  const label = {
+    margin: `${textComponent.margin?.[0] || 0}px ${textComponent.margin?.[1] || 0}px ${textComponent.margin?.[2] || 0}px ${textComponent.margin?.[3] || 0}px`,
+    color: `rgba(${Object.values(color)})`,
+    fontSize: `${textComponent.fontSize || '15'}px`,
+    fontWeight: textComponent.fontWeight || '500',
+    textAlign: textComponent.textAlign || 'center',
+    textShadow: `0px 0px 2px rgba(0,0,0,${(textComponent.shadow || 0) / 100})`,
+    display: 'block',
+    width: '100%',
+  };
 
   return (
     <StyledButton
-      as={href ? 'a' : 'button'}
-      type={href ? undefined : 'button'}
-      href={href}
-      target={href && newTab ? '_blank' : undefined}
-      rel={href && newTab ? 'noopener noreferrer' : undefined}
+      as={live ? 'a' : 'button'}
+      type={live ? undefined : 'button'}
+      href={live || undefined}
+      target={live && newWindow ? '_blank' : undefined}
+      rel={live && newWindow ? 'noopener noreferrer' : undefined}
       ref={(dom) => {
         connect(dom);
       }}
@@ -83,9 +107,17 @@ export const Button = ({ text, textComponent, color, buttonStyle, background, ma
       $buttonStyle={buttonStyle}
       $background={background}
       $margin={margin}
-      style={{ pointerEvents: enabled ? 'none' : 'auto', textDecoration: 'none' }}
+      style={{ textDecoration: 'none' }}
     >
-      <Text {...textComponent} text={text} color={color} />
+      {/*
+        The label used to be the Text element, which calls useNode and so
+        claimed this node's DOM for itself. Craft then tracked the inner
+        heading instead of the button: hovering it produced no toolbar, so the
+        button could not be selected, its Properties could not be opened and it
+        could not be deleted. The label is written here now, and Properties
+        holds the field that changes it.
+      */}
+      <span style={label}>{text}</span>
     </StyledButton>
   );
 };

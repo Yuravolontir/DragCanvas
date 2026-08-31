@@ -89,7 +89,8 @@
         "a": 1
       },
       "height": "56px",
-      "width": "100%"
+      "width": "100%",
+      "animation": "none"
     },
     "displayName": "NavbarElement",
     "custom": {
@@ -247,9 +248,9 @@
         "a": 1
       },
       "color": {
-        "r": 20,
-        "g": 128,
-        "b": 138,
+        "r": 17,
+        "g": 112,
+        "b": 121,
         "a": 1
       },
       "radius": 999
@@ -336,9 +337,9 @@
     "isCanvas": false,
     "props": {
       "background": {
-        "r": 20,
-        "g": 128,
-        "b": 138,
+        "r": 17,
+        "g": 112,
+        "b": 121,
         "a": 1
       },
       "color": {
@@ -475,15 +476,15 @@
       ],
       "align": "center",
       "accent": {
-        "r": 20,
-        "g": 128,
-        "b": 138,
+        "r": 17,
+        "g": 112,
+        "b": 121,
         "a": 1
       },
       "color": {
-        "r": 94,
-        "g": 114,
-        "b": 120,
+        "r": 88,
+        "g": 107,
+        "b": 113,
         "a": 1
       }
     },
@@ -660,7 +661,8 @@
       "shadow": 0,
       "radius": 12,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
@@ -691,9 +693,9 @@
         "a": 1
       },
       "background": {
-        "r": 20,
-        "g": 128,
-        "b": 138,
+        "r": 17,
+        "g": 112,
+        "b": 121,
         "a": 1
       }
     },
@@ -749,9 +751,9 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 94,
-        "g": 114,
-        "b": 120,
+        "r": 88,
+        "g": 107,
+        "b": 113,
         "a": 1
       },
       "margin": [
@@ -809,7 +811,8 @@
       "shadow": 0,
       "radius": 12,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
@@ -840,9 +843,9 @@
         "a": 1
       },
       "background": {
-        "r": 20,
-        "g": 128,
-        "b": 138,
+        "r": 17,
+        "g": 112,
+        "b": 121,
         "a": 1
       }
     },
@@ -898,9 +901,9 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 94,
-        "g": 114,
-        "b": 120,
+        "r": 88,
+        "g": 107,
+        "b": 113,
         "a": 1
       },
       "margin": [
@@ -958,7 +961,8 @@
       "shadow": 0,
       "radius": 12,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 180
     },
     "displayName": "Container",
     "custom": {
@@ -989,9 +993,9 @@
         "a": 1
       },
       "background": {
-        "r": 20,
-        "g": 128,
-        "b": 138,
+        "r": 17,
+        "g": 112,
+        "b": 121,
         "a": 1
       }
     },
@@ -1047,9 +1051,9 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 94,
-        "g": 114,
-        "b": 120,
+        "r": 88,
+        "g": 107,
+        "b": 113,
         "a": 1
       },
       "margin": [
@@ -1308,9 +1312,9 @@
       "textAlign": "center",
       "fontWeight": "500",
       "color": {
-        "r": 94,
-        "g": 114,
-        "b": 120,
+        "r": 88,
+        "g": 107,
+        "b": 113,
         "a": 1
       },
       "margin": [
@@ -1356,9 +1360,9 @@
       ],
       "featured": 1,
       "accent": {
-        "r": 20,
-        "g": 128,
-        "b": 138,
+        "r": 17,
+        "g": 112,
+        "b": 121,
         "a": 1
       },
       "background": {
@@ -1457,9 +1461,9 @@
         "a": 1
       },
       "accent": {
-        "r": 20,
-        "g": 128,
-        "b": 138,
+        "r": 17,
+        "g": 112,
+        "b": 121,
         "a": 1
       }
     },
@@ -1781,9 +1785,9 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 94,
-        "g": 114,
-        "b": 120,
+        "r": 88,
+        "g": 107,
+        "b": 113,
         "a": 1
       },
       "margin": [
@@ -1819,9 +1823,9 @@
       "fontSize": "15",
       "gap": "8",
       "color": {
-        "r": 94,
-        "g": 114,
-        "b": 120,
+        "r": 88,
+        "g": 107,
+        "b": 113,
         "a": 1
       }
     },
@@ -1869,9 +1873,9 @@
         "a": 1
       },
       "accent": {
-        "r": 20,
-        "g": 128,
-        "b": 138,
+        "r": 17,
+        "g": 112,
+        "b": 121,
         "a": 1
       },
       "textColor": {
@@ -2021,7 +2025,8 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
@@ -2078,9 +2083,9 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 94,
-        "g": 114,
-        "b": 120,
+        "r": 88,
+        "g": 107,
+        "b": 113,
         "a": 1
       },
       "margin": [
@@ -2138,7 +2143,8 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
@@ -2272,9 +2278,9 @@
         "Everything described in your chosen option."
       ],
       "accent": {
-        "r": 20,
-        "g": 128,
-        "b": 138,
+        "r": 17,
+        "g": 112,
+        "b": 121,
         "a": 1
       }
     },
@@ -2300,9 +2306,9 @@
       "endHour": 17,
       "timeZone": "Asia/Jerusalem",
       "accent": {
-        "r": 20,
-        "g": 128,
-        "b": 138,
+        "r": 17,
+        "g": 112,
+        "b": 121,
         "a": 1
       }
     },
@@ -2350,9 +2356,9 @@
       "buttonText": "Subscribe",
       "successMessage": "Check your inbox to confirm.",
       "accent": {
-        "r": 20,
-        "g": 128,
-        "b": 138,
+        "r": 17,
+        "g": 112,
+        "b": 121,
         "a": 1
       },
       "color": {
@@ -2385,9 +2391,9 @@
         "👏"
       ],
       "accent": {
-        "r": 20,
-        "g": 128,
-        "b": 138,
+        "r": 17,
+        "g": 112,
+        "b": 121,
         "a": 1
       }
     },

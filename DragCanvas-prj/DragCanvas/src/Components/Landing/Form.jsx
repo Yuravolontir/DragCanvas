@@ -1,4 +1,5 @@
 import { useEditor } from '@craftjs/core';
+import { readableInkCss } from '../../utils/readableInk.js';
 import React from 'react';
 import { Resizer } from './Resizer';
 import { FormSettings } from './FormSettings';
@@ -79,7 +80,7 @@ export const Form = (props) => {
           type="button"
           style={{
             background: accentColor,
-            color: '#fff',
+            color: readableInkCss(accent),
             border: 'none',
             borderRadius: radius,
             padding: '11px 22px',

@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useEditor } from '@craftjs/core';
 import styled from 'styled-components';
 
 import { Resizer } from './Resizer';
 import { CarouselSettings } from './CarouselSettings';
-import { readSlides } from '../../utils/carouselSlides';
+import { readSlides, slideInterval, slidesAutoplay, slidesPerView } from '../../utils/carouselSlides';
+import { opensNewTab, safeHref } from '../../utils/elementRows.js';
 
 /*
  * This used to render react-bootstrap's <Carousel>, which the exported page
@@ -51,6 +53,14 @@ const Slide = styled.div`
   height: 100%;
   scroll-snap-align: start;
   overflow: hidden;
+`;
+
+const SlideLink = styled.a`
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
 `;
 
 const SlideImage = styled.img`
@@ -154,29 +164,34 @@ export const Carousel = (props) => {
   const {
     title = 'Gallery',
     accent = { r: 13, g: 110, b: 253, a: 1 },
-    autoplay = false,
-    interval = 5000,
     loop = true,
     arrows = true,
     dots = true,
-    perView = 1,
-    perViewTablet,
-    perViewMobile = 1,
   } = props;
 
+  const { enabled } = useEditor((state) => ({ enabled: state.options.enabled }));
   const slides = readSlides(props);
   const trackRef = useRef(null);
   const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [hovered, setHovered] = useState(false);
+
+  /*
+   * Read through the shared helpers rather than off the props.
+   *
+   * "Play by itself" appeared not to work, and the reason was here: the switch
+   * writes a boolean, but saved projects and generated pages had the string
+   * "false" in this prop, which is truthy. The same reading is used by the
+   * exporter, so the canvas and the published page agree about whether the
+   * carousel moves.
+   */
+  const autoplay = slidesAutoplay(props);
+  const interval = slideInterval(props);
+  const perView = slidesPerView(props);
 
   const accentCss =
     accent && typeof accent === 'object'
       ? `rgba(${accent.r}, ${accent.g}, ${accent.b}, ${accent.a ?? 1})`
       : String(accent || '#0d6efd');
-
-  const perViewNum = Math.max(1, Number(perView) || 1);
-  const tablet = Math.max(1, Number(perViewTablet) || Math.min(perViewNum, 2));
-  const mobile = Math.max(1, Number(perViewMobile) || 1);
 
   /** One slide's width, measured rather than assumed. */
   const step = () => {
@@ -225,17 +240,26 @@ export const Carousel = (props) => {
     return () => track.removeEventListener('scroll', onScroll);
   }, []);
 
+  /*
+   * Autoplay pauses under the pointer and nowhere else.
+   *
+   * It used to pause on focus too, which is right on a published page and
+   * wrong on the canvas: selecting the element puts focus inside it and leaves
+   * it there, so the carousel stayed paused for as long as it was selected —
+   * exactly while somebody was switching autoplay on and watching for it to do
+   * something. Hover is enough: a visitor reading a slide has the pointer on
+   * it, and a keyboard user pressing the arrows overrides the tick anyway.
+   */
   useEffect(() => {
-    if (!autoplay || paused || slides.length < 2) return undefined;
+    if (!autoplay || hovered || slides.length < 2) return undefined;
     // Someone who asked the system for less motion did not ask this carousel
     // for an exception.
     if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
       return undefined;
     }
-    const ms = Math.max(1000, Number(interval) || 5000);
-    const timer = setInterval(() => go(1), ms);
+    const timer = setInterval(() => go(1), interval);
     return () => clearInterval(timer);
-  }, [autoplay, paused, interval, go, slides.length]);
+  }, [autoplay, hovered, interval, go, slides.length]);
 
   const onKeyDown = (e) => {
     if (e.key === 'ArrowRight') {
@@ -259,39 +283,56 @@ export const Carousel = (props) => {
           role="region"
           aria-roledescription="carousel"
           aria-label={title}
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-          onFocus={() => setPaused(true)}
-          onBlur={() => setPaused(false)}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
         >
           <Track
             ref={trackRef}
             tabIndex={0}
             onKeyDown={onKeyDown}
-            $perView={perViewNum}
-            $perViewTablet={tablet}
-            $perViewMobile={mobile}
-            aria-live={autoplay && !paused ? 'off' : 'polite'}
+            $perView={perView.desktop}
+            $perViewTablet={perView.tablet}
+            $perViewMobile={perView.mobile}
+            aria-live={autoplay && !hovered ? 'off' : 'polite'}
           >
-            {slides.map((slide, i) => (
-              <Slide
-                key={i}
-                role="group"
-                aria-roledescription="slide"
-                aria-label={`${i + 1} of ${slides.length}`}
-              >
-                {slide.src && (
-                  <SlideImage src={slide.src} alt={slide.alt} loading="lazy" decoding="async" />
-                )}
-                {(slide.label || slide.heading || slide.text) && (
-                  <Caption>
-                    {slide.label && <Pill style={{ background: accentCss }}>{slide.label}</Pill>}
-                    {slide.heading && <h3>{slide.heading}</h3>}
-                    {slide.text && <p>{slide.text}</p>}
-                  </Caption>
-                )}
-              </Slide>
-            ))}
+            {slides.map((slide, i) => {
+              const href = safeHref(slide.href);
+              // A real link only outside the editor, so clicking a slide on the
+              // canvas selects it instead of navigating away from the project.
+              const live = !enabled && href;
+              const body = (
+                <React.Fragment>
+                  {slide.src && (
+                    <SlideImage src={slide.src} alt={slide.alt} loading="lazy" decoding="async" />
+                  )}
+                  {(slide.label || slide.heading || slide.text) && (
+                    <Caption>
+                      {slide.label && <Pill style={{ background: accentCss }}>{slide.label}</Pill>}
+                      {slide.heading && <h3>{slide.heading}</h3>}
+                      {slide.text && <p>{slide.text}</p>}
+                    </Caption>
+                  )}
+                </React.Fragment>
+              );
+              return (
+                <Slide
+                  key={i}
+                  role="group"
+                  aria-roledescription="slide"
+                  aria-label={`${i + 1} of ${slides.length}`}
+                >
+                  {live ? (
+                    <SlideLink
+                      href={live}
+                      target={opensNewTab(live) ? '_blank' : undefined}
+                      rel={opensNewTab(live) ? 'noopener noreferrer' : undefined}
+                    >
+                      {body}
+                    </SlideLink>
+                  ) : body}
+                </Slide>
+              );
+            })}
           </Track>
 
           {arrows && slides.length > 1 && (
@@ -338,6 +379,7 @@ Carousel.craft = {
         heading: 'First Slide',
         label: 'Featured',
         text: 'Description for first slide',
+        href: '',
         alt: '',
       },
       {
@@ -345,6 +387,7 @@ Carousel.craft = {
         heading: 'Second Slide',
         label: 'New',
         text: 'Description for second slide',
+        href: '',
         alt: '',
       },
       {
@@ -352,6 +395,7 @@ Carousel.craft = {
         heading: 'Third Slide',
         label: 'Hot',
         text: 'Description for third slide',
+        href: '',
         alt: '',
       },
     ],

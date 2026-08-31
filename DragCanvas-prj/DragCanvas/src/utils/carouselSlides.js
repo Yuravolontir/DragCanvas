@@ -44,10 +44,40 @@ const normalise = (slide) => ({
   heading: slide.heading || '',
   label: slide.label || '',
   text: slide.text || '',
+  // Where the slide sends a visitor who clicks it. Optional, and refused
+  // outright unless it is an ordinary web address - see safeHref.
+  href: slide.href || '',
   // A background image had no alt at all. Falling back to the heading is a
   // better description than nothing, and beats repeating the filename.
   alt: slide.alt || slide.heading || '',
 });
 
 /** A blank slide for the settings panel's "add" button. */
-export const emptySlide = () => ({ src: '', heading: '', label: '', text: '', alt: '' });
+export const emptySlide = () => ({ src: '', heading: '', label: '', text: '', href: '', alt: '' });
+
+/**
+ * Does this carousel move on its own?
+ *
+ * Saved data has held the string "false" here, which is truthy, so a carousel
+ * that had been switched off played anyway and the switch appeared to do
+ * nothing. Only a real yes counts.
+ */
+export const slidesAutoplay = (props = {}) => {
+  const value = props.autoplay;
+  if (typeof value === 'string') return ['true', 'yes', '1', 'on'].includes(value.trim().toLowerCase());
+  return !!value;
+};
+
+/** How long between slides, in milliseconds, never fast enough to be unreadable. */
+export const slideInterval = (props = {}) => {
+  const value = Number(props.interval);
+  return Number.isFinite(value) && value >= 1000 ? Math.min(value, 60000) : 5000;
+};
+
+/** How many slides are shown side by side, and what that means on a phone. */
+export const slidesPerView = (props = {}) => {
+  const desktop = Math.min(8, Math.max(1, Math.round(Number(props.perView)) || 1));
+  const tablet = Math.min(desktop, Math.max(1, Math.round(Number(props.perViewTablet)) || Math.min(desktop, 2)));
+  const mobile = Math.min(tablet, Math.max(1, Math.round(Number(props.perViewMobile)) || 1));
+  return { desktop, tablet, mobile };
+};

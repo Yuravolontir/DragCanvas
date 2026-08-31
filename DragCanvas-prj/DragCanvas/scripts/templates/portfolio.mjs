@@ -126,7 +126,7 @@ export default function portfolio() {
     'A date, if there is one',
     'Where it will be printed — this changes the answer',
   ], { color: MUTED, fontSize: '15' });
-  b.form(contactSplit, { submitText: 'Send', accent: GOLD, background: PANEL, color: BONE });
+  b.form(contactSplit, { submitText: 'Send', accent: GOLD, background: PANEL, textColor: BONE });
   b.spacer(contact, '24');
   b.socialLinks(contact, ['Instagram', 'https://instagram.com/', 'Behance', 'https://behance.net/'], {
     background: rgba(255, 255, 255, 0.08), color: BONE,

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as ctrl from './ai.ctrl.js';
 import { verifyToken } from '../../middlewares/auth.js';
-import { aiLimiter } from '../../middlewares/rateLimit.js';
+import { aiImageLimiter, aiLimiter } from '../../middlewares/rateLimit.js';
 
 const aiRouter = Router();
 
@@ -9,6 +9,6 @@ const aiRouter = Router();
 aiRouter
     .post('/generate', verifyToken, aiLimiter, ctrl.generateWebsite)
     .post('/refine', verifyToken, aiLimiter, ctrl.refineWebsite)
-    .post('/image', verifyToken, aiLimiter, ctrl.generateImage)
+    .post('/image', verifyToken, aiImageLimiter, ctrl.generateImage)
 
 export default aiRouter;

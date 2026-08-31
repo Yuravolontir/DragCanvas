@@ -108,8 +108,9 @@ export const Resizer = ({ propKey, children, ...props }) => {
   const effectiveWidth = responsiveValue({ [propKey.width]: nodeWidth, responsive }, deviceMode, propKey.width);
   const effectiveHeight = responsiveValue({ [propKey.height]: nodeHeight, responsive }, deviceMode, propKey.height);
 
-  const { isRootNode, parentDirection } = useEditor((state, query) => {
+  const { isRootNode, parentDirection, editorEnabled } = useEditor((state, query) => {
     return {
+      editorEnabled: state.options.enabled,
       parentDirection:
         parent &&
         state.nodes[parent] &&
@@ -136,6 +137,12 @@ export const Resizer = ({ propKey, children, ...props }) => {
     width: effectiveWidth,
     height: effectiveHeight,
   });
+
+  // App owns the page flow. Its saved height is a useful empty-canvas size,
+  // but must never become a ceiling once children are inserted.
+  const rootMinHeight = effectiveHeight && effectiveHeight !== 'auto'
+    ? effectiveHeight
+    : '600px';
 
   const updateInternalDimensionsInPx = useCallback(() => {
     const { width: nodeWidth, height: nodeHeight } = nodeDimensions.current;
@@ -219,7 +226,9 @@ export const Resizer = ({ propKey, children, ...props }) => {
           connect(resizable.current.resizable);
         }
       }}
-      size={internalDimensions}
+      size={isRootNode
+        ? { ...internalDimensions, height: 'auto' }
+        : internalDimensions}
       onResizeStart={(e) => {
         updateInternalDimensionsInPx();
         e.preventDefault();
@@ -267,6 +276,26 @@ export const Resizer = ({ propKey, children, ...props }) => {
         updateInternalDimensionsWithOriginal();
       }}
       {...props}
+      minHeight={isRootNode ? rootMinHeight : props.minHeight}
+      maxWidth={isRootNode ? props.maxWidth : (props.maxWidth || '100%')}
+      style={{
+        boxSizing: 'border-box',
+        minWidth: 0,
+        ...props.style,
+        // Saved projects and older templates may contain pixel widths larger
+        // than their App container. Keep the stored authoring value (so it is
+        // not silently rewritten), but never let a child paint outside its
+        // current parent. The root App itself remains free to define the
+        // canvas measure.
+        ...(isRootNode && editorEnabled
+          ? {
+              // Keep a real drop runway below the last element. Auto-growing
+              // after a drop is not enough: without empty space before the
+              // drop there is nowhere to place the next node.
+              paddingBottom: 'calc(var(--dc-container-padding-bottom, 0px) + 180px)',
+            }
+          : {}),
+      }}
     >
       {children}
       {active && (

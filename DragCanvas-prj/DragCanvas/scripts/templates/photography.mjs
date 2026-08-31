@@ -122,7 +122,7 @@ export default function photography() {
     'Evenings and Sundays included',
     'The deposit holds a slot and moves once, free',
   ], { color: MUTED, fontSize: '15' });
-  b.form(bookSplit, { submitText: 'Send enquiry', accent: AMBER, background: PANEL, color: BONE });
+  b.form(bookSplit, { submitText: 'Send enquiry', accent: AMBER, background: PANEL, textColor: BONE });
   b.spacer(book, '20');
   b.link(book, 'Or just email us', 'mailto:hello@still.studio', { fontSize: '15' });
 

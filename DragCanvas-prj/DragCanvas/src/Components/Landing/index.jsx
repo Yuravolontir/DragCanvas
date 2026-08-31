@@ -25,6 +25,8 @@ export { ButtonSettings } from './ButtonSettings';
 export { Video } from './Video';
 export { BackgroundVideo } from './BackgroundVideo';
 export { VideoSettings } from './VideoSettings';
+export { YouTube } from './YouTube';
+export { YouTubeSettings } from './YouTubeSettings';
 export { ContainerSettings } from './ContainerSettings';
 export { Custom1, OnlyButtons } from './Custom1';
 export { Custom2, Custom2VideoDrop } from './Custom2';

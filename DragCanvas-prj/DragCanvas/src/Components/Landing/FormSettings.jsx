@@ -2,6 +2,7 @@ import React from 'react';
 import { useNode } from '@craftjs/core';
 import { ToolbarSection } from './Toolbar/ToolbarSection';
 import { ToolbarItem } from './Toolbar/ToolbarItem';
+import { ToolbarHelp } from './Toolbar/ToolbarHelp';
 
 const FIELD_TYPES = ['text', 'email', 'phone', 'textarea', 'file'];
 
@@ -61,6 +62,13 @@ export const FormSettings = () => {
 
   return (
     <React.Fragment>
+      <ToolbarHelp title="Contact form" icon="dynamic_form">
+        Visitors fill this in and you get what they wrote. Once the site is
+        published, every submission is emailed to the project owner’s address
+        by default — nothing to set up. If you would rather also receive them
+        in Telegram, on a Google Sheet or at your own web address, connect that
+        under Integrations while publishing.
+      </ToolbarHelp>
       <ToolbarSection title="Fields">
         <div style={{ width: '100%', padding: '0 8px 8px' }}>
           {fields.map((field, index) => (

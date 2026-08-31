@@ -1,6 +1,36 @@
 import { columnTracks } from './columnTracks.js';
-import { pairUp, groupLines, normalizePaymentUrl } from './elementData.js';
-import { readSlides } from './carouselSlides.js';
+import { pairUp, imageAltText, normalizePaymentUrl, videoMode, youTubeId } from './elementData.js';
+import { readSlides, slideInterval, slidesAutoplay, slidesPerView } from './carouselSlides.js';
+import {
+  countdownTarget,
+  engagementMode,
+  readEngagementOptions,
+  opensNewTab,
+  readAccordionRows,
+  readLogoRows,
+  readPricingRows,
+  readProductRows,
+  readStatRows,
+  readTeamRows,
+  readTimelineRows,
+  safeHref,
+  statDisplay,
+  statsCountUp,
+} from './elementRows.js';
+import { readSocialRows, socialHref } from './socialPlatforms.js';
+import { readableInkCss } from './readableInk.js';
+import {
+  ANIM_ATTR,
+  DEFAULT_ANIMATION,
+  DEFAULT_DELAY,
+  DEFAULT_DURATION,
+  READY_CLASS,
+  REPEAT_ATTR,
+  animationRuntime,
+  animationStyleSheet,
+  hasAnimation,
+  readAnimation,
+} from './animation.js';
 
 /**
  * Convert Craft.js serialized data to clean HTML with inline CSS
@@ -98,6 +128,54 @@ const wrapResponsive = (html, node, depth) => {
 
   const indent = '  '.repeat(depth + 1);
   return `${indent}<div class="${className}">\n${html}${indent}</div>\n`;
+};
+
+/** Distinct duration/delay pairs, so ten staggered cards share three rules. */
+let timingRules = new Map();
+
+/** Whether this page needs the animation stylesheet and script at all. */
+let usesAnimation = false;
+
+/**
+ * Put an attribute list inside the first tag of some converted markup.
+ *
+ * Converters hand back strings, and there are forty of them: adding a wrapper
+ * div around each would change flex and grid layouts, and threading a prop
+ * through every converter would be forty chances to forget one. Attributes are
+ * always safe to append, which is why the timing goes through an attribute
+ * selector rather than a class or a style that would have to be merged with
+ * whatever the converter already wrote.
+ */
+const insertAttributes = (html, attributes) => {
+  const open = html.indexOf('<');
+  if (open === -1) return html;
+  const close = html.indexOf('>', open);
+  if (close === -1) return html;
+  // Text going into an attribute has its > escaped, so the first one really is
+  // the end of the tag. A self-closing tag keeps its slash last.
+  const at = html[close - 1] === '/' ? close - 1 : close;
+  return `${html.slice(0, at)}${attributes}${html.slice(at)}`;
+};
+
+/** Mark up one node with the entrance it asked for. */
+const withAnimation = (html, node, typeName, isRoot) => {
+  // The page itself has nothing to arrive from, and hiding it would hide
+  // everything. The panel does not offer it; nor does this.
+  if (isRoot) return html;
+  const spec = readAnimation(node.props, DEFAULT_ANIMATION[typeName] || 'none');
+  if (!hasAnimation(spec)) return html;
+
+  usesAnimation = true;
+  let attributes = ` ${ANIM_ATTR}="${spec.name}"`;
+  if (spec.duration !== DEFAULT_DURATION || spec.delay !== DEFAULT_DELAY) {
+    const key = `${spec.duration}-${spec.delay}`;
+    if (!timingRules.has(key)) {
+      timingRules.set(key, `[data-dc-t="${key}"] { --dc-duration: ${spec.duration}ms; --dc-delay: ${spec.delay}ms; }`);
+    }
+    attributes += ` data-dc-t="${key}"`;
+  }
+  if (spec.repeat) attributes += ` ${REPEAT_ATTR}="1"`;
+  return insertAttributes(html, attributes);
 };
 
 // A node is "large" (forces its parent row to stack on mobile) when it is
@@ -257,8 +335,7 @@ const converters = {
     if (anchor) knownAnchors.add(anchor);
     const idAttr = anchor ? ` id="${escapeAttribute(anchor)}"` : '';
 
-    const revealAttr = isRoot ? '' : ' data-reveal';
-    return `  <div${idAttr}${revealAttr} class="${className}">\n${childrenHtml}  </div>\n`;
+    return `  <div${idAttr} class="${className}">\n${childrenHtml}  </div>\n`;
   },
 
   /**
@@ -391,6 +468,8 @@ const converters = {
 
     cssRules.push(`.${className} {
   width: ${props.width || '100%'};
+  /* A map inserted at a fixed width still has to fit a phone. */
+  max-width: 100%;
   height: ${props.height || '300px'};
   border-radius: 8px;
   overflow: hidden;
@@ -527,7 +606,7 @@ const converters = {
   Accordion: (node) => {
     const props = node.props || {};
     const className = generateClass('accordion');
-    const entries = pairUp(props.items);
+    const entries = readAccordionRows(props);
 
     cssRules.push(`.${className} {
   width: 100%;
@@ -554,9 +633,9 @@ const converters = {
   line-height: 1.6;
 }`);
 
-    const html = entries.map(([q, a]) => `      <details>
-        <summary>${escapeHtmlText(q)}</summary>
-        <div class="answer">${escapeHtmlText(a)}</div>
+    const html = entries.map((entry) => `      <details>
+        <summary>${escapeHtmlText(entry.question)}</summary>
+        <div class="answer">${escapeHtmlText(entry.answer)}</div>
       </details>`).join('\n');
 
     return `    <div class="${className}">\n${html}\n    </div>\n`;
@@ -566,9 +645,8 @@ const converters = {
   Pricing: (node) => {
     const props = node.props || {};
     const className = generateClass('pricing');
-    const records = groupLines(props.tiers, 5);
+    const records = readPricingRows(props);
     const accent = rgbaToString(props.accent) || '#0040e0';
-    const highlight = Number(props.featured);
 
     cssRules.push(`.${className} {
   display: grid;
@@ -608,21 +686,32 @@ const converters = {
   border: 2px solid ${accent};
   color: ${accent};
 }
-.${className} .tier.featured .cta span { background: ${accent}; color: #fff; }`);
+.${className} .tier.featured .cta span { background: ${accent}; color: ${readableInkCss(props.accent)}; }
+.${className} .cta a { display: block; text-decoration: none; }`);
 
     mobileRules.push(`  .${className} {\n    grid-template-columns: minmax(0, 1fr);\n  }`);
 
-    const tiers = records.map(([name, price, period, cta, features], i) => {
-      const items = String(features || '').split(';').filter(Boolean)
-        .map(f => `          <li>${escapeHtmlText(f.trim())}</li>`).join('\n');
-      return `      <div class="tier${i + 1 === highlight ? ' featured' : ''}">
-        <span class="name">${escapeHtmlText(name)}</span>
-        <span class="price">${escapeHtmlText(price)}</span>
-        <span class="period">${escapeHtmlText(period)}</span>
+    const tiers = records.map((tier) => {
+      const items = tier.features
+        .map(f => `          <li>${escapeHtmlText(f)}</li>`).join('\n');
+      const href = safeHref(tier.href);
+      // The button is a link only when the author gave it somewhere to go. A
+      // dead link invites the click and then does nothing, which is worse than
+      // a label that plainly is not one.
+      const label = `<span>${escapeHtmlText(tier.cta)}</span>`;
+      const button = tier.cta
+        ? (href
+          ? `<a href="${escapeAttribute(href)}"${opensNewTab(href) ? ' target="_blank" rel="noopener noreferrer"' : ''}>${label}</a>`
+          : label)
+        : '';
+      return `      <div class="tier${tier.featured ? ' featured' : ''}">
+        <span class="name">${escapeHtmlText(tier.name)}</span>
+        <span class="price">${escapeHtmlText(tier.price)}</span>
+        <span class="period">${escapeHtmlText(tier.period)}</span>
         <ul>
 ${items}
         </ul>
-        <span class="cta"><span>${escapeHtmlText(cta)}</span></span>
+        <span class="cta">${button}</span>
       </div>`;
     }).join('\n');
 
@@ -676,11 +765,19 @@ ${items}
     </figure>\n`;
   },
 
-  /** A row of numbers worth saying out loud. */
+  /**
+   * A row of numbers worth saying out loud.
+   *
+   * How the block arrives is the shared animation's job. What is left here is
+   * the counting, which is about the figures rather than the box they sit in.
+   */
   Stats: (node) => {
     const props = node.props || {};
     const className = generateClass('stats');
-    const records = groupLines(props.items, 2);
+    const rootId = `${className}-root`;
+    const records = readStatRows(props);
+    const counting = statsCountUp(props);
+    const repeat = props.animationRepeat === true;
 
     cssRules.push(`.${className} {
   display: grid;
@@ -709,19 +806,79 @@ ${items}
 
     mobileRules.push(`  .${className} {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }`);
 
-    const html = records.map(([value, label]) => `      <div>
-        <span class="value">${escapeHtmlText(value)}</span>
-        <span class="label">${escapeHtmlText(label)}</span>
+    const html = records.map((row) => `      <div>
+        <span class="value" aria-label="${escapeAttribute(statDisplay(row))}" data-stat-prefix="${escapeAttribute(row.prefix)}" data-stat-value="${escapeAttribute(row.value)}" data-stat-suffix="${escapeAttribute(row.suffix)}">${escapeHtmlText(statDisplay(row))}</span>
+        <span class="label">${escapeHtmlText(row.label)}</span>
       </div>`).join('\n');
 
-    return `    <div class="${className}">\n${html}\n    </div>\n`;
+    const script = counting ? `    <script>
+      (function () {
+        var root = document.getElementById(${JSON.stringify(rootId)});
+        if (!root) return;
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var figures = [], frame = 0;
+        function format(amount, decimals) {
+          return new Intl.NumberFormat('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }).format(amount);
+        }
+        Array.prototype.forEach.call(root.querySelectorAll('[data-stat-value]'), function (element) {
+          var raw = element.dataset.statValue || '', prefix = element.dataset.statPrefix || '', suffix = element.dataset.statSuffix || '', numeric = raw;
+          var embedded = raw.match(/^([^\\d+-]*)([-+]?\\d[\\d,\\s]*?(?:\\.\\d+)?)([^\\d]*)$/);
+          if (embedded && !/^-?\\d+(?:\\.\\d+)?$/.test(raw.replace(/[\\s,]/g, ''))) { prefix += embedded[1]; numeric = embedded[2]; suffix = embedded[3] + suffix; }
+          var normalized = numeric.replace(/[\\s,]/g, '');
+          // Text such as 24/7 stays put rather than becoming NaN.
+          if (!/^-?\\d+(?:\\.\\d+)?$/.test(normalized)) return;
+          var decimals = (normalized.split('.')[1] || '').length;
+          figures.push({ element: element, target: Number(normalized), decimals: decimals, prefix: prefix, suffix: suffix, done: element.textContent });
+        });
+        if (!figures.length) return;
+        // The markup carries the finished number so the page reads correctly
+        // without scripting; the zeroing happens here, before the first paint,
+        // so a counted figure never shows its total and then snaps back.
+        function zero() {
+          figures.forEach(function (figure) { figure.element.textContent = figure.prefix + format(0, figure.decimals) + figure.suffix; });
+        }
+        zero();
+        function count() {
+          cancelAnimationFrame(frame);
+          var start = performance.now(), duration = 1000;
+          function draw(now) {
+            var linear = Math.min(1, (now - start) / duration), progress = 1 - Math.pow(1 - linear, 3);
+            figures.forEach(function (figure) {
+              // The last frame reads back exactly what was typed, so a value
+              // written as 1200 does not finish as 1,200.
+              figure.element.textContent = linear < 1
+                ? figure.prefix + format(figure.target * progress, figure.decimals) + figure.suffix
+                : figure.done;
+            });
+            if (linear < 1) frame = requestAnimationFrame(draw);
+          }
+          frame = requestAnimationFrame(draw);
+        }
+        if (!('IntersectionObserver' in window)) return count();
+        var arrive = new IntersectionObserver(function (entries) {
+          if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
+          ${repeat ? '' : 'arrive.disconnect();'}
+          count();
+        }, { threshold: .12 });
+        arrive.observe(root);${repeat ? `
+        // Winding back only happens once the block is entirely off screen, so
+        // nobody watches the numbers fall.
+        var leave = new IntersectionObserver(function (entries) {
+          if (entries.some(function (entry) { return entry.isIntersecting; })) return;
+          cancelAnimationFrame(frame); zero();
+        }, { threshold: 0 });
+        leave.observe(root);` : ''}
+      })();
+    </script>\n` : '';
+
+    return `    <div class="${className}" id="${rootId}">\n${html}\n    </div>\n${script}`;
   },
 
   /** The people behind the thing. */
   TeamGrid: (node) => {
     const props = node.props || {};
     const className = generateClass('teamgrid');
-    const records = groupLines(props.people, 3);
+    const records = readTeamRows(props);
 
     cssRules.push(`.${className} {
   display: grid;
@@ -744,16 +901,23 @@ ${items}
   background: ${rgbaToString(props.accent) || '#eef0ff'};
 }
 .${className} .name { display: block; font-weight: 700; font-size: 16px; }
-.${className} .role { display: block; font-size: 13px; opacity: 0.65; }`);
+.${className} .role { display: block; font-size: 13px; opacity: 0.65; }
+.${className} figure > a { display: block; line-height: 0; }`);
 
     mobileRules.push(`  .${className} {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }`);
 
-    const html = records.map(([name, role, photo]) => {
+    const html = records.map(({ name, role, photo, href }) => {
       const face = photo
-        ? `<img src="${escapeAttribute(cloudinaryVariant(photo, 480))}"${responsiveImageAttrs(photo)} alt="" loading="lazy" decoding="async">`
+        ? `<img src="${escapeAttribute(cloudinaryVariant(photo, 480))}"${responsiveImageAttrs(photo)} alt="${escapeAttribute(name || '')}" loading="lazy" decoding="async">`
         : `<span class="initial">${escapeHtmlText((name || '?').trim().charAt(0).toUpperCase())}</span>`;
+      const link = safeHref(href);
+      // Clicking a face is what people try, so it is worth wiring up - and a
+      // link that leaves the site takes rel protection with it.
+      const portrait = link
+        ? `<a href="${escapeAttribute(link)}"${opensNewTab(link) ? ' target="_blank" rel="noopener noreferrer"' : ''}>${face}</a>`
+        : face;
       return `      <figure>
-        ${face}
+        ${portrait}
         <figcaption>
           <span class="name">${escapeHtmlText(name)}</span>
           <span class="role">${escapeHtmlText(role)}</span>
@@ -768,7 +932,7 @@ ${items}
   Timeline: (node) => {
     const props = node.props || {};
     const className = generateClass('timeline');
-    const records = groupLines(props.steps, 3);
+    const records = readTimelineRows(props);
     const accent = rgbaToString(props.accent) || '#0040e0';
 
     cssRules.push(`.${className} {
@@ -782,7 +946,7 @@ ${items}
 .${className} .rail { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
 .${className} .marker {
   width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
-  background: ${accent}; color: #fff; font-weight: 700; font-size: 14px; flex-shrink: 0;
+  background: ${accent}; color: ${readableInkCss(props.accent)}; font-weight: 700; font-size: 14px; flex-shrink: 0;
 }
 .${className} .tail { flex: 1; width: 2px; background: ${accent}; opacity: 0.25; min-height: 24px; }
 .${className} .title { display: block; font-weight: 700; font-size: 17px; }
@@ -790,7 +954,7 @@ ${items}
 .${className} .body { padding-bottom: 28px; }
 .${className} .step:last-child .body { padding-bottom: 0; }`);
 
-    const html = records.map(([marker, title, detail], i) => `      <div class="step">
+    const html = records.map(({ marker, title, detail }, i) => `      <div class="step">
         <div class="rail">
           <span class="marker">${escapeHtmlText(marker)}</span>
           ${i < records.length - 1 ? '<span class="tail"></span>' : ''}
@@ -849,7 +1013,7 @@ ${items}
   LogoStrip: (node) => {
     const props = node.props || {};
     const className = generateClass('logostrip');
-    const logos = Array.isArray(props.logos) ? props.logos : [];
+    const logos = readLogoRows(props);
 
     cssRules.push(`.${className} {
   display: flex;
@@ -878,14 +1042,23 @@ ${rgbaToString(props.color) ? `  color: ${rgbaToString(props.color)};\n` : ''}}
 
 ${props.grayscale === 'no' ? '' : `.${className} span:hover {\n  opacity: 1;\n}`}
 
-${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n  opacity: 1;\n}`}`);
+${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n  opacity: 1;\n}`}
 
-    // A line that is not a URL is a name, and is set as a wordmark. See the
-    // LogoStrip component for why that is the more useful reading.
+.${className} a { color: inherit; text-decoration: none; line-height: 0; }`);
+
+    // A company with no image is set as a wordmark. See the LogoStrip component
+    // for why that is the more useful reading of a customer logo you do not have
+    // the file for.
     const html = logos
-      .map(entry => (/^(https?:\/\/|data:|\/)/i.test(String(entry).trim())
-        ? `      <img src="${escapeAttribute(cloudinaryVariant(entry, 768))}"${responsiveImageAttrs(entry)} alt="" loading="lazy" decoding="async">`
-        : `      <span>${escapeHtmlText(String(entry))}</span>`))
+      .map((row) => {
+        const mark = row.src
+          ? `<img src="${escapeAttribute(cloudinaryVariant(row.src, 768))}"${responsiveImageAttrs(row.src)} alt="${escapeAttribute(row.label || '')}" loading="lazy" decoding="async">`
+          : `<span>${escapeHtmlText(row.label)}</span>`;
+        const href = safeHref(row.href);
+        return `      ${href
+          ? `<a href="${escapeAttribute(href)}"${opensNewTab(href) ? ' target="_blank" rel="noopener noreferrer"' : ''}>${mark}</a>`
+          : mark}`;
+      })
       .join('\n');
 
     return `    <div class="${className}">\n${html}\n    </div>\n`;
@@ -895,7 +1068,9 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
   SocialLinks: (node) => {
     const props = node.props || {};
     const className = generateClass('sociallinks');
-    const records = groupLines(props.items, 2);
+    const records = readSocialRows(props);
+    const box = Math.round((Number(props.size) || 14) * 2.3);
+    const glyph = Math.round(box * 0.58);
 
     cssRules.push(`.${className} {
   display: flex;
@@ -906,18 +1081,28 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
 }
 
 .${className} a {
-  display: inline-block;
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-size: ${Number(props.size) || 14}px;
-  font-weight: 600;
+  display: inline-grid;
+  place-items: center;
+  width: ${box}px;
+  height: ${box}px;
+  border-radius: 50%;
   text-decoration: none;
   background: ${rgbaToString(props.background) || 'rgba(0,0,0,0.06)'};
   color: ${rgbaToString(props.color) || 'inherit'};
-}`);
+}
 
+.${className} svg { width: ${glyph}px; height: ${glyph}px; fill: currentColor; display: block; }`);
+
+    // The mark is inlined rather than fetched: a published page has no bundle
+    // and no icon font, and a row of social buttons that waits on a third-party
+    // request is a row of social buttons that sometimes never arrives.
     const html = records
-      .map(([label, href]) => `      <a href="${escapeAttribute(href || '#')}" rel="noopener">${escapeHtmlText(label)}</a>`)
+      .map((row) => {
+        const href = socialHref(row);
+        if (!href) return '';
+        return `      <a href="${escapeAttribute(href)}" aria-label="${escapeAttribute(row.label)}"${/^https?:/i.test(href) ? ' target="_blank" rel="noopener noreferrer"' : ''}><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${escapeAttribute(row.icon)}"/></svg></a>`;
+      })
+      .filter(Boolean)
       .join('\n');
 
     return `    <div class="${className}">\n${html}\n    </div>\n`;
@@ -998,10 +1183,13 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
     const text = props.text || 'Button';
     const value = String(props.actionValue || '').trim();
     let href = '';
-    if ((props.action === 'url' || props.action === 'payment') && value) {
+    if (props.action === 'url' && value) {
       if (/^(https?:\/\/|\/|\.\/|\.\.\/)/i.test(value)) href = value;
       else if (!/^[a-z][a-z0-9+.-]*:/i.test(value)) href = `https://${value}`;
     }
+    // Any hosted checkout, no provider assumed - and nothing that is not an
+    // ordinary web address, which is what normalizePaymentUrl is for.
+    if (props.action === 'payment' && value) href = normalizePaymentUrl(value);
     if (props.action === 'section' && value) href = `#${slugifyAnchor(value.replace(/^#/, ''))}`;
     if (props.action === 'email' && value) href = `mailto:${value.replace(/^mailto:/i, '')}`;
     if (props.action === 'phone' && value) href = `tel:${value.replace(/^tel:/i, '')}`;
@@ -1013,59 +1201,147 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
     return `    <button class="${className}" type="button">${escapeHtmlText(text)}</button>\n`;
   },
 
+  /*
+   * The video player, in the three shapes the element has had.
+   *
+   * Background heroes go to their own converter. A YouTube id - typed here
+   * before the YouTube element existed - still becomes an embed. Everything
+   * else is a file the owner hosts, with the optional line of text centred over
+   * it. Sizes come from the props the editor resized, capped so a fixed width
+   * never makes a phone scroll sideways.
+   */
   Video: (node, data, depth = 0) => {
     const props = node.props || {};
+    const mode = videoMode(props);
 
-    if (props.sourceType === 'background') {
+    if (mode === 'background') {
       return converters.BackgroundVideo(
         { ...node, props: { ...props, src: props.src || props.videoUrl || '' } },
         data,
         depth
       );
     }
-    const wrapperClass = generateClass('video-wrapper');
 
-    const wrapperStyles = {
-      width: '100%',
-      height: '100%',
-      position: 'relative',
-    };
+    const className = generateClass('video');
+    const width = props.width || '100%';
+    const height = props.height;
 
-    cssRules.push(`.${wrapperClass} {\n${stylesToCss(wrapperStyles)}\n}`);
+    cssRules.push(`.${className} {
+  position: relative;
+  width: ${width};
+  max-width: 100%;
+  ${height ? `height: ${height};` : 'aspect-ratio: 16 / 9;'}
+  overflow: hidden;
+}
 
-    if (props.videoId) {
-      // YouTube embed
-      return `    <div class="${wrapperClass}">
+.${className} iframe,
+.${className} video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  object-fit: cover;
+}`);
+
+    if (/^\d+(\.\d+)?px$/.test(String(width).trim())) {
+      mobileRules.push(`  .${className} {\n  width: 100%;\n  }`);
+    }
+
+    if (mode === 'youtube') {
+      const id = youTubeId(props.videoId || props.videoUrl);
+      if (!id) return '';
+      return `    <div class="${className}">
       <iframe
-        width="100%"
-        height="100%"
-        src="https://www.youtube.com/embed/${props.videoId}"
-        frameborder="0"
+        src="https://www.youtube.com/embed/${escapeAttribute(id)}"
+        title="YouTube video"
+        loading="lazy"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen>
       </iframe>
     </div>\n`;
-    } else if (props.videoUrl) {
-      // HTML5 video
-      const overlayClass = generateClass('video-overlay');
-      cssRules.push(`.${overlayClass} {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  color: white;\n  text-align: center;\n  font-size: 2rem;\n  font-weight: bold;\n  z-index: 2;\n  background: rgba(0, 0, 0, 0.1);\n  padding: 1rem;\n  border-radius: 8px;\n}\n`);
-
-      return `    <div class="${wrapperClass}" style="padding-top: 56.25%; overflow: hidden;">
-      <video
-        autoplay
-        loop
-        muted
-        playsinline
-        controls
-        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
-        <source src="${props.videoUrl}" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      ${props.text ? `<div class="${overlayClass}"><h1 style="color: white; margin: 0;">${props.text}</h1></div>` : ''}
-    </div>\n`;
     }
 
-    return '';
+    if (!props.videoUrl) return '';
+
+    const overlayClass = generateClass('video-caption');
+    cssRules.push(`.${overlayClass} {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.${overlayClass} span {
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+}`);
+
+    return `    <div class="${className}">
+      <video
+        autoplay
+        muted
+        playsinline
+        controls${props.loop === false ? '' : '\n        loop'}${props.poster ? `\n        poster="${escapeAttribute(props.poster)}"` : ''}>
+        <source src="${escapeAttribute(props.videoUrl)}">
+        Your browser does not support the video tag.
+      </video>
+      ${props.text ? `<div class="${overlayClass}"><span>${escapeHtmlText(props.text)}</span></div>` : ''}
+    </div>\n`;
+  },
+
+  /** A YouTube clip, from whatever form of link the owner pasted. */
+  YouTube: (node) => {
+    const props = node.props || {};
+    const id = youTubeId(props.video);
+    if (!id) return '';
+
+    const className = generateClass('youtube');
+    const width = props.width || '560px';
+    const height = props.height;
+
+    cssRules.push(`.${className} {
+  position: relative;
+  width: ${width};
+  max-width: 100%;
+  ${height ? `height: ${height};` : 'aspect-ratio: 16 / 9;'}
+  border-radius: ${Number(props.radius) || 0}px;
+  overflow: hidden;
+}
+
+.${className} iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}`);
+
+    if (/^\d+(\.\d+)?px$/.test(String(width).trim())) {
+      mobileRules.push(`  .${className} {\n  width: 100%;\n  height: auto;\n  aspect-ratio: 16 / 9;\n  }`);
+    }
+
+    return `    <div class="${className}">
+      <iframe
+        src="https://www.youtube.com/embed/${escapeAttribute(id)}"
+        title="YouTube video"
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>\n`;
   },
 
   Image: (node) => {
@@ -1088,7 +1364,7 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
       mobileRules.push(`  .${className} {\n  width: 100%;\n  }`);
     }
 
-    return `    <img class="${className}" src="${escapeAttribute(cloudinaryVariant(props.src, 1280))}"${responsiveImageAttrs(props.src)} alt="${escapeAttribute(props.alt || '')}" loading="lazy" decoding="async" />\n`;
+    return `    <img class="${className}" src="${escapeAttribute(cloudinaryVariant(props.src, 1280))}"${responsiveImageAttrs(props.src)} alt="${escapeAttribute(imageAltText(props))}" loading="lazy" decoding="async" />\n`;
   },
 
   /**
@@ -1109,15 +1385,16 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
 
     const slides = readSlides(props);
     const height = props.height || '400px';
-    const perView = Math.max(1, Number(props.perView) || 1);
-    const perViewTablet = Math.max(1, Number(props.perViewTablet) || Math.min(perView, 2));
-    const perViewMobile = Math.max(1, Number(props.perViewMobile) || 1);
+    const { desktop: perView, tablet: perViewTablet, mobile: perViewMobile } = slidesPerView(props);
 
     const arrows = props.arrows !== false && slides.length > 1;
     const dots = props.dots !== false && slides.length > 1;
-    const autoplay = props.autoplay === true && slides.length > 1;
+    // The same reading the canvas uses, so a carousel that moves in the editor
+    // moves on the page. `props.autoplay === true` failed every project that
+    // had the string "true" stored here.
+    const autoplay = slidesAutoplay(props) && slides.length > 1;
     const loop = props.loop !== false;
-    const interval = Math.max(1000, Number(props.interval) || 5000);
+    const interval = slideInterval(props);
 
     cssRules.push(`.${className} {
   position: relative;
@@ -1148,6 +1425,7 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
   height: 100%;
   object-fit: cover;
 }
+.${className} .slide > a { display: block; width: 100%; height: 100%; color: inherit; text-decoration: none; }
 .${className} .caption {
   position: absolute;
   left: 0;
@@ -1227,9 +1505,13 @@ ${props.grayscale === 'no' ? '' : `.${className} img:hover {\n  filter: none;\n 
           ${slide.text ? `<p>${escapeHtmlText(slide.text)}</p>` : ''}
         </div>\n`
         : '';
+      const image = `<img src="${escapeAttribute(cloudinaryVariant(slide.src, 1280))}"${responsiveImageAttrs(slide.src)} alt="${escapeAttribute(slide.alt)}" loading="lazy" decoding="async">`;
+      const href = safeHref(slide.href);
+      const body = href
+        ? `<a href="${escapeAttribute(href)}"${opensNewTab(href) ? ' target="_blank" rel="noopener noreferrer"' : ''}>${image}\n${caption}</a>`
+        : `${image}\n${caption}`;
       slideHtml += `      <div class="slide" role="group" aria-roledescription="slide" aria-label="${i + 1} of ${slides.length}">
-        <img src="${escapeAttribute(cloudinaryVariant(slide.src, 1280))}"${responsiveImageAttrs(slide.src)} alt="${escapeAttribute(slide.alt)}" loading="lazy" decoding="async">
-${caption}      </div>\n`;
+        ${body}      </div>\n`;
     });
 
     const arrowHtml = arrows
@@ -1317,7 +1599,14 @@ ${arrowHtml}${dotsHtml}${script}    </div>\n`;
   BackgroundVideo: (node, data, depth = 0) => {
     const props = node.props || {};
     const className = generateClass('backgroundvideo');
-    const rootId = `${className}-root`;
+
+    // A video hero is a section, and a section a navigation link points at
+    // needs the anchor as its id. The script finds the element by the same id,
+    // so there is only ever one: the anchor when there is one, a generated
+    // name when there is not.
+    const anchor = slugifyAnchor(props.anchor);
+    if (anchor) knownAnchors.add(anchor);
+    const rootId = anchor || `${className}-root`;
 
     const src = props.src || '';
     const poster = props.poster ? resolveImageSrc(props.poster) : '';
@@ -1410,15 +1699,24 @@ ${script}    </div>\n`;
     return `    <div class="${className}">${rows.map(([label,content],i)=>`<details${i===0?' open':''}><summary>${escapeHtmlText(label)}</summary><p>${escapeHtmlText(content)}</p></details>`).join('')}</div>\n`;
   },
 
+  /**
+   * A live deadline, counted down in the visitor's own browser.
+   *
+   * The instant is baked in as milliseconds since the epoch, which is the same
+   * moment everywhere - a visitor three time zones away sees the same amount of
+   * time left, not the same wall clock. A node whose date could never be read
+   * publishes a stopped counter rather than a row of NaNs.
+   */
   Countdown: (node) => {
-    const props=node.props||{},className=generateClass('countdown'),id=`${className}-value`,target=Number(new Date(props.target));
+    const props = node.props || {}, className = generateClass('countdown'), id = `${className}-value`;
+    const target = countdownTarget(props.target);
     cssRules.push(`.${className}{width:100%;text-align:center}.${className} strong{display:block;font-size:32px;color:${rgbaToString(props.accent)}}`);
-    return `    <div class="${className}"><strong id="${id}">00 : 00 : 00 : 00</strong><span>${escapeHtmlText(props.label||'Time remaining')}</span><script>(function(){var value=document.getElementById(${JSON.stringify(id)}),target=${JSON.stringify(Number.isFinite(target)?target:0)},label=value.nextElementSibling,timer;function update(){var left=Math.max(0,target-Date.now()),days=Math.floor(left/86400000),hours=Math.floor(left/3600000)%24,minutes=Math.floor(left/60000)%60,seconds=Math.floor(left/1000)%60;value.textContent=[days,hours,minutes,seconds].map(function(n){return String(n).padStart(2,'0')}).join(' : ');if(!left){label.textContent=${JSON.stringify(props.expiredText||'This offer has ended.')};clearInterval(timer)}}update();timer=setInterval(update,1000)})();</script></div>\n`;
+    return `    <div class="${className}"><strong id="${id}">00 : 00 : 00 : 00</strong><span>${escapeHtmlText(props.label || 'Time remaining')}</span><script>(function(){var value=document.getElementById(${JSON.stringify(id)}),target=${JSON.stringify(target)},label=value.nextElementSibling,timer;function update(){if(target===null)return;var left=Math.max(0,target-Date.now()),days=Math.floor(left/86400000),hours=Math.floor(left/3600000)%24,minutes=Math.floor(left/60000)%60,seconds=Math.floor(left/1000)%60;value.textContent=[days,hours,minutes,seconds].map(function(n){return String(n).padStart(2,'0')}).join(' : ');if(!left){label.textContent=${JSON.stringify(props.expiredText || 'This offer has ended.')};clearInterval(timer)}}update();if(target!==null)timer=setInterval(update,1000)})();</script></div>\n`;
   },
 
   Engagement: (node, data, depth, nodeId) => {
-    const props=node.props||{},mode=['review','reaction','poll'].includes(props.mode)?props.mode:'review',className=generateClass('engagement'),rootId=`${className}-root`,apiUrl=exportContext.apiUrl||'',options=Array.isArray(props.options)?props.options.slice(0,20):[];
-    cssRules.push(`.${className}{width:100%;padding:20px;border:1px solid #ddd;border-radius:12px}. ${className} h3{margin-bottom:12px}.${className} input,.${className} textarea{display:block;width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:8px;font:inherit}.${className} button{margin:4px;padding:10px 14px;border:0;border-radius:8px;background:${rgbaToString(props.accent)};color:#fff;cursor:pointer}.${className} .entry{padding:12px 0;border-bottom:1px solid #eee}`.replace('. '+className,'.'+className));
+    const props=node.props||{},mode=engagementMode(props),className=generateClass('engagement'),rootId=`${className}-root`,apiUrl=exportContext.apiUrl||'',options=readEngagementOptions(props);
+    cssRules.push(`.${className}{width:100%;padding:20px;border:1px solid #ddd;border-radius:12px}. ${className} h3{margin-bottom:12px}.${className} input,.${className} textarea{display:block;width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:8px;font:inherit}.${className} button{margin:4px;padding:10px 14px;border:0;border-radius:8px;background:${rgbaToString(props.accent)};color:${readableInkCss(props.accent)};cursor:pointer}.${className} .entry{padding:12px 0;border-bottom:1px solid #eee}`.replace('. '+className,'.'+className));
     const controls=mode==='review'?`<form><input name="author" required maxlength="120" placeholder="Your name"><textarea name="content" required maxlength="3000" placeholder="Your review"></textarea><button type="submit">Submit for approval</button></form>`:`<div class="choices">${options.map(option=>`<button type="button" data-option="${escapeAttribute(option)}">${escapeHtmlText(option)} <span></span></button>`).join('')}</div>`;
     return `    <section class="${className}" id="${rootId}"><h3>${escapeHtmlText(props.heading||'Your opinion')}</h3>${controls}<p class="status" aria-live="polite"></p><div class="entries"></div><script>
 (function(){var root=document.getElementById(${JSON.stringify(rootId)}),status=root.querySelector('.status'),entries=root.querySelector('.entries'),endpoint=${JSON.stringify(`${apiUrl}/api/engagement`)},projectId=${JSON.stringify(exportContext.projectId)},widgetKey=${JSON.stringify(String(nodeId||className))},mode=${JSON.stringify(mode)},visitorKey='dragcanvas-visitor';var visitor=localStorage.getItem(visitorKey);if(!visitor){visitor=(crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random());localStorage.setItem(visitorKey,visitor)}function load(){fetch(endpoint+'/public/'+projectId+'/'+encodeURIComponent(widgetKey)).then(function(r){return r.json()}).then(function(body){var rows=body.data||body;if(mode==='review'){entries.textContent='';rows.filter(function(row){return row.Kind==='review'}).forEach(function(row){var article=document.createElement('article');article.className='entry';var strong=document.createElement('strong');strong.textContent=row.Author;var p=document.createElement('p');p.textContent=row.Content;article.append(strong,p);entries.appendChild(article)})}else{var counts={};rows.forEach(function(row){counts[row.OptionValue]=(counts[row.OptionValue]||0)+1});root.querySelectorAll('[data-option]').forEach(function(button){button.querySelector('span').textContent='('+ (counts[button.dataset.option]||0) +')'})}})}if(mode==='review'){root.querySelector('form').addEventListener('submit',function(event){event.preventDefault();var form=event.currentTarget;fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({projectId:projectId,widgetKey:widgetKey,kind:mode,author:form.author.value,content:form.content.value})}).then(function(r){if(!r.ok)throw new Error();status.textContent='Thank you. Your review will appear after approval.';form.reset()}).catch(function(){status.textContent='Could not submit the review.'})})}else root.querySelectorAll('[data-option]').forEach(function(button){button.addEventListener('click',function(){fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({projectId:projectId,widgetKey:widgetKey,kind:mode,option:button.dataset.option,visitorId:visitor})}).then(function(r){if(!r.ok)throw new Error();status.textContent='Response recorded.';load()}).catch(function(){status.textContent='You already responded.'})})});load()})();
@@ -1426,19 +1724,19 @@ ${script}    </div>\n`;
   },
 
   ProductCatalog: (node) => {
-    const props = node.props || {}; const className = generateClass('catalog'); const rows = groupLines(props.products, 4); const links = Array.isArray(props.paymentLinks) ? props.paymentLinks : [];
-    cssRules.push(`.${className} { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px; } .${className} article { border:1px solid #ddd;border-radius:12px;overflow:hidden;padding:16px; } .${className} article img { width:100%;aspect-ratio:4/3;object-fit:cover; } .${className} article a { display:block;width:fit-content;margin-top:10px;background:${rgbaToString(props.accent)};color:#fff;border-radius:8px;padding:10px 14px;text-decoration:none; }`);
+    const props = node.props || {}; const className = generateClass('catalog'); const rows = readProductRows(props);
+    cssRules.push(`.${className} { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px; } .${className} article { border:1px solid #ddd;border-radius:12px;overflow:hidden;padding:16px; } .${className} article img { width:100%;aspect-ratio:4/3;object-fit:cover; } .${className} article a { display:block;width:fit-content;margin-top:10px;background:${rgbaToString(props.accent)};color:${readableInkCss(props.accent)};border-radius:8px;padding:10px 14px;text-decoration:none; }`);
     mobileRules.push(`  .${className} { grid-template-columns: 1fr; }`);
-    const cards = rows.map(([name, description, price, image], index) => {
-      const href = normalizePaymentUrl(links[index]);
-      return `<article>${image ? `<img src="${escapeAttribute(image)}" alt="" loading="lazy">` : ''}<h3>${escapeHtmlText(name)}</h3><p>${escapeHtmlText(description)}</p><strong>${escapeHtmlText(price)} ${escapeHtmlText(String(props.currency || 'USD').toUpperCase())}</strong>${href ? `<a href="${escapeAttribute(href)}" target="_blank" rel="noopener noreferrer">${escapeHtmlText(props.buttonText || 'Buy now')}</a>` : ''}</article>`;
+    const cards = rows.map(({ name, description, price, image, href: link }) => {
+      const href = normalizePaymentUrl(link);
+      return `<article>${image ? `<img src="${escapeAttribute(image)}" alt="${escapeAttribute(name || '')}" loading="lazy">` : ''}<h3>${escapeHtmlText(name)}</h3><p>${escapeHtmlText(description)}</p><strong>${escapeHtmlText(price)} ${escapeHtmlText(String(props.currency || 'USD').toUpperCase())}</strong>${href ? `<a href="${escapeAttribute(href)}" target="_blank" rel="noopener noreferrer">${escapeHtmlText(props.buttonText || 'Buy now')}</a>` : ''}</article>`;
     }).join('');
     return `    <section class="${className}">${cards}</section>\n`;
   },
 
   Booking: (node) => {
     const props = node.props || {}; const className = generateClass('booking'); const formId = `${className}-form`; const apiUrl = exportContext.apiUrl || '';
-    cssRules.push(`.${className} { width: 100%; } .${className} strong { display:block;margin-bottom:10px; } .${className} .fields { display:grid;grid-template-columns:1fr 1fr;gap:8px; } .${className} input,.${className} select,.${className} textarea { width:100%;padding:11px;border:1px solid #ccc;border-radius:8px;font:inherit; } .${className} button { margin-top:8px;padding:12px 18px;border:0;border-radius:8px;background:${rgbaToString(props.accent)};color:#fff;cursor:pointer; } .${className} .status { margin-top:8px; }`);
+    cssRules.push(`.${className} { width: 100%; } .${className} strong { display:block;margin-bottom:10px; } .${className} .fields { display:grid;grid-template-columns:1fr 1fr;gap:8px; } .${className} input,.${className} select,.${className} textarea { width:100%;padding:11px;border:1px solid #ccc;border-radius:8px;font:inherit; } .${className} button { margin-top:8px;padding:12px 18px;border:0;border-radius:8px;background:${rgbaToString(props.accent)};color:${readableInkCss(props.accent)};cursor:pointer; } .${className} .status { margin-top:8px; }`);
     mobileRules.push(`  .${className} .fields { grid-template-columns: 1fr; }`);
     return `    <div class="${className}"><strong>${escapeHtmlText(props.heading || 'Book an appointment')}</strong><form id="${formId}"><div class="fields"><input name="date" type="date" required><select name="startAt" required disabled><option value="">Choose a date first</option></select><input name="name" autocomplete="name" required placeholder="Name"><input name="email" type="email" autocomplete="email" required placeholder="Email"><textarea name="notes" placeholder="Notes (optional)"></textarea></div><button type="submit">${escapeHtmlText(props.buttonText || 'Confirm booking')}</button></form><p class="status" aria-live="polite"></p><script>
 (function(){var form=document.getElementById(${JSON.stringify(formId)}),slots=form.startAt,status=form.nextElementSibling,date=form.date;date.min=new Date().toISOString().slice(0,10);date.addEventListener('change',function(){slots.disabled=true;slots.innerHTML='<option>Loading…</option>';fetch(${JSON.stringify(`${apiUrl}/api/bookings/availability`)}+'?projectId='+encodeURIComponent(${JSON.stringify(exportContext.projectId)})+'&date='+encodeURIComponent(date.value)).then(function(r){if(!r.ok)throw new Error();return r.json();}).then(function(body){var values=body.data||body;slots.innerHTML=values.length?values.map(function(value){return '<option value="'+value+'">'+new Date(value).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</option>';}).join(''):'<option value="">No slots available</option>';slots.disabled=!values.length;}).catch(function(){slots.innerHTML='<option value="">Could not load slots</option>';});});form.addEventListener('submit',function(event){event.preventDefault();var button=form.querySelector('button');button.disabled=true;fetch(${JSON.stringify(`${apiUrl}/api/bookings`)},{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({projectId:${JSON.stringify(exportContext.projectId)},startAt:slots.value,name:form.name.value,email:form.email.value,notes:form.notes.value})}).then(function(r){if(!r.ok)throw new Error();status.textContent='Booking confirmed. Check your email.';form.reset();slots.disabled=true;}).catch(function(){status.textContent='That slot is unavailable. Please choose another.';}).finally(function(){button.disabled=false;});});})();
@@ -1454,7 +1752,7 @@ ${script}    </div>\n`;
 .${className} strong { display: block; margin-bottom: 10px; }
 .${className} form { display: flex; gap: 8px; }
 .${className} input { min-width: 0; flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font: inherit; }
-.${className} button { padding: 12px 18px; border: 0; border-radius: 8px; background: ${rgbaToString(props.accent)}; color: #fff; cursor: pointer; }
+.${className} button { padding: 12px 18px; border: 0; border-radius: 8px; background: ${rgbaToString(props.accent)}; color: ${readableInkCss(props.accent)}; cursor: pointer; }
 .${className} .status { margin-top: 8px; font-size: 14px; }`);
     mobileRules.push(`  .${className} form { flex-direction: column; }`);
     return `    <div class="${className}">
@@ -1514,7 +1812,7 @@ ${script}    </div>\n`;
 }
 .${className} button {
   background: ${accent};
-  color: #fff;
+  color: ${readableInkCss(props.accent)};
   border: none;
   border-radius: ${radius}px;
   padding: 11px 22px;
@@ -1565,6 +1863,7 @@ ${script}    </div>\n`;
 ${inputs}
         <input type="text" name="_hp" class="hp" tabindex="-1" autocomplete="off">
         <button type="submit">${escapeHtmlText(props.submitText || 'Send')}</button>
+        <p class="dc-form-status" role="alert" aria-live="polite"></p>
       </form>
       <script>
       (function () {
@@ -1573,6 +1872,8 @@ ${inputs}
         form.addEventListener('submit', function (event) {
           event.preventDefault();
           var button = form.querySelector('button');
+          var status = form.querySelector('.dc-form-status');
+          status.textContent = '';
           button.disabled = true;
           var payload = { projectId: ${JSON.stringify(projectId)} };
           new FormData(form).forEach(function (value, key) { if (!(value instanceof File)) payload[key] = value; });
@@ -1591,7 +1892,7 @@ ${inputs}
             form.outerHTML = ${successHtml};
           }).catch(function () {
             button.disabled = false;
-            alert('Could not send. Please try again.');
+            status.textContent = 'Could not send. Please try again.';
           });
         });
       })();
@@ -1679,6 +1980,10 @@ ${inputs}
         if (/^(https?:)?\/\//.test(href) || href.startsWith('mailto:') || href.startsWith('tel:')) {
           return `        <a href="${escapeAttribute(href)}">${label}</a>`;
         }
+        // "/" is the site's own front page, and the pattern below wanted at
+        // least one character after the slash — so the Home link of every
+        // multi-page site published from here rendered as an inert word.
+        if (href === '/') return `        <a href="/">${label}</a>`;
         if (/^\/[a-z0-9][a-z0-9-]*\/?$/.test(href)) return `        <a href="${escapeAttribute(href.endsWith('/') ? href : `${href}/`)}">${label}</a>`;
         return `        <span class="dead">${label}</span>`;
       })
@@ -1724,7 +2029,8 @@ const convertNode = (nodeId, data, depth = 0) => {
   const converter = converters[typeName];
 
   if (converter) {
-    return wrapResponsive(converter(node, data, depth, nodeId), node, depth);
+    const html = withAnimation(converter(node, data, depth, nodeId), node, typeName, nodeId === 'ROOT');
+    return wrapResponsive(html, node, depth);
   }
 
   // Fallback for custom/unknown components (Custom1-3, Carousel, Map, ...):
@@ -1749,6 +2055,8 @@ export const exportToHtml = (serializedData, title = 'My Website', options = {})
   cssRules.length = 0;
   mobileRules.length = 0;
   tabletRules.length = 0;
+  timingRules = new Map();
+  usesAnimation = false;
 
   // A published page has no way of knowing which project it came from, so the
   // id is baked in here; the API address is the one this build points at.
@@ -1810,11 +2118,8 @@ button {
 dialog.dc-lightbox { border: 0; padding: 0; max-width: min(92vw, 1200px); max-height: 92vh; background: transparent; }
 dialog.dc-lightbox::backdrop { background: rgba(0,0,0,.82); }
 dialog.dc-lightbox img { display: block; max-width: 92vw; max-height: 88vh; object-fit: contain; }
-[data-reveal] { opacity: 0; transform: translateY(16px); transition: opacity .45s ease, transform .45s ease; }
-[data-reveal].revealed { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  [data-reveal] { opacity: 1; transform: none; transition: none; }
 }`);
 
   // serializedData is the flat node map from query.serialize(): ROOT is a top-level key
@@ -1824,6 +2129,13 @@ dialog.dc-lightbox img { display: block; max-width: 92vw; max-height: 88vh; obje
   if (rootNode) {
     // ROOT itself is the canvas Container — convert it so its background/layout is kept
     htmlContent = convertNode('ROOT', serializedData);
+  }
+
+  // Only pages that actually animate pay for the stylesheet, and the timing
+  // rules can only be known once every node has been through the converter.
+  if (usesAnimation) {
+    cssRules.push(animationStyleSheet());
+    if (timingRules.size) cssRules.push([...timingRules.values()].join('\n'));
   }
 
   // Combine everything; mobile overrides go last so they win the cascade
@@ -1859,11 +2171,11 @@ dialog.dc-lightbox img { display: block; max-width: 92vw; max-height: 88vh; obje
     const type = node?.type?.resolvedName || node?.type;
     const props = node?.props || {};
     if (type === 'Accordion') {
-      const mainEntity = pairUp(props.items).filter(([question, answer]) => question && answer)
-        .map(([question, answer]) => ({
+      const mainEntity = readAccordionRows(props).filter((row) => row.question && row.answer)
+        .map((row) => ({
           '@type': 'Question',
-          name: String(question),
-          acceptedAnswer: { '@type': 'Answer', text: String(answer) },
+          name: row.question,
+          acceptedAnswer: { '@type': 'Answer', text: row.answer },
         }));
       if (mainEntity.length) graph.push({ '@type': 'FAQPage', mainEntity });
     }
@@ -1877,22 +2189,34 @@ dialog.dc-lightbox img { display: block; max-width: 92vw; max-height: 88vh; obje
       });
     }
     if (type === 'Pricing') {
-      const offers = groupLines(props.tiers, 5).map(([name, price]) => ({
+      const offers = readPricingRows(props).map((tier) => ({
         '@type': 'Offer',
-        name: String(name || ''),
-        price: String(price || '').replace(/[^0-9.,]/g, '').replace(',', '.') || '0',
+        name: tier.name,
+        price: tier.price.replace(/[^0-9.,]/g, '').replace(',', '.') || '0',
       }));
       if (offers.length) graph.push({ '@type': 'Product', name: title || 'Services', offers });
     }
     if (type === 'TeamGrid') {
-      const employee = groupLines(props.people, 3).filter(([name]) => name)
-        .map(([name, jobTitle]) => ({ '@type': 'Person', name: String(name), jobTitle: String(jobTitle || '') }));
+      const employee = readTeamRows(props).filter((person) => person.name)
+        .map((person) => ({ '@type': 'Person', name: person.name, jobTitle: person.role }));
       if (employee.length) graph.push({ '@type': 'Organization', name: title || 'Organization', employee });
     }
   }
   const structuredData = graph.length
     ? `\n  <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c')}</script>`
     : '';
+
+  /**
+   * Hiding is switched on from inside the document, before the first paint.
+   *
+   * The stylesheet only hides what it is told to hide once <html> carries the
+   * ready class, so a visitor with no JavaScript — or a crawler that does not
+   * run it — gets the whole page rather than a stack of invisible sections.
+   */
+  const animationGuard = usesAnimation
+    ? `\n  <script>document.documentElement.classList.add(${JSON.stringify(READY_CLASS)});</script>`
+    : '';
+  const animationBlock = usesAnimation ? `  ${animationRuntime()}` : '';
 
   const bodyContent = options.comingSoon
     ? `<main style="min-height:100vh;display:grid;place-items:center;padding:32px;text-align:center"><div><h1>${pageTitle}</h1><p>${description || 'We are getting ready. Please check back soon.'}</p></div></main>`
@@ -1910,7 +2234,7 @@ dialog.dc-lightbox img { display: block; max-width: 92vw; max-height: 88vh; obje
   <meta property="og:title" content="${escapeAttribute(title || 'My Website')}">
   <meta property="og:url" content="${canonicalUrl}">${imageTags}
   <meta name="twitter:card" content="${socialImage ? 'summary_large_image' : 'summary'}">
-  <meta name="twitter:title" content="${escapeAttribute(title || 'My Website')}">${structuredData}
+  <meta name="twitter:title" content="${escapeAttribute(title || 'My Website')}">${structuredData}${animationGuard}
   <style>
 ${css}
   </style>
@@ -1933,14 +2257,7 @@ ${bodyContent}
   backTop.addEventListener('click', function () { scrollTo({ top: 0, behavior: 'smooth' }); });
 
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var reveal = document.querySelectorAll('[data-reveal]');
-  if (reduced || !('IntersectionObserver' in window)) reveal.forEach(function (el) { el.classList.add('revealed'); });
-  else {
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) { if (entry.isIntersecting) { entry.target.classList.add('revealed'); observer.unobserve(entry.target); } });
-    }, { rootMargin: '0px 0px -8% 0px' });
-    reveal.forEach(function (el) { observer.observe(el); });
-  }
+${animationBlock}
 
   var lightbox = document.querySelector('.dc-lightbox');
   var preview = lightbox.querySelector('img');

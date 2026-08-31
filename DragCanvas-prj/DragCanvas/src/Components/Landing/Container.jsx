@@ -68,7 +68,14 @@ export const Container = (props) => {
         backgroundSize: backgroundImage ? 'cover' : undefined,
         backgroundPosition: backgroundImage ? 'center' : undefined,
         color: `rgba(${Object.values(color)})`,
-        padding: `${effectivePadding[0]}px ${effectivePadding[1]}px ${effectivePadding[2]}px ${effectivePadding[3]}px`,
+        '--dc-container-padding-bottom': `${effectivePadding[2]}px`,
+        // Longhands are intentional. Resizer adds an editor-only bottom drop
+        // runway to App; mixing that paddingBottom with a padding shorthand
+        // makes React remove one of the conflicting declarations on rerender.
+        paddingTop: `${effectivePadding[0]}px`,
+        paddingRight: `${effectivePadding[1]}px`,
+        paddingBottom: `${effectivePadding[2]}px`,
+        paddingLeft: `${effectivePadding[3]}px`,
         margin: `${effectiveMargin[0]}px ${effectiveMargin[1]}px ${effectiveMargin[2]}px ${effectiveMargin[3]}px`,
         boxShadow:
           shadow === 0

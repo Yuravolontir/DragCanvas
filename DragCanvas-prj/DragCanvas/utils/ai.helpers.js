@@ -4,6 +4,8 @@
  * before parsing instead of trusting the response blindly.
  */
 
+import { pickStockClip } from '../src/utils/stockVideo.js';
+
 /** Take only the first balanced { ... } block, ignoring anything around it. */
 export function extractBalancedJsonObject(text) {
     const s = String(text);
@@ -33,6 +35,42 @@ export function extractBalancedJsonObject(text) {
     throw new Error('JSON object not closed (unbalanced braces)');
 }
 
+/**
+ * Escape a raw newline, tab or carriage return sitting inside a JSON string
+ * literal - text outside strings is left untouched.
+ *
+ * A model asked for JSON occasionally answers with an actual line break
+ * inside a text value instead of the two characters "\n". That is invalid
+ * JSON, but it is the *only* thing wrong with an otherwise well-formed
+ * answer, so fixing it here avoids paying for a whole second model call
+ * (repairLayoutJson) just to put back an escape the model dropped.
+ */
+export function escapeBareControlCharsInStrings(text) {
+    let out = '';
+    let inString = false;
+    let escape = false;
+
+    for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+
+        if (inString) {
+            if (escape) { out += ch; escape = false; continue; }
+            if (ch === '\\') { out += ch; escape = true; continue; }
+            if (ch === '"') { inString = false; out += ch; continue; }
+            if (ch === '\n') { out += '\\n'; continue; }
+            if (ch === '\r') { out += '\\r'; continue; }
+            if (ch === '\t') { out += '\\t'; continue; }
+            out += ch;
+            continue;
+        }
+
+        if (ch === '"') inString = true;
+        out += ch;
+    }
+
+    return out;
+}
+
 export function safeParseAIJson(rawText) {
     let s = String(rawText)
         .replace(/```json/gi, '')
@@ -43,6 +81,7 @@ export function safeParseAIJson(rawText) {
     s = extractBalancedJsonObject(s);
     s = s.replace(/,\s*}/g, '}').replace(/,\s*]/g, ']');                   // trailing commas
     s = s.replace(/\[(https?:\/\/[^\]\s]+)\]\(\1\)/g, '$1');               // markdown links
+    s = escapeBareControlCharsInStrings(s);                                // literal newlines/tabs in string values
 
     return JSON.parse(s);
 }
@@ -120,6 +159,35 @@ export function normalizeLayout(parsed) {
 }
 
 /** Swap IMAGE_PLACEHOLDER_n / VIDEO_PLACEHOLDER_n for real media, in place. */
+/**
+ * Anything still holding a VIDEO_PLACEHOLDER, given a real clip.
+ *
+ * The stock search is optional — it needs a key, and it can come back empty —
+ * and when it did not run, the placeholder used to travel all the way into the
+ * published page, where a hero requested a file called "VIDEO_PLACEHOLDER_1"
+ * and failed. A curated clip that is roughly about the right thing is worth
+ * enormously more than a broken one, and this is the last point at which
+ * anything knows what the site is about.
+ */
+export function fillRemainingVideoPlaceholders(obj, subject) {
+    if (!obj || typeof obj !== 'object') return;
+
+    if (Array.isArray(obj)) {
+        obj.forEach(item => fillRemainingVideoPlaceholders(item, subject));
+        return;
+    }
+
+    for (const key of Object.keys(obj)) {
+        if (typeof obj[key] === 'string') {
+            if (!/VIDEO_PLACEHOLDER_\d+/.test(obj[key])) continue;
+            obj[key] = pickStockClip(subject).url;
+            if (key === 'videoUrl') obj.videoId = '';
+        } else if (typeof obj[key] === 'object') {
+            fillRemainingVideoPlaceholders(obj[key], subject);
+        }
+    }
+}
+
 export function replacePlaceholdersInJson(obj, images, videos) {
     if (!obj || typeof obj !== 'object') return;
 

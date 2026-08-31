@@ -90,7 +90,8 @@
         "a": 1
       },
       "height": "56px",
-      "width": "100%"
+      "width": "100%",
+      "animation": "none"
     },
     "displayName": "NavbarElement",
     "custom": {
@@ -235,9 +236,9 @@
     "isCanvas": false,
     "props": {
       "background": {
-        "r": 99,
-        "g": 102,
-        "b": 241,
+        "r": 90,
+        "g": 93,
+        "b": 233,
         "a": 1
       },
       "color": {
@@ -498,7 +499,8 @@
       "shadow": 0,
       "radius": 12,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
@@ -529,9 +531,9 @@
         "a": 1
       },
       "background": {
-        "r": 99,
-        "g": 102,
-        "b": 241,
+        "r": 90,
+        "g": 93,
+        "b": 233,
         "a": 1
       }
     },
@@ -647,7 +649,8 @@
       "shadow": 0,
       "radius": 12,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
@@ -678,9 +681,9 @@
         "a": 1
       },
       "background": {
-        "r": 99,
-        "g": 102,
-        "b": 241,
+        "r": 90,
+        "g": 93,
+        "b": 233,
         "a": 1
       }
     },
@@ -796,7 +799,8 @@
       "shadow": 0,
       "radius": 12,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 180
     },
     "displayName": "Container",
     "custom": {
@@ -827,9 +831,9 @@
         "a": 1
       },
       "background": {
-        "r": 99,
-        "g": 102,
-        "b": 241,
+        "r": 90,
+        "g": 93,
+        "b": 233,
         "a": 1
       }
     },
@@ -991,9 +995,9 @@
       ],
       "align": "center",
       "accent": {
-        "r": 99,
-        "g": 102,
-        "b": 241,
+        "r": 90,
+        "g": 93,
+        "b": 233,
         "a": 1
       },
       "color": {
@@ -1099,9 +1103,9 @@
         }
       ],
       "accent": {
-        "r": 99,
-        "g": 102,
-        "b": 241,
+        "r": 90,
+        "g": 93,
+        "b": 233,
         "a": 1
       }
     },
@@ -1226,7 +1230,8 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
@@ -1299,7 +1304,8 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
@@ -1392,9 +1398,9 @@
       "height": "auto",
       "maxWidth": "100%",
       "color": {
-        "r": 99,
-        "g": 102,
-        "b": 241,
+        "r": 120,
+        "g": 123,
+        "b": 240,
         "a": 1
       },
       "fontSize": "15"
@@ -1536,9 +1542,9 @@
       ],
       "featured": 2,
       "accent": {
-        "r": 99,
-        "g": 102,
-        "b": 241,
+        "r": 90,
+        "g": 93,
+        "b": 233,
         "a": 1
       },
       "background": {
@@ -1866,9 +1872,9 @@
         "a": 1
       },
       "accent": {
-        "r": 99,
-        "g": 102,
-        "b": 241,
+        "r": 90,
+        "g": 93,
+        "b": 233,
         "a": 1
       }
     },
@@ -1942,9 +1948,9 @@
       "cta": "Start free",
       "href": "#pricing",
       "background": {
-        "r": 99,
-        "g": 102,
-        "b": 241,
+        "r": 90,
+        "g": 93,
+        "b": 233,
         "a": 1
       },
       "color": {
@@ -1960,9 +1966,9 @@
         "a": 1
       },
       "buttonColor": {
-        "r": 99,
-        "g": 102,
-        "b": 241,
+        "r": 90,
+        "g": 93,
+        "b": 233,
         "a": 1
       },
       "radius": 16
@@ -2076,9 +2082,9 @@
         "Return unused items within 30 days."
       ],
       "accent": {
-        "r": 99,
-        "g": 102,
-        "b": 241,
+        "r": 120,
+        "g": 123,
+        "b": 240,
         "a": 1
       }
     },
@@ -2101,9 +2107,9 @@
       "label": "Seasonal offer ends in",
       "expiredText": "This offer has ended.",
       "accent": {
-        "r": 99,
-        "g": 102,
-        "b": 241,
+        "r": 120,
+        "g": 123,
+        "b": 240,
         "a": 1
       }
     },
@@ -2136,9 +2142,9 @@
       "buttonText": "Buy now",
       "currency": "USD",
       "accent": {
-        "r": 99,
-        "g": 102,
-        "b": 241,
+        "r": 120,
+        "g": 123,
+        "b": 240,
         "a": 1
       }
     },
@@ -2186,9 +2192,9 @@
       "buttonText": "Subscribe",
       "successMessage": "Check your inbox to confirm.",
       "accent": {
-        "r": 99,
-        "g": 102,
-        "b": 241,
+        "r": 120,
+        "g": 123,
+        "b": 240,
         "a": 1
       },
       "color": {
@@ -2221,9 +2227,9 @@
         "👏"
       ],
       "accent": {
-        "r": 99,
-        "g": 102,
-        "b": 241,
+        "r": 120,
+        "g": 123,
+        "b": 240,
         "a": 1
       }
     },

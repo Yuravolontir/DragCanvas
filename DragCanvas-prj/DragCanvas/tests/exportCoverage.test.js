@@ -30,6 +30,7 @@ const ELEMENTS = [
   ['Image', false, { src: 'https://example.com/a.jpg' }],
   ['Video', false, { sourceType: 'url', videoUrl: 'https://example.com/a.mp4' }],
   ['Video', true, { sourceType: 'background', src: 'https://example.com/hero.mp4', poster: 'https://example.com/hero.jpg' }],
+  ['YouTube', false, { video: 'https://youtu.be/dQw4w9WgXcQ' }],
   ['BackgroundVideo', true, { src: 'https://example.com/loop.mp4', poster: 'https://example.com/p.jpg' }],
   ['Link', false, { text: 'Here', href: 'https://example.com' }],
   ['Carousel', false, { slides: [{ src: 'https://example.com/1.jpg', heading: 'One' }] }],

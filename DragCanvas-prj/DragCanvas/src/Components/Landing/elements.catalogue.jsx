@@ -60,6 +60,7 @@ import { Testimonial } from './Testimonial';
 import { Text } from './Text';
 import { Timeline } from './Timeline';
 import { Video } from './Video';
+import { YouTube } from './YouTube';
 
 /** Display order of the groups in the panel. */
 export const ELEMENT_GROUPS = ['Layout', 'Text', 'Media', 'Sections', 'Conversion'];
@@ -166,9 +167,17 @@ export const ELEMENTS = [
     name: 'Video',
     group: 'Media',
     icon: 'play_circle',
-    tip: 'YouTube, video file, or a background hero',
-    keywords: ['youtube', 'embed', 'movie', 'background', 'hero', 'banner', 'loop', 'cover'],
+    tip: 'Your own video file, or a moving background',
+    keywords: ['mp4', 'movie', 'clip', 'background', 'hero', 'banner', 'loop', 'cover'],
     element: () => <Element canvas is={Video} />,
+  },
+  {
+    name: 'YouTube',
+    group: 'Media',
+    icon: 'smart_display',
+    tip: 'A clip from YouTube, by its link',
+    keywords: ['youtube', 'embed', 'video', 'watch', 'shorts'],
+    element: () => <YouTube />,
   },
   {
     name: 'Carousel',

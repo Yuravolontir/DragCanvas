@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import API_URL, { apiFetch, getToken } from './api.js';
 import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
 import { craftProjectToAiLayout } from './utils/craftToAiLayout.js';
+import { collectImageTasks, isImageRefinement } from './utils/imagePrompts.js';
 
 /**
  * What to call the current stage on the button.
@@ -81,7 +82,7 @@ function stageLabel(stage) {
       nodes.ROOT = {
         type: { resolvedName: 'Container' },
         isCanvas: true,
-        props: { width: '100%', flexDirection: 'column' },
+        props: { width: '800px', height: 'auto', flexDirection: 'column' },
         displayName: 'Container',
         custom: {},
         hidden: false,
@@ -192,55 +193,13 @@ function stageLabel(stage) {
       }
     };
 
-    const collectImageInfo = (sections, replaceExisting = false) => {
-      const images = [];
-      const replaceable = value => typeof value === 'string' && (replaceExisting
-        ? /^https?:\/\//i.test(value)
-        : value.includes('picsum.photos/seed/'));
-      const description = (value, fallback) => value?.includes('/seed/')
-        ? value.split('/seed/')[1]?.split('/')[0]?.replace(/[-_]/g, ' ')
-        : fallback;
-      const walk = (elements) => {
-        if (!Array.isArray(elements)) return;
-        for (const el of elements) {
-          if (el.type === 'Image' && replaceable(el.props?.src)) {
-            const desc = description(el.props.src, el.props?.alt || el.props?.title || 'website image');
-            images.push({ path: el, prompt: `${desc}, professional website photo, high quality` });
-          }
-          if (el.type === 'Carousel') {
-            ['src1', 'src2', 'src3'].forEach((key, i) => {
-              if (replaceable(el.props?.[key])) {
-                const seed = description(el.props[key], `carousel slide ${i + 1}`);
-                const heading = el.props?.[`heading${i + 1}`] || '';
-                images.push({ path: el, key, prompt: `${seed}${heading ? ', ' + heading : ''}, professional website photo, high quality` });
-              }
-            });
-            if (Array.isArray(el.props?.slides)) {
-              el.props.slides.forEach((slide, i) => {
-                if (!replaceable(slide?.src)) return;
-                const desc = description(slide.src, slide.alt || slide.heading || `carousel slide ${i + 1}`);
-                images.push({ path: slide, key: 'src', prompt: `${desc}, professional website photo, high quality` });
-              });
-            }
-          }
-          if (replaceable(el.props?.backgroundImage)) {
-            const desc = description(el.props.backgroundImage, el.props?.anchor || 'website background');
-            images.push({ path: el.props, key: 'backgroundImage', prompt: `${desc}, professional wide website background, high quality` });
-          }
-          if (el.children) walk(el.children);
-        }
-      };
-      walk(sections);
-      return images;
-    };
-
     /**
      * Replace every Picsum placeholder before Craft serialises the pages. This
      * includes ordinary images, section backgrounds, legacy carousels and the
      * current slides-array carousel format.
      */
-    const fillInImages = async (sections, replaceExisting = false) => {
-      const images = collectImageInfo(sections, replaceExisting);
+    const fillInImages = async (layout, options = {}) => {
+      const images = collectImageTasks(layout, options);
       if (images.length === 0) return;
 
       const prompts = [...new Set(images.map(i => i.prompt))];
@@ -254,9 +213,7 @@ function stageLabel(stage) {
           remaining -= 1;
           setStage({ name: 'images', remaining });
           if (!url) return;
-          for (const img of images) {
-            if (img.prompt === imagePrompt) img.path[img.key || 'src'] = url;
-          }
+          for (const img of images) if (img.prompt === imagePrompt) img.target[img.key] = url;
         }));
       }
     };
@@ -267,11 +224,15 @@ function stageLabel(stage) {
      * Images are persisted before Craft serialises the pages, so saving,
      * switching pages and publishing can never capture temporary blob URLs.
      */
-    const applyLayout = async (nextLayout, { replaceImages = false } = {}) => {
+    const applyLayout = async (nextLayout, { replaceImages = false, imageInstruction = '', siteBrief = '' } = {}) => {
       const sourcePages = Array.isArray(nextLayout.pages) && nextLayout.pages.length
         ? nextLayout.pages
         : [{ name: 'Home', slug: 'home', sections: nextLayout.sections || [] }];
-      await fillInImages(sourcePages.flatMap(page => page.sections || []), replaceImages);
+      await fillInImages({ pages: sourcePages }, {
+        replaceExisting: replaceImages,
+        instruction: imageInstruction,
+        siteBrief,
+      });
       const builtPages = sourcePages.map((page, index) => {
         const slug = index === 0 ? 'home' : page.slug;
         const built = buildCraftTree(page.sections, `${slug}-`);
@@ -313,9 +274,13 @@ function stageLabel(stage) {
       setStage({ name: 'refining' });
 
       try {
-        const imageOnly = /(?:replace|refresh|regenerate|update|change).{0,30}(?:image|images|photo|photos|picture|pictures)|(?:замени|обнови|поменяй|перегенерируй).{0,30}(?:картин|изображен|фото)/i.test(refinement);
+        const imageOnly = isImageRefinement(refinement);
         if (imageOnly) {
-          await applyLayout(currentLayout, { replaceImages: true });
+          await applyLayout(currentLayout, {
+            replaceImages: true,
+            imageInstruction: refinement,
+            siteBrief: history.join('. '),
+          });
           setHistory(prev => [...prev, refinement]);
           setRefinement('');
           return;
@@ -329,7 +294,7 @@ function stageLabel(stage) {
           throw new Error('AI did not return a valid layout');
         }
 
-        await applyLayout(refined);
+        await applyLayout(refined, { imageInstruction: refinement, siteBrief: history.join('. ') });
         setHistory(prev => [...prev, refinement]);
         setRefinement('');
       } catch (err) {
@@ -359,7 +324,7 @@ function stageLabel(stage) {
           throw new Error('AI did not return valid pages or sections');
         }
 
-        await applyLayout(parsed);
+        await applyLayout(parsed, { imageInstruction: prompt, siteBrief: prompt });
         setHistory([`Generated: ${prompt}`]);
         setPrompt('');
       } catch (err) {

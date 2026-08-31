@@ -2,12 +2,45 @@ import { apiFetch } from './api.js';
 import { useEffect } from 'react';
   import { useEditor } from '@craftjs/core';
   import { useLocation, useNavigate } from 'react-router-dom';
+  import { useDialogs } from './Components/useDialogs.jsx';
+import { parseDesign } from './utils/projectPages.js';
+
  export default function LoadProjectOnMount() {
     const { actions } = useEditor();
     const location = useLocation();
     const navigate = useNavigate();
+    // The editor's own dialog rather than alert(): a project that failed to
+    // load is the first thing a returning owner sees, and "localhost says" is
+    // not the thing to greet them with.
+    const { dialogs, alert: showDialog } = useDialogs();
 
     useEffect(() => {
+      /**
+       * Put one saved design on the canvas, however many pages it has.
+       *
+       * Written once and used for both a project and a template. It used to be
+       * written once for projects and not at all for templates, which is why a
+       * template could only ever be a single page: a multi-page one was handed
+       * straight to deserialize, and { __dragcanvasPages, pages } is not a node
+       * map, so the canvas came out empty.
+       */
+      const openDesign = (data) => {
+        if (data?.__dragcanvasPages && Array.isArray(data.pages) && data.pages.length) {
+          const first = data.pages.find((page) => page.slug === data.currentSlug) || data.pages[0];
+          actions.deserialize(first.data);
+          const pageState = {
+            pages: data.pages,
+            currentSlug: first.slug,
+            siteSettings: data.siteSettings || {},
+          };
+          window.__dragcanvasPageState = pageState;
+          window.dispatchEvent(new CustomEvent('dragcanvas:pages-loaded', { detail: pageState }));
+          return;
+        }
+        actions.deserialize(data);
+        delete window.__dragcanvasPageState;
+      };
+
        const loadProject = async () => {
         // Check for templateId first (templates are public — no login required)
         const templateId = location.state?.templateId;
@@ -52,17 +85,7 @@ import { useEffect } from 'react';
           const project = await apiFetch(`/api/projects/${projectId}`);
           console.log('✅ Project data received:', project.ProjectName);
 
-          const projectData = JSON.parse(project.ProjectData);
-          if (projectData?.__dragcanvasPages && Array.isArray(projectData.pages)) {
-            const first = projectData.pages.find(page => page.slug === projectData.currentSlug) || projectData.pages[0];
-            actions.deserialize(first.data);
-            const pageState = { pages: projectData.pages, currentSlug: first.slug, siteSettings: projectData.siteSettings || {} };
-            window.__dragcanvasPageState = pageState;
-            window.dispatchEvent(new CustomEvent('dragcanvas:pages-loaded', { detail: pageState }));
-          } else {
-            actions.deserialize(projectData);
-            delete window.__dragcanvasPageState;
-          }
+          openDesign(parseDesign(project.ProjectData));
 
           window.dispatchEvent(new CustomEvent('dragcanvas:project-loaded'));
 
@@ -70,7 +93,7 @@ import { useEffect } from 'react';
 
         } catch (err) {
           console.error('❌ Load error:', err);
-          alert('Error loading project: ' + err.message);
+          showDialog({ tone: 'error', title: 'This project could not be opened', message: err.message });
         }
       };
 
@@ -80,14 +103,13 @@ import { useEffect } from 'react';
           const template = await apiFetch(`/api/templates/${templateId}`);
           console.log('✅ Template loaded:', template.TemplateName);
 
-          const templateData = JSON.parse(template.TemplateData);
-          actions.deserialize(templateData);
+          openDesign(parseDesign(template.TemplateData));
 
           console.log('✅ Template loaded into editor');
 
         } catch (err) {
           console.error('❌ Load template error:', err);
-          alert('Error loading template: ' + err.message);
+          showDialog({ tone: 'error', title: 'This template could not be opened', message: err.message });
         }
       };
 
@@ -100,5 +122,5 @@ import { useEffect } from 'react';
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.state, actions]);
 
-    return null;
+    return dialogs;
   }

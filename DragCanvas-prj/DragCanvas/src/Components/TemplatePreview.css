@@ -1,0 +1,76 @@
+/*
+ * A whole website, drawn small.
+ *
+ * The frame is laid out at the page width a site is designed for and then
+ * scaled by the ratio between the card and that width, so a card of any size
+ * shows the same slice of the site rather than a wider card showing more of it.
+ *
+ * Everything here is CSS rather than a resize observer in JavaScript: the
+ * scale is a pure function of the card's own width, and cqw is that width.
+ */
+
+.tpl-preview {
+  container-type: inline-size;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  /* The slice: one and a quarter screens of a 1280px-wide site, by default. */
+  aspect-ratio: 1 / var(--tpl-height, 1.25);
+  background: var(--surface-dim, #f4f1ea);
+  border-radius: inherit;
+}
+
+.tpl-preview__frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0;
+  display: block;
+  width: var(--tpl-page-width, 1280px);
+  /* Tall enough to fill the box once scaled, whatever the box turns out to be. */
+  height: calc(var(--tpl-page-width, 1280px) * var(--tpl-height, 1.25));
+  transform: scale(calc(100cqw / var(--tpl-page-width, 1280px)));
+  transform-origin: top left;
+  /* Decoration behind a link: the card handles the click. */
+  pointer-events: none;
+  background: #fff;
+}
+
+.tpl-preview__fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/*
+ * The panel a card wears until its site has been drawn.
+ *
+ * A quiet sweep rather than a spinner: fifteen spinners is a page that looks
+ * broken, and the wait is usually one frame after the card comes into view.
+ */
+.tpl-preview__pending {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    var(--surface-dim, #f4f1ea) 30%,
+    var(--surface, #fff) 50%,
+    var(--surface-dim, #f4f1ea) 70%
+  );
+  background-size: 300% 100%;
+  animation: tpl-preview-sweep 1.6s ease-in-out infinite;
+}
+
+@keyframes tpl-preview-sweep {
+  from { background-position: 150% 0; }
+  to { background-position: -50% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tpl-preview__pending { animation: none; }
+}
+

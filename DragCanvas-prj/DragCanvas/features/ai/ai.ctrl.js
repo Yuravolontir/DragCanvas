@@ -1,5 +1,5 @@
 import * as aiService from './ai.service.js';
-import { safeParseAIJson, normalizeLayout, replacePlaceholdersInJson } from '../../utils/ai.helpers.js';
+import { safeParseAIJson, normalizeLayout, replacePlaceholdersInJson, fillRemainingVideoPlaceholders } from '../../utils/ai.helpers.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
 import { cloudinary } from '../../middlewares/files.js';
 import AssetMdl from '../assets/asset.mdl.js';
@@ -11,23 +11,58 @@ const pagesOf = layout => Array.isArray(layout?.pages) ? layout.pages : [{ name:
 const sectionCount = layout => pagesOf(layout).reduce((total, page) => total + (page.sections || []).length, 0);
 const PAGE_REFINE_TOKENS = Number(process.env.AI_PAGE_MAX_TOKENS) || 12000;
 
-async function mapConcurrent(items, concurrency, work) {
+/** Run `work` over `items` at bounded concurrency, keeping every outcome instead
+ *  of rejecting the whole batch on the first failure. */
+async function mapConcurrentSettled(items, concurrency, work) {
     const results = new Array(items.length);
     let next = 0;
     async function worker() {
         while (next < items.length) {
             const index = next++;
-            results[index] = await work(items[index], index);
+            try {
+                results[index] = { ok: true, value: await work(items[index], index) };
+            } catch (error) {
+                results[index] = { ok: false, error };
+            }
         }
     }
     await Promise.all(Array.from({ length: Math.min(concurrency, items.length) }, worker));
     return results;
 }
 
+/**
+ * Refine every item at bounded concurrency, retrying only the ones that
+ * failed rather than discarding a whole batch of already-good work.
+ *
+ * A parallel refine used to abort on the first page that failed and fall back
+ * to one whole-site call, which re-spent every page that had already come
+ * back clean. The failure modes here - a dropped connection, a model that
+ * shrank one page - are independent per page, so retrying just the page that
+ * broke is far cheaper and just as safe.
+ */
+export async function refinePagesWithRetry(items, work, { concurrency = 2, retries = 1 } = {}) {
+    const settled = await mapConcurrentSettled(items, concurrency, work);
+
+    for (let attempt = 0; attempt < retries; attempt++) {
+        const failedIndexes = settled.reduce((acc, result, index) => {
+            if (!result.ok) acc.push(index);
+            return acc;
+        }, []);
+        if (failedIndexes.length === 0) break;
+
+        const retried = await mapConcurrentSettled(failedIndexes.map(index => items[index]), concurrency, work);
+        failedIndexes.forEach((pageIndex, k) => { settled[pageIndex] = retried[k]; });
+    }
+
+    const stillFailed = settled.find(result => !result.ok);
+    if (stillFailed) throw stillFailed.error;
+    return settled.map(result => result.value);
+}
+
 async function refinePagesInParallel(layout, instruction) {
     const pages = pagesOf(layout);
     const navigation = pages.map(page => `${page.name} (/${page.slug === 'home' ? '' : `${page.slug}/`})`).join(', ');
-    return mapConcurrent(pages, 2, async page => {
+    const refineOnePage = async page => {
         const pageInstruction = `${instruction}\nYou are editing only the ${page.name} page. Keep its navigation consistent with these pages: ${navigation}.`;
         const raw = await aiService.refineLayout({ sections: page.sections }, pageInstruction, { maxTokens: PAGE_REFINE_TOKENS });
         let parsed;
@@ -39,8 +74,25 @@ async function refinePagesInParallel(layout, instruction) {
             throw new Error(`${page.name} shrank from ${page.sections.length} to ${sections.length} sections`);
         }
         return { ...page, sections };
-    });
+    };
+    return refinePagesWithRetry(pages, refineOnePage, { concurrency: 2, retries: 1 });
 }
+
+/**
+ * Backoff before retrying a provider-side failure (timeout, 429, 5xx).
+ *
+ * Content-quality retries (too few sections, a shrunken page) get no delay -
+ * that is not the provider's fault, and asking again immediately is exactly
+ * right. This only slows down retries that are actually about the provider
+ * being momentarily unavailable, capped low enough that MAX_ATTEMPTS still
+ * finishes well inside a client's own timeout.
+ */
+const RETRY_BACKOFF_MS = Number(process.env.AI_RETRY_BACKOFF_MS) || 400;
+const RETRY_BACKOFF_MAX_MS = 4000;
+export function retryBackoffMs(attempt) {
+    return Math.min(RETRY_BACKOFF_MS * 2 ** (attempt - 1), RETRY_BACKOFF_MAX_MS);
+}
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
  * Some failures are an answer, not an accident.
@@ -131,6 +183,11 @@ export async function generateWebsite(req, res) {
                 }
             }
 
+            // Whatever the search did or did not do, no video placeholder may
+            // reach the canvas: an unresolved one publishes as a hero that
+            // requests a file named after the placeholder and shows nothing.
+            fillRemainingVideoPlaceholders(layout, cleanPrompt);
+
             return res.status(200).json(buildSuccessResponse(layout));
         } catch (error) {
             lastProblem = error.message;
@@ -139,6 +196,9 @@ export async function generateWebsite(req, res) {
             // A configuration or billing problem will not fix itself by asking again
             if (providerRefusal(error)) {
                 return res.status(502).json(buildErrorResponse(error.message));
+            }
+            if (error.retryable && attempt < MAX_ATTEMPTS) {
+                await sleep(retryBackoffMs(attempt));
             }
         }
     }
@@ -219,6 +279,9 @@ export async function refineWebsite(req, res) {
             if (providerRefusal(error)) {
                 return res.status(502).json(buildErrorResponse(error.message));
             }
+            if (error.retryable && attempt < MAX_ATTEMPTS) {
+                await sleep(retryBackoffMs(attempt));
+            }
         }
     }
 
@@ -238,8 +301,31 @@ export async function generateImage(req, res) {
         return res.status(400).json(buildErrorResponse('Missing prompt'));
     }
 
+    const cleanPrompt = String(prompt).trim();
+    const stockFallback = async (reason) => {
+        if (!process.env.PEXELS_API_KEY) return null;
+        const query = aiService.pexelsQueryFromImagePrompt(cleanPrompt);
+        const [image] = await aiService.fetchPexelsImages(query, 1);
+        if (!image?.src) return null;
+        console.log(`[AI] image fallback=Pexels reason=${reason} query="${query}"`);
+        return res.status(200).json(buildSuccessResponse({
+            url: image.src,
+            source: 'pexels',
+            fallbackReason: reason,
+        }));
+    };
+
+    // Local development and some deployments intentionally configure Pexels
+    // without Stability. That is a supported stock-photo mode, not a server
+    // error, and should never create a burst of identical 500 responses.
+    if (!process.env.STABILITY_API_KEY) {
+        const fallback = await stockFallback('image generation is not configured');
+        if (fallback) return fallback;
+        return res.status(503).json(buildErrorResponse('Image generation is not configured on this server.'));
+    }
+
     try {
-        const { buffer, contentType } = await aiService.generateImage(String(prompt).trim());
+        const { buffer, contentType } = await aiService.generateImage(cleanPrompt);
         const dataURI = `data:${contentType};base64,${buffer.toString('base64')}`;
         const uploaded = await cloudinary.uploader.upload(dataURI, {
             folder: `dragcanvas/ai/${req.user.userId}`,
@@ -261,9 +347,10 @@ export async function generateImage(req, res) {
         }
     } catch (error) {
         console.log(`[AI] image generation failed: ${error.message}`);
-        // A single failed image is not a failed page: the caller drops it and
-        // leaves the placeholder in place, so this never blocks a generation.
-        const status = error.status === 500 ? 500 : 502;
-        return res.status(status).json(buildErrorResponse(error.message));
+        const fallback = await stockFallback(`provider error ${error.status || 'unknown'}`);
+        if (fallback) return fallback;
+        // Configuration and upstream failures are service-availability errors,
+        // not an unexplained internal crash in our application.
+        return res.status(503).json(buildErrorResponse('Images are temporarily unavailable. Please try again later.'));
     }
 }

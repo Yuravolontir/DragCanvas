@@ -412,4 +412,69 @@ export function navLinks(b, parent, items, colorNote) {
   }
 }
 
+/**
+ * How long apart the blocks in a row arrive, and how many get their own turn.
+ *
+ * A fourth step is a card the visitor is waiting for rather than watching.
+ */
+const STAGGER_MS = 90;
+const STAGGER_CAP = 3;
+
+/** Give one node an entrance, without arguing with a template that chose one. */
+export function animate(map, id, { animation, delay, duration, repeat } = {}) {
+  const node = map[id];
+  if (!node) return id;
+  node.props ||= {};
+  if (animation !== undefined && node.props.animation === undefined) node.props.animation = animation;
+  if (delay !== undefined && node.props.animationDelay === undefined) node.props.animationDelay = delay;
+  if (duration !== undefined && node.props.animationDuration === undefined) node.props.animationDuration = duration;
+  if (repeat !== undefined && node.props.animationRepeat === undefined) node.props.animationRepeat = repeat;
+  return id;
+}
+
+/** Hand a row of blocks their turns, one after another. */
+export function stagger(map, ids, spec = {}) {
+  const step = spec.step ?? STAGGER_MS;
+  ids.forEach((id, index) => {
+    animate(map, id, { ...spec, delay: Math.min(index, STAGGER_CAP) * step });
+  });
+  return ids;
+}
+
+/**
+ * The motion every template gets for free.
+ *
+ * Sections already fade up — that is the fallback the canvas and the exporter
+ * share — so what is left is the difference between three cards appearing at
+ * once and three cards appearing one after another, which is the whole reason
+ * a gallery page looks finished or looks flat. Doing it here rather than in
+ * fifteen template files is also the only way the sixteenth gets it.
+ *
+ * Nothing already answered is overwritten, so a template that wants a hero
+ * image to zoom says so and keeps it. The navigation bar is left alone on
+ * purpose: it is usually sticky, and a transform on a sticky bar is a bar that
+ * detaches from the top of the window while it animates.
+ */
+export function applyDefaultMotion(map) {
+  for (const [id, node] of Object.entries(map)) {
+    if (id === 'ROOT') continue;
+    if (!node.isCanvas) continue;
+
+    const rows = (node.nodes || []).filter((childId) => {
+      const child = map[childId];
+      return child && child.type?.resolvedName === 'Container';
+    });
+    if (rows.length < 2) continue;
+    stagger(map, rows);
+  }
+
+  for (const node of Object.values(map)) {
+    if (node.type?.resolvedName !== 'NavbarElement') continue;
+    node.props ||= {};
+    if (node.props.animation === undefined) node.props.animation = 'none';
+  }
+
+  return map;
+}
+
 export { px, rgba, WHITE, TRANSPARENT };

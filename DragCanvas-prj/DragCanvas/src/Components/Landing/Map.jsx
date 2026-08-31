@@ -89,8 +89,11 @@ Map.craft = {
     lat: 32.3215,
     lng: 34.8532,
     zoom: 13,
-    height: '300px',
-    width: '100%',
+    // Dropped at a size that reads as a map on the page rather than as the
+    // page. Still resizable, and the published stylesheet caps it at the
+    // screen width so a phone never scrolls sideways.
+    height: '320px',
+    width: '560px',
     label: 'Netanya',
     address: '',
   },

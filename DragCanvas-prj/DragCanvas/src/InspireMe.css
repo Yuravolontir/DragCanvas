@@ -1,0 +1,262 @@
+/*
+ * The templates gallery.
+ *
+ * It used to be a carousel: one template on screen, arrows either side, dots
+ * underneath, and fifteen sites behind a fourteen-click walk. A gallery whose
+ * whole job is comparison should show more than one of the things being
+ * compared, so this is a flex list — every template visible, scanned by eye
+ * rather than paged through.
+ *
+ * Flex rather than grid on purpose. The cards have a natural width and a last
+ * row that is rarely full; `flex-wrap` with a grow lets a lonely final card sit
+ * where it lands instead of stretching across the whole row.
+ */
+
+.tpl-gallery {
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+.tpl-gallery__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 100px clamp(16px, 4vw, 24px) 80px;
+}
+
+/* ── the head of the page ─────────────────────────────────────────── */
+
+.tpl-gallery__eyebrow {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.75rem;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+.tpl-gallery__title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 800;
+  color: var(--on-surface);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin: 0 0 14px;
+}
+
+.tpl-gallery__lede {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1rem;
+  color: var(--on-surface-variant);
+  max-width: 54ch;
+  margin: 0 0 28px;
+}
+
+/* ── filters ──────────────────────────────────────────────────────── */
+
+.tpl-gallery__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 36px;
+}
+
+.tpl-gallery__filter {
+  padding: 8px 20px;
+  border-radius: 9999px;
+  border: 1px solid var(--outline-light);
+  background: var(--surface);
+  color: var(--on-surface-variant);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.tpl-gallery__filter:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.tpl-gallery__filter[aria-pressed='true'] {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-primary);
+  font-weight: 700;
+}
+
+/* ── the list ─────────────────────────────────────────────────────── */
+
+.tpl-gallery__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(18px, 2.4vw, 28px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * One card is a third of the row at full width and a half of it below that,
+ * with a floor so a card never gets too narrow to read the site inside it.
+ */
+.tpl-gallery__card {
+  flex: 1 1 340px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--outline-light);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.tpl-gallery__card:hover,
+.tpl-gallery__card:focus-within {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tpl-gallery__card { transition: none; }
+  .tpl-gallery__card:hover,
+  .tpl-gallery__card:focus-within { transform: none; }
+}
+
+/*
+ * The whole card is the link, so the preview and the name are one target
+ * rather than two things that do the same thing next to each other.
+ */
+.tpl-gallery__open {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+}
+
+.tpl-gallery__open:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+.tpl-gallery__preview {
+  border-bottom: 1px solid var(--outline-light);
+  border-radius: 0;
+}
+
+/*
+ * The line the preview fades into, so the crop reads as "there is more of this"
+ * rather than as a photograph that happens to stop.
+ */
+.tpl-gallery__preview::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 56px;
+  background: linear-gradient(transparent, var(--surface));
+  pointer-events: none;
+}
+
+.tpl-gallery__body {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px 16px;
+}
+
+.tpl-gallery__name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--on-surface);
+  letter-spacing: -0.01em;
+  margin: 0 0 4px;
+}
+
+.tpl-gallery__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.tpl-gallery__tag {
+  padding: 3px 10px;
+  border-radius: 9999px;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.tpl-gallery__go {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  align-self: center;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ── the admin's one control, kept out of the link ────────────────── */
+
+.tpl-gallery__remove {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 9px;
+  border: 0;
+  border-top: 1px solid var(--outline-light);
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.76rem;
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+
+.tpl-gallery__remove:hover {
+  color: var(--error);
+  background: rgba(186, 26, 26, 0.05);
+}
+
+/* ── the states that are not a list of templates ──────────────────── */
+
+.tpl-gallery__empty {
+  text-align: center;
+  padding: 96px 40px;
+  background: var(--surface);
+  border-radius: 24px;
+  border: 2px dashed var(--outline-light);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.tpl-gallery__card--loading {
+  min-height: 320px;
+  pointer-events: none;
+}

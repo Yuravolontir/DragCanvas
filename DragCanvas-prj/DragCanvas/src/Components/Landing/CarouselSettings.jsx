@@ -3,18 +3,31 @@ import { useNode } from '@craftjs/core';
 
 import { ToolbarSection } from './Toolbar/ToolbarSection';
 import { ToolbarItem } from './Toolbar/ToolbarItem';
-import { readSlides, emptySlide } from '../../utils/carouselSlides';
+import { ToolbarHelp } from './Toolbar/ToolbarHelp';
+import { RowCard, RowField, RowList, RowPanel, RowToggle } from './Toolbar/ToolbarRows';
+import {
+  emptySlide,
+  readSlides,
+  slideInterval,
+  slidesAutoplay,
+  slidesPerView,
+} from '../../utils/carouselSlides';
 
 /**
  * Slide editor for the Carousel.
  *
  * The generic ToolbarItem only handles flat props, and slides are a list of
- * objects, so this section is written by hand — the same shape FormSettings
- * uses for its fields.
+ * objects, so this panel is written by hand out of the shared row controls.
  *
  * A node saved before slides became an array still carries src1..p3. It is
  * displayed through readSlides, and the first edit here writes a real array,
  * after which the node is not legacy any more.
+ *
+ * Two things that used to be here are gone. The desktop/tablet/phone boxes:
+ * three numbers for one idea, asking an author to design three layouts when the
+ * published page already narrows sensibly on its own — one number is set here
+ * and the narrower screens follow it. And "Every (ms)": a unit nobody outside
+ * software thinks in, replaced by seconds.
  */
 export const CarouselSettings = () => {
   const {
@@ -23,22 +36,20 @@ export const CarouselSettings = () => {
   } = useNode((node) => ({ props: node.data.props }));
 
   const slides = readSlides(props);
+  const autoplay = slidesAutoplay(props);
+  const perView = slidesPerView(props);
+  const seconds = Math.round(slideInterval(props) / 1000);
 
   /** Any write materialises the array, converting a legacy node in passing. */
-  const writeSlides = (next) => {
-    setProp((p) => {
-      p.slides = next;
+  const writeSlides = (next) =>
+    setProp((draft) => {
+      draft.slides = next;
     });
-  };
 
   const updateSlide = (index, key, value) =>
-    writeSlides(slides.map((s, i) => (i === index ? { ...s, [key]: value } : s)));
+    writeSlides(slides.map((slide, i) => (i === index ? { ...slide, [key]: value } : slide)));
 
-  const addSlide = () => writeSlides([...slides, emptySlide()]);
-
-  const removeSlide = (index) => writeSlides(slides.filter((_, i) => i !== index));
-
-  const moveSlide = (index, direction) => {
+  const move = (index, direction) => {
     const target = index + direction;
     if (target < 0 || target >= slides.length) return;
     const next = [...slides];
@@ -46,169 +57,140 @@ export const CarouselSettings = () => {
     writeSlides(next);
   };
 
-  const smallInput = {
-    width: '100%',
-    padding: '5px 8px',
-    fontSize: 12,
-    border: '1px solid var(--outline-light)',
-    borderRadius: 6,
-    marginBottom: 5,
-    boxSizing: 'border-box',
+  const set = (key, value) =>
+    setProp((draft) => {
+      draft[key] = value;
+    });
+
+  /**
+   * How many are shown at once, with the narrower screens kept in step.
+   *
+   * The two follower values still exist because published pages and saved
+   * projects carry them, and because a strip of six logos has to become two on
+   * a phone. They are no longer somebody's problem to set.
+   */
+  const setPerView = (value) => {
+    const desktop = Math.min(8, Math.max(1, Math.round(Number(value)) || 1));
+    setProp((draft) => {
+      draft.perView = desktop;
+      draft.perViewTablet = Math.min(desktop, 2);
+      draft.perViewMobile = 1;
+    });
   };
-
-  const iconButton = {
-    border: 'none',
-    background: 'transparent',
-    cursor: 'pointer',
-    fontSize: 13,
-    color: 'var(--muted)',
-    padding: '0 4px',
-  };
-
-  const checkboxRow = {
-    fontSize: 11,
-    color: 'var(--muted)',
-    display: 'flex',
-    alignItems: 'center',
-    gap: 4,
-    marginBottom: 5,
-  };
-
-  const toggle = (key, label, fallback) => (
-    <label style={checkboxRow}>
-      <input
-        type="checkbox"
-        checked={props[key] === undefined ? fallback : !!props[key]}
-        onChange={(e) => {
-          const { checked } = e.target;
-          setProp((p) => {
-            p[key] = checked;
-          });
-        }}
-      />
-      {label}
-    </label>
-  );
-
-  const number = (key, label, fallback, min, max) => (
-    <label style={{ ...checkboxRow, justifyContent: 'space-between' }}>
-      {label}
-      <input
-        type="number"
-        min={min}
-        max={max}
-        style={{ ...smallInput, marginBottom: 0, width: 70 }}
-        value={props[key] ?? fallback}
-        onChange={(e) => {
-          const value = Number(e.target.value);
-          setProp((p) => {
-            p[key] = value;
-          });
-        }}
-      />
-    </label>
-  );
 
   return (
     <React.Fragment>
-      <ToolbarSection title="Slides">
-        <div style={{ width: '100%', padding: '0 8px 8px' }}>
-          {slides.map((slide, index) => (
-            <div
-              key={index}
-              style={{
-                border: '1px solid var(--surface-container)',
-                borderRadius: 8,
-                padding: 8,
-                marginBottom: 8,
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 5 }}>
-                <span style={{ fontSize: 11, color: '#a09aa8', flex: 1 }}>
-                  Slide {index + 1} of {slides.length}
-                </span>
-                <button style={iconButton} onClick={() => moveSlide(index, -1)} title="Move up">
-                  ↑
-                </button>
-                <button style={iconButton} onClick={() => moveSlide(index, 1)} title="Move down">
-                  ↓
-                </button>
-                <button
-                  style={{ ...iconButton, color: '#c00' }}
-                  onClick={() => removeSlide(index)}
-                  title="Remove"
-                >
-                  ✕
-                </button>
-              </div>
+      <ToolbarHelp title="Slides" icon="view_carousel">
+        A strip of pictures a visitor can swipe or step through. Give each slide
+        a picture and, if it needs one, a heading and a line of text over it.
+        The strip keeps the size you give it here and narrows to fit a phone
+        once the site is published.
+      </ToolbarHelp>
 
-              <input
-                style={smallInput}
+      <ToolbarSection title="Slides">
+        <RowList empty="No slides yet." addLabel="Add slide" onAdd={() => writeSlides([...slides, emptySlide()])}>
+          {slides.map((slide, index) => (
+            <RowCard
+              key={index}
+              title={slide.heading || `Slide ${index + 1}`}
+              index={index}
+              count={slides.length}
+              onMove={move}
+              onRemove={(i) => writeSlides(slides.filter((_, at) => at !== i))}
+              removeLabel="Remove this slide"
+            >
+              <RowField
+                label="Picture address"
+                placeholder="https://example.com/photo.jpg"
                 value={slide.src}
-                placeholder="Image URL"
                 onChange={(e) => updateSlide(index, 'src', e.target.value)}
               />
-              <input
-                style={smallInput}
-                value={slide.alt}
-                placeholder="Alt text (describes the picture)"
-                onChange={(e) => updateSlide(index, 'alt', e.target.value)}
-              />
-              <input
-                style={smallInput}
+              <RowField
+                label="Heading (optional)"
+                placeholder="Summer collection"
                 value={slide.heading}
-                placeholder="Heading"
                 onChange={(e) => updateSlide(index, 'heading', e.target.value)}
               />
-              <input
-                style={smallInput}
-                value={slide.label}
-                placeholder="Label"
-                onChange={(e) => updateSlide(index, 'label', e.target.value)}
-              />
-              <input
-                style={{ ...smallInput, marginBottom: 0 }}
+              <RowField
+                label="Text under the heading (optional)"
+                placeholder="Out now, in every shop."
                 value={slide.text}
-                placeholder="Description"
                 onChange={(e) => updateSlide(index, 'text', e.target.value)}
               />
-            </div>
+              <RowField
+                label="Small badge (optional)"
+                placeholder="New"
+                hint="A short word in a coloured pill above the heading."
+                value={slide.label}
+                onChange={(e) => updateSlide(index, 'label', e.target.value)}
+              />
+              <RowField
+                label="Link (optional)"
+                placeholder="https://example.com/summer"
+                hint="Where clicking the slide takes a visitor."
+                value={slide.href}
+                onChange={(e) => updateSlide(index, 'href', e.target.value)}
+              />
+              <RowField
+                label="Describe the picture (optional)"
+                placeholder="A rail of linen shirts"
+                hint="Read aloud to visitors who cannot see it. The heading is used when this is empty."
+                value={slide.alt}
+                onChange={(e) => updateSlide(index, 'alt', e.target.value)}
+              />
+            </RowCard>
           ))}
-
-          <button
-            onClick={addSlide}
-            style={{
-              width: '100%',
-              padding: '7px',
-              fontSize: 12,
-              borderRadius: 8,
-              border: '1px dashed var(--outline-variant)',
-              background: 'transparent',
-              cursor: 'pointer',
-              color: 'var(--haze)',
-            }}
-          >
-            + Add slide
-          </button>
-        </div>
+        </RowList>
       </ToolbarSection>
 
-      <ToolbarSection title="Behaviour">
-        <div style={{ width: '100%', padding: '0 8px 8px' }}>
-          {toggle('autoplay', 'Play by itself', false)}
-          {props.autoplay ? number('interval', 'Every (ms)', 5000, 1000, 30000) : null}
-          {toggle('loop', 'Back to the start at the end', true)}
-          {toggle('arrows', 'Arrows', true)}
-          {toggle('dots', 'Dots', true)}
-        </div>
-      </ToolbarSection>
+      <ToolbarSection title="How it behaves">
+        <RowPanel>
+          <RowField
+            label="Slides visible at once"
+            kind="number"
+            min={1}
+            max={8}
+            value={perView.desktop}
+            hint="One for photographs. Three or more suits logos and small cards. Fewer are shown on a narrow screen automatically."
+            onChange={(e) => setPerView(e.target.value)}
+          />
 
-      <ToolbarSection title="How many at once">
-        <div style={{ width: '100%', padding: '0 8px 8px' }}>
-          {number('perView', 'Desktop', 1, 1, 8)}
-          {number('perViewTablet', 'Tablet', 1, 1, 6)}
-          {number('perViewMobile', 'Phone', 1, 1, 4)}
-        </div>
+          <RowToggle
+            label="Move to the next slide on its own"
+            checked={autoplay}
+            onChange={(e) => set('autoplay', e.target.checked)}
+          />
+          {autoplay ? (
+            <RowField
+              label="Seconds on each slide"
+              kind="number"
+              min={1}
+              max={60}
+              value={seconds}
+              hint="Pauses while the pointer is over the carousel, and never runs for visitors who have asked their device for less motion."
+              onChange={(e) => {
+                const value = Math.min(60, Math.max(1, Math.round(Number(e.target.value)) || 5));
+                set('interval', value * 1000);
+              }}
+            />
+          ) : null}
+
+          <RowToggle
+            label="Return to the first slide after the last"
+            checked={props.loop !== false}
+            onChange={(e) => set('loop', e.target.checked)}
+          />
+          <RowToggle
+            label="Show the arrows"
+            checked={props.arrows !== false}
+            onChange={(e) => set('arrows', e.target.checked)}
+          />
+          <RowToggle
+            label="Show the dots"
+            checked={props.dots !== false}
+            onChange={(e) => set('dots', e.target.checked)}
+          />
+        </RowPanel>
       </ToolbarSection>
 
       <ToolbarSection
@@ -221,16 +203,16 @@ export const CarouselSettings = () => {
               color: accent && `rgba(${accent.r}, ${accent.g}, ${accent.b}, ${accent.a ?? 1})`,
             }}
           >
-            Label colour
+            Badge colour
           </div>
         )}
       >
-        <ToolbarItem full={true} propKey="accent" type="color" label="Slide label" />
+        <ToolbarItem full={true} propKey="accent" type="color" label="Badge colour" />
       </ToolbarSection>
 
       <ToolbarSection title="Name">
         {/* A region with no name is a region a screen-reader user cannot find. */}
-        <ToolbarItem full={true} propKey="title" type="text" label="What this carousel is" />
+        <ToolbarItem full={true} propKey="title" type="text" label="What this carousel shows" placeholder="Our work" />
       </ToolbarSection>
     </React.Fragment>
   );

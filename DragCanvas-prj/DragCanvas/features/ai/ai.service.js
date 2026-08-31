@@ -19,6 +19,12 @@ const MAX_OUTPUT_TOKENS = Number(process.env.AI_MAX_TOKENS) || 32000;
 const MIN_USEFUL_OUTPUT_TOKENS = 4096;
 const CREDIT_BUFFER_TOKENS = 256;
 
+// Node's fetch has no default timeout, so a provider that stops responding
+// mid-connection (rather than answering with an error status) used to hang
+// the request indefinitely. That is retryable exactly like any other
+// transient provider fault - it says nothing about the prompt.
+const MODEL_TIMEOUT_MS = Number(process.env.AI_TIMEOUT_MS) || 60000;
+
 // Images are served through our own proxy so the editor canvas is not tainted
 const PUBLIC_API_URL = process.env.PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -60,22 +66,37 @@ async function callModel(messages, { temperature = 0.8, jsonOnly = true, maxToke
     let data;
 
     for (let creditAttempt = 0; creditAttempt < 2; creditAttempt++) {
-        response = await fetch(OPENROUTER_API, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`,
-                'HTTP-Referer': process.env.FRONTEND_URL || 'http://localhost:5173',
-                'X-Title': 'DragCanvas',
-            },
-            body: JSON.stringify({
-                model: process.env.AI_MODEL || DEFAULT_MODEL,
-                messages,
-                temperature,
-                max_tokens: tokenLimit,
-                ...(jsonOnly ? { response_format: { type: 'json_object' } } : {}),
-            }),
-        });
+        const timeoutController = new AbortController();
+        const timeoutId = setTimeout(() => timeoutController.abort(), MODEL_TIMEOUT_MS);
+
+        try {
+            response = await fetch(OPENROUTER_API, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`,
+                    'HTTP-Referer': process.env.FRONTEND_URL || 'http://localhost:5173',
+                    'X-Title': 'DragCanvas',
+                },
+                body: JSON.stringify({
+                    model: process.env.AI_MODEL || DEFAULT_MODEL,
+                    messages,
+                    temperature,
+                    max_tokens: tokenLimit,
+                    ...(jsonOnly ? { response_format: { type: 'json_object' } } : {}),
+                }),
+                signal: timeoutController.signal,
+            });
+        } catch (err) {
+            if (err.name === 'AbortError') {
+                const error = new Error(`AI provider did not respond within ${MODEL_TIMEOUT_MS}ms`);
+                error.retryable = true;
+                throw error;
+            }
+            throw err;
+        } finally {
+            clearTimeout(timeoutId);
+        }
 
         data = await response.json().catch(() => ({}));
         if (response.ok) break;
@@ -171,6 +192,15 @@ export async function fetchPexelsImages(query, count = 10) {
         console.log('Pexels image search error:', error.message);
         return [];
     }
+}
+
+/** Reduce the rich generation prompt to the concrete terms stock search needs. */
+export function pexelsQueryFromImagePrompt(prompt) {
+    const value = String(prompt || '').replace(/\s+/g, ' ').trim();
+    const site = value.match(/Website subject and business:\s*(.*?)(?=\. Page:|\. Section context:|\. Required image|\. User request:|$)/i)?.[1];
+    const role = value.match(/Required image subject or role:\s*(.*?)(?=\. User request:|\. The visible subject|$)/i)?.[1];
+    const request = value.match(/User request:\s*(.*?)(?=\. The visible subject|$)/i)?.[1];
+    return [site, role, request].filter(Boolean).join(' ').slice(0, 180) || value.slice(0, 180) || 'professional business';
 }
 
 export async function fetchPexelsVideos(query, count = 5) {

@@ -90,7 +90,8 @@
         "a": 1
       },
       "height": "56px",
-      "width": "100%"
+      "width": "100%",
+      "animation": "none"
     },
     "displayName": "NavbarElement",
     "custom": {
@@ -175,9 +176,9 @@
         "a": 1
       },
       "color": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       },
       "radius": 999
@@ -264,9 +265,9 @@
     "isCanvas": false,
     "props": {
       "background": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       },
       "color": {
@@ -381,9 +382,9 @@
       ],
       "align": "center",
       "accent": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       },
       "color": {
@@ -514,7 +515,8 @@
       "shadow": 0,
       "radius": 18,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
@@ -594,9 +596,9 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       },
       "margin": [
@@ -654,7 +656,8 @@
       "shadow": 0,
       "radius": 18,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
@@ -734,9 +737,9 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       },
       "margin": [
@@ -794,7 +797,8 @@
       "shadow": 0,
       "radius": 18,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 180
     },
     "displayName": "Container",
     "custom": {
@@ -874,9 +878,9 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       },
       "margin": [
@@ -1060,7 +1064,8 @@
       "shadow": 0,
       "radius": 14,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
@@ -1091,9 +1096,9 @@
         "a": 1
       },
       "background": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       }
     },
@@ -1209,7 +1214,8 @@
       "shadow": 0,
       "radius": 14,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
@@ -1240,9 +1246,9 @@
         "a": 1
       },
       "background": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       }
     },
@@ -1358,7 +1364,8 @@
       "shadow": 0,
       "radius": 14,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 180
     },
     "displayName": "Container",
     "custom": {
@@ -1389,9 +1396,9 @@
         "a": 1
       },
       "background": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       }
     },
@@ -1591,9 +1598,9 @@
         "Pick a colour. We fire it and post it to you."
       ],
       "accent": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       },
       "color": {
@@ -1723,7 +1730,8 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
@@ -1902,7 +1910,8 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
@@ -1932,9 +1941,9 @@
         "a": 1
       },
       "accent": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       }
     },
@@ -2090,9 +2099,9 @@
       ],
       "featured": 2,
       "accent": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       },
       "background": {
@@ -2602,9 +2611,9 @@
         "a": 1
       },
       "accent": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       },
       "textColor": {
@@ -2704,9 +2713,9 @@
       "cta": "Shop the batch",
       "href": "#shop",
       "background": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       },
       "color": {
@@ -2838,9 +2847,9 @@
         "Return unused items within 30 days."
       ],
       "accent": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       }
     },
@@ -2863,9 +2872,9 @@
       "label": "Seasonal offer ends in",
       "expiredText": "This offer has ended.",
       "accent": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       }
     },
@@ -2898,9 +2907,9 @@
       "buttonText": "Buy now",
       "currency": "ILS",
       "accent": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       }
     },
@@ -2948,9 +2957,9 @@
       "buttonText": "Subscribe",
       "successMessage": "Check your inbox to confirm.",
       "accent": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       },
       "color": {
@@ -2983,9 +2992,9 @@
         "👏"
       ],
       "accent": {
-        "r": 111,
-        "g": 127,
-        "b": 92,
+        "r": 88,
+        "g": 101,
+        "b": 72,
         "a": 1
       }
     },

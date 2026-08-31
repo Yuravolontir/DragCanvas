@@ -1,23 +1,34 @@
 import { useEditor } from '@craftjs/core';
+import { ROOT_NODE } from '@craftjs/utils';
 import React from 'react';
-import { ResponsiveSettings } from './ResponsiveSettings.jsx';
+
+import { AnimationSettings } from './AnimationSettings';
 
 export const Toolbar = () => {
-  const { active, related, nodeProps } = useEditor((state, query) => {
+  const { active, related, nodeProps, typeName } = useEditor((state, query) => {
     // TODO: handle multiple selected elements
     const currentlySelectedNodeId = query.getEvent('selected').first();
+    const node = currentlySelectedNodeId && state.nodes[currentlySelectedNodeId];
     return {
       active: currentlySelectedNodeId,
-      related:
-        currentlySelectedNodeId && state.nodes[currentlySelectedNodeId].related,
-      nodeProps: currentlySelectedNodeId ? state.nodes[currentlySelectedNodeId].data.props : null,
+      related: node && node.related,
+      nodeProps: node?.data?.props,
+      typeName: node?.data?.name || node?.data?.displayName,
     };
   });
 
   return (
     <div className="py-1 h-full">
       {active && related?.toolbar && React.createElement(related.toolbar)}
-      {active && <ResponsiveSettings nodeId={active} nodeProps={nodeProps || {}} />}
+      {/*
+        * Every element animates, so the entrance is edited in one panel for
+        * whatever is selected rather than in forty element panels that would
+        * drift apart. The page itself is the exception: the canvas as a whole
+        * has nothing to arrive from.
+        */}
+      {active && active !== ROOT_NODE ? (
+        <AnimationSettings nodeId={active} nodeProps={nodeProps} typeName={typeName} />
+      ) : null}
       {!active && (
         <div
           className="px-6 py-5 flex flex-col items-center h-full justify-center text-center"

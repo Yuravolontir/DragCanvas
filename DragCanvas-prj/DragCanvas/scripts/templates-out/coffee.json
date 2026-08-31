@@ -45,16 +45,16 @@
     "hidden": false,
     "nodes": [
       "navb01",
-      "cont02",
-      "cont06",
-      "cont10",
-      "cont12",
-      "cont28",
-      "cont36",
-      "cont42",
-      "cont50",
-      "cont52",
-      "cont60"
+      "vide02",
+      "cont07",
+      "cont11",
+      "cont13",
+      "cont29",
+      "cont37",
+      "cont43",
+      "cont51",
+      "cont53",
+      "cont61"
     ],
     "linkedNodes": {}
   },
@@ -88,7 +88,8 @@
         "a": 1
       },
       "height": "56px",
-      "width": "100%"
+      "width": "100%",
+      "animation": "none"
     },
     "displayName": "NavbarElement",
     "custom": {
@@ -99,7 +100,35 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont02": {
+  "vide02": {
+    "type": {
+      "resolvedName": "Video"
+    },
+    "isCanvas": true,
+    "props": {
+      "sourceType": "background",
+      "videoId": "",
+      "videoUrl": "",
+      "text": "",
+      "src": "https://videos.pexels.com/video-files/4052732/4052732-hd_1920_1080_25fps.mp4",
+      "poster": "https://images.pexels.com/photos/1855214/pexels-photo-1855214.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "overlay": 62,
+      "position": "center",
+      "minHeight": "520px",
+      "loop": true
+    },
+    "displayName": "Video",
+    "custom": {
+      "displayName": "Hero"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont03"
+    ],
+    "linkedNodes": {}
+  },
+  "cont03": {
     "type": {
       "resolvedName": "Container"
     },
@@ -122,10 +151,10 @@
         "0"
       ],
       "background": {
-        "r": 249,
-        "g": 245,
-        "b": 240,
-        "a": 1
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
       },
       "color": {
         "r": 0,
@@ -136,29 +165,22 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto",
-      "backgroundImage": "https://images.pexels.com/photos/1855214/pexels-photo-1855214.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      "overlay": {
-        "r": 45,
-        "g": 32,
-        "b": 24,
-        "a": 0.62
-      }
+      "height": "auto"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Hero"
+      "displayName": "Hero text"
     },
-    "parent": "ROOT",
+    "parent": "vide02",
     "hidden": false,
     "nodes": [
-      "head03",
-      "text04",
-      "butt05"
+      "head04",
+      "text05",
+      "butt06"
     ],
     "linkedNodes": {}
   },
-  "head03": {
+  "head04": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -186,12 +208,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont02",
+    "parent": "cont03",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text04": {
+  "text05": {
     "type": {
       "resolvedName": "Text"
     },
@@ -219,21 +241,21 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont02",
+    "parent": "cont03",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "butt05": {
+  "butt06": {
     "type": {
       "resolvedName": "Button"
     },
     "isCanvas": false,
     "props": {
       "background": {
-        "r": 178,
-        "g": 92,
-        "b": 48,
+        "r": 170,
+        "g": 87,
+        "b": 45,
         "a": 1
       },
       "color": {
@@ -277,12 +299,12 @@
     "custom": {
       "displayName": "Button"
     },
-    "parent": "cont02",
+    "parent": "cont03",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont06": {
+  "cont07": {
     "type": {
       "resolvedName": "Container"
     },
@@ -329,13 +351,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head07",
-      "spac08",
-      "pric09"
+      "head08",
+      "spac09",
+      "pric10"
     ],
     "linkedNodes": {}
   },
-  "head07": {
+  "head08": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -363,12 +385,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont06",
+    "parent": "cont07",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac08": {
+  "spac09": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -380,12 +402,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont06",
+    "parent": "cont07",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "pric09": {
+  "pric10": {
     "type": {
       "resolvedName": "Pricing"
     },
@@ -410,9 +432,9 @@
       ],
       "featured": 2,
       "accent": {
-        "r": 178,
-        "g": 92,
-        "b": 48,
+        "r": 170,
+        "g": 87,
+        "b": 45,
         "a": 1
       },
       "background": {
@@ -432,12 +454,12 @@
     "custom": {
       "displayName": "Pricing"
     },
-    "parent": "cont06",
+    "parent": "cont07",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont10": {
+  "cont11": {
     "type": {
       "resolvedName": "Container"
     },
@@ -483,11 +505,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "stat11"
+      "stat12"
     ],
     "linkedNodes": {}
   },
-  "stat11": {
+  "stat12": {
     "type": {
       "resolvedName": "Stats"
     },
@@ -503,9 +525,9 @@
       ],
       "align": "center",
       "accent": {
-        "r": 178,
-        "g": 92,
-        "b": 48,
+        "r": 170,
+        "g": 87,
+        "b": 45,
         "a": 1
       },
       "color": {
@@ -519,12 +541,12 @@
     "custom": {
       "displayName": "Stats"
     },
-    "parent": "cont10",
+    "parent": "cont11",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont12": {
+  "cont13": {
     "type": {
       "resolvedName": "Container"
     },
@@ -570,13 +592,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head13",
-      "spac14",
-      "colu15"
+      "head14",
+      "spac15",
+      "colu16"
     ],
     "linkedNodes": {}
   },
-  "head13": {
+  "head14": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -604,12 +626,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont12",
+    "parent": "cont13",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac14": {
+  "spac15": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -621,12 +643,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont12",
+    "parent": "cont13",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "colu15": {
+  "colu16": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -641,16 +663,16 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont12",
+    "parent": "cont13",
     "hidden": false,
     "nodes": [
-      "cont16",
-      "cont20",
-      "cont24"
+      "cont17",
+      "cont21",
+      "cont25"
     ],
     "linkedNodes": {}
   },
-  "cont16": {
+  "cont17": {
     "type": {
       "resolvedName": "Container"
     },
@@ -687,22 +709,23 @@
       "shadow": 0,
       "radius": 12,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Pause any time"
     },
-    "parent": "colu15",
+    "parent": "colu16",
     "hidden": false,
     "nodes": [
-      "icon17",
-      "head18",
-      "text19"
+      "icon18",
+      "head19",
+      "text20"
     ],
     "linkedNodes": {}
   },
-  "icon17": {
+  "icon18": {
     "type": {
       "resolvedName": "Icon"
     },
@@ -718,9 +741,9 @@
         "a": 1
       },
       "background": {
-        "r": 178,
-        "g": 92,
-        "b": 48,
+        "r": 170,
+        "g": 87,
+        "b": 45,
         "a": 1
       }
     },
@@ -728,12 +751,12 @@
     "custom": {
       "displayName": "Icon"
     },
-    "parent": "cont16",
+    "parent": "cont17",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "head18": {
+  "head19": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -761,12 +784,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont16",
+    "parent": "cont17",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text19": {
+  "text20": {
     "type": {
       "resolvedName": "Text"
     },
@@ -794,12 +817,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont16",
+    "parent": "cont17",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont20": {
+  "cont21": {
     "type": {
       "resolvedName": "Container"
     },
@@ -836,22 +859,23 @@
       "shadow": 0,
       "radius": 12,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Roast date, not best-before"
     },
-    "parent": "colu15",
+    "parent": "colu16",
     "hidden": false,
     "nodes": [
-      "icon21",
-      "head22",
-      "text23"
+      "icon22",
+      "head23",
+      "text24"
     ],
     "linkedNodes": {}
   },
-  "icon21": {
+  "icon22": {
     "type": {
       "resolvedName": "Icon"
     },
@@ -867,9 +891,9 @@
         "a": 1
       },
       "background": {
-        "r": 178,
-        "g": 92,
-        "b": 48,
+        "r": 170,
+        "g": 87,
+        "b": 45,
         "a": 1
       }
     },
@@ -877,12 +901,12 @@
     "custom": {
       "displayName": "Icon"
     },
-    "parent": "cont20",
+    "parent": "cont21",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "head22": {
+  "head23": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -910,12 +934,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont20",
+    "parent": "cont21",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text23": {
+  "text24": {
     "type": {
       "resolvedName": "Text"
     },
@@ -943,12 +967,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont20",
+    "parent": "cont21",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont24": {
+  "cont25": {
     "type": {
       "resolvedName": "Container"
     },
@@ -985,22 +1009,23 @@
       "shadow": 0,
       "radius": 12,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 180
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Ground or whole"
     },
-    "parent": "colu15",
+    "parent": "colu16",
     "hidden": false,
     "nodes": [
-      "icon25",
-      "head26",
-      "text27"
+      "icon26",
+      "head27",
+      "text28"
     ],
     "linkedNodes": {}
   },
-  "icon25": {
+  "icon26": {
     "type": {
       "resolvedName": "Icon"
     },
@@ -1016,9 +1041,9 @@
         "a": 1
       },
       "background": {
-        "r": 178,
-        "g": 92,
-        "b": 48,
+        "r": 170,
+        "g": 87,
+        "b": 45,
         "a": 1
       }
     },
@@ -1026,12 +1051,12 @@
     "custom": {
       "displayName": "Icon"
     },
-    "parent": "cont24",
+    "parent": "cont25",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "head26": {
+  "head27": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1059,12 +1084,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont24",
+    "parent": "cont25",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text27": {
+  "text28": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1092,12 +1117,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont24",
+    "parent": "cont25",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont28": {
+  "cont29": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1144,17 +1169,17 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head29",
-      "spac30",
-      "time31",
-      "spac32",
-      "caro33",
-      "divi34",
-      "quot35"
+      "head30",
+      "spac31",
+      "time32",
+      "spac33",
+      "caro34",
+      "divi35",
+      "quot36"
     ],
     "linkedNodes": {}
   },
-  "head29": {
+  "head30": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1182,12 +1207,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont28",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac30": {
+  "spac31": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -1199,12 +1224,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont28",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "time31": {
+  "time32": {
     "type": {
       "resolvedName": "Timeline"
     },
@@ -1222,9 +1247,9 @@
         "Small batches, Tuesdays, in a drum older than the shop."
       ],
       "accent": {
-        "r": 178,
-        "g": 92,
-        "b": 48,
+        "r": 170,
+        "g": 87,
+        "b": 45,
         "a": 1
       },
       "color": {
@@ -1238,12 +1263,12 @@
     "custom": {
       "displayName": "Timeline"
     },
-    "parent": "cont28",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac32": {
+  "spac33": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -1255,12 +1280,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont28",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "caro33": {
+  "caro34": {
     "type": {
       "resolvedName": "Carousel"
     },
@@ -1297,9 +1322,9 @@
         }
       ],
       "accent": {
-        "r": 178,
-        "g": 92,
-        "b": 48,
+        "r": 170,
+        "g": 87,
+        "b": 45,
         "a": 1
       }
     },
@@ -1307,12 +1332,12 @@
     "custom": {
       "displayName": "Roastery gallery"
     },
-    "parent": "cont28",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "divi34": {
+  "divi35": {
     "type": {
       "resolvedName": "Divider"
     },
@@ -1332,12 +1357,12 @@
     "custom": {
       "displayName": "Divider"
     },
-    "parent": "cont28",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "quot35": {
+  "quot36": {
     "type": {
       "resolvedName": "Quote"
     },
@@ -1354,9 +1379,9 @@
         "a": 1
       },
       "accent": {
-        "r": 178,
-        "g": 92,
-        "b": 48,
+        "r": 170,
+        "g": 87,
+        "b": 45,
         "a": 1
       }
     },
@@ -1364,12 +1389,12 @@
     "custom": {
       "displayName": "Quote"
     },
-    "parent": "cont28",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont36": {
+  "cont37": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1415,11 +1440,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu37"
+      "colu38"
     ],
     "linkedNodes": {}
   },
-  "colu37": {
+  "colu38": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -1435,15 +1460,15 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont36",
+    "parent": "cont37",
     "hidden": false,
     "nodes": [
-      "cont38",
-      "acco41"
+      "cont39",
+      "acco42"
     ],
     "linkedNodes": {}
   },
-  "cont38": {
+  "cont39": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1486,15 +1511,15 @@
     "custom": {
       "displayName": "Questions intro"
     },
-    "parent": "colu37",
+    "parent": "colu38",
     "hidden": false,
     "nodes": [
-      "head39",
-      "text40"
+      "head40",
+      "text41"
     ],
     "linkedNodes": {}
   },
-  "head39": {
+  "head40": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1522,12 +1547,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont38",
+    "parent": "cont39",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text40": {
+  "text41": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1555,12 +1580,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont38",
+    "parent": "cont39",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "acco41": {
+  "acco42": {
     "type": {
       "resolvedName": "Accordion"
     },
@@ -1592,12 +1617,12 @@
     "custom": {
       "displayName": "Accordion"
     },
-    "parent": "colu37",
+    "parent": "colu38",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont42": {
+  "cont43": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1644,11 +1669,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu43"
+      "colu44"
     ],
     "linkedNodes": {}
   },
-  "colu43": {
+  "colu44": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -1664,15 +1689,15 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont42",
+    "parent": "cont43",
     "hidden": false,
     "nodes": [
-      "cont44",
-      "cont48"
+      "cont45",
+      "cont49"
     ],
     "linkedNodes": {}
   },
-  "cont44": {
+  "cont45": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1709,22 +1734,23 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Visit copy"
     },
-    "parent": "colu43",
+    "parent": "colu44",
     "hidden": false,
     "nodes": [
-      "head45",
-      "list46",
-      "text47"
+      "head46",
+      "list47",
+      "text48"
     ],
     "linkedNodes": {}
   },
-  "head45": {
+  "head46": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1752,12 +1778,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont44",
+    "parent": "cont45",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "list46": {
+  "list47": {
     "type": {
       "resolvedName": "List"
     },
@@ -1782,12 +1808,12 @@
     "custom": {
       "displayName": "List"
     },
-    "parent": "cont44",
+    "parent": "cont45",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text47": {
+  "text48": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1815,12 +1841,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont44",
+    "parent": "cont45",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont48": {
+  "cont49": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1857,20 +1883,21 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Visit map"
     },
-    "parent": "colu43",
+    "parent": "colu44",
     "hidden": false,
     "nodes": [
-      "map49"
+      "map50"
     ],
     "linkedNodes": {}
   },
-  "map49": {
+  "map50": {
     "type": {
       "resolvedName": "Map"
     },
@@ -1887,12 +1914,12 @@
     "custom": {
       "displayName": "Map"
     },
-    "parent": "cont48",
+    "parent": "cont49",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont50": {
+  "cont51": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1938,11 +1965,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "ctab51"
+      "ctab52"
     ],
     "linkedNodes": {}
   },
-  "ctab51": {
+  "ctab52": {
     "type": {
       "resolvedName": "CTABanner"
     },
@@ -1953,9 +1980,9 @@
       "cta": "Start a subscription",
       "href": "#subscribe",
       "background": {
-        "r": 178,
-        "g": 92,
-        "b": 48,
+        "r": 170,
+        "g": 87,
+        "b": 45,
         "a": 1
       },
       "color": {
@@ -1982,12 +2009,12 @@
     "custom": {
       "displayName": "CTABanner"
     },
-    "parent": "cont50",
+    "parent": "cont51",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont52": {
+  "cont53": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2033,15 +2060,15 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head53",
-      "tabs54",
-      "coun55",
-      "prod56",
-      "colu57"
+      "head54",
+      "tabs55",
+      "coun56",
+      "prod57",
+      "colu58"
     ],
     "linkedNodes": {}
   },
-  "head53": {
+  "head54": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -2069,12 +2096,12 @@
     "custom": {
       "displayName": "Modern tools heading"
     },
-    "parent": "cont52",
+    "parent": "cont53",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "tabs54": {
+  "tabs55": {
     "type": {
       "resolvedName": "Tabs"
     },
@@ -2087,9 +2114,9 @@
         "Return unused items within 30 days."
       ],
       "accent": {
-        "r": 178,
-        "g": 92,
-        "b": 48,
+        "r": 170,
+        "g": 87,
+        "b": 45,
         "a": 1
       }
     },
@@ -2097,12 +2124,12 @@
     "custom": {
       "displayName": "Quick facts"
     },
-    "parent": "cont52",
+    "parent": "cont53",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "coun55": {
+  "coun56": {
     "type": {
       "resolvedName": "Countdown"
     },
@@ -2112,9 +2139,9 @@
       "label": "Seasonal offer ends in",
       "expiredText": "This offer has ended.",
       "accent": {
-        "r": 178,
-        "g": 92,
-        "b": 48,
+        "r": 170,
+        "g": 87,
+        "b": 45,
         "a": 1
       }
     },
@@ -2122,12 +2149,12 @@
     "custom": {
       "displayName": "Offer countdown"
     },
-    "parent": "cont52",
+    "parent": "cont53",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "prod56": {
+  "prod57": {
     "type": {
       "resolvedName": "ProductCatalog"
     },
@@ -2147,9 +2174,9 @@
       "buttonText": "Buy now",
       "currency": "ILS",
       "accent": {
-        "r": 178,
-        "g": 92,
-        "b": 48,
+        "r": 170,
+        "g": 87,
+        "b": 45,
         "a": 1
       }
     },
@@ -2157,12 +2184,12 @@
     "custom": {
       "displayName": "Featured products"
     },
-    "parent": "cont52",
+    "parent": "cont53",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "colu57": {
+  "colu58": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -2178,15 +2205,15 @@
     "custom": {
       "displayName": "Stay connected"
     },
-    "parent": "cont52",
+    "parent": "cont53",
     "hidden": false,
     "nodes": [
-      "news58",
-      "enga59"
+      "news59",
+      "enga60"
     ],
     "linkedNodes": {}
   },
-  "news58": {
+  "news59": {
     "type": {
       "resolvedName": "Newsletter"
     },
@@ -2197,9 +2224,9 @@
       "buttonText": "Subscribe",
       "successMessage": "Check your inbox to confirm.",
       "accent": {
-        "r": 178,
-        "g": 92,
-        "b": 48,
+        "r": 170,
+        "g": 87,
+        "b": 45,
         "a": 1
       },
       "color": {
@@ -2213,12 +2240,12 @@
     "custom": {
       "displayName": "Newsletter signup"
     },
-    "parent": "colu57",
+    "parent": "colu58",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "enga59": {
+  "enga60": {
     "type": {
       "resolvedName": "Engagement"
     },
@@ -2232,9 +2259,9 @@
         "👏"
       ],
       "accent": {
-        "r": 178,
-        "g": 92,
-        "b": 48,
+        "r": 170,
+        "g": 87,
+        "b": 45,
         "a": 1
       }
     },
@@ -2242,12 +2269,12 @@
     "custom": {
       "displayName": "Visitor feedback"
     },
-    "parent": "colu57",
+    "parent": "colu58",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont60": {
+  "cont61": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2293,12 +2320,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont61",
-      "soci64"
+      "cont62",
+      "soci65"
     ],
     "linkedNodes": {}
   },
-  "cont61": {
+  "cont62": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2341,15 +2368,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont60",
+    "parent": "cont61",
     "hidden": false,
     "nodes": [
-      "text62",
-      "text63"
+      "text63",
+      "text64"
     ],
     "linkedNodes": {}
   },
-  "text62": {
+  "text63": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2377,12 +2404,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont61",
+    "parent": "cont62",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text63": {
+  "text64": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2410,12 +2437,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont61",
+    "parent": "cont62",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci64": {
+  "soci65": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -2446,7 +2473,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont60",
+    "parent": "cont61",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

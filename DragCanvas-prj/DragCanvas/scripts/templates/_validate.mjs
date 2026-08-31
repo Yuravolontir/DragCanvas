@@ -20,6 +20,8 @@
  * names are the older hand-built blocks; they resolve, but nothing should be
  * authored with them now.
  */
+import { ANIMATION_NAMES } from '../../src/utils/animation.js';
+
 export const RESOLVED_NAMES = new Set([
   'Container', 'Text', 'Button', 'Video', 'BackgroundVideo', 'Link', 'Form', 'Image', 'Carousel',
   'Map', 'NavbarElement', 'Heading', 'Columns', 'Spacer', 'Divider', 'List',
@@ -35,7 +37,81 @@ export const RESOLVED_NAMES = new Set([
  * @param {{ name: string, map: object }} t a template: its name, and its flat
  *   Craft.js node map.
  */
+/**
+ * Every page a template consists of, as { name, slug, map }.
+ *
+ * A single-page template is one page called Home, so nothing downstream has to
+ * ask which kind it is holding.
+ */
+export function templatePages(t) {
+  if (Array.isArray(t.pages) && t.pages.length) {
+    return t.pages.map((page) => ({ name: page.name, slug: page.slug, map: page.map }));
+  }
+  return [{ name: 'Home', slug: 'home', map: t.map }];
+}
+
+/**
+ * What the editor and the gallery actually store.
+ *
+ * A single page stays a bare node map, which is what every template in the
+ * gallery already is and what the editor has always deserialised. More than one
+ * becomes the same envelope the editor writes when somebody saves a multi-page
+ * project — there is no second format.
+ */
+export function templateData(t) {
+  const pages = templatePages(t);
+  if (pages.length === 1) return pages[0].map;
+  return {
+    __dragcanvasPages: true,
+    currentSlug: pages[0].slug,
+    pages: pages.map((page) => ({ name: page.name, slug: page.slug, data: page.map })),
+    siteSettings: t.siteSettings || {},
+  };
+}
+
 export function validateTemplate(t) {
+  const pages = templatePages(t);
+  if (pages.length > 1) {
+    const slugs = new Set();
+    for (const page of pages) {
+      if (!/^[a-z0-9][a-z0-9-]*$/.test(String(page.slug || ''))) {
+        throw new Error(`${t.name}: "${page.slug}" is not a usable page slug`);
+      }
+      if (slugs.has(page.slug)) throw new Error(`${t.name}: two pages both claim /${page.slug}/`);
+      slugs.add(page.slug);
+      if (!page.name) throw new Error(`${t.name}: the page /${page.slug}/ has no name`);
+    }
+    if (pages[0].slug !== 'home') throw new Error(`${t.name}: the first page must be home, not ${pages[0].slug}`);
+
+    // Each page is a whole design in its own right, so each one is held to
+    // every rule below — including having its own single level-1 heading.
+    for (const page of pages) {
+      validateOnePage({ name: `${t.name} /${page.slug}/`, map: page.map });
+    }
+
+    // A navigation bar that points at a page nobody built is the one failure a
+    // visitor meets rather than the author.
+    const known = new Set([...slugs].map((slug) => `/${slug === 'home' ? '' : slug + '/'}`));
+    known.add('/');
+    for (const page of pages) {
+      for (const [id, n] of Object.entries(page.map)) {
+        if (n.type?.resolvedName !== 'NavbarElement') continue;
+        for (const link of n.props?.links || []) {
+          const href = String(link.href || '');
+          if (!href.startsWith('/')) continue;
+          if (!known.has(href)) {
+            throw new Error(`${t.name}: ${id} on /${page.slug}/ links to ${href}, which is not a page`);
+          }
+        }
+      }
+    }
+    return;
+  }
+
+  validateOnePage(t);
+}
+
+function validateOnePage(t) {
   if (!t.map || !t.map.ROOT) throw new Error(`${t.name}: has no ROOT node`);
   if (t.map.ROOT.parent) throw new Error(`${t.name}: ROOT must not have a parent`);
 
@@ -94,13 +170,40 @@ export function validateTemplate(t) {
     ) {
       throw new Error(`${t.name}: ${id} is a Video with no videoUrl`);
     }
-    if (
-      n.type?.resolvedName === 'Video' &&
-      n.props?.sourceType === 'background' &&
-      !n.props?.src &&
-      !n.props?.poster
-    ) {
-      throw new Error(`${t.name}: ${id} is a background Video with no video or poster`);
+    if (n.type?.resolvedName === 'Video' && n.props?.sourceType === 'background') {
+      // The poster is the hero on a phone, for a visitor who asked for less
+      // motion, and if the clip fails to load. A background hero without one
+      // can publish as an empty band.
+      if (!n.props?.poster) {
+        throw new Error(`${t.name}: ${id} is a background Video with no poster`);
+      }
+      const src = String(n.props?.src || '');
+      if (/PLACEHOLDER/.test(src)) {
+        throw new Error(`${t.name}: ${id} still holds an unresolved video placeholder`);
+      }
+      if (/youtube|youtu\.be|vimeo/i.test(src)) {
+        throw new Error(`${t.name}: ${id} points a background hero at an embed rather than a video file`);
+      }
+      if (src && !/^https:\/\/\S+\.(mp4|webm)$/i.test(src)) {
+        throw new Error(`${t.name}: ${id} has a background video src that is not a video file: ${src.slice(0, 60)}`);
+      }
+    }
+  }
+
+  // A misspelled entrance is silent: the exporter falls back to standing
+  // still, so the only symptom is a section that does not move, on a page
+  // where everything else does.
+  for (const [id, n] of Object.entries(t.map)) {
+    const animation = n.props?.animation;
+    if (animation !== undefined && !ANIMATION_NAMES.includes(animation)) {
+      throw new Error(`${t.name}: ${id} has an unknown animation "${animation}"`);
+    }
+    for (const key of ['animationDuration', 'animationDelay']) {
+      const value = n.props?.[key];
+      if (value === undefined) continue;
+      if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || value > 4000) {
+        throw new Error(`${t.name}: ${id} has an out-of-range ${key}: ${JSON.stringify(value)}`);
+      }
     }
   }
 
@@ -258,6 +361,39 @@ const COMPOSED = new Set([
  * A number that fails the build is what binds.
  */
 export function checkRichness(t) {
+  const pages = templatePages(t);
+  if (pages.length === 1) return checkOnePageRichness(t);
+
+  /*
+   * A site of several pages is measured twice, and differently.
+   *
+   * The whole site has to show as much of the editor as one good single-page
+   * template does — otherwise splitting a page in four would be a way to pass
+   * this file rather than a way to build a site. But holding every page to that
+   * on its own is the wrong standard and would produce the wrong pages: a
+   * contact page is a form, a map and the opening hours, and padding it out to
+   * sixteen element types would make it worse. So each page only has to be a
+   * real page, and the site as a whole has to be a real showcase.
+   */
+  const whole = { name: t.name, map: Object.assign({}, ...pages.map((page) => page.map)) };
+  const shortfalls = checkOnePageRichness(whole).map((short) => `across the whole site: ${short}`);
+
+  for (const page of pages) {
+    shortfalls.push(
+      ...checkOnePageRichness({ name: page.name, map: page.map }, SECONDARY_FLOOR)
+        .map((short) => `/${page.slug}/: ${short}`),
+    );
+  }
+  return shortfalls;
+}
+
+/** What one page of a multi-page site has to be, on its own. */
+const SECONDARY_FLOOR = { kinds: 9, composed: 2, columns: 1, uneven: 0 };
+
+/** What a page that is the whole site has to be. */
+const WHOLE_SITE_FLOOR = { kinds: 16, composed: 6, columns: 3, uneven: 1 };
+
+function checkOnePageRichness(t, floor = WHOLE_SITE_FLOOR) {
   const nodes = Object.values(t.map);
   const kinds = new Set(nodes.map((n) => n.type?.resolvedName));
   const composed = [...kinds].filter((k) => COMPOSED.has(k));
@@ -265,12 +401,12 @@ export function checkRichness(t) {
   const uneven = columns.filter((n) => String(n.props?.ratio || '').includes(':'));
 
   const shortfalls = [];
-  if (kinds.size < 16) shortfalls.push(`${kinds.size} element types, needs 16`);
-  if (composed.length < 6) shortfalls.push(`${composed.length} composed elements, needs 6`);
-  if (columns.length < 3) shortfalls.push(`${columns.length} rows of columns, needs 3`);
+  if (kinds.size < floor.kinds) shortfalls.push(`${kinds.size} element types, needs ${floor.kinds}`);
+  if (composed.length < floor.composed) shortfalls.push(`${composed.length} composed elements, needs ${floor.composed}`);
+  if (columns.length < floor.columns) shortfalls.push(`${columns.length} rows of columns, needs ${floor.columns}`);
   // At least one row that is not two equal halves. Without this the rule above
   // is satisfied by three more even splits, which is the layout being escaped.
-  if (uneven.length < 1) shortfalls.push('no row with a ratio, needs 1');
+  if (uneven.length < floor.uneven) shortfalls.push(`no row with a ratio, needs ${floor.uneven}`);
 
   return shortfalls;
 }

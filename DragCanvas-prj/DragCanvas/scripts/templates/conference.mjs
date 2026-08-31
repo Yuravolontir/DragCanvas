@@ -1,5 +1,6 @@
 import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
+import { clipFor } from '../../src/utils/stockVideo.js';
 
 /** Conference — the date, the programme, and how to get a ticket. */
 export default function conference() {
@@ -17,15 +18,24 @@ export default function conference() {
     { text: 'Tickets', href: '#tickets' },
   ], { variant: 'dark', sticky: true });
 
-  const hero = b.container(root, { background: NAVY, padding: ['72', '48', '48', '48'], width: '100%', alignItems: 'center', backgroundImage: P.conference.stage(1600), overlay: rgba(15, 27, 52, 0.72) }, 'Hero');
-  b.badge(hero, 'Haifa · 12–13 November', { background: GOLD, color: NAVY });
-  b.heading(hero, 'Two days on how software feels', {
+  // A conference sells the room. A photograph of an empty stage does not.
+  const hero = b.backgroundVideo(root, {
+    src: clipFor('event').url,
+    poster: P.conference.stage(1600),
+    overlay: 72,
+    minHeight: '560px',
+  }, 'Hero');
+  const heroText = b.container(hero, {
+    background: TRANSPARENT, padding: ['72', '48', '48', '48'], width: '100%', alignItems: 'center',
+  }, 'Hero text');
+  b.badge(heroText, 'Haifa · 12–13 November', { background: GOLD, color: NAVY });
+  b.heading(heroText, 'Two days on how software feels', {
     level: '1', fontSize: '50', textAlign: 'center', color: BONE, margin: ['16', '0', '12', '0'],
   });
-  b.text(hero, 'Fourteen talks on interface, craft, and the people who ship it.', {
+  b.text(heroText, 'Fourteen talks on interface, craft, and the people who ship it.', {
     fontSize: '18', textAlign: 'center', color: rgba(255, 255, 255, 0.82), margin: ['0', '0', '24', '0'],
   });
-  b.button(hero, 'Get a ticket', { background: GOLD, color: NAVY, buttonStyle: 'full' });
+  b.button(heroText, 'Get a ticket', { background: GOLD, color: NAVY, buttonStyle: 'full' });
 
   // ── three ways to spend the two days ───────────────────────────
   const ways = b.container(root, { background: NAVY, padding: ['56', '48', '48', '48'], width: '100%' }, 'Formats');

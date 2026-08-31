@@ -11,6 +11,7 @@
  */
 import fs from 'fs';
 import { SYSTEM_PROMPT } from '../features/ai/prompt/system.prompt.js';
+import { ANIMATION_NAMES } from '../src/utils/animation.js';
 
 /** Props the model must NOT set: it cannot know a correct value. */
 const DELIBERATELY_HIDDEN = {
@@ -29,7 +30,12 @@ const NOT_GENERATABLE = [
  * Different from NOT_GENERATABLE: these build fine, they are just not what the
  * generator should reach for.
  */
-const NOT_AUTHORED = [];
+const NOT_AUTHORED = [
+    // A YouTube clip is somebody's own video. The generator has no id it could
+    // honestly put here, and an invented one embeds a stranger's video, so the
+    // prompt does not mention it; a person adds it from the toolbox.
+    'YouTube',
+];
 
 /** Old resolver names retained only so saved projects can still deserialize. */
 const LEGACY_ONLY = ['BackgroundVideo'];
@@ -53,6 +59,10 @@ function promptProps() {
     const found = {};
     let current = null;
     for (const line of SYSTEM_PROMPT.split('\n')) {
+        // A shouted heading ends the element list. Without this, the Props line
+        // in a section such as ANIMATION was read as belonging to whichever
+        // element was numbered last, and that element's real props went missing.
+        if (/^[A-Z][A-Z ]{2,}[-:( ]/.test(line)) current = null;
         const heading = line.match(/^\s*\d+\.\s+(\w+)/);
         if (heading) current = heading[1];
         const props = line.match(/Props:\s*\{(.+)\}/);
@@ -82,10 +92,30 @@ function catalogueEntries() {
     return { entries, known };
 }
 
+/**
+ * The entrances the prompt offers have to be the entrances that exist.
+ *
+ * A name the exporter does not know falls back to standing still, so a drifted
+ * list shows up as generated pages that quietly do not move.
+ */
+function checkAnimationVocabulary(problems) {
+    const line = SYSTEM_PROMPT.split('\n').find((row) => row.includes('"animation" is exactly one of:'));
+    if (!line) {
+        problems.push('the prompt never tells the model which animations exist');
+        return;
+    }
+    const listed = line.split(':')[1].split(',').map((name) => name.trim()).filter(Boolean);
+    const missing = ANIMATION_NAMES.filter((name) => !listed.includes(name));
+    const unknown = listed.filter((name) => !ANIMATION_NAMES.includes(name));
+    if (missing.length) problems.push(`animations the prompt never offers: ${missing.join(', ')}`);
+    if (unknown.length) problems.push(`animations the prompt offers that do not exist: ${unknown.join(', ')}`);
+}
+
 const resolver = resolverComponents();
 const described = promptProps();
 const { entries: catalogue, known: knownGroups } = catalogueEntries();
 const problems = [];
+checkAnimationVocabulary(problems);
 
 console.log(`resolver: ${resolver.length} components | prompt describes: ${Object.keys(described).length}\n`);
 

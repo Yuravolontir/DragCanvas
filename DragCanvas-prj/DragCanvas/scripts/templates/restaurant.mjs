@@ -1,5 +1,6 @@
 import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
+import { clipFor } from '../../src/utils/stockVideo.js';
 
 /**
  * Restaurant — Casa Oliva (replaces template 14)
@@ -24,8 +25,17 @@ export default function restaurant() {
     { text: 'Find us', href: '#find-us' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: CREAM, padding: ['64', '48', '48', '48'], width: '100%', backgroundImage: P.restaurant.room(1600), overlay: rgba(42, 29, 19, 0.6) }, 'Hero');
-  const top = b.columns(hero, { count: '2', gap: '40', align: 'center' });
+  // A kitchen at service is the argument for the restaurant. The plated dish
+  // stays on the right: the footage is the room, the photograph is the food,
+  // and neither one says what the other does.
+  const hero = b.backgroundVideo(root, {
+    src: clipFor('food').url,
+    poster: P.restaurant.room(1600),
+    overlay: 60,
+    minHeight: '560px',
+  }, 'Hero');
+  const heroInner = b.container(hero, { background: TRANSPARENT, padding: ['64', '48', '48', '48'], width: '100%' }, 'Hero content');
+  const top = b.columns(heroInner, { count: '2', gap: '40', align: 'center' });
   const words = b.container(top, { background: TRANSPARENT, padding: ['0', '0', '0', '0'] }, 'Words');
   b.badge(words, 'Open for dinner', { background: PANEL, color: TERRA });
   b.heading(words, 'Slow food, small room', { level: '1', fontSize: '46', color: CREAM, margin: ['12', '0', '10', '0'] });

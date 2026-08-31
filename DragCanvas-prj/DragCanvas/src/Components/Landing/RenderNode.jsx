@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { useDeviceMode } from '../../useDeviceMode.js';
 import { responsiveVisibility } from '../../utils/responsiveProps.js';
+import { useRevealAnimation } from '../../useRevealAnimation.js';
+import { DEFAULT_ANIMATION } from '../../utils/animation.js';
 
 const IndicatorDiv = styled.div`
   height: 30px;
@@ -74,6 +76,7 @@ export const RenderNode = ({ render }) => {
     connectors: { drag },
     parent,
     nodeProps,
+    typeName,
   } = useNode((node) => ({
     isHover: node.events.hovered,
     dom: node.dom,
@@ -82,7 +85,26 @@ export const RenderNode = ({ render }) => {
     deletable: query.node(node.id).isDeletable(),
     parent: node.data.parent,
     nodeProps: node.data.props,
+    typeName: node.data.name || node.data.displayName,
   }));
+
+  /*
+   * Every element animates, and no element knows it does.
+   *
+   * This is the one place that already holds each node's DOM element, so the
+   * entrance is driven from here rather than added to forty components — which
+   * is also what keeps the canvas and the published page showing the same
+   * thing, since both read the same table.
+   *
+   * A selected or hovered element is always shown. Otherwise an author who
+   * clicks a section in the layer list, or drops a new element below the fold,
+   * is looking at nothing at all and has no way to know why.
+   */
+  useRevealAnimation(dom, nodeProps, {
+    fallback: id === ROOT_NODE ? 'none' : DEFAULT_ANIMATION[typeName] || 'none',
+    forceVisible: enabled && (isActive || isHover),
+    id,
+  });
 
   const currentRef = React.useRef(null);
 

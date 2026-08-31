@@ -45,17 +45,17 @@
     "hidden": false,
     "nodes": [
       "navb01",
-      "cont02",
-      "cont10",
-      "cont12",
-      "cont26",
-      "cont39",
-      "cont46",
-      "cont50",
-      "cont56",
-      "cont63",
-      "cont65",
-      "cont72"
+      "vide02",
+      "cont11",
+      "cont13",
+      "cont27",
+      "cont40",
+      "cont47",
+      "cont51",
+      "cont57",
+      "cont64",
+      "cont66",
+      "cont73"
     ],
     "linkedNodes": {}
   },
@@ -89,7 +89,8 @@
         "a": 1
       },
       "height": "56px",
-      "width": "100%"
+      "width": "100%",
+      "animation": "none"
     },
     "displayName": "NavbarElement",
     "custom": {
@@ -100,7 +101,35 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont02": {
+  "vide02": {
+    "type": {
+      "resolvedName": "Video"
+    },
+    "isCanvas": true,
+    "props": {
+      "sourceType": "background",
+      "videoId": "",
+      "videoUrl": "",
+      "text": "",
+      "src": "https://videos.pexels.com/video-files/6529488/6529488-hd_1920_1080_30fps.mp4",
+      "poster": "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "overlay": 60,
+      "position": "center",
+      "minHeight": "560px",
+      "loop": true
+    },
+    "displayName": "Video",
+    "custom": {
+      "displayName": "Hero"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont03"
+    ],
+    "linkedNodes": {}
+  },
+  "cont03": {
     "type": {
       "resolvedName": "Container"
     },
@@ -123,10 +152,10 @@
         "0"
       ],
       "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
       },
       "color": {
         "r": 0,
@@ -137,27 +166,20 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto",
-      "backgroundImage": "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      "overlay": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 0.6
-      }
+      "height": "auto"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Hero"
+      "displayName": "Hero content"
     },
-    "parent": "ROOT",
+    "parent": "vide02",
     "hidden": false,
     "nodes": [
-      "colu03"
+      "colu04"
     ],
     "linkedNodes": {}
   },
-  "colu03": {
+  "colu04": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -172,15 +194,15 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont02",
+    "parent": "cont03",
     "hidden": false,
     "nodes": [
-      "cont04",
-      "imag09"
+      "cont05",
+      "imag10"
     ],
     "linkedNodes": {}
   },
-  "cont04": {
+  "cont05": {
     "type": {
       "resolvedName": "Container"
     },
@@ -223,17 +245,17 @@
     "custom": {
       "displayName": "Words"
     },
-    "parent": "colu03",
+    "parent": "colu04",
     "hidden": false,
     "nodes": [
-      "badg05",
-      "head06",
-      "text07",
-      "butt08"
+      "badg06",
+      "head07",
+      "text08",
+      "butt09"
     ],
     "linkedNodes": {}
   },
-  "badg05": {
+  "badg06": {
     "type": {
       "resolvedName": "Badge"
     },
@@ -258,12 +280,12 @@
     "custom": {
       "displayName": "Badge"
     },
-    "parent": "cont04",
+    "parent": "cont05",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "head06": {
+  "head07": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -291,12 +313,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont04",
+    "parent": "cont05",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text07": {
+  "text08": {
     "type": {
       "resolvedName": "Text"
     },
@@ -324,12 +346,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont04",
+    "parent": "cont05",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "butt08": {
+  "butt09": {
     "type": {
       "resolvedName": "Button"
     },
@@ -382,12 +404,12 @@
     "custom": {
       "displayName": "Button"
     },
-    "parent": "cont04",
+    "parent": "cont05",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "imag09": {
+  "imag10": {
     "type": {
       "resolvedName": "Image"
     },
@@ -404,12 +426,12 @@
     "custom": {
       "displayName": "Image"
     },
-    "parent": "colu03",
+    "parent": "colu04",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont10": {
+  "cont11": {
     "type": {
       "resolvedName": "Container"
     },
@@ -455,11 +477,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "stat11"
+      "stat12"
     ],
     "linkedNodes": {}
   },
-  "stat11": {
+  "stat12": {
     "type": {
       "resolvedName": "Stats"
     },
@@ -491,12 +513,12 @@
     "custom": {
       "displayName": "Stats"
     },
-    "parent": "cont10",
+    "parent": "cont11",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont12": {
+  "cont13": {
     "type": {
       "resolvedName": "Container"
     },
@@ -542,11 +564,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu13"
+      "colu14"
     ],
     "linkedNodes": {}
   },
-  "colu13": {
+  "colu14": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -561,16 +583,16 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont12",
+    "parent": "cont13",
     "hidden": false,
     "nodes": [
-      "cont14",
-      "cont18",
-      "cont22"
+      "cont15",
+      "cont19",
+      "cont23"
     ],
     "linkedNodes": {}
   },
-  "cont14": {
+  "cont15": {
     "type": {
       "resolvedName": "Container"
     },
@@ -607,22 +629,23 @@
       "shadow": 0,
       "radius": 8,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Bought that morning"
     },
-    "parent": "colu13",
+    "parent": "colu14",
     "hidden": false,
     "nodes": [
-      "icon15",
-      "head16",
-      "text17"
+      "icon16",
+      "head17",
+      "text18"
     ],
     "linkedNodes": {}
   },
-  "icon15": {
+  "icon16": {
     "type": {
       "resolvedName": "Icon"
     },
@@ -648,12 +671,12 @@
     "custom": {
       "displayName": "Icon"
     },
-    "parent": "cont14",
+    "parent": "cont15",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "head16": {
+  "head17": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -681,12 +704,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont14",
+    "parent": "cont15",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text17": {
+  "text18": {
     "type": {
       "resolvedName": "Text"
     },
@@ -714,12 +737,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont14",
+    "parent": "cont15",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont18": {
+  "cont19": {
     "type": {
       "resolvedName": "Container"
     },
@@ -756,22 +779,23 @@
       "shadow": 0,
       "radius": 8,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Cooked over wood"
     },
-    "parent": "colu13",
+    "parent": "colu14",
     "hidden": false,
     "nodes": [
-      "icon19",
-      "head20",
-      "text21"
+      "icon20",
+      "head21",
+      "text22"
     ],
     "linkedNodes": {}
   },
-  "icon19": {
+  "icon20": {
     "type": {
       "resolvedName": "Icon"
     },
@@ -797,12 +821,12 @@
     "custom": {
       "displayName": "Icon"
     },
-    "parent": "cont18",
+    "parent": "cont19",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "head20": {
+  "head21": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -830,12 +854,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont18",
+    "parent": "cont19",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text21": {
+  "text22": {
     "type": {
       "resolvedName": "Text"
     },
@@ -863,12 +887,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont18",
+    "parent": "cont19",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont22": {
+  "cont23": {
     "type": {
       "resolvedName": "Container"
     },
@@ -905,22 +929,23 @@
       "shadow": 0,
       "radius": 8,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 180
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Served when ready"
     },
-    "parent": "colu13",
+    "parent": "colu14",
     "hidden": false,
     "nodes": [
-      "icon23",
-      "head24",
-      "text25"
+      "icon24",
+      "head25",
+      "text26"
     ],
     "linkedNodes": {}
   },
-  "icon23": {
+  "icon24": {
     "type": {
       "resolvedName": "Icon"
     },
@@ -946,12 +971,12 @@
     "custom": {
       "displayName": "Icon"
     },
-    "parent": "cont22",
+    "parent": "cont23",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "head24": {
+  "head25": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -979,12 +1004,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont22",
+    "parent": "cont23",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text25": {
+  "text26": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1012,12 +1037,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont22",
+    "parent": "cont23",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont26": {
+  "cont27": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1064,13 +1089,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head27",
-      "spac28",
-      "colu29"
+      "head28",
+      "spac29",
+      "colu30"
     ],
     "linkedNodes": {}
   },
-  "head27": {
+  "head28": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1098,12 +1123,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont26",
+    "parent": "cont27",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac28": {
+  "spac29": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -1115,12 +1140,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont26",
+    "parent": "cont27",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "colu29": {
+  "colu30": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -1135,16 +1160,16 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont26",
+    "parent": "cont27",
     "hidden": false,
     "nodes": [
-      "cont30",
-      "cont33",
-      "cont36"
+      "cont31",
+      "cont34",
+      "cont37"
     ],
     "linkedNodes": {}
   },
-  "cont30": {
+  "cont31": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1181,21 +1206,22 @@
       "shadow": 0,
       "radius": 8,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
       "displayName": "To start"
     },
-    "parent": "colu29",
+    "parent": "colu30",
     "hidden": false,
     "nodes": [
-      "head31",
-      "list32"
+      "head32",
+      "list33"
     ],
     "linkedNodes": {}
   },
-  "head31": {
+  "head32": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1223,12 +1249,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont30",
+    "parent": "cont31",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "list32": {
+  "list33": {
     "type": {
       "resolvedName": "List"
     },
@@ -1253,12 +1279,12 @@
     "custom": {
       "displayName": "List"
     },
-    "parent": "cont30",
+    "parent": "cont31",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont33": {
+  "cont34": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1295,21 +1321,22 @@
       "shadow": 0,
       "radius": 8,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Mains"
     },
-    "parent": "colu29",
+    "parent": "colu30",
     "hidden": false,
     "nodes": [
-      "head34",
-      "list35"
+      "head35",
+      "list36"
     ],
     "linkedNodes": {}
   },
-  "head34": {
+  "head35": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1337,12 +1364,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont33",
+    "parent": "cont34",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "list35": {
+  "list36": {
     "type": {
       "resolvedName": "List"
     },
@@ -1367,12 +1394,12 @@
     "custom": {
       "displayName": "List"
     },
-    "parent": "cont33",
+    "parent": "cont34",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont36": {
+  "cont37": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1409,21 +1436,22 @@
       "shadow": 0,
       "radius": 8,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 180
     },
     "displayName": "Container",
     "custom": {
       "displayName": "After"
     },
-    "parent": "colu29",
+    "parent": "colu30",
     "hidden": false,
     "nodes": [
-      "head37",
-      "list38"
+      "head38",
+      "list39"
     ],
     "linkedNodes": {}
   },
-  "head37": {
+  "head38": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1451,12 +1479,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont36",
+    "parent": "cont37",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "list38": {
+  "list39": {
     "type": {
       "resolvedName": "List"
     },
@@ -1481,12 +1509,12 @@
     "custom": {
       "displayName": "List"
     },
-    "parent": "cont36",
+    "parent": "cont37",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont39": {
+  "cont40": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1533,11 +1561,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu40"
+      "colu41"
     ],
     "linkedNodes": {}
   },
-  "colu40": {
+  "colu41": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -1552,15 +1580,15 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont39",
+    "parent": "cont40",
     "hidden": false,
     "nodes": [
-      "cont41",
-      "cont44"
+      "cont42",
+      "cont45"
     ],
     "linkedNodes": {}
   },
-  "cont41": {
+  "cont42": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1597,21 +1625,22 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
       "displayName": "When"
     },
-    "parent": "colu40",
+    "parent": "colu41",
     "hidden": false,
     "nodes": [
-      "head42",
-      "list43"
+      "head43",
+      "list44"
     ],
     "linkedNodes": {}
   },
-  "head42": {
+  "head43": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1639,12 +1668,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont41",
+    "parent": "cont42",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "list43": {
+  "list44": {
     "type": {
       "resolvedName": "List"
     },
@@ -1669,12 +1698,12 @@
     "custom": {
       "displayName": "List"
     },
-    "parent": "cont41",
+    "parent": "cont42",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont44": {
+  "cont45": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1711,20 +1740,21 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Said"
     },
-    "parent": "colu40",
+    "parent": "colu41",
     "hidden": false,
     "nodes": [
-      "test45"
+      "test46"
     ],
     "linkedNodes": {}
   },
-  "test45": {
+  "test46": {
     "type": {
       "resolvedName": "Testimonial"
     },
@@ -1758,12 +1788,12 @@
     "custom": {
       "displayName": "Testimonial"
     },
-    "parent": "cont44",
+    "parent": "cont45",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont46": {
+  "cont47": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1809,13 +1839,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head47",
-      "spac48",
-      "time49"
+      "head48",
+      "spac49",
+      "time50"
     ],
     "linkedNodes": {}
   },
-  "head47": {
+  "head48": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1843,12 +1873,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont46",
+    "parent": "cont47",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac48": {
+  "spac49": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -1860,12 +1890,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont46",
+    "parent": "cont47",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "time49": {
+  "time50": {
     "type": {
       "resolvedName": "Timeline"
     },
@@ -1899,12 +1929,12 @@
     "custom": {
       "displayName": "Timeline"
     },
-    "parent": "cont46",
+    "parent": "cont47",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont50": {
+  "cont51": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1950,11 +1980,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu51"
+      "colu52"
     ],
     "linkedNodes": {}
   },
-  "colu51": {
+  "colu52": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -1970,15 +2000,15 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont50",
+    "parent": "cont51",
     "hidden": false,
     "nodes": [
-      "cont52",
-      "acco55"
+      "cont53",
+      "acco56"
     ],
     "linkedNodes": {}
   },
-  "cont52": {
+  "cont53": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2021,15 +2051,15 @@
     "custom": {
       "displayName": "Questions intro"
     },
-    "parent": "colu51",
+    "parent": "colu52",
     "hidden": false,
     "nodes": [
-      "head53",
-      "text54"
+      "head54",
+      "text55"
     ],
     "linkedNodes": {}
   },
-  "head53": {
+  "head54": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -2057,12 +2087,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont52",
+    "parent": "cont53",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text54": {
+  "text55": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2090,12 +2120,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont52",
+    "parent": "cont53",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "acco55": {
+  "acco56": {
     "type": {
       "resolvedName": "Accordion"
     },
@@ -2127,12 +2157,12 @@
     "custom": {
       "displayName": "Accordion"
     },
-    "parent": "colu51",
+    "parent": "colu52",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont56": {
+  "cont57": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2179,11 +2209,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu57"
+      "colu58"
     ],
     "linkedNodes": {}
   },
-  "colu57": {
+  "colu58": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -2199,15 +2229,15 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont56",
+    "parent": "cont57",
     "hidden": false,
     "nodes": [
-      "cont58",
-      "cont61"
+      "cont59",
+      "cont62"
     ],
     "linkedNodes": {}
   },
-  "cont58": {
+  "cont59": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2244,21 +2274,22 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Find copy"
     },
-    "parent": "colu57",
+    "parent": "colu58",
     "hidden": false,
     "nodes": [
-      "head59",
-      "text60"
+      "head60",
+      "text61"
     ],
     "linkedNodes": {}
   },
-  "head59": {
+  "head60": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -2286,12 +2317,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont58",
+    "parent": "cont59",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text60": {
+  "text61": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2319,12 +2350,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont58",
+    "parent": "cont59",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont61": {
+  "cont62": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2361,20 +2392,21 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Find map"
     },
-    "parent": "colu57",
+    "parent": "colu58",
     "hidden": false,
     "nodes": [
-      "map62"
+      "map63"
     ],
     "linkedNodes": {}
   },
-  "map62": {
+  "map63": {
     "type": {
       "resolvedName": "Map"
     },
@@ -2391,12 +2423,12 @@
     "custom": {
       "displayName": "Map"
     },
-    "parent": "cont61",
+    "parent": "cont62",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont63": {
+  "cont64": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2442,11 +2474,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "ctab64"
+      "ctab65"
     ],
     "linkedNodes": {}
   },
-  "ctab64": {
+  "ctab65": {
     "type": {
       "resolvedName": "CTABanner"
     },
@@ -2486,12 +2518,12 @@
     "custom": {
       "displayName": "CTABanner"
     },
-    "parent": "cont63",
+    "parent": "cont64",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont65": {
+  "cont66": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2537,14 +2569,14 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head66",
-      "tabs67",
-      "book68",
-      "colu69"
+      "head67",
+      "tabs68",
+      "book69",
+      "colu70"
     ],
     "linkedNodes": {}
   },
-  "head66": {
+  "head67": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -2572,12 +2604,12 @@
     "custom": {
       "displayName": "Modern tools heading"
     },
-    "parent": "cont65",
+    "parent": "cont66",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "tabs67": {
+  "tabs68": {
     "type": {
       "resolvedName": "Tabs"
     },
@@ -2600,12 +2632,12 @@
     "custom": {
       "displayName": "Quick facts"
     },
-    "parent": "cont65",
+    "parent": "cont66",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "book68": {
+  "book69": {
     "type": {
       "resolvedName": "Booking"
     },
@@ -2628,12 +2660,12 @@
     "custom": {
       "displayName": "Appointment booking"
     },
-    "parent": "cont65",
+    "parent": "cont66",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "colu69": {
+  "colu70": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -2649,15 +2681,15 @@
     "custom": {
       "displayName": "Stay connected"
     },
-    "parent": "cont65",
+    "parent": "cont66",
     "hidden": false,
     "nodes": [
-      "news70",
-      "enga71"
+      "news71",
+      "enga72"
     ],
     "linkedNodes": {}
   },
-  "news70": {
+  "news71": {
     "type": {
       "resolvedName": "Newsletter"
     },
@@ -2684,12 +2716,12 @@
     "custom": {
       "displayName": "Newsletter signup"
     },
-    "parent": "colu69",
+    "parent": "colu70",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "enga71": {
+  "enga72": {
     "type": {
       "resolvedName": "Engagement"
     },
@@ -2713,12 +2745,12 @@
     "custom": {
       "displayName": "Visitor feedback"
     },
-    "parent": "colu69",
+    "parent": "colu70",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont72": {
+  "cont73": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2764,12 +2796,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont73",
-      "soci76"
+      "cont74",
+      "soci77"
     ],
     "linkedNodes": {}
   },
-  "cont73": {
+  "cont74": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2812,15 +2844,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont72",
+    "parent": "cont73",
     "hidden": false,
     "nodes": [
-      "text74",
-      "text75"
+      "text75",
+      "text76"
     ],
     "linkedNodes": {}
   },
-  "text74": {
+  "text75": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2848,12 +2880,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont73",
+    "parent": "cont74",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text75": {
+  "text76": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2881,12 +2913,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont73",
+    "parent": "cont74",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci76": {
+  "soci77": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -2917,7 +2949,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont72",
+    "parent": "cont73",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

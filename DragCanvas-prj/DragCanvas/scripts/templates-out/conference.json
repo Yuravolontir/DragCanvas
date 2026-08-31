@@ -45,18 +45,18 @@
     "hidden": false,
     "nodes": [
       "navb01",
-      "cont02",
-      "cont07",
-      "cont23",
-      "cont29",
-      "spac33",
-      "cont34",
-      "cont36",
-      "cont38",
-      "cont42",
-      "cont48",
-      "cont56",
-      "cont64"
+      "vide02",
+      "cont08",
+      "cont24",
+      "cont30",
+      "spac34",
+      "cont35",
+      "cont37",
+      "cont39",
+      "cont43",
+      "cont49",
+      "cont57",
+      "cont65"
     ],
     "linkedNodes": {}
   },
@@ -90,7 +90,8 @@
         "a": 1
       },
       "height": "56px",
-      "width": "100%"
+      "width": "100%",
+      "animation": "none"
     },
     "displayName": "NavbarElement",
     "custom": {
@@ -101,7 +102,35 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont02": {
+  "vide02": {
+    "type": {
+      "resolvedName": "Video"
+    },
+    "isCanvas": true,
+    "props": {
+      "sourceType": "background",
+      "videoId": "",
+      "videoUrl": "",
+      "text": "",
+      "src": "https://videos.pexels.com/video-files/7647814/7647814-hd_1920_1080_30fps.mp4",
+      "poster": "https://images.pexels.com/photos/29708258/pexels-photo-29708258.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "overlay": 72,
+      "position": "center",
+      "minHeight": "560px",
+      "loop": true
+    },
+    "displayName": "Video",
+    "custom": {
+      "displayName": "Hero"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont03"
+    ],
+    "linkedNodes": {}
+  },
+  "cont03": {
     "type": {
       "resolvedName": "Container"
     },
@@ -124,10 +153,10 @@
         "0"
       ],
       "background": {
-        "r": 15,
-        "g": 27,
-        "b": 52,
-        "a": 1
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
       },
       "color": {
         "r": 0,
@@ -138,30 +167,23 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto",
-      "backgroundImage": "https://images.pexels.com/photos/29708258/pexels-photo-29708258.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      "overlay": {
-        "r": 15,
-        "g": 27,
-        "b": 52,
-        "a": 0.72
-      }
+      "height": "auto"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Hero"
+      "displayName": "Hero text"
     },
-    "parent": "ROOT",
+    "parent": "vide02",
     "hidden": false,
     "nodes": [
-      "badg03",
-      "head04",
-      "text05",
-      "butt06"
+      "badg04",
+      "head05",
+      "text06",
+      "butt07"
     ],
     "linkedNodes": {}
   },
-  "badg03": {
+  "badg04": {
     "type": {
       "resolvedName": "Badge"
     },
@@ -186,12 +208,12 @@
     "custom": {
       "displayName": "Badge"
     },
-    "parent": "cont02",
+    "parent": "cont03",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "head04": {
+  "head05": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -219,12 +241,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont02",
+    "parent": "cont03",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text05": {
+  "text06": {
     "type": {
       "resolvedName": "Text"
     },
@@ -252,12 +274,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont02",
+    "parent": "cont03",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "butt06": {
+  "butt07": {
     "type": {
       "resolvedName": "Button"
     },
@@ -310,12 +332,12 @@
     "custom": {
       "displayName": "Button"
     },
-    "parent": "cont02",
+    "parent": "cont03",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont07": {
+  "cont08": {
     "type": {
       "resolvedName": "Container"
     },
@@ -361,13 +383,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head08",
-      "spac09",
-      "colu10"
+      "head09",
+      "spac10",
+      "colu11"
     ],
     "linkedNodes": {}
   },
-  "head08": {
+  "head09": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -395,12 +417,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont07",
+    "parent": "cont08",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac09": {
+  "spac10": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -412,12 +434,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont07",
+    "parent": "cont08",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "colu10": {
+  "colu11": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -432,16 +454,16 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont07",
+    "parent": "cont08",
     "hidden": false,
     "nodes": [
-      "cont11",
-      "cont15",
-      "cont19"
+      "cont12",
+      "cont16",
+      "cont20"
     ],
     "linkedNodes": {}
   },
-  "cont11": {
+  "cont12": {
     "type": {
       "resolvedName": "Container"
     },
@@ -478,22 +500,23 @@
       "shadow": 0,
       "radius": 12,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Talks"
     },
-    "parent": "colu10",
+    "parent": "colu11",
     "hidden": false,
     "nodes": [
-      "icon12",
-      "head13",
-      "text14"
+      "icon13",
+      "head14",
+      "text15"
     ],
     "linkedNodes": {}
   },
-  "icon12": {
+  "icon13": {
     "type": {
       "resolvedName": "Icon"
     },
@@ -519,12 +542,12 @@
     "custom": {
       "displayName": "Icon"
     },
-    "parent": "cont11",
+    "parent": "cont12",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "head13": {
+  "head14": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -552,12 +575,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont11",
+    "parent": "cont12",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text14": {
+  "text15": {
     "type": {
       "resolvedName": "Text"
     },
@@ -585,12 +608,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont11",
+    "parent": "cont12",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont15": {
+  "cont16": {
     "type": {
       "resolvedName": "Container"
     },
@@ -627,22 +650,23 @@
       "shadow": 0,
       "radius": 12,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Workshops"
     },
-    "parent": "colu10",
+    "parent": "colu11",
     "hidden": false,
     "nodes": [
-      "icon16",
-      "head17",
-      "text18"
+      "icon17",
+      "head18",
+      "text19"
     ],
     "linkedNodes": {}
   },
-  "icon16": {
+  "icon17": {
     "type": {
       "resolvedName": "Icon"
     },
@@ -668,12 +692,12 @@
     "custom": {
       "displayName": "Icon"
     },
-    "parent": "cont15",
+    "parent": "cont16",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "head17": {
+  "head18": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -701,12 +725,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont15",
+    "parent": "cont16",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text18": {
+  "text19": {
     "type": {
       "resolvedName": "Text"
     },
@@ -734,12 +758,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont15",
+    "parent": "cont16",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont19": {
+  "cont20": {
     "type": {
       "resolvedName": "Container"
     },
@@ -776,22 +800,23 @@
       "shadow": 0,
       "radius": 12,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 180
     },
     "displayName": "Container",
     "custom": {
       "displayName": "The hallway"
     },
-    "parent": "colu10",
+    "parent": "colu11",
     "hidden": false,
     "nodes": [
-      "icon20",
-      "head21",
-      "text22"
+      "icon21",
+      "head22",
+      "text23"
     ],
     "linkedNodes": {}
   },
-  "icon20": {
+  "icon21": {
     "type": {
       "resolvedName": "Icon"
     },
@@ -817,12 +842,12 @@
     "custom": {
       "displayName": "Icon"
     },
-    "parent": "cont19",
+    "parent": "cont20",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "head21": {
+  "head22": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -850,12 +875,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont19",
+    "parent": "cont20",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text22": {
+  "text23": {
     "type": {
       "resolvedName": "Text"
     },
@@ -883,12 +908,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont19",
+    "parent": "cont20",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont23": {
+  "cont24": {
     "type": {
       "resolvedName": "Container"
     },
@@ -935,15 +960,15 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head24",
-      "spac25",
-      "time26",
-      "spac27",
-      "caro28"
+      "head25",
+      "spac26",
+      "time27",
+      "spac28",
+      "caro29"
     ],
     "linkedNodes": {}
   },
-  "head24": {
+  "head25": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -971,12 +996,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont23",
+    "parent": "cont24",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac25": {
+  "spac26": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -988,12 +1013,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont23",
+    "parent": "cont24",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "time26": {
+  "time27": {
     "type": {
       "resolvedName": "Timeline"
     },
@@ -1030,12 +1055,12 @@
     "custom": {
       "displayName": "Timeline"
     },
-    "parent": "cont23",
+    "parent": "cont24",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac27": {
+  "spac28": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -1047,12 +1072,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont23",
+    "parent": "cont24",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "caro28": {
+  "caro29": {
     "type": {
       "resolvedName": "Carousel"
     },
@@ -1099,12 +1124,12 @@
     "custom": {
       "displayName": "Conference moments"
     },
-    "parent": "cont23",
+    "parent": "cont24",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont29": {
+  "cont30": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1151,13 +1176,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head30",
-      "spac31",
-      "team32"
+      "head31",
+      "spac32",
+      "team33"
     ],
     "linkedNodes": {}
   },
-  "head30": {
+  "head31": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1185,12 +1210,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont29",
+    "parent": "cont30",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac31": {
+  "spac32": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -1202,12 +1227,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont29",
+    "parent": "cont30",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "team32": {
+  "team33": {
     "type": {
       "resolvedName": "TeamGrid"
     },
@@ -1245,12 +1270,12 @@
     "custom": {
       "displayName": "TeamGrid"
     },
-    "parent": "cont29",
+    "parent": "cont30",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac33": {
+  "spac34": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -1267,7 +1292,7 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont34": {
+  "cont35": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1313,11 +1338,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "stat35"
+      "stat36"
     ],
     "linkedNodes": {}
   },
-  "stat35": {
+  "stat36": {
     "type": {
       "resolvedName": "Stats"
     },
@@ -1349,12 +1374,12 @@
     "custom": {
       "displayName": "Stats"
     },
-    "parent": "cont34",
+    "parent": "cont35",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont36": {
+  "cont37": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1400,11 +1425,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "test37"
+      "test38"
     ],
     "linkedNodes": {}
   },
-  "test37": {
+  "test38": {
     "type": {
       "resolvedName": "Testimonial"
     },
@@ -1438,12 +1463,12 @@
     "custom": {
       "displayName": "Testimonial"
     },
-    "parent": "cont36",
+    "parent": "cont37",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont38": {
+  "cont39": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1490,13 +1515,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head39",
-      "spac40",
-      "pric41"
+      "head40",
+      "spac41",
+      "pric42"
     ],
     "linkedNodes": {}
   },
-  "head39": {
+  "head40": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1524,12 +1549,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont38",
+    "parent": "cont39",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac40": {
+  "spac41": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -1541,12 +1566,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont38",
+    "parent": "cont39",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "pric41": {
+  "pric42": {
     "type": {
       "resolvedName": "Pricing"
     },
@@ -1593,12 +1618,12 @@
     "custom": {
       "displayName": "Pricing"
     },
-    "parent": "cont38",
+    "parent": "cont39",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont42": {
+  "cont43": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1644,11 +1669,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu43"
+      "colu44"
     ],
     "linkedNodes": {}
   },
-  "colu43": {
+  "colu44": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -1664,15 +1689,15 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont42",
+    "parent": "cont43",
     "hidden": false,
     "nodes": [
-      "cont44",
-      "acco47"
+      "cont45",
+      "acco48"
     ],
     "linkedNodes": {}
   },
-  "cont44": {
+  "cont45": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1715,15 +1740,15 @@
     "custom": {
       "displayName": "Questions intro"
     },
-    "parent": "colu43",
+    "parent": "colu44",
     "hidden": false,
     "nodes": [
-      "head45",
-      "text46"
+      "head46",
+      "text47"
     ],
     "linkedNodes": {}
   },
-  "head45": {
+  "head46": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1751,12 +1776,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont44",
+    "parent": "cont45",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text46": {
+  "text47": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1784,12 +1809,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont44",
+    "parent": "cont45",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "acco47": {
+  "acco48": {
     "type": {
       "resolvedName": "Accordion"
     },
@@ -1821,12 +1846,12 @@
     "custom": {
       "displayName": "Accordion"
     },
-    "parent": "colu43",
+    "parent": "colu44",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont48": {
+  "cont49": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1873,11 +1898,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu49"
+      "colu50"
     ],
     "linkedNodes": {}
   },
-  "colu49": {
+  "colu50": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -1893,15 +1918,15 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont48",
+    "parent": "cont49",
     "hidden": false,
     "nodes": [
-      "cont50",
-      "cont54"
+      "cont51",
+      "cont55"
     ],
     "linkedNodes": {}
   },
-  "cont50": {
+  "cont51": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1938,22 +1963,23 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Venue copy"
     },
-    "parent": "colu49",
+    "parent": "colu50",
     "hidden": false,
     "nodes": [
-      "head51",
-      "text52",
-      "link53"
+      "head52",
+      "text53",
+      "link54"
     ],
     "linkedNodes": {}
   },
-  "head51": {
+  "head52": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1981,12 +2007,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont50",
+    "parent": "cont51",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text52": {
+  "text53": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2014,12 +2040,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont50",
+    "parent": "cont51",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "link53": {
+  "link54": {
     "type": {
       "resolvedName": "Link"
     },
@@ -2042,12 +2068,12 @@
     "custom": {
       "displayName": "Link"
     },
-    "parent": "cont50",
+    "parent": "cont51",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont54": {
+  "cont55": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2084,20 +2110,21 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Venue map"
     },
-    "parent": "colu49",
+    "parent": "colu50",
     "hidden": false,
     "nodes": [
-      "map55"
+      "map56"
     ],
     "linkedNodes": {}
   },
-  "map55": {
+  "map56": {
     "type": {
       "resolvedName": "Map"
     },
@@ -2114,12 +2141,12 @@
     "custom": {
       "displayName": "Map"
     },
-    "parent": "cont54",
+    "parent": "cont55",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont56": {
+  "cont57": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2165,15 +2192,15 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head57",
-      "tabs58",
-      "coun59",
-      "book60",
-      "colu61"
+      "head58",
+      "tabs59",
+      "coun60",
+      "book61",
+      "colu62"
     ],
     "linkedNodes": {}
   },
-  "head57": {
+  "head58": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -2201,12 +2228,12 @@
     "custom": {
       "displayName": "Modern tools heading"
     },
-    "parent": "cont56",
+    "parent": "cont57",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "tabs58": {
+  "tabs59": {
     "type": {
       "resolvedName": "Tabs"
     },
@@ -2229,12 +2256,12 @@
     "custom": {
       "displayName": "Quick facts"
     },
-    "parent": "cont56",
+    "parent": "cont57",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "coun59": {
+  "coun60": {
     "type": {
       "resolvedName": "Countdown"
     },
@@ -2254,12 +2281,12 @@
     "custom": {
       "displayName": "Event countdown"
     },
-    "parent": "cont56",
+    "parent": "cont57",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "book60": {
+  "book61": {
     "type": {
       "resolvedName": "Booking"
     },
@@ -2282,12 +2309,12 @@
     "custom": {
       "displayName": "Reservation"
     },
-    "parent": "cont56",
+    "parent": "cont57",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "colu61": {
+  "colu62": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -2303,15 +2330,15 @@
     "custom": {
       "displayName": "Stay connected"
     },
-    "parent": "cont56",
+    "parent": "cont57",
     "hidden": false,
     "nodes": [
-      "news62",
-      "enga63"
+      "news63",
+      "enga64"
     ],
     "linkedNodes": {}
   },
-  "news62": {
+  "news63": {
     "type": {
       "resolvedName": "Newsletter"
     },
@@ -2338,12 +2365,12 @@
     "custom": {
       "displayName": "Newsletter signup"
     },
-    "parent": "colu61",
+    "parent": "colu62",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "enga63": {
+  "enga64": {
     "type": {
       "resolvedName": "Engagement"
     },
@@ -2367,12 +2394,12 @@
     "custom": {
       "displayName": "Visitor feedback"
     },
-    "parent": "colu61",
+    "parent": "colu62",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont64": {
+  "cont65": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2418,12 +2445,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont65",
-      "soci68"
+      "cont66",
+      "soci69"
     ],
     "linkedNodes": {}
   },
-  "cont65": {
+  "cont66": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2466,15 +2493,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont64",
+    "parent": "cont65",
     "hidden": false,
     "nodes": [
-      "text66",
-      "text67"
+      "text67",
+      "text68"
     ],
     "linkedNodes": {}
   },
-  "text66": {
+  "text67": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2502,12 +2529,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont65",
+    "parent": "cont66",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text67": {
+  "text68": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2535,12 +2562,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont65",
+    "parent": "cont66",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci68": {
+  "soci69": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -2571,7 +2598,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont64",
+    "parent": "cont65",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

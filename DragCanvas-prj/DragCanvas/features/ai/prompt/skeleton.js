@@ -9,11 +9,18 @@
  * that affect layout. Everything else goes.
  */
 
-/** Props worth keeping: they describe layout, not decoration. */
+/**
+ * Props worth keeping: they describe layout, not decoration.
+ *
+ * The two animation entries are here because a rule in prose ("stagger a row")
+ * is worth much less than an example that visibly does it. Duration and repeat
+ * stay out: they are decoration, and the defaults are the right answer.
+ */
 const LAYOUT_PROPS = [
     'flexDirection', 'alignItems', 'justifyContent', 'fillSpace',
     'width', 'height', 'radius',
     'variant', 'sticky', 'buttonStyle', 'sourceType', 'textAlign', 'fontWeight',
+    'animation', 'animationDelay',
 ];
 
 /** Turns rgba into a coarse label - exact colours are noise in an example. */

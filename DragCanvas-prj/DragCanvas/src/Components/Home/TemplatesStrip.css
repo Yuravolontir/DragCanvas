@@ -72,17 +72,19 @@
   padding-bottom: 14px;
 }
 
+/*
+ * The card holds a live preview now, and the preview sets its own shape: the
+ * ratio is how much of the site is visible, so it belongs with the thing that
+ * draws the site rather than with the card around it. The skeleton is the one
+ * that still needs a shape of its own — it has nothing inside to give it one.
+ */
 .templates-strip__thumb {
-  aspect-ratio: 16 / 10;
   background: var(--surface-container, #f0ece3);
   overflow: hidden;
 }
 
-.templates-strip__thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.templates-strip__card--loading .templates-strip__thumb {
+  aspect-ratio: 16 / 10;
 }
 
 .templates-strip__name {

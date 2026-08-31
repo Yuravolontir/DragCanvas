@@ -1,5 +1,6 @@
 import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
+import { clipFor } from '../../src/utils/stockVideo.js';
 
 /** Coffee roastery — a subscription, and the story of where the beans came from. */
 export default function coffee() {
@@ -7,7 +8,7 @@ export default function coffee() {
   const PAPER = rgba(249, 245, 240);
   const PANEL = rgba(238, 228, 216);
   const INK = rgba(45, 32, 24);
-  const RUST = rgba(178, 92, 48);
+  const RUST = rgba(170, 87, 45);
   const MUTED = rgba(116, 99, 84);
 
   const root = b.root({ background: PAPER, width: '100%' });
@@ -17,12 +18,22 @@ export default function coffee() {
     { text: 'Visit', href: '#visit' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: PAPER, padding: ['64', '48', '40', '48'], width: '100%', backgroundImage: P.coffee.counter(1600), overlay: rgba(45, 32, 24, 0.62) }, 'Hero');
-  b.heading(hero, 'Roasted Tuesday, with you Thursday', { level: '1', fontSize: '46', color: PAPER });
-  b.text(hero, 'One roastery, four farms, and a delivery that arrives before the last bag runs out.', {
+  // The pour is the product. A still of the counter said "a cafe"; the footage
+  // says what it is like to be served there, which is the whole pitch.
+  const hero = b.backgroundVideo(root, {
+    src: clipFor('coffee').url,
+    // The poster is the hero on a phone, under reduced motion, and if the clip
+    // fails - so it has to be a frame that stands on its own.
+    poster: P.coffee.counter(1600),
+    overlay: 62,
+    minHeight: '520px',
+  }, 'Hero');
+  const heroText = b.container(hero, { background: TRANSPARENT, padding: ['64', '48', '40', '48'], width: '100%' }, 'Hero text');
+  b.heading(heroText, 'Roasted Tuesday, with you Thursday', { level: '1', fontSize: '46', color: PAPER });
+  b.text(heroText, 'One roastery, four farms, and a delivery that arrives before the last bag runs out.', {
     fontSize: '17', color: rgba(255, 255, 255, 0.82), margin: ['12', '0', '24', '0'],
   });
-  b.button(hero, 'Start a subscription', { background: RUST, color: WHITE, buttonStyle: 'full' });
+  b.button(heroText, 'Start a subscription', { background: RUST, color: WHITE, buttonStyle: 'full' });
 
   const sub = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'subscribe', alignItems: 'center' }, 'Subscribe');
   b.heading(sub, 'How much coffee do you drink?', { fontSize: '30', textAlign: 'center', color: INK });

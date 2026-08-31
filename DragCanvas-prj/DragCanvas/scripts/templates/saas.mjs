@@ -15,7 +15,10 @@ export default function saas() {
   const b = createBuilder();
   const INK = rgba(2, 6, 23);
   const CARD = rgba(30, 41, 59);
-  const INDIGO = rgba(99, 102, 241);
+  const INDIGO = rgba(90, 93, 233);
+  // The same indigo that carries a white label is too dark to read as text on
+  // the near-black sections, so those get a lifted one.
+  const INDIGO_ON_INK = rgba(120, 123, 240);
   const MUTED = rgba(148, 163, 184);
 
   const root = b.root({ background: INK, width: '100%' });
@@ -87,7 +90,7 @@ export default function saas() {
   b.text(copySide, 'Every Friday the digest goes out: what shipped, what slipped, and the one decision that is still open. It is assembled from the board, so nobody has to write a status update again.', {
     fontSize: '15', color: MUTED, margin: ['12', '0', '16', '0'],
   });
-  b.link(copySide, 'Explore the workflow', '#workflow', { color: INDIGO, fontSize: '15' });
+  b.link(copySide, 'Explore the workflow', '#workflow', { color: INDIGO_ON_INK, fontSize: '15' });
 
   // ── what it costs ──────────────────────────────────────────────
   const price = b.container(root, {
@@ -137,7 +140,7 @@ export default function saas() {
     background: INDIGO, color: WHITE, buttonBackground: WHITE, buttonColor: INDIGO,
   });
 
-  b.modernSuite(root, { mode: 'commerce', background: INK, panel: CARD, ink: rgba(255, 255, 255), accent: INDIGO });
+  b.modernSuite(root, { mode: 'commerce', background: INK, panel: CARD, ink: rgba(255, 255, 255), accent: INDIGO_ON_INK });
   b.footer(root, {
     brand: 'NovaFlow',
     note: 'Made by a small team. No card needed to start.',

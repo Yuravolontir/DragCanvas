@@ -127,7 +127,7 @@ export default function fitness() {
       { label: 'Class', type: 'text', placeholder: 'e.g. Barbell fundamentals, Tuesday 05:00' },
     ],
     submitText: 'Book the class', successMessage: 'Booked. A coach will confirm by email today.',
-    background: PANEL, accent: LIME, color: BONE,
+    background: PANEL, accent: LIME, textColor: BONE,
   });
 
   const close = b.container(root, { background: INK, padding: ['0', '48', '72', '48'], width: '100%' }, 'Close');

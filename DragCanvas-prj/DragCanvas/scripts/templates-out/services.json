@@ -89,7 +89,8 @@
         "a": 1
       },
       "height": "56px",
-      "width": "100%"
+      "width": "100%",
+      "animation": "none"
     },
     "displayName": "NavbarElement",
     "custom": {
@@ -247,9 +248,9 @@
         "a": 1
       },
       "color": {
-        "r": 214,
-        "g": 138,
-        "b": 30,
+        "r": 146,
+        "g": 94,
+        "b": 20,
         "a": 1
       },
       "radius": 999
@@ -342,9 +343,9 @@
         "a": 1
       },
       "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
+        "r": 28,
+        "g": 30,
+        "b": 30,
         "a": 1
       },
       "buttonStyle": "full",
@@ -475,9 +476,9 @@
       ],
       "align": "center",
       "accent": {
-        "r": 214,
-        "g": 138,
-        "b": 30,
+        "r": 146,
+        "g": 94,
+        "b": 20,
         "a": 1
       },
       "color": {
@@ -659,7 +660,8 @@
       "shadow": 0,
       "radius": 10,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
@@ -762,7 +764,8 @@
       "shadow": 0,
       "radius": 10,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
@@ -991,7 +994,8 @@
       "shadow": 0,
       "radius": 10,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
@@ -1016,9 +1020,9 @@
       "size": "32",
       "padded": "yes",
       "color": {
-        "r": 240,
-        "g": 240,
-        "b": 238,
+        "r": 28,
+        "g": 30,
+        "b": 30,
         "a": 1
       },
       "background": {
@@ -1140,7 +1144,8 @@
       "shadow": 0,
       "radius": 10,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
@@ -1165,9 +1170,9 @@
       "size": "32",
       "padded": "yes",
       "color": {
-        "r": 240,
-        "g": 240,
-        "b": 238,
+        "r": 28,
+        "g": 30,
+        "b": 30,
         "a": 1
       },
       "background": {
@@ -1289,7 +1294,8 @@
       "shadow": 0,
       "radius": 10,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 180
     },
     "displayName": "Container",
     "custom": {
@@ -1314,9 +1320,9 @@
       "size": "32",
       "padded": "yes",
       "color": {
-        "r": 240,
-        "g": 240,
-        "b": 238,
+        "r": 28,
+        "g": 30,
+        "b": 30,
         "a": 1
       },
       "background": {
@@ -1521,9 +1527,9 @@
         "Two or three days in the house. We vacuum every evening and take the old units away."
       ],
       "accent": {
-        "r": 214,
-        "g": 138,
-        "b": 30,
+        "r": 146,
+        "g": 94,
+        "b": 20,
         "a": 1
       },
       "color": {
@@ -2346,9 +2352,9 @@
         "a": 1
       },
       "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
+        "r": 28,
+        "g": 30,
+        "b": 30,
         "a": 1
       },
       "buttonBackground": {
@@ -2473,9 +2479,9 @@
         "Everything described in your chosen option."
       ],
       "accent": {
-        "r": 214,
-        "g": 138,
-        "b": 30,
+        "r": 146,
+        "g": 94,
+        "b": 20,
         "a": 1
       }
     },
@@ -2501,9 +2507,9 @@
       "endHour": 17,
       "timeZone": "Asia/Jerusalem",
       "accent": {
-        "r": 214,
-        "g": 138,
-        "b": 30,
+        "r": 146,
+        "g": 94,
+        "b": 20,
         "a": 1
       }
     },
@@ -2551,9 +2557,9 @@
       "buttonText": "Subscribe",
       "successMessage": "Check your inbox to confirm.",
       "accent": {
-        "r": 214,
-        "g": 138,
-        "b": 30,
+        "r": 146,
+        "g": 94,
+        "b": 20,
         "a": 1
       },
       "color": {
@@ -2586,9 +2592,9 @@
         "👏"
       ],
       "accent": {
-        "r": 214,
-        "g": 138,
-        "b": 30,
+        "r": 146,
+        "g": 94,
+        "b": 20,
         "a": 1
       }
     },

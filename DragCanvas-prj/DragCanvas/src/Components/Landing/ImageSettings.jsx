@@ -2,6 +2,7 @@
   import { useNode } from '@craftjs/core';
   import { ToolbarSection } from './Toolbar/ToolbarSection';
 import { ToolbarItem } from './Toolbar/ToolbarItem';
+  import { ToolbarHelp } from './Toolbar/ToolbarHelp';
   import { apiFetch, getToken } from '../../api.js';
 
   export const ImageSettings = () => {
@@ -35,9 +36,13 @@ import { ToolbarItem } from './Toolbar/ToolbarItem';
 
     return (
       <React.Fragment>
+        <ToolbarHelp title="Picture" icon="image">
+          Paste a link to a picture, or upload one from your computer. Drag the
+          corner handles on the canvas to resize it — on phones it shrinks to
+          fit the screen by itself.
+        </ToolbarHelp>
         <ToolbarSection title="Content">
             <ToolbarItem full={true} propKey="src" type="text" label="Image URL" />
-            <ToolbarItem full={true} propKey="alt" type="text" label="Alt text" />
             <ToolbarItem
           full={true}
           propKey="radius"

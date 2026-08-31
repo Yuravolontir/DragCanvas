@@ -88,7 +88,8 @@
         "a": 1
       },
       "height": "56px",
-      "width": "100%"
+      "width": "100%",
+      "animation": "none"
     },
     "displayName": "NavbarElement",
     "custom": {
@@ -419,7 +420,8 @@
       "shadow": 0,
       "radius": 12,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 0
     },
     "displayName": "Container",
     "custom": {
@@ -559,7 +561,8 @@
       "shadow": 0,
       "radius": 12,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animationDelay": 90
     },
     "displayName": "Container",
     "custom": {
@@ -785,9 +788,9 @@
         "Files, rules, and two hours of nobody-is-allowed-to-say-“just” training."
       ],
       "accent": {
-        "r": 214,
-        "g": 69,
-        "b": 46,
+        "r": 205,
+        "g": 66,
+        "b": 44,
         "a": 1
       },
       "color": {
@@ -929,9 +932,9 @@
       ],
       "align": "center",
       "accent": {
-        "r": 214,
-        "g": 69,
-        "b": 46,
+        "r": 205,
+        "g": 66,
+        "b": 44,
         "a": 1
       },
       "color": {
@@ -1048,9 +1051,9 @@
         "a": 1
       },
       "accent": {
-        "r": 214,
-        "g": 69,
-        "b": 46,
+        "r": 205,
+        "g": 66,
+        "b": 44,
         "a": 1
       }
     },
@@ -1206,9 +1209,9 @@
       ],
       "featured": 2,
       "accent": {
-        "r": 214,
-        "g": 69,
-        "b": 46,
+        "r": 205,
+        "g": 66,
+        "b": 44,
         "a": 1
       },
       "background": {
@@ -1719,9 +1722,9 @@
         "a": 1
       },
       "accent": {
-        "r": 214,
-        "g": 69,
-        "b": 46,
+        "r": 205,
+        "g": 66,
+        "b": 44,
         "a": 1
       },
       "textColor": {
@@ -1827,9 +1830,9 @@
         "a": 1
       },
       "buttonBackground": {
-        "r": 214,
-        "g": 69,
-        "b": 46,
+        "r": 205,
+        "g": 66,
+        "b": 44,
         "a": 1
       },
       "buttonColor": {
@@ -1948,9 +1951,9 @@
         "Everything described in your chosen option."
       ],
       "accent": {
-        "r": 214,
-        "g": 69,
-        "b": 46,
+        "r": 205,
+        "g": 66,
+        "b": 44,
         "a": 1
       }
     },
@@ -1976,9 +1979,9 @@
       "endHour": 17,
       "timeZone": "Asia/Jerusalem",
       "accent": {
-        "r": 214,
-        "g": 69,
-        "b": 46,
+        "r": 205,
+        "g": 66,
+        "b": 44,
         "a": 1
       }
     },
@@ -2026,9 +2029,9 @@
       "buttonText": "Subscribe",
       "successMessage": "Check your inbox to confirm.",
       "accent": {
-        "r": 214,
-        "g": 69,
-        "b": 46,
+        "r": 205,
+        "g": 66,
+        "b": 44,
         "a": 1
       },
       "color": {
@@ -2061,9 +2064,9 @@
         "👏"
       ],
       "accent": {
-        "r": 214,
-        "g": 69,
-        "b": 46,
+        "r": 205,
+        "g": 66,
+        "b": 44,
         "a": 1
       }
     },
@@ -2221,9 +2224,9 @@
       "textAlign": "left",
       "fontWeight": "500",
       "color": {
-        "r": 105,
-        "g": 103,
-        "b": 108,
+        "r": 150,
+        "g": 148,
+        "b": 154,
         "a": 1
       },
       "margin": [
@@ -2265,9 +2268,9 @@
         "a": 0.06
       },
       "color": {
-        "r": 105,
-        "g": 103,
-        "b": 108,
+        "r": 150,
+        "g": 148,
+        "b": 154,
         "a": 1
       },
       "size": "20",

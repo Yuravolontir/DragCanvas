@@ -1,4 +1,5 @@
 import React from 'react';
+import { readableInkCss } from '../../utils/readableInk.js';
 import { useEditor, useNode } from '@craftjs/core';
 import { ToolbarSection } from './Toolbar/ToolbarSection';
 import { ToolbarItem } from './Toolbar/ToolbarItem';
@@ -12,7 +13,7 @@ export const Newsletter = ({ heading, placeholder, buttonText, successMessage, a
     <strong style={{ display: 'block', marginBottom: 10 }}>{heading}</strong>
     <form onSubmit={event => event.preventDefault()} style={{ display: 'flex', gap: 8 }}>
       <input type="email" placeholder={placeholder} disabled={enabled} style={{ flex: 1, padding: 12, border: '1px solid #ccc', borderRadius: 8 }} />
-      <button type="submit" disabled={enabled} style={{ padding: '12px 18px', border: 0, borderRadius: 8, background: accentCss, color: '#fff' }}>{buttonText}</button>
+      <button type="submit" disabled={enabled} style={{ padding: '12px 18px', border: 0, borderRadius: 8, background: accentCss, color: readableInkCss(accent) }}>{buttonText}</button>
     </form>
     {enabled && <small style={{ opacity: .65 }}>{successMessage}</small>}
   </div>;

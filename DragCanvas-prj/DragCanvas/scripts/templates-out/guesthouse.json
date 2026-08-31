@@ -1,0 +1,5042 @@
+{
+  "__dragcanvasPages": true,
+  "currentSlug": "home",
+  "pages": [
+    {
+      "name": "Home",
+      "slug": "home",
+      "data": {
+        "ROOT": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "App"
+          },
+          "hidden": false,
+          "nodes": [
+            "navb01",
+            "vide02",
+            "cont08",
+            "cont10",
+            "cont26",
+            "cont33",
+            "cont35",
+            "cont37"
+          ],
+          "linkedNodes": {}
+        },
+        "navb01": {
+          "type": {
+            "resolvedName": "NavbarElement"
+          },
+          "isCanvas": false,
+          "props": {
+            "variant": "light",
+            "brand": "Fold House",
+            "links": [
+              {
+                "text": "Home",
+                "href": "/"
+              },
+              {
+                "text": "Rooms",
+                "href": "/rooms/"
+              },
+              {
+                "text": "The valley",
+                "href": "/valley/"
+              },
+              {
+                "text": "Stay",
+                "href": "/stay/"
+              }
+            ],
+            "sticky": true,
+            "textColor": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "height": "56px",
+            "width": "100%",
+            "animation": "none"
+          },
+          "displayName": "NavbarElement",
+          "custom": {
+            "displayName": "Navbar"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "vide02": {
+          "type": {
+            "resolvedName": "Video"
+          },
+          "isCanvas": true,
+          "props": {
+            "sourceType": "background",
+            "videoId": "",
+            "videoUrl": "",
+            "text": "",
+            "src": "https://videos.pexels.com/video-files/8865230/8865230-hd_2048_1080_25fps.mp4",
+            "poster": "https://images.pexels.com/photos/1271619/pexels-photo-1271619.jpeg?auto=compress&cs=tinysrgb&w=1600",
+            "overlay": 52,
+            "position": "center",
+            "minHeight": "560px",
+            "loop": true
+          },
+          "displayName": "Video",
+          "custom": {
+            "displayName": "Hero"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont03"
+          ],
+          "linkedNodes": {}
+        },
+        "cont03": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "84",
+              "48",
+              "64",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Hero text"
+          },
+          "parent": "vide02",
+          "hidden": false,
+          "nodes": [
+            "badg04",
+            "head05",
+            "text06",
+            "butt07"
+          ],
+          "linkedNodes": {}
+        },
+        "badg04": {
+          "type": {
+            "resolvedName": "Badge"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Six rooms · open March to November",
+            "background": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "radius": 999
+          },
+          "displayName": "Badge",
+          "custom": {
+            "displayName": "Badge"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head05": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "A house at the top of the valley",
+            "level": "1",
+            "fontSize": "50",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "margin": [
+              "16",
+              "0",
+              "12",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text06": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "19",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 0.86
+            },
+            "margin": [
+              "0",
+              "0",
+              "26",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Breakfast at eight, the last bus at six, and nothing to do about either."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "butt07": {
+          "type": {
+            "resolvedName": "Button"
+          },
+          "isCanvas": false,
+          "props": {
+            "background": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "buttonStyle": "full",
+            "text": "See the rooms",
+            "margin": [
+              "8",
+              "0",
+              "8",
+              "0"
+            ],
+            "action": "page",
+            "actionValue": "rooms",
+            "newTab": false,
+            "textComponent": {
+              "fontSize": "16",
+              "textAlign": "center",
+              "fontWeight": "600",
+              "color": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 1
+              },
+              "margin": [
+                "0",
+                "0",
+                "0",
+                "0"
+              ],
+              "shadow": 0,
+              "text": "See the rooms"
+            }
+          },
+          "displayName": "Button",
+          "custom": {
+            "displayName": "Button"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont08": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "48",
+              "8",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Numbers"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "stat09"
+          ],
+          "linkedNodes": {}
+        },
+        "stat09": {
+          "type": {
+            "resolvedName": "Stats"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "6",
+              "rooms, no more",
+              "1926",
+              "the year it was built",
+              "20 min",
+              "to the ridge path"
+            ],
+            "align": "center",
+            "accent": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            },
+            "color": {
+              "r": 108,
+              "g": 100,
+              "b": 90,
+              "a": 1
+            }
+          },
+          "displayName": "Stats",
+          "custom": {
+            "displayName": "Stats"
+          },
+          "parent": "cont08",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont10": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "32",
+              "48",
+              "40",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "anchor": "what"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "What"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head11",
+            "spac12",
+            "colu13"
+          ],
+          "linkedNodes": {}
+        },
+        "head11": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "What the house is like",
+            "level": "2",
+            "fontSize": "30",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont10",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "spac12": {
+          "type": {
+            "resolvedName": "Spacer"
+          },
+          "isCanvas": false,
+          "props": {
+            "height": "24"
+          },
+          "displayName": "Spacer",
+          "custom": {
+            "displayName": "Spacer"
+          },
+          "parent": "cont10",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "colu13": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "3",
+            "gap": "20",
+            "align": "stretch",
+            "stack": "yes"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont10",
+          "hidden": false,
+          "nodes": [
+            "cont14",
+            "cont18",
+            "cont22"
+          ],
+          "linkedNodes": {}
+        },
+        "cont14": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "22",
+              "24",
+              "22"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 10,
+            "width": "100%",
+            "height": "auto",
+            "animationDelay": 0
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Breakfast at eight"
+          },
+          "parent": "colu13",
+          "hidden": false,
+          "nodes": [
+            "icon15",
+            "head16",
+            "text17"
+          ],
+          "linkedNodes": {}
+        },
+        "icon15": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "coffee",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "background": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont14",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head16": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Breakfast at eight",
+            "level": "3",
+            "fontSize": "18",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont14",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text17": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 108,
+              "g": 100,
+              "b": 90,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "One long table, bread from the village, and eggs from the farm below."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont14",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont18": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "22",
+              "24",
+              "22"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 10,
+            "width": "100%",
+            "height": "auto",
+            "animationDelay": 90
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "No reception desk"
+          },
+          "parent": "colu13",
+          "hidden": false,
+          "nodes": [
+            "icon19",
+            "head20",
+            "text21"
+          ],
+          "linkedNodes": {}
+        },
+        "icon19": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "key",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "background": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont18",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head20": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "No reception desk",
+            "level": "3",
+            "fontSize": "18",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont18",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text21": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 108,
+              "g": 100,
+              "b": 90,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "You are handed a key on arrival and left alone until you want company."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont18",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont22": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "22",
+              "24",
+              "22"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 10,
+            "width": "100%",
+            "height": "auto",
+            "animationDelay": 180
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Boots by the door"
+          },
+          "parent": "colu13",
+          "hidden": false,
+          "nodes": [
+            "icon23",
+            "head24",
+            "text25"
+          ],
+          "linkedNodes": {}
+        },
+        "icon23": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "hiking",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "background": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont22",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head24": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Boots by the door",
+            "level": "3",
+            "fontSize": "18",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont22",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text25": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 108,
+              "g": 100,
+              "b": 90,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Six paths start at the gate. We will tell you which one is muddy today."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont22",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont26": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "48",
+              "48",
+              "48",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "A room"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu27"
+          ],
+          "linkedNodes": {}
+        },
+        "colu27": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "40",
+            "align": "center",
+            "stack": "yes",
+            "ratio": "3:2"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont26",
+          "hidden": false,
+          "nodes": [
+            "cont28",
+            "imag32"
+          ],
+          "linkedNodes": {}
+        },
+        "cont28": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "center",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Room copy"
+          },
+          "parent": "colu27",
+          "hidden": false,
+          "nodes": [
+            "head29",
+            "text30",
+            "butt31"
+          ],
+          "linkedNodes": {}
+        },
+        "head29": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Rooms that face the morning",
+            "level": "2",
+            "fontSize": "28",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont28",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text30": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "16",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 108,
+              "g": 100,
+              "b": 90,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "16",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Every room looks east across the valley, which means the light arrives before you do. Three have a bath; all six have a window seat worth the climb."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont28",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "butt31": {
+          "type": {
+            "resolvedName": "Button"
+          },
+          "isCanvas": false,
+          "props": {
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "buttonStyle": "outline",
+            "text": "Compare the six",
+            "margin": [
+              "8",
+              "0",
+              "8",
+              "0"
+            ],
+            "action": "page",
+            "actionValue": "rooms",
+            "newTab": false,
+            "textComponent": {
+              "fontSize": "16",
+              "textAlign": "center",
+              "fontWeight": "600",
+              "color": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 1
+              },
+              "margin": [
+                "0",
+                "0",
+                "0",
+                "0"
+              ],
+              "shadow": 0,
+              "text": "Compare the six"
+            }
+          },
+          "displayName": "Button",
+          "custom": {
+            "displayName": "Button"
+          },
+          "parent": "cont28",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "imag32": {
+          "type": {
+            "resolvedName": "Image"
+          },
+          "isCanvas": false,
+          "props": {
+            "src": "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=900",
+            "alt": "A pale guest room with the stairs behind it",
+            "radius": 10,
+            "width": "100%",
+            "height": "380px",
+            "maxWidth": "100%"
+          },
+          "displayName": "Image",
+          "custom": {
+            "displayName": "Image"
+          },
+          "parent": "colu27",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont33": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "48",
+              "48",
+              "24",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Said"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "test34"
+          ],
+          "linkedNodes": {}
+        },
+        "test34": {
+          "type": {
+            "resolvedName": "Testimonial"
+          },
+          "isCanvas": false,
+          "props": {
+            "quote": "We came for two nights and rebooked from the breakfast table on the second morning.",
+            "author": "Noa and Yuval",
+            "role": "Stayed in the Ridge room, April",
+            "avatar": "",
+            "align": "center",
+            "background": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "accent": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            }
+          },
+          "displayName": "Testimonial",
+          "custom": {
+            "displayName": "Testimonial"
+          },
+          "parent": "cont33",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont35": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "48",
+              "72",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Close"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "ctab36"
+          ],
+          "linkedNodes": {}
+        },
+        "ctab36": {
+          "type": {
+            "resolvedName": "CTABanner"
+          },
+          "isCanvas": false,
+          "props": {
+            "title": "March is already filling",
+            "text": "Two rooms left over the spring weekends. The valley is at its best before the coaches arrive.",
+            "cta": "Ask about a date",
+            "href": "/stay/",
+            "background": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "buttonBackground": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "buttonColor": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "radius": 16
+          },
+          "displayName": "CTABanner",
+          "custom": {
+            "displayName": "CTABanner"
+          },
+          "parent": "cont35",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont37": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "row",
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "48",
+              "40",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "color": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont38",
+            "soci41"
+          ],
+          "linkedNodes": {}
+        },
+        "cont38": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "auto",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer text"
+          },
+          "parent": "cont37",
+          "hidden": false,
+          "nodes": [
+            "text39",
+            "text40"
+          ],
+          "linkedNodes": {}
+        },
+        "text39": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "17",
+            "textAlign": "left",
+            "fontWeight": "700",
+            "color": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Fold House"
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Footer brand"
+          },
+          "parent": "cont38",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text40": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "13",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 178,
+              "g": 170,
+              "b": 160,
+              "a": 1
+            },
+            "margin": [
+              "6",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Six rooms above the valley. Open March to November."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Small print"
+          },
+          "parent": "cont38",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "soci41": {
+          "type": {
+            "resolvedName": "SocialLinks"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Instagram",
+              "https://instagram.com/",
+              "Email",
+              "mailto:stay@foldhouse.example"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.06
+            },
+            "color": {
+              "r": 178,
+              "g": 170,
+              "b": 160,
+              "a": 1
+            },
+            "size": "20",
+            "gap": "18"
+          },
+          "displayName": "SocialLinks",
+          "custom": {
+            "displayName": "Footer links"
+          },
+          "parent": "cont37",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        }
+      }
+    },
+    {
+      "name": "Rooms",
+      "slug": "rooms",
+      "data": {
+        "ROOT": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "App"
+          },
+          "hidden": false,
+          "nodes": [
+            "navb01",
+            "cont02",
+            "cont05",
+            "cont07",
+            "cont13",
+            "cont17",
+            "cont19"
+          ],
+          "linkedNodes": {}
+        },
+        "navb01": {
+          "type": {
+            "resolvedName": "NavbarElement"
+          },
+          "isCanvas": false,
+          "props": {
+            "variant": "light",
+            "brand": "Fold House",
+            "links": [
+              {
+                "text": "Home",
+                "href": "/"
+              },
+              {
+                "text": "Rooms",
+                "href": "/rooms/"
+              },
+              {
+                "text": "The valley",
+                "href": "/valley/"
+              },
+              {
+                "text": "Stay",
+                "href": "/stay/"
+              }
+            ],
+            "sticky": true,
+            "textColor": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "height": "56px",
+            "width": "100%",
+            "animation": "none"
+          },
+          "displayName": "NavbarElement",
+          "custom": {
+            "displayName": "Navbar"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont02": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "64",
+              "48",
+              "48",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "backgroundImage": "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?auto=compress&cs=tinysrgb&w=1600",
+            "overlay": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 0.62
+            }
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Rooms header"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head03",
+            "text04"
+          ],
+          "linkedNodes": {}
+        },
+        "head03": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Six rooms, all facing east",
+            "level": "1",
+            "fontSize": "44",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont02",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text04": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "17",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 0.84
+            },
+            "margin": [
+              "12",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Named after what you can see from them. Prices are per night for two, breakfast included, and do not move with the season."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont02",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont05": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "48",
+              "48",
+              "32",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "anchor": "rooms"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Rooms"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "pric06"
+          ],
+          "linkedNodes": {}
+        },
+        "pric06": {
+          "type": {
+            "resolvedName": "Pricing"
+          },
+          "isCanvas": false,
+          "props": {
+            "tiers": [
+              "Gable",
+              "€110",
+              "per night",
+              "Ask about Gable",
+              "Two under the roof;Shower;The quietest of the six",
+              "Ridge",
+              "€145",
+              "per night",
+              "Ask about Ridge",
+              "Two, east facing;Bath;Window seat over the valley",
+              "Long room",
+              "€180",
+              "per night",
+              "Ask about the Long room",
+              "Four, two rooms;Bath;The corner windows"
+            ],
+            "featured": 2,
+            "accent": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            },
+            "background": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            }
+          },
+          "displayName": "Pricing",
+          "custom": {
+            "displayName": "Pricing"
+          },
+          "parent": "cont05",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont07": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "48",
+              "48",
+              "48",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Detail"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu08"
+          ],
+          "linkedNodes": {}
+        },
+        "colu08": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "40",
+            "align": "center",
+            "stack": "yes",
+            "ratio": "2:3"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont07",
+          "hidden": false,
+          "nodes": [
+            "imag09",
+            "cont10"
+          ],
+          "linkedNodes": {}
+        },
+        "imag09": {
+          "type": {
+            "resolvedName": "Image"
+          },
+          "isCanvas": false,
+          "props": {
+            "src": "https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=900",
+            "alt": "The white kitchen where breakfast is laid out",
+            "radius": 10,
+            "width": "100%",
+            "height": "360px",
+            "maxWidth": "100%"
+          },
+          "displayName": "Image",
+          "custom": {
+            "displayName": "Image"
+          },
+          "parent": "colu08",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont10": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "center",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Detail copy"
+          },
+          "parent": "colu08",
+          "hidden": false,
+          "nodes": [
+            "head11",
+            "list12"
+          ],
+          "linkedNodes": {}
+        },
+        "head11": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "What is in every room",
+            "level": "2",
+            "fontSize": "28",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont10",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "list12": {
+          "type": {
+            "resolvedName": "List"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "A bed made up with linen, not polyester",
+              "A window that opens, and a seat beside it",
+              "Tea, a kettle, and a tin that is refilled daily",
+              "No television, and no apology for it"
+            ],
+            "ordered": "no",
+            "fontSize": "15",
+            "gap": "8",
+            "color": {
+              "r": 108,
+              "g": 100,
+              "b": 90,
+              "a": 1
+            }
+          },
+          "displayName": "List",
+          "custom": {
+            "displayName": "List"
+          },
+          "parent": "cont10",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont13": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "48",
+              "48",
+              "48",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Questions"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head14",
+            "spac15",
+            "acco16"
+          ],
+          "linkedNodes": {}
+        },
+        "head14": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Before you book",
+            "level": "2",
+            "fontSize": "30",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "spac15": {
+          "type": {
+            "resolvedName": "Spacer"
+          },
+          "isCanvas": false,
+          "props": {
+            "height": "20"
+          },
+          "displayName": "Spacer",
+          "custom": {
+            "displayName": "Spacer"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "acco16": {
+          "type": {
+            "resolvedName": "Accordion"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Can we bring a dog?",
+              "Two rooms take dogs — Gable and the Long room. Tell us when you write and there is no extra charge.",
+              "Is there parking?",
+              "Four spaces at the gate, first come. The lane is steep and narrow; a small car is a happier car.",
+              "What about children?",
+              "The Long room sleeps four and has done for ninety years. The stairs are old and there is no lift."
+            ],
+            "background": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "radius": 10
+          },
+          "displayName": "Accordion",
+          "custom": {
+            "displayName": "Accordion"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont17": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "8",
+              "48",
+              "72",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Close"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "ctab18"
+          ],
+          "linkedNodes": {}
+        },
+        "ctab18": {
+          "type": {
+            "resolvedName": "CTABanner"
+          },
+          "isCanvas": false,
+          "props": {
+            "title": "Hold a room while you think",
+            "text": "Tell us the dates and we will keep it for forty-eight hours. No card, no deposit.",
+            "cta": "Ask about a date",
+            "href": "/stay/",
+            "background": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "buttonBackground": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "buttonColor": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "radius": 16
+          },
+          "displayName": "CTABanner",
+          "custom": {
+            "displayName": "CTABanner"
+          },
+          "parent": "cont17",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont19": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "row",
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "48",
+              "40",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "color": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont20",
+            "soci23"
+          ],
+          "linkedNodes": {}
+        },
+        "cont20": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "auto",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer text"
+          },
+          "parent": "cont19",
+          "hidden": false,
+          "nodes": [
+            "text21",
+            "text22"
+          ],
+          "linkedNodes": {}
+        },
+        "text21": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "17",
+            "textAlign": "left",
+            "fontWeight": "700",
+            "color": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Fold House"
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Footer brand"
+          },
+          "parent": "cont20",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text22": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "13",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 178,
+              "g": 170,
+              "b": 160,
+              "a": 1
+            },
+            "margin": [
+              "6",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Six rooms above the valley. Open March to November."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Small print"
+          },
+          "parent": "cont20",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "soci23": {
+          "type": {
+            "resolvedName": "SocialLinks"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Instagram",
+              "https://instagram.com/",
+              "Email",
+              "mailto:stay@foldhouse.example"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.06
+            },
+            "color": {
+              "r": 178,
+              "g": 170,
+              "b": 160,
+              "a": 1
+            },
+            "size": "20",
+            "gap": "18"
+          },
+          "displayName": "SocialLinks",
+          "custom": {
+            "displayName": "Footer links"
+          },
+          "parent": "cont19",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        }
+      }
+    },
+    {
+      "name": "The valley",
+      "slug": "valley",
+      "data": {
+        "ROOT": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "App"
+          },
+          "hidden": false,
+          "nodes": [
+            "navb01",
+            "cont02",
+            "cont05",
+            "cont07",
+            "cont11",
+            "cont17",
+            "cont20"
+          ],
+          "linkedNodes": {}
+        },
+        "navb01": {
+          "type": {
+            "resolvedName": "NavbarElement"
+          },
+          "isCanvas": false,
+          "props": {
+            "variant": "light",
+            "brand": "Fold House",
+            "links": [
+              {
+                "text": "Home",
+                "href": "/"
+              },
+              {
+                "text": "Rooms",
+                "href": "/rooms/"
+              },
+              {
+                "text": "The valley",
+                "href": "/valley/"
+              },
+              {
+                "text": "Stay",
+                "href": "/stay/"
+              }
+            ],
+            "sticky": true,
+            "textColor": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "height": "56px",
+            "width": "100%",
+            "animation": "none"
+          },
+          "displayName": "NavbarElement",
+          "custom": {
+            "displayName": "Navbar"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont02": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "64",
+              "48",
+              "24",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Valley header"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head03",
+            "text04"
+          ],
+          "linkedNodes": {}
+        },
+        "head03": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "A day in the valley",
+            "level": "1",
+            "fontSize": "44",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont02",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text04": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "17",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 108,
+              "g": 100,
+              "b": 90,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "What people actually do here, in the order they tend to do it."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont02",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont05": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "16",
+              "48",
+              "40",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "anchor": "seen"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Seen"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "caro06"
+          ],
+          "linkedNodes": {}
+        },
+        "caro06": {
+          "type": {
+            "resolvedName": "Carousel"
+          },
+          "isCanvas": false,
+          "props": {
+            "width": "100%",
+            "height": "420px",
+            "title": "The valley through the year",
+            "autoplay": false,
+            "loop": true,
+            "arrows": true,
+            "dots": true,
+            "perView": 1,
+            "perViewTablet": 1,
+            "perViewMobile": 1,
+            "slides": [
+              {
+                "src": "https://images.pexels.com/photos/29719488/pexels-photo-29719488.jpeg?auto=compress&cs=tinysrgb&w=1000",
+                "heading": "The ridge, first light",
+                "label": "Twenty minutes up",
+                "text": "The path from the gate, before the cloud lifts off the far side."
+              },
+              {
+                "src": "https://images.pexels.com/photos/13522524/pexels-photo-13522524.jpeg?auto=compress&cs=tinysrgb&w=1000",
+                "heading": "The green half",
+                "label": "The lower valley",
+                "text": "Meadow all the way down to the river and the old mill."
+              },
+              {
+                "src": "https://images.pexels.com/photos/10911356/pexels-photo-10911356.jpeg?auto=compress&cs=tinysrgb&w=1000",
+                "heading": "Last of the light",
+                "label": "From the terrace",
+                "text": "The half hour that makes people book a third night."
+              }
+            ],
+            "accent": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            }
+          },
+          "displayName": "Carousel",
+          "custom": {
+            "displayName": "Carousel"
+          },
+          "parent": "cont05",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont07": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "48",
+              "48",
+              "48",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "A day"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head08",
+            "spac09",
+            "time10"
+          ],
+          "linkedNodes": {}
+        },
+        "head08": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "How the day goes",
+            "level": "2",
+            "fontSize": "30",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont07",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "spac09": {
+          "type": {
+            "resolvedName": "Spacer"
+          },
+          "isCanvas": false,
+          "props": {
+            "height": "24"
+          },
+          "displayName": "Spacer",
+          "custom": {
+            "displayName": "Spacer"
+          },
+          "parent": "cont07",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "time10": {
+          "type": {
+            "resolvedName": "Timeline"
+          },
+          "isCanvas": false,
+          "props": {
+            "steps": [
+              "08:00",
+              "Breakfast",
+              "One table, everybody at it. Bread, eggs, and whoever is staying tells you where they walked yesterday.",
+              "09:30",
+              "Out",
+              "Six paths from the gate, from an hour to most of a day. Boots by the door, maps on the hook.",
+              "16:00",
+              "Back",
+              "Tea on the terrace if the sun is on it, by the fire if it is not.",
+              "19:30",
+              "The village",
+              "Twelve minutes down. One kitchen, four tables, and you should have rung ahead."
+            ],
+            "accent": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            },
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            }
+          },
+          "displayName": "Timeline",
+          "custom": {
+            "displayName": "Timeline"
+          },
+          "parent": "cont07",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont11": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "48",
+              "48",
+              "32",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "When"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu12"
+          ],
+          "linkedNodes": {}
+        },
+        "colu12": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "40",
+            "align": "stretch",
+            "stack": "yes",
+            "ratio": "3:2"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont11",
+          "hidden": false,
+          "nodes": [
+            "cont13",
+            "tabs16"
+          ],
+          "linkedNodes": {}
+        },
+        "cont13": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "center",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "When copy"
+          },
+          "parent": "colu12",
+          "hidden": false,
+          "nodes": [
+            "head14",
+            "text15"
+          ],
+          "linkedNodes": {}
+        },
+        "head14": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "When to come",
+            "level": "2",
+            "fontSize": "28",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text15": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "16",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 108,
+              "g": 100,
+              "b": 90,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "We are open from March to November. Each end of that has something the middle does not."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "tabs16": {
+          "type": {
+            "resolvedName": "Tabs"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Spring",
+              "Meadow flowers, cold mornings, and the paths to yourself. The best light of the year.",
+              "Summer",
+              "Long days and a warm terrace. Book early — the four weeks around August go first.",
+              "Autumn",
+              "Colour on the far side and nobody on the ridge. Bring a second jumper."
+            ],
+            "accent": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            }
+          },
+          "displayName": "Tabs",
+          "custom": {
+            "displayName": "Tabs"
+          },
+          "parent": "colu12",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont17": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "48",
+              "48",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "anchor": "where"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Where"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head18",
+            "map19"
+          ],
+          "linkedNodes": {}
+        },
+        "head18": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Where the house is",
+            "level": "2",
+            "fontSize": "28",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "18",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont17",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "map19": {
+          "type": {
+            "resolvedName": "Map"
+          },
+          "isCanvas": false,
+          "props": {
+            "lat": 46.6247,
+            "lng": 8.0414,
+            "zoom": 12,
+            "height": "340px",
+            "width": "100%",
+            "label": "Fold House",
+            "address": "Top of the lane, above the village"
+          },
+          "displayName": "Map",
+          "custom": {
+            "displayName": "Map"
+          },
+          "parent": "cont17",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont20": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "row",
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "48",
+              "40",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "color": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont21",
+            "soci24"
+          ],
+          "linkedNodes": {}
+        },
+        "cont21": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "auto",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer text"
+          },
+          "parent": "cont20",
+          "hidden": false,
+          "nodes": [
+            "text22",
+            "text23"
+          ],
+          "linkedNodes": {}
+        },
+        "text22": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "17",
+            "textAlign": "left",
+            "fontWeight": "700",
+            "color": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Fold House"
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Footer brand"
+          },
+          "parent": "cont21",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text23": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "13",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 178,
+              "g": 170,
+              "b": 160,
+              "a": 1
+            },
+            "margin": [
+              "6",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Six rooms above the valley. Open March to November."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Small print"
+          },
+          "parent": "cont21",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "soci24": {
+          "type": {
+            "resolvedName": "SocialLinks"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Instagram",
+              "https://instagram.com/",
+              "Email",
+              "mailto:stay@foldhouse.example"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.06
+            },
+            "color": {
+              "r": 178,
+              "g": 170,
+              "b": 160,
+              "a": 1
+            },
+            "size": "20",
+            "gap": "18"
+          },
+          "displayName": "SocialLinks",
+          "custom": {
+            "displayName": "Footer links"
+          },
+          "parent": "cont20",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        }
+      }
+    },
+    {
+      "name": "Stay",
+      "slug": "stay",
+      "data": {
+        "ROOT": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "App"
+          },
+          "hidden": false,
+          "nodes": [
+            "navb01",
+            "cont02",
+            "cont05",
+            "cont12",
+            "cont28",
+            "cont30"
+          ],
+          "linkedNodes": {}
+        },
+        "navb01": {
+          "type": {
+            "resolvedName": "NavbarElement"
+          },
+          "isCanvas": false,
+          "props": {
+            "variant": "light",
+            "brand": "Fold House",
+            "links": [
+              {
+                "text": "Home",
+                "href": "/"
+              },
+              {
+                "text": "Rooms",
+                "href": "/rooms/"
+              },
+              {
+                "text": "The valley",
+                "href": "/valley/"
+              },
+              {
+                "text": "Stay",
+                "href": "/stay/"
+              }
+            ],
+            "sticky": true,
+            "textColor": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "height": "56px",
+            "width": "100%",
+            "animation": "none"
+          },
+          "displayName": "NavbarElement",
+          "custom": {
+            "displayName": "Navbar"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont02": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "64",
+              "48",
+              "24",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Stay header"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head03",
+            "text04"
+          ],
+          "linkedNodes": {}
+        },
+        "head03": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Ask about a date",
+            "level": "1",
+            "fontSize": "44",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont02",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text04": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "17",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 108,
+              "g": 100,
+              "b": 90,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "There is no booking engine and no deposit. Write, and somebody who lives here answers by the evening."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont02",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont05": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "48",
+              "48",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "anchor": "book"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Book"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu06"
+          ],
+          "linkedNodes": {}
+        },
+        "colu06": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "40",
+            "align": "stretch",
+            "stack": "yes",
+            "ratio": "3:2"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont05",
+          "hidden": false,
+          "nodes": [
+            "form07",
+            "cont08"
+          ],
+          "linkedNodes": {}
+        },
+        "form07": {
+          "type": {
+            "resolvedName": "Form"
+          },
+          "isCanvas": false,
+          "props": {
+            "fields": [
+              {
+                "label": "Name",
+                "type": "text",
+                "placeholder": "Your name",
+                "required": true
+              },
+              {
+                "label": "Email",
+                "type": "email",
+                "placeholder": "you@example.com",
+                "required": true
+              },
+              {
+                "label": "Which nights",
+                "type": "text",
+                "placeholder": "e.g. 12–14 April, two of us"
+              },
+              {
+                "label": "Anything we should know",
+                "type": "textarea",
+                "placeholder": "A dog, a birthday, a very early train"
+              }
+            ],
+            "submitText": "Send the enquiry",
+            "successMessage": "Thank you — we answer by the evening, every day.",
+            "radius": 10,
+            "background": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "accent": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            },
+            "textColor": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "inputBackground": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "inputBorder": {
+              "r": 221,
+              "g": 221,
+              "b": 221,
+              "a": 1
+            },
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Form",
+          "custom": {
+            "displayName": "Form"
+          },
+          "parent": "colu06",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont08": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "center",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Aside"
+          },
+          "parent": "colu06",
+          "hidden": false,
+          "nodes": [
+            "head09",
+            "text10",
+            "book11"
+          ],
+          "linkedNodes": {}
+        },
+        "head09": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Or take a slot",
+            "level": "2",
+            "fontSize": "24",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont08",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text10": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 108,
+              "g": 100,
+              "b": 90,
+              "a": 1
+            },
+            "margin": [
+              "10",
+              "0",
+              "14",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Fifteen minutes on the telephone, if you would rather ask than type."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont08",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "book11": {
+          "type": {
+            "resolvedName": "Booking"
+          },
+          "isCanvas": false,
+          "props": {
+            "heading": "A call about a stay",
+            "buttonText": "Book the call",
+            "duration": 15,
+            "startHour": 9,
+            "endHour": 18,
+            "timeZone": "Europe/Zurich",
+            "accent": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            }
+          },
+          "displayName": "Booking",
+          "custom": {
+            "displayName": "Booking"
+          },
+          "parent": "cont08",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont12": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "48",
+              "48",
+              "40",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Know"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head13",
+            "spac14",
+            "colu15"
+          ],
+          "linkedNodes": {}
+        },
+        "head13": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Getting here",
+            "level": "2",
+            "fontSize": "28",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont12",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "spac14": {
+          "type": {
+            "resolvedName": "Spacer"
+          },
+          "isCanvas": false,
+          "props": {
+            "height": "20"
+          },
+          "displayName": "Spacer",
+          "custom": {
+            "displayName": "Spacer"
+          },
+          "parent": "cont12",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "colu15": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "3",
+            "gap": "20",
+            "align": "stretch",
+            "stack": "yes"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont12",
+          "hidden": false,
+          "nodes": [
+            "cont16",
+            "cont20",
+            "cont24"
+          ],
+          "linkedNodes": {}
+        },
+        "cont16": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "22",
+              "20",
+              "22",
+              "20"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 10,
+            "width": "100%",
+            "height": "auto",
+            "animationDelay": 0
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "By train"
+          },
+          "parent": "colu15",
+          "hidden": false,
+          "nodes": [
+            "icon17",
+            "head18",
+            "text19"
+          ],
+          "linkedNodes": {}
+        },
+        "icon17": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "train",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "background": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont16",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head18": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "By train",
+            "level": "3",
+            "fontSize": "17",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont16",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text19": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "14",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 108,
+              "g": 100,
+              "b": 90,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "To the valley station, then the post bus at ten past the hour until six."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont16",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont20": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "22",
+              "20",
+              "22",
+              "20"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 10,
+            "width": "100%",
+            "height": "auto",
+            "animationDelay": 90
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "By car"
+          },
+          "parent": "colu15",
+          "hidden": false,
+          "nodes": [
+            "icon21",
+            "head22",
+            "text23"
+          ],
+          "linkedNodes": {}
+        },
+        "icon21": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "directions_car",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "background": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont20",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head22": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "By car",
+            "level": "3",
+            "fontSize": "17",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont20",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text23": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "14",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 108,
+              "g": 100,
+              "b": 90,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "The lane is steep and single track. Four spaces at the gate."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont20",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont24": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "22",
+              "20",
+              "22",
+              "20"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 10,
+            "width": "100%",
+            "height": "auto",
+            "animationDelay": 180
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "On foot"
+          },
+          "parent": "colu15",
+          "hidden": false,
+          "nodes": [
+            "icon25",
+            "head26",
+            "text27"
+          ],
+          "linkedNodes": {}
+        },
+        "icon25": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "hiking",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 237,
+              "g": 231,
+              "b": 221,
+              "a": 1
+            },
+            "background": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont24",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head26": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "On foot",
+            "level": "3",
+            "fontSize": "17",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont24",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text27": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "14",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 108,
+              "g": 100,
+              "b": 90,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Fifty minutes up from the village, and worth it with a light bag."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont24",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont28": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "48",
+              "72",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "News"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "news29"
+          ],
+          "linkedNodes": {}
+        },
+        "news29": {
+          "type": {
+            "resolvedName": "Newsletter"
+          },
+          "isCanvas": false,
+          "props": {
+            "heading": "Two letters a year, and never more",
+            "placeholder": "you@example.com",
+            "buttonText": "Keep in touch",
+            "successMessage": "Thank you — one at the start of the season, one at the end.",
+            "accent": {
+              "r": 47,
+              "g": 92,
+              "b": 78,
+              "a": 1
+            },
+            "color": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            }
+          },
+          "displayName": "Newsletter",
+          "custom": {
+            "displayName": "Newsletter"
+          },
+          "parent": "cont28",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont30": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "row",
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "48",
+              "40",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 38,
+              "g": 35,
+              "b": 31,
+              "a": 1
+            },
+            "color": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont31",
+            "soci34"
+          ],
+          "linkedNodes": {}
+        },
+        "cont31": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "auto",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer text"
+          },
+          "parent": "cont30",
+          "hidden": false,
+          "nodes": [
+            "text32",
+            "text33"
+          ],
+          "linkedNodes": {}
+        },
+        "text32": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "17",
+            "textAlign": "left",
+            "fontWeight": "700",
+            "color": {
+              "r": 250,
+              "g": 247,
+              "b": 242,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Fold House"
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Footer brand"
+          },
+          "parent": "cont31",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text33": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "13",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 178,
+              "g": 170,
+              "b": 160,
+              "a": 1
+            },
+            "margin": [
+              "6",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Six rooms above the valley. Open March to November."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Small print"
+          },
+          "parent": "cont31",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "soci34": {
+          "type": {
+            "resolvedName": "SocialLinks"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Instagram",
+              "https://instagram.com/",
+              "Email",
+              "mailto:stay@foldhouse.example"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.06
+            },
+            "color": {
+              "r": 178,
+              "g": 170,
+              "b": 160,
+              "a": 1
+            },
+            "size": "20",
+            "gap": "18"
+          },
+          "displayName": "SocialLinks",
+          "custom": {
+            "displayName": "Footer links"
+          },
+          "parent": "cont30",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        }
+      }
+    }
+  ],
+  "siteSettings": {}
+}

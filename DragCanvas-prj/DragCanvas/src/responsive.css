@@ -149,71 +149,13 @@
   }
 }
 
-/* ── Templates (InspireMe) ───────────────────────────────────────────────── */
-
-.dc-tpl-stage {
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
 /*
- * `display: contents` and not a wrapper box: above 1024 the two buttons must
- * behave exactly as they did before they were grouped, and a box in the flow
- * would change the card's position by its own margin collapsing.
+ * The templates gallery used to live here: a carousel of one template at a
+ * time, with a fixed arrow pinned to each edge of the window and a media query
+ * to stop them landing on top of the card. It is a flex list of cards now, and
+ * a list of cards needs no rules to stop its own furniture overlapping it. The
+ * gallery's styles live beside the page, in InspireMe.css.
  */
-.dc-tpl-arrows {
-  display: contents;
-}
-
-.dc-tpl-arrow {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1000;
-}
-
-.dc-tpl-arrow--prev {
-  left: 24px;
-}
-
-.dc-tpl-arrow--next {
-  right: 24px;
-}
-
-/*
- * A 48px circle pinned 24px from each edge sits *on top of* the card as soon as
- * the card is wider than the gap, which below 1024 it always is. So the rails
- * become a row, and `order` puts them under the card rather than above it —
- * the card is what the page is about.
- */
-@media (max-width: 1024px) {
-  .dc-tpl-stage {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .dc-tpl-card {
-    order: 1;
-  }
-
-  .dc-tpl-arrows {
-    display: flex;
-    order: 2;
-    justify-content: center;
-    gap: 16px;
-    margin-top: 20px;
-  }
-
-  .dc-tpl-arrow,
-  .dc-tpl-arrow--prev,
-  .dc-tpl-arrow--next {
-    position: static;
-    top: auto;
-    left: auto;
-    right: auto;
-    transform: none;
-  }
-}
 
 /* ── Admin panel ─────────────────────────────────────────────────────────── */
 

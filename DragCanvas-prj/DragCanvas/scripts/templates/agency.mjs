@@ -7,8 +7,10 @@ export default function agency() {
   const PAPER = rgba(250, 249, 248);
   const INK = rgba(20, 20, 22);
   const PANEL = rgba(238, 237, 235);
-  const RED = rgba(214, 69, 46);
+  const RED = rgba(205, 66, 44);
   const MUTED = rgba(105, 103, 108);
+  // The same grey that reads on paper disappears on the near-black footer.
+  const MUTED_ON_INK = rgba(150, 148, 154);
 
   const root = b.root({ background: PAPER, width: '100%' });
   b.navbar(root, 'FIELD', [
@@ -122,7 +124,7 @@ export default function agency() {
     brand: 'FIELD',
     note: 'Design and art direction. Tel Aviv and remote.',
     socials: ['Instagram', 'https://instagram.com/', 'Behance', 'https://behance.net/', 'Email', 'mailto:studio@field.co'],
-    background: INK, ink: PAPER, muted: MUTED,
+    background: INK, ink: PAPER, muted: MUTED_ON_INK,
   });
 
   return { name: 'Design Agency — FIELD', category: 'Business', thumb: P.agency.studio(600), map: b.map };

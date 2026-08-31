@@ -1,470 +1,201 @@
-import { apiFetch } from './api.js';
-import React, { useCallback, useEffect, useState } from 'react';
-import NavBar from './NavBar';
-import Container from 'react-bootstrap/Container';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
-import { useNavigate } from 'react-router-dom';
+
+import { apiFetch } from './api.js';
+import NavBar from './NavBar';
+import TemplatePreview from './Components/TemplatePreview.jsx';
+import './InspireMe.css';
+
+/**
+ * The templates gallery.
+ *
+ * Two things were wrong with what this was, and they were the same thing twice.
+ *
+ * It was a carousel: one template on screen, arrows either side, dots below.
+ * Fifteen templates meant up to fourteen clicks to see the one you wanted, and
+ * a page whose entire job is helping somebody compare showed one of the things
+ * being compared. It is a list now — every template at once, scanned by eye.
+ *
+ * And what it showed of each was `ThumbnailURL`: a stored picture, taken at
+ * some point, of a page that has been edited since. Half of them had none and
+ * rendered a tinted rectangle. Each card now draws the real site through the
+ * same exporter that publishes one, so what you pick is what you get.
+ *
+ * The skeleton count is what fits above the fold at the common widths; the page
+ * does not resize under the reader when the request lands.
+ */
+
+const SKELETON_COUNT = 6;
 
 export default function InspireMe() {
-  const navigate = useNavigate();
-  const [templates, setTemplates] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [templates, setTemplates] = useState(null);
   const [filterCategory, setFilterCategory] = useState('all');
-  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [alertType, setAlertType] = useState('success');
-
-  const [currentUser, setCurrentUser] = useState(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [alert, setAlert] = useState(null);
   const [templateToDelete, setTemplateToDelete] = useState(null);
 
-  useEffect(() => {
-    fetchTemplates();
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-      setCurrentUser(JSON.parse(storedUser));
-    }
-    // Deliberately once, on mount: the gallery is fetched when the page opens,
-    // and refetching on every render would hammer the API for no benefit.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    setCurrentIndex(0);
-  }, [filterCategory]);
-
-  const fetchTemplates = async () => {
+  // Read once, while rendering: who is signed in cannot change under this page.
+  const [currentUser] = useState(() => {
     try {
-      const data = await apiFetch('/api/templates');
-      setTemplates(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error('Failed to fetch templates:', err);
-      setTemplates([]);
-      showAlertModal('Failed to load templates', 'error');
-    } finally {
-      setLoading(false);
+      return JSON.parse(localStorage.getItem('currentUser') || 'null');
+    } catch {
+      return null;
     }
-  };
+  });
 
-  const showAlertModal = (message, type = 'success') => {
-    setAlertMessage(message);
-    setAlertType(type);
-    setShowAlert(true);
-  };
+  // Bumped to ask again — after a removal, the gallery has changed underneath.
+  const [reloadToken, setReloadToken] = useState(0);
 
-  const applyTemplate = (templateId) => {
-    // Templates are open to everyone — anonymous users can try them
-    // in the editor; signup is only required to save/publish.
-    navigate('/create-new-project', { state: { templateId } });
-  };
+  useEffect(() => {
+    let cancelled = false;
 
-  const handleDeleteClick = (template) => {
-    setTemplateToDelete(template);
-    setShowDeleteModal(true);
-  };
+    apiFetch('/api/templates')
+      .then((data) => {
+        if (!cancelled) setTemplates(Array.isArray(data) ? data : []);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        setTemplates([]);
+        setAlert({ tone: 'error', message: `Failed to load templates: ${error.message}` });
+      });
+
+    return () => { cancelled = true; };
+  }, [reloadToken]);
 
   const confirmDelete = async () => {
     if (!currentUser) {
-      showAlertModal('You must be logged in', 'error');
+      setAlert({ tone: 'error', message: 'You must be logged in' });
       return;
     }
-
     try {
       await apiFetch(`/api/templates/${templateToDelete.Template_ID}`, { method: 'DELETE' });
-      showAlertModal('Template deleted successfully', 'success');
-      fetchTemplates();
-    } catch (err) {
-      showAlertModal('Error deleting template: ' + err.message, 'error');
+      setAlert({ tone: 'success', message: 'Template deleted' });
+      setReloadToken((token) => token + 1);
+    } catch (error) {
+      setAlert({ tone: 'error', message: `Error deleting template: ${error.message}` });
     }
-
-    setShowDeleteModal(false);
     setTemplateToDelete(null);
   };
 
-  const filteredTemplates = filterCategory === 'all'
-    ? templates
-    : templates.filter(t => t.Category === filterCategory);
+  const categories = ['all', ...new Set((templates || []).map((t) => t.Category).filter(Boolean))];
+  const shown = filterCategory === 'all'
+    ? (templates || [])
+    : (templates || []).filter((t) => t.Category === filterCategory);
 
-  const categories = ['all', ...new Set(templates.map(t => t.Category))];
-  const currentTemplate = filteredTemplates[currentIndex];
-
-  // Wrapped so the keyboard effect below can list them honestly. Both read only
-  // filteredTemplates.length and use the functional setState form, so there is
-  // no stale state to worry about.
-  const goToPrevious = useCallback(() => {
-    setCurrentIndex((prev) => prev === 0 ? filteredTemplates.length - 1 : prev - 1);
-  }, [filteredTemplates.length]);
-
-  const goToNext = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % filteredTemplates.length);
-  }, [filteredTemplates.length]);
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'ArrowLeft') goToPrevious();
-      if (e.key === 'ArrowRight') goToNext();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [goToNext, goToPrevious]);
+  const canDelete = currentUser?.IsAdmin || currentUser?.IsSuperAdmin;
 
   return (
-    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
+    <div className="tpl-gallery">
       <NavBar />
 
-      <div style={{ paddingTop: '100px', paddingBottom: '80px', paddingLeft: '24px', paddingRight: '24px', maxWidth: '1200px', margin: '0 auto' }}>
-        {/* Header */}
-        <div style={{ marginBottom: '48px' }}>
-          <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.75rem', color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '12px', fontWeight: 700 }}>
-            Templates
-          </p>
-          <h1 style={{
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
-            fontWeight: 800,
-            color: 'var(--on-surface)',
-            letterSpacing: '-0.04em',
-            lineHeight: 1,
-            marginBottom: '16px',
-          }}>
-            Choose a Starting Point
-          </h1>
-          <p style={{
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontSize: '1rem',
-            color: 'var(--on-surface-variant)',
-            marginBottom: '32px',
-            maxWidth: '500px',
-          }}>
-            Browse our curated collection of templates to kickstart your next project
-          </p>
+      <div className="tpl-gallery__inner">
+        <p className="tpl-gallery__eyebrow">Templates</p>
+        <h1 className="tpl-gallery__title">Choose a starting point</h1>
+        <p className="tpl-gallery__lede">
+          Every card below is the real page, drawn the way it will be published.
+          Pick one and it opens in the editor, yours to change.
+        </p>
 
-          {/* Category Pills */}
-          <div style={{
-            display: 'flex',
-            gap: '8px',
-            flexWrap: 'wrap',
-          }}>
-            {categories.map(cat => (
+        {categories.length > 1 && (
+          <div className="tpl-gallery__filters">
+            {categories.map((category) => (
               <button
-                key={cat}
-                onClick={() => setFilterCategory(cat)}
-                style={{
-                  padding: '8px 20px',
-                  borderRadius: '9999px',
-                  background: filterCategory === cat ? 'var(--primary)' : 'white',
-                  color: filterCategory === cat ? 'white' : 'var(--on-surface-variant)',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  fontSize: '0.8rem',
-                  fontWeight: filterCategory === cat ? 700 : 500,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  boxShadow: 'var(--shadow-sm)',
-                  border: filterCategory === cat ? 'none' : '1px solid var(--outline-light)',
-                }}
-                onMouseEnter={(e) => {
-                  if (filterCategory !== cat) {
-                    e.target.style.borderColor = 'var(--primary)';
-                    e.target.style.color = 'var(--primary)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (filterCategory !== cat) {
-                    e.target.style.borderColor = 'var(--outline-light)';
-                    e.target.style.color = 'var(--on-surface-variant)';
-                  }
-                }}
+                key={category}
+                type="button"
+                className="tpl-gallery__filter"
+                aria-pressed={filterCategory === category}
+                onClick={() => setFilterCategory(category)}
               >
-                {cat === 'all' ? 'All Templates' : cat}
+                {category === 'all' ? 'All templates' : category}
               </button>
             ))}
           </div>
-        </div>
+        )}
 
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: '120px 0' }}>
-            <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: 'var(--muted)', fontSize: '0.9rem' }}>
-              Loading templates...
-            </div>
-          </div>
-        ) : filteredTemplates.length === 0 ? (
-          <div style={{
-            textAlign: 'center',
-            padding: '100px 40px',
-            background: 'var(--surface)',
-            borderRadius: '24px',
-            border: '2px dashed var(--outline-light)',
-            boxShadow: 'var(--shadow-sm)',
-          }}>
-            <h3 style={{
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontSize: '1.2rem',
-              color: 'var(--muted)',
-              fontWeight: 700,
-            }}>
-              No templates found
-            </h3>
-          </div>
+        {templates === null ? (
+          <ul className="tpl-gallery__list">
+            {Array.from({ length: SKELETON_COUNT }, (_, index) => (
+              <li key={`skeleton-${index}`} className="tpl-gallery__card tpl-gallery__card--loading" aria-hidden="true" />
+            ))}
+          </ul>
+        ) : shown.length === 0 ? (
+          <div className="tpl-gallery__empty">No templates here yet.</div>
         ) : (
-          <div className="dc-tpl-stage">
-            {/*
-              Side-rails on a wide screen, a row under the card on a narrow one.
-              The wrapper is `display: contents` above 1024 so the buttons keep
-              behaving exactly as they did; position/offset/z-index live in
-              responsive.css rather than inline, because a media query cannot
-              override an inline style.
-            */}
-            <div className="dc-tpl-arrows">
-            <button
-              onClick={goToPrevious}
-              className="dc-tpl-arrow dc-tpl-arrow--prev"
-              style={{
-                width: '48px',
-                height: '48px',
-                borderRadius: '9999px',
-                border: '1px solid var(--outline-light)',
-                background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(16px)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: 'var(--shadow-md)',
-                transition: 'all 0.2s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--primary)';
-                e.currentTarget.style.color = 'var(--primary)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--outline-light)';
-              }}
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--on-surface-variant)' }}>arrow_back</span>
-            </button>
-
-            <button
-              onClick={goToNext}
-              className="dc-tpl-arrow dc-tpl-arrow--next"
-              style={{
-                width: '48px',
-                height: '48px',
-                borderRadius: '9999px',
-                border: '1px solid var(--outline-light)',
-                background: 'rgba(255, 255, 255, 0.9)',
-                backdropFilter: 'blur(16px)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: 'var(--shadow-md)',
-                transition: 'all 0.2s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--primary)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--outline-light)';
-              }}
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--on-surface-variant)' }}>arrow_forward</span>
-            </button>
-            </div>
-
-            {/* Template Card */}
-            <div className="dc-tpl-card" style={{
-              background: 'var(--surface)',
-              borderRadius: '24px',
-              border: '1px solid var(--outline-light)',
-              overflow: 'hidden',
-              boxShadow: 'var(--shadow-md)',
-              transition: 'all 0.3s ease',
-            }}>
-              {/* Template Preview */}
-              {currentTemplate?.ThumbnailURL && (
-                <div style={{
-                  height: '420px',
-                  overflow: 'hidden',
-                  background: 'var(--surface-dim)',
-                  position: 'relative',
-                }}>
-                  <img
-                    src={currentTemplate.ThumbnailURL}
-                    alt={currentTemplate.TemplateName}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      display: 'block',
-                      transition: 'all 0.5s ease',
-                    }}
-                    draggable={false}
-                    onMouseEnter={(e) => {
-                      e.target.style.transform = 'scale(1.03)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.transform = 'scale(1)';
-                    }}
+          <ul className="tpl-gallery__list">
+            {shown.map((template) => (
+              <li key={template.Template_ID} className="tpl-gallery__card">
+                {/*
+                  * The card is one link. Navigating with state rather than a URL
+                  * is what the editor's loader reads, and it is the same route
+                  * the landing page's strip uses.
+                  */}
+                <Link
+                  className="tpl-gallery__open"
+                  to="/create-new-project"
+                  state={{ templateId: template.Template_ID }}
+                >
+                  <TemplatePreview
+                    className="tpl-gallery__preview"
+                    template={template}
+                    height={1.15}
                   />
-                  <div style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'linear-gradient(to top, white, transparent)',
-                  }} />
-                </div>
-              )}
-
-              {/* Info */}
-              <div style={{ padding: '28px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-                <div>
-                  <h2 style={{
-                    fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    fontSize: '1.5rem',
-                    fontWeight: 700,
-                    color: 'var(--on-surface)',
-                    marginBottom: '8px',
-                    letterSpacing: '-0.02em',
-                  }}>
-                    {currentTemplate?.TemplateName}
-                  </h2>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                    fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    fontSize: '0.85rem',
-                    color: 'var(--muted)',
-                  }}>
-                    <span style={{
-                      padding: '4px 12px',
-                      background: 'var(--primary-light)',
-                      color: 'var(--primary)',
-                      borderRadius: '9999px',
-                      fontSize: '0.75rem',
-                      fontWeight: 700,
-                      letterSpacing: '0.05em',
-                    }}>
-                      {currentTemplate?.Category}
+                  <div className="tpl-gallery__body">
+                    <div>
+                      <h2 className="tpl-gallery__name">{template.TemplateName}</h2>
+                      <div className="tpl-gallery__meta">
+                        {template.Category && <span className="tpl-gallery__tag">{template.Category}</span>}
+                        {template.ComponentCount ? <span>{template.ComponentCount} blocks</span> : null}
+                      </div>
+                    </div>
+                    <span className="tpl-gallery__go">
+                      Use
+                      <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>arrow_forward</span>
                     </span>
-                    <span>{currentTemplate?.ComponentCount} components</span>
-                    <span>by {currentTemplate?.CreatedByName}</span>
                   </div>
-                </div>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  {(currentUser?.IsAdmin || currentUser?.IsSuperAdmin) && (
-                    <button
-                      onClick={() => handleDeleteClick(currentTemplate)}
-                      style={{
-                        padding: '12px 20px',
-                        background: 'transparent',
-                        color: 'var(--muted)',
-                        border: '1px solid var(--outline-light)',
-                        borderRadius: '9999px',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s ease',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.color = 'var(--error)';
-                        e.currentTarget.style.borderColor = 'var(--error)';
-                        e.currentTarget.style.background = 'rgba(186,26,26,0.05)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.color = 'var(--muted)';
-                        e.currentTarget.style.borderColor = 'var(--outline-light)';
-                        e.currentTarget.style.background = 'transparent';
-                      }}
-                    >
-                      <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>delete</span>
-                    </button>
-                  )}
-                  <button
-                    onClick={() => applyTemplate(currentTemplate?.Template_ID)}
-                    style={{
-                      padding: '12px 28px',
-                      background: 'var(--primary)',
-                      color: 'var(--on-primary)',
-                      border: 'none',
-                      borderRadius: '9999px',
-                      fontFamily: "'Plus Jakarta Sans', sans-serif",
-                      fontSize: '0.85rem',
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      boxShadow: '0 2px 8px rgba(0, 96, 172, 0.2)',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'var(--primary-hover)';
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'var(--primary)';
-                      e.currentTarget.style.transform = 'translateY(0)';
-                    }}
-                  >
-                    Use Template
-                    <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>arrow_forward</span>
-                  </button>
-                </div>
-              </div>
-            </div>
+                </Link>
 
-            {/* Dot Indicators */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '32px' }}>
-              {filteredTemplates.map((_, i) => (
-                <div
-                  key={i}
-                  onClick={() => setCurrentIndex(i)}
-                  style={{
-                    width: i === currentIndex ? '24px' : '8px',
-                    height: '8px',
-                    borderRadius: '4px',
-                    background: i === currentIndex ? 'var(--primary)' : 'var(--outline-light)',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                  }}
-                />
-              ))}
-            </div>
-          </div>
+                {canDelete && (
+                  <button
+                    type="button"
+                    className="tpl-gallery__remove"
+                    onClick={() => setTemplateToDelete(template)}
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>delete</span>
+                    Remove from the gallery
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
         )}
       </div>
 
-      {/* Alert Modal */}
-      <Modal show={showAlert} onHide={() => setShowAlert(false)} centered>
-        <Modal.Header closeButton className={alertType === 'success' ? 'text-success' : 'text-danger'}>
-          <Modal.Title>{alertType === 'success' ? 'Success' : 'Error'}</Modal.Title>
+      <Modal show={Boolean(alert)} onHide={() => setAlert(null)} centered>
+        <Modal.Header closeButton className={alert?.tone === 'error' ? 'text-danger' : 'text-success'}>
+          <Modal.Title>{alert?.tone === 'error' ? 'Something needs your attention' : 'Done'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Alert variant={alertType === 'success' ? 'success' : 'danger'}>
-            {alertMessage}
-          </Alert>
+          <Alert variant={alert?.tone === 'error' ? 'danger' : 'success'}>{alert?.message}</Alert>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={() => setShowAlert(false)}>OK</Button>
+          <Button variant="primary" onClick={() => setAlert(null)}>OK</Button>
         </Modal.Footer>
       </Modal>
 
-      {/* Delete Confirmation Modal */}
-      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
+      <Modal show={Boolean(templateToDelete)} onHide={() => setTemplateToDelete(null)} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Confirm Delete</Modal.Title>
+          <Modal.Title>Remove this template?</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure you want to delete <strong>{templateToDelete?.TemplateName}</strong>? This action cannot be undone.
+          <strong>{templateToDelete?.TemplateName}</strong> will stop appearing in the gallery.
+          Projects already built from it are not affected.
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
-          <Button variant="danger" onClick={confirmDelete}>Delete</Button>
+          <Button variant="secondary" onClick={() => setTemplateToDelete(null)}>Cancel</Button>
+          <Button variant="danger" onClick={confirmDelete}>Remove</Button>
         </Modal.Footer>
       </Modal>
     </div>

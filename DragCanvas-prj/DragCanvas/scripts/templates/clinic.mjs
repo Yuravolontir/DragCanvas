@@ -7,8 +7,8 @@ export default function clinic() {
   const MIST = rgba(247, 250, 251);
   const PANEL = rgba(232, 242, 245);
   const INK = rgba(23, 42, 48);
-  const TEAL = rgba(20, 128, 138);
-  const MUTED = rgba(94, 114, 120);
+  const TEAL = rgba(17, 112, 121);
+  const MUTED = rgba(88, 107, 113);
 
   const root = b.root({ background: MIST, width: '100%' });
   b.navbar(root, 'Meridian Dental', [

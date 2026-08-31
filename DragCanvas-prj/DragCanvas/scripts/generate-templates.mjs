@@ -17,7 +17,8 @@ import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 import pg from 'pg';
 
-import { validateTemplate, checkRichness } from './templates/_validate.mjs';
+import { validateTemplate, checkRichness, templateData, templatePages } from './templates/_validate.mjs';
+import { applyDefaultMotion } from './templates/_builder.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dry = process.argv.includes('--dry');
@@ -40,6 +41,12 @@ for (const file of files) {
 
 // ---------- validate ----------
 
+// Motion is applied to every template rather than written into each one, so a
+// template added tomorrow arrives with the same rhythm as the fifteen here.
+for (const t of templates) {
+  for (const page of templatePages(t)) applyDefaultMotion(page.map);
+}
+
 for (const t of templates) validateTemplate(t);
 
 // Reported together rather than thrown one at a time: this is a standard the
@@ -60,7 +67,9 @@ if (thin.length) {
 
 const used = new Set();
 for (const t of templates) {
-  for (const n of Object.values(t.map)) used.add(n.type?.resolvedName);
+  for (const page of templatePages(t)) {
+    for (const n of Object.values(page.map)) used.add(n.type?.resolvedName);
+  }
 }
 console.log(`${templates.length} templates, ${used.size} distinct elements used`);
 console.log([...used].sort().join(' '));
@@ -77,7 +86,7 @@ for (const stale of fs.readdirSync(outDir).filter((f) => f.endsWith('.json'))) {
   fs.unlinkSync(path.join(outDir, stale));
 }
 for (const t of templates) {
-  fs.writeFileSync(path.join(outDir, t.file.replace('.mjs', '.json')), JSON.stringify(t.map, null, 2));
+  fs.writeFileSync(path.join(outDir, t.file.replace('.mjs', '.json')), JSON.stringify(templateData(t), null, 2));
 }
 
 if (dry) {
@@ -94,11 +103,14 @@ if (!dbUrl) throw new Error('DATABASE_URL not found in .env');
 const pool = new pg.Pool({ connectionString: dbUrl, ssl: { rejectUnauthorized: false } });
 
 for (const t of templates) {
-  const flat = JSON.stringify(t.map);
-  // TemplateData is a double-encoded JSON string, matching what the editor's
-  // own "save as template" writes. Changing that here would break loading.
-  const templateData = JSON.stringify(flat);
-  const componentCount = Object.keys(t.map).length - 1;
+  const flat = JSON.stringify(templateData(t));
+  // Encoded once, which is what the editor's own "save as template" writes —
+  // it posts JSON.stringify(canvas) and the column keeps that string. This
+  // wrapped it a second time on the belief that they matched, and they did not.
+  // Readers unwrap to the object either way, so the rows already in the gallery
+  // keep working; new ones stop being a string inside a string.
+  const templateDataColumn = flat;
+  const componentCount = templatePages(t).reduce((total, page) => total + Object.keys(page.map).length - 1, 0);
   const size = (flat.length / 1024).toFixed(1);
 
   // Without an id, match on the name. Running this twice used to insert a second
@@ -118,7 +130,7 @@ for (const t of templates) {
               "TemplateData" = $5, "ComponentCount" = $6, "IsActive" = true
         WHERE "Template_ID" = $1
       RETURNING "Template_ID"`,
-      [targetId, t.name, t.category, t.thumb, templateData, componentCount]
+      [targetId, t.name, t.category, t.thumb, templateDataColumn, componentCount]
     );
     if (res.rowCount === 0) throw new Error(`${t.name}: no template with id ${targetId} to replace`);
     console.log(`  replaced ${targetId}  ${t.name} (${componentCount} components, ${size} KB)`);
@@ -126,7 +138,7 @@ for (const t of templates) {
     const res = await pool.query(
       `INSERT INTO "TBTemplates" ("TemplateName", "Category", "ThumbnailURL", "TemplateData", "ComponentCount", "CreatedBy", "IsActive")
        VALUES ($1, $2, $3, $4, $5, 1, true) RETURNING "Template_ID"`,
-      [t.name, t.category, t.thumb, templateData, componentCount]
+      [t.name, t.category, t.thumb, templateDataColumn, componentCount]
     );
     console.log(`  inserted ${res.rows[0].Template_ID}  ${t.name} (${componentCount} components, ${size} KB)`);
   }

@@ -90,5 +90,5 @@ test('reading does not mutate the node props', () => {
 });
 
 test('emptySlide is blank in every field', () => {
-  assert.deepEqual(emptySlide(), { src: '', heading: '', label: '', text: '', alt: '' });
+  assert.deepEqual(emptySlide(), { src: '', heading: '', label: '', text: '', href: '', alt: '' });
 });

@@ -7,7 +7,7 @@ export default function ceramics() {
   const SAND = rgba(246, 242, 234);
   const PANEL = rgba(234, 226, 212);
   const INK = rgba(58, 53, 44);
-  const MOSS = rgba(111, 127, 92);
+  const MOSS = rgba(88, 101, 72);
   const MUTED = rgba(107, 99, 85);
 
   const root = b.root({ background: SAND, width: '100%' });

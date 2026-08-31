@@ -49,3 +49,75 @@ export const blankPageFrom = (source) => {
   for (const id of keep) next[id] = structuredClone(source[id]);
   return next;
 };
+
+// The neutral page the editor starts from and returns to.  Mirrors the
+// Container defaults, except that the canvas has the authoring measure the AI
+// generator and the starter project already use, and no scrim - a cleared page
+// should not darken whatever the next background turns out to be.
+export const emptyPageProps = {
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  justifyContent: 'flex-start',
+  fillSpace: 'no',
+  padding: ['0', '0', '0', '0'],
+  margin: ['0', '0', '0', '0'],
+  background: { r: 255, g: 255, b: 255, a: 1 },
+  backgroundImage: '',
+  overlay: { r: 0, g: 0, b: 0, a: 0 },
+  color: { r: 0, g: 0, b: 0, a: 1 },
+  shadow: 0,
+  radius: 0,
+  width: '800px',
+  // Resizer supplies the 600px minimum. `auto` lets App grow as elements are
+  // inserted instead of turning the initial empty-page size into a hard cap.
+  height: 'auto',
+};
+
+/*
+ * Craft needs its ROOT node even when the visible page has no elements.
+ *
+ * Rebuilt rather than spread from the old root: carrying the previous props
+ * over meant that clearing a page whose App had, say, a photograph and 80px of
+ * padding gave back an "empty" page that still looked like the old one. The
+ * only thing worth keeping is the `App` label the layers panel shows.
+ */
+export const emptyPageFrom = (source) => ({
+  ROOT: {
+    type: { resolvedName: 'Container' },
+    isCanvas: true,
+    props: structuredClone(emptyPageProps),
+    displayName: 'Container',
+    custom: structuredClone(source?.ROOT?.custom || { displayName: 'App' }),
+    parent: null,
+    hidden: false,
+    nodes: [],
+    linkedNodes: {},
+  },
+});
+
+/**
+ * A stored design, whatever depth of JSON string it arrived wrapped in.
+ *
+ * Two writers disagree about this column. The editor's own "save as template"
+ * sends `JSON.stringify(canvas)` and the row holds the design encoded once; the
+ * gallery build wrapped that string a second time, and the row holds it encoded
+ * twice. Nobody noticed, because a single parse of a double-encoded row hands
+ * back a string and Craft's deserialize accepts a string as readily as an
+ * object — so single-page templates opened either way.
+ *
+ * A multi-page design is where it stops being invisible: the envelope has to be
+ * an object for anything to find the pages in it, and a string went straight to
+ * deserialize as though it were one page. Rather than migrate rows that already
+ * exist, this unwraps until it has the object, which both shapes reach.
+ */
+export function parseDesign(raw) {
+  let value = raw;
+  for (let depth = 0; depth < 4 && typeof value === 'string'; depth += 1) {
+    try {
+      value = JSON.parse(value);
+    } catch {
+      return null;
+    }
+  }
+  return typeof value === 'object' ? value : null;
+}

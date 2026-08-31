@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import NavBar from './NavBar';
 import { apiFetch } from './api.js';
+import { useDialogs } from './Components/useDialogs.jsx';
 
 const box = { background: 'var(--surface)', border: '1px solid var(--outline-light)', borderRadius: 16, padding: 20 };
 
@@ -12,6 +13,7 @@ export default function ProjectOperations() {
   const [error, setError] = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
+  const { dialogs, alert, confirm } = useDialogs();
 
   const load = useCallback(async () => {
     const calls = {
@@ -34,15 +36,15 @@ export default function ProjectOperations() {
   useEffect(() => { Promise.resolve().then(load).catch((loadError) => setError(loadError.message)); }, [load]);
 
   const moderate = async (id, status) => { await apiFetch(`/api/engagement/project/${projectId}/${id}`, { method: 'PUT', body: { status } }); await load(); };
-  const rollback = async (id) => { if (!window.confirm('Publish this older version?')) return; await apiFetch(`/api/publish/versions/${projectId}/${id}/rollback`, { method: 'POST' }); await load(); };
-  const send = async (event) => { event.preventDefault(); await apiFetch(`/api/subscribers/project/${projectId}/send`, { method: 'POST', body: { subject, message } }); setSubject(''); setMessage(''); window.alert('Newsletter queued'); };
+  const rollback = async (id) => { if (!(await confirm({ title: 'Publish this older version?', message: 'The selected version will become the live site.', confirmText: 'Publish version', tone: 'warning' }))) return; await apiFetch(`/api/publish/versions/${projectId}/${id}/rollback`, { method: 'POST' }); await load(); };
+  const send = async (event) => { event.preventDefault(); await apiFetch(`/api/subscribers/project/${projectId}/send`, { method: 'POST', body: { subject, message } }); setSubject(''); setMessage(''); await alert({ title: 'Newsletter queued', message: 'It will be sent to active subscribers.', tone: 'success' }); };
 
   const analytics = Array.isArray(data.analytics) ? data.analytics : [];
   const views = analytics.reduce((total, row) => total + Number(row.Views || 0), 0);
   const conversions = analytics.reduce((total, row) => total + Number(row.Conversions || 0), 0);
   const reviews = (data.engagement || []).filter((row) => row.Kind === 'review');
 
-  return <><NavBar /><main style={{ maxWidth: 1180, margin: '32px auto', padding: '0 20px', display: 'grid', gap: 18 }}>
+  return <><NavBar />{dialogs}<main style={{ maxWidth: 1180, margin: '32px auto', padding: '0 20px', display: 'grid', gap: 18 }}>
     <div><button onClick={() => navigate('/my-projects')}>← Projects</button><h1>Project operations</h1>{error && <pre style={{ color: '#b42318', whiteSpace: 'pre-wrap' }}>{error}</pre>}</div>
     <section style={box}><h2>Last 30 days</h2><p style={{ fontSize: 28 }}>{views} views · {conversions} conversions · {views ? Math.round(conversions / views * 100) : 0}%</p></section>
     <section style={box}><h2>Form submissions</h2><Simple rows={data.submissions?.submissions || []} fields={['CreatedDate', 'Data']} /></section>

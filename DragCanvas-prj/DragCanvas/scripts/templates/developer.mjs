@@ -147,7 +147,7 @@ export default function developer() {
       { label: 'What is broken', type: 'textarea', placeholder: 'One honest paragraph' },
     ],
     submitText: 'Send', successMessage: 'Got it. I reply within a day.',
-    accent: CYAN, background: PANEL, color: BONE,
+    accent: CYAN, background: PANEL, textColor: BONE,
   });
 
   const close = b.container(root, { background: INK, padding: ['0', '48', '72', '48'], width: '100%' }, 'Close');

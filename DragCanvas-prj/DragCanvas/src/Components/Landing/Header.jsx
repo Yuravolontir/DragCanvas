@@ -1,7 +1,7 @@
 import { apiFetch } from '../../api.js';
   import { useEditor } from '@craftjs/core';
   import { Tooltip } from '@mui/material';
-  import { Modal, Form, Alert, Button } from 'react-bootstrap';
+  import { Modal, Form, Button } from 'react-bootstrap';
   import cx from 'classnames';
   import React, { useEffect, useState } from 'react';
   import styled from 'styled-components';
@@ -11,9 +11,10 @@ import { apiFetch } from '../../api.js';
   import html2canvas from 'html2canvas';
   import { exportToHtml } from '../../utils/exportToHtml';
   import { inspectBeforePublish } from '../../utils/publishPreflight.js';
-  import { blankPageFrom, syncSharedChrome } from '../../utils/projectPages.js';
+  import { blankPageFrom, emptyPageFrom, syncSharedChrome } from '../../utils/projectPages.js';
   import PublishInfoModal from '../PublishInfoModal';
 import AuthPromptModal from '../AuthPromptModal';
+import { useDialogs } from '../useDialogs.jsx';
 
 const PY_API = import.meta.env.VITE_PY_API_URL || 'http://localhost:8000';
 
@@ -87,6 +88,62 @@ const Divider = styled.span`
   height: 26px;
   background: var(--outline-light, var(--outline-light));
   margin: 0 4px;
+`;
+
+const PagePicker = styled.label`
+  display: grid;
+  grid-template-columns: 22px minmax(92px, 1fr);
+  grid-template-rows: 13px 18px;
+  column-gap: 7px;
+  align-items: center;
+  min-width: 150px;
+  height: 42px;
+  padding: 4px 9px;
+  border: 1px solid var(--outline-light, #dce2ec);
+  border-radius: 10px;
+  background: var(--surface, #fff);
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.08);
+  color: var(--on-surface, #1b2333);
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: var(--primary, #0060ac);
+  }
+
+  &:focus-within {
+    border-color: var(--primary, #0060ac);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary, #0060ac) 18%, transparent);
+  }
+
+  > .material-symbols-outlined {
+    grid-row: 1 / 3;
+    color: var(--primary, #0060ac);
+    font-size: 19px;
+  }
+`;
+
+const PagePickerLabel = styled.span`
+  color: var(--muted, #667085);
+  font: 700 9px/1 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+`;
+
+const PageSelect = styled.select`
+  min-width: 0;
+  padding: 0 20px 0 0;
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+  color: var(--on-surface, #1b2333);
+  cursor: pointer;
+  font: 700 13px/18px 'Plus Jakarta Sans', sans-serif;
+
+  option {
+    background: #fff;
+    color: #1b2333;
+  }
 `;
 
 /*
@@ -552,9 +609,13 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
     }
   });
 
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [alertType, setAlertType] = useState('success');
+  /*
+   * Every message this header used to deliver with alert(), confirm(),
+   * prompt() or a one-off Bootstrap modal now comes through the same dialog,
+   * so a page rename, a publish blocker and a delete warning are recognisably
+   * the same product rather than three unrelated boxes.
+   */
+  const { dialogs, alert: showDialog, confirm: askConfirm, prompt: askForText } = useDialogs();
 
 
   const [saveAsTemplate, setSaveAsTemplate] = useState(false);
@@ -614,8 +675,14 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
     return () => window.removeEventListener('dragcanvas:page-navigate', navigatePage);
   });
 
-  const addPage = () => {
-    const name = window.prompt('Page name'); if (!name) return;
+  const addPage = async () => {
+    const name = await askForText({
+      title: 'Add a page',
+      message: 'Give the page a short name. It becomes part of the address, for example "About us" turns into /about-us.',
+      confirmText: 'Add page',
+      input: { placeholder: 'About us', label: 'Page name', maxLength: 80 },
+    });
+    if (!name) return;
     const slug = name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40);
     if (!slug || slug === 'home' || pages.some(page => page.slug === slug)) return showAlertModal('Choose a unique page name using Latin letters.', 'error');
     const currentData = JSON.parse(query.serialize());
@@ -624,25 +691,59 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
     setPages(next); setCurrentPageSlug(slug); actions.deserialize(blank);
   };
 
-  const duplicatePage = () => {
+  const duplicatePage = async () => {
     const currentData = JSON.parse(query.serialize()); const current = pages.find(page => page.slug === currentPageSlug);
-    const name = window.prompt('Name for the duplicated page', `${current?.name || 'Page'} copy`); if (!name) return;
+    const name = await askForText({
+      title: 'Duplicate this page',
+      message: 'The copy keeps every element of the current page. Choose a name for it.',
+      confirmText: 'Duplicate',
+      input: { value: `${current?.name || 'Page'} copy`, label: 'Page name', maxLength: 80 },
+    });
+    if (!name) return;
     const base = name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 34) || 'page';
     let slug = base; let number = 2; while (slug === 'home' || pages.some(page => page.slug === slug)) slug = `${base}-${number++}`;
     const next = pages.map(page => page.slug === currentPageSlug ? { ...page, data: currentData } : page).concat({ name: name.trim().slice(0, 80), slug, data: structuredClone(currentData) });
     setPages(next); setCurrentPageSlug(slug); actions.deserialize(currentData);
   };
 
-  const renamePage = () => {
-    const current = pages.find(page => page.slug === currentPageSlug); const name = window.prompt('Page name', current?.name || ''); if (!name?.trim()) return;
+  const renamePage = async () => {
+    const current = pages.find(page => page.slug === currentPageSlug);
+    const name = await askForText({
+      title: 'Rename this page',
+      message: 'Only the name shown in the editor changes. The page address stays the same, so existing links keep working.',
+      confirmText: 'Rename',
+      input: { value: current?.name || '', label: 'Page name', maxLength: 80 },
+    });
+    if (!name?.trim()) return;
     setPages(value => value.map(page => page.slug === currentPageSlug ? { ...page, name: name.trim().slice(0, 80) } : page));
   };
 
-  const deletePage = () => {
+  const deletePage = async () => {
     if (currentPageSlug === 'home') return showAlertModal('The Home page cannot be deleted.', 'error');
-    if (!window.confirm('Delete this page? This cannot be undone.')) return;
+    const confirmed = await askConfirm({
+      tone: 'danger',
+      title: 'Delete this page?',
+      message: 'The page and everything on it will be removed. This cannot be undone.',
+      confirmText: 'Delete page',
+      cancelText: 'Keep page',
+    });
+    if (!confirmed) return;
     const remaining = pages.filter(page => page.slug !== currentPageSlug); const target = remaining.find(page => page.slug === 'home') || remaining[0];
     setPages(remaining); setCurrentPageSlug(target.slug); actions.deserialize(target.data);
+  };
+
+  const clearPage = async () => {
+    const confirmed = await askConfirm({
+      tone: 'danger',
+      title: 'Clear this page?',
+      message: 'Every element on the current page will be removed and the page goes back to a blank white canvas. Your other pages are not affected.',
+      confirmText: 'Clear page',
+      cancelText: 'Cancel',
+    });
+    if (!confirmed) return;
+    const empty = emptyPageFrom(JSON.parse(query.serialize()));
+    setPages(value => value.map(page => page.slug === currentPageSlug ? { ...page, data: empty } : page));
+    actions.deserialize(empty);
   };
 
  
@@ -694,11 +795,12 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
     setShowSaveModal(true);
   }
 
-  const showAlertModal = (message, type = 'success') => {
-    setAlertMessage(message);
-    setAlertType(type);
-    setShowAlert(true);
-  };
+  const showAlertModal = (message, type = 'success') =>
+    showDialog({
+      tone: type === 'error' ? 'error' : 'success',
+      title: type === 'error' ? 'Something needs your attention' : 'Done',
+      message,
+    });
 
   const saveproject = async () => {
     try {
@@ -864,7 +966,7 @@ const handlePublish = async () => {
       return;
     }
     if (publishTarget === 'custom' && !customDomain.trim()) {
-      alert('Please enter your domain');
+      showAlertModal('Enter the domain you want the site to live on, for example example.com.', 'error');
       return;
     }
     setPublishing(true);
@@ -951,7 +1053,7 @@ const handlePublish = async () => {
         setPublishInfoOpen(true);
       }
     } catch (e) {
-      alert('Error: ' + e.message);
+      showAlertModal(e.message, 'error');
     }
     setPublishing(false);
   };
@@ -1037,9 +1139,13 @@ const handlePublish = async () => {
           </div>
         )}
         <div className="dc-editor-header__pages" style={{ display: 'flex', gap: 5, alignItems: 'center', marginRight: 8 }}>
-          <select aria-label="Current page" value={currentPageSlug} onChange={(event) => switchPage(event.target.value)} style={{ padding: '6px 8px', borderRadius: 8 }}>
-            {pages.map(page => <option key={page.slug} value={page.slug}>{page.name}</option>)}
-          </select>
+          <PagePicker title="Switch between project pages">
+            <span className="material-symbols-outlined" aria-hidden="true">web_asset</span>
+            <PagePickerLabel>Current page</PagePickerLabel>
+            <PageSelect aria-label="Current page" value={currentPageSlug} onChange={(event) => switchPage(event.target.value)}>
+              {pages.map(page => <option key={page.slug} value={page.slug}>{page.name}</option>)}
+            </PageSelect>
+          </PagePicker>
           <button type="button" onClick={addPage} title="Add page" style={{ border: 0, borderRadius: 8, padding: '6px 9px', cursor: 'pointer' }}>+</button>
           <button type="button" onClick={duplicatePage} title="Duplicate current page" aria-label="Duplicate current page" style={{ border: 0, borderRadius: 8, padding: '6px 9px', cursor: 'pointer' }}>
             <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: 17 }}>content_copy</span>
@@ -1068,6 +1174,16 @@ const handlePublish = async () => {
               >
                 <span className="material-symbols-outlined">redo</span>
               </Item>
+            </Tooltip>
+            <Tooltip title="Remove all elements from the current page" placement="bottom">
+              <Btn
+                type="button"
+                onClick={clearPage}
+                style={{ background: '#b54747', cursor: 'pointer', marginLeft: '8px' }}
+              >
+                <span className="material-symbols-outlined" aria-hidden="true">delete_sweep</span>
+                Clear
+              </Btn>
             </Tooltip>
           </div>
         )}
@@ -1118,6 +1234,7 @@ const handlePublish = async () => {
 
         </div>
       </div>
+      {dialogs}
                 {/* Save Project Modal */}
             <Modal show={showSaveModal} onHide={() =>
             setShowSaveModal(false)} centered>
@@ -1194,26 +1311,6 @@ const handlePublish = async () => {
             disabled={!projectName}>Save</button>
               </Modal.Footer>
             </Modal>
-                  
-              {/* Alert Modal */}
-              <Modal show={showAlert} onHide={() => setShowAlert(false)}
-        centered>
-                <Modal.Header closeButton className={alertType ===
-        'success' ? 'text-success' : 'text-danger'}>
-                  <Modal.Title>{alertType === 'success' ? 'Success' :
-        'Error'}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <Alert variant={alertType === 'success' ? 'success' :
-        'danger'}>
-                    {alertMessage}
-                  </Alert>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="primary" onClick={() =>
-        setShowAlert(false)}>OK</Button>
-                </Modal.Footer>
-              </Modal>
 
   {publishModal && createPortal(
     <PublishOverlay role="presentation" onMouseDown={(e) => { if (e.target === e.currentTarget) setPublishModal(false); }}>

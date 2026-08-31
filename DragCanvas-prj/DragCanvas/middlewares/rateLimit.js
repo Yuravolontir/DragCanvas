@@ -43,6 +43,20 @@ export const aiLimiter = rateLimit({
 });
 
 /**
+ * A single page commonly contains more than ten pictures. Image requests are
+ * already authenticated and sent in batches of three, so give them their own
+ * allowance instead of spending the text-generation budget and failing on the
+ * eleventh picture of an otherwise valid site.
+ */
+export const aiImageLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 30,
+    standardHeaders: true,
+    legacyHeaders: false,
+    handler: reject('Too many image requests. Please wait a moment.'),
+});
+
+/**
  * Login and register are the two endpoints worth guessing at, and until now
  * they were the only public ones without a limit.
  *

@@ -188,7 +188,6 @@ export const Viewport = ({ children }) => {
       // against one set of colours and shipping another.
       className={`craftjs-renderer paper flex-1 h-full w-full transition pb-8 overflow-auto ${enabled ? '' : ''}`}
       onClickCapture={(event) => {
-        if (enabled) return;
         const link = event.target.closest?.('a[href]');
         if (!link) return;
         const slug = pageSlugFromHref(link.getAttribute('href'));
@@ -211,12 +210,32 @@ export const Viewport = ({ children }) => {
           data-device={deviceMode}
           aria-label={`${deviceMode} responsive preview`}
           style={{
-            width: '100%',
-            maxWidth: '100%',
+            // Editing uses the same stable measure as the AI generator and the
+            // starter canvas. Preview is deliberately fluid, like the site.
+            width: enabled ? '800px' : '100%',
+            maxWidth: enabled ? 'none' : '100%',
             minHeight: '100%',
           }}
         >
-          {assistant ? <AIAssistant/> : null}
+          {/*
+            * Preview is the page, and nothing but the page.
+            *
+            * The elements and properties panels collapse themselves when the
+            * editor is switched off; this one sits inside the canvas and did
+            * not, so pressing Preview left a generator panel printed above the
+            * user's own hero.
+            *
+            * Hidden rather than unmounted, which is also what those two panels
+            * do. A half-typed prompt lives in this component's state, and so
+            * does a generation already in flight — dropping either one because
+            * somebody wanted to look at their page would be a worse bug than
+            * the one being fixed.
+            */}
+          {assistant ? (
+            <div hidden={!enabled} aria-hidden={!enabled}>
+              <AIAssistant />
+            </div>
+          ) : null}
           {children}
         </div>
       </div>
