@@ -10,6 +10,86 @@
   perspective: 1400px;
 }
 
+.frame__generator {
+  position: relative;
+  z-index: 3;
+  width: min(88%, 520px);
+  margin: 0 auto -14px;
+  padding: 14px 16px 12px;
+  border: 1px solid color-mix(in oklab, var(--beam) 34%, var(--edge));
+  border-radius: 15px;
+  background: color-mix(in oklab, var(--ink-raised) 92%, transparent);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 22px 50px -26px rgb(0 0 0 / .9);
+}
+
+.frame__generator-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.frame__ai-mark {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  color: #07101e;
+  background: linear-gradient(135deg, var(--beam), #a395ff);
+}
+
+.frame__ai-mark .material-symbols-outlined { font-size: 17px; }
+.frame__generator-head strong { display: block; color: var(--paper); font-size: .78rem; }
+.frame__generator-head small { display: block; overflow: hidden; margin-top: 2px; color: var(--paper-faint); font-size: .64rem; white-space: nowrap; text-overflow: ellipsis; }
+
+.frame__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--paper-soft);
+  font-family: var(--meter);
+  font-size: .6rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.frame__status i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--beam);
+  box-shadow: 0 0 10px color-mix(in oklab, var(--beam) 70%, transparent);
+  animation: generator-pulse 1s ease-in-out infinite;
+}
+
+.frame__status--hold i { background: var(--success); animation: none; }
+
+.frame__phases {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 11px;
+}
+
+.frame__phases span {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  color: var(--paper-faint);
+  font-family: var(--meter);
+  font-size: .58rem;
+}
+
+.frame__phases span i { height: 2px; flex: 1; border-radius: 2px; background: var(--edge); }
+.frame__phases span.is-active, .frame__phases span.is-done { color: var(--paper-soft); }
+.frame__phases span.is-active i { background: linear-gradient(90deg, var(--beam) 65%, var(--edge) 65%); animation: generator-fill 1.4s ease-in-out infinite; }
+.frame__phases span.is-done i { background: var(--beam); }
+
+@keyframes generator-pulse { 50% { opacity: .35; transform: scale(.75); } }
+@keyframes generator-fill { 50% { filter: brightness(1.45); } }
+
 .frame__body {
   overflow: hidden;
   transform:
@@ -18,6 +98,17 @@
   transform-style: preserve-3d;
   transition: transform 420ms var(--ease);
   will-change: transform;
+  animation: frame-arrive 820ms var(--ease) both, frame-float 7s ease-in-out 900ms infinite;
+}
+
+@keyframes frame-arrive {
+  from { opacity: 0; transform: translateY(24px) rotateX(6deg) rotateY(-10deg) scale(0.96); }
+  to { opacity: 1; transform: rotateX(var(--tilt-x, 2deg)) rotateY(var(--tilt-y, -6deg)); }
+}
+
+@keyframes frame-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -7px; }
 }
 
 .frame__bar {
@@ -74,7 +165,17 @@
 }
 
 .frame__viewport {
+  position: relative;
+  height: clamp(360px, 35vw, 500px);
+  overflow: hidden;
   background: #fff;
+}
+
+.frame__viewport .mini-site {
+  position: absolute;
+  inset: 0;
+  min-height: 100%;
+  overflow: hidden;
 }
 
 /*
@@ -113,11 +214,14 @@
   .frame__body,
   .frame__badge {
     transition: none;
+    animation: none;
   }
 
   .frame__caret {
     animation: none;
   }
+  .frame__status i,
+  .frame__phases span.is-active i { animation: none; }
 }
 
 @media (max-width: 720px) {
@@ -130,4 +234,7 @@
     right: 8px;
     bottom: -14px;
   }
+
+  .frame__generator { width: calc(100% - 24px); }
+  .frame__viewport { height: clamp(330px, 112vw, 450px); }
 }

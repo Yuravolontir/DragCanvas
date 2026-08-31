@@ -422,27 +422,124 @@ export function createBuilder() {
       expiredText: 'This offer has ended.', accent: rgba(0, 64, 224), ...props,
     }, { label });
 
-  /** Add a compact, useful showcase of the newest conversion blocks. */
-  const modernSuite = (parent, { mode = 'service', background = WHITE, ink = rgba(26, 28, 28), accent = rgba(0, 64, 224), timeZone = 'Asia/Jerusalem', currency = 'USD' } = {}) => {
-    const section = container(parent, { background, padding: ['48', '48', '48', '48'], width: '100%' }, 'Modern tools');
-    heading(section, mode === 'commerce' ? 'Shop the essentials' : mode === 'event' ? 'Plan your visit' : mode === 'content' ? 'Keep exploring' : 'Everything in one place', { fontSize: '28', color: ink }, 'Modern tools heading');
-    tabs(section, mode === 'commerce'
-      ? ['Delivery', 'Packed in 1–2 business days.', 'Returns', 'Return unused items within 30 days.']
-      : ['What to expect', 'Clear steps and no surprises.', 'What is included', 'Everything described in your chosen option.'], { accent }, 'Quick facts');
+  /**
+   * A compact next-step section, tailored to the kind of page it closes.
+   *
+   * This used to read like a component demo: every site ended with “Everything
+   * in one place”, followed by a tall stack of unrelated widgets. It also
+   * accepted a `panel` colour from every template and silently ignored it.
+   * The section now has one clear editorial idea, a restrained surface, and a
+   * different journey for a shop, an event, a service or an editorial page.
+   */
+  const modernSuite = (parent, {
+    mode = 'service',
+    background = WHITE,
+    panel = rgba(246, 246, 244),
+    ink = rgba(26, 28, 28),
+    accent = rgba(0, 64, 224),
+    timeZone = 'Asia/Jerusalem',
+    currency = 'USD',
+  } = {}) => {
+    const copy = {
+      service: {
+        eyebrow: 'THE NEXT STEP',
+        title: 'Start with a conversation',
+        intro: 'Choose a time that works. You will know what happens next before the call ends.',
+        facts: ['Before we meet', 'A short note is enough to prepare.', 'After the call', 'You will receive a clear recommendation and next steps.'],
+      },
+      commerce: {
+        eyebrow: 'A SMALL EDIT',
+        title: 'Made to be chosen slowly',
+        intro: 'A concise selection, honest details and no artificial urgency.',
+        facts: ['Delivery', 'Packed carefully in 1–2 business days.', 'Returns', 'Unused pieces can be returned within 30 days.'],
+      },
+      event: {
+        eyebrow: 'YOUR VISIT',
+        title: 'Plan the day around the good part',
+        intro: 'Reserve a place now and arrive knowing exactly where to go and what to expect.',
+        facts: ['On arrival', 'Your name is all you need at the door.', 'Need to change plans?', 'Move or cancel your reservation from the confirmation email.'],
+      },
+      content: {
+        eyebrow: 'STAY CURIOUS',
+        title: 'The next good thing, occasionally',
+        intro: 'One considered update when there is something genuinely worth sharing.',
+        facts: ['What arrives', 'New work, useful notes and behind-the-scenes details.', 'How often', 'Occasionally — never just to fill a schedule.'],
+      },
+    }[mode] || null;
+
+    const section = container(parent, {
+      background,
+      padding: PAD.regular,
+      width: '100%',
+    }, 'Next step');
+
+    const shell = container(section, {
+      background: panel,
+      color: ink,
+      padding: ['40', '40', '40', '40'],
+      width: '100%',
+      radius: RADIUS.panel,
+      shadow: SHADOW.flat,
+    }, 'Next step panel');
+
+    badge(shell, copy.eyebrow, {
+      background: TRANSPARENT,
+      color: accent,
+      radius: 0,
+    }, 'Section label');
+    heading(shell, copy.title, {
+      fontSize: '32',
+      color: ink,
+      margin: ['12', '0', '8', '0'],
+    }, 'Next step heading');
+    text(shell, copy.intro, {
+      fontSize: '16',
+      fontWeight: '400',
+      color: ink,
+      margin: ['0', '0', '28', '0'],
+    }, 'Next step introduction');
+
+    const journey = columns(shell, { count: '2', gap: '32', ratio: '3:2', stack: 'yes' }, 'Next step details');
+    tabs(journey, copy.facts, { accent, color: ink }, 'Useful details');
+
+    const action = container(journey, {
+      background: TRANSPARENT,
+      color: ink,
+      width: '100%',
+      justifyContent: 'center',
+    }, 'Primary next step');
 
     if (mode === 'commerce') {
-      countdown(section, { label: 'Seasonal offer ends in', accent }, 'Offer countdown');
-      productCatalog(section, ['Essential', 'A practical everyday choice', '29.00', '', 'Signature', 'Our most popular option', '59.00', ''], { currency, accent }, 'Featured products');
+      countdown(action, { label: 'Current collection closes in', accent }, 'Collection countdown');
+      productCatalog(shell, [
+        'Everyday', 'A simple, useful place to begin', '29.00', '',
+        'Signature', 'The piece people return for', '59.00', '',
+      ], { currency, accent }, 'Selected pieces');
     } else if (mode === 'event') {
-      countdown(section, { label: 'Doors open in', accent }, 'Event countdown');
-      booking(section, { heading: 'Reserve your place', duration: 60, timeZone, accent }, 'Reservation');
+      countdown(action, { label: 'Until doors open', accent }, 'Event countdown');
+      booking(shell, { heading: 'Reserve your place', duration: 60, timeZone, accent }, 'Reservation');
     } else if (mode === 'service') {
-      booking(section, { heading: 'Book a convenient time', duration: 60, timeZone, accent }, 'Appointment booking');
+      booking(action, { heading: 'Choose a time', duration: 60, timeZone, accent }, 'Appointment booking');
+    } else {
+      newsletter(action, {
+        heading: 'Receive the next edition',
+        accent,
+        color: ink,
+      }, 'Newsletter signup');
     }
 
-    const connect = columns(section, { count: '2', gap: '24', ratio: '3:2', stack: 'yes' }, 'Stay connected');
-    newsletter(connect, { heading: 'Get the next useful update', accent, color: ink }, 'Newsletter signup');
-    engagement(connect, { mode: mode === 'content' ? 'reaction' : 'review', heading: mode === 'content' ? 'Was this useful?' : 'Share your experience', accent }, 'Visitor feedback');
+    const response = container(shell, {
+      background: TRANSPARENT,
+      width: '100%',
+      padding: ['28', '0', '0', '0'],
+    }, 'Visitor response');
+    divider(response, { color: rgba(0, 0, 0, 0.12), spacing: '16' });
+    engagement(response, {
+      mode: mode === 'content' ? 'reaction' : 'review',
+      heading: mode === 'content' ? 'Was this worth your time?' : 'How did this feel?',
+      accent,
+    }, 'Visitor feedback');
+
     return section;
   };
 

@@ -23,7 +23,13 @@ const TYPE_MS = 55;
 /** Degrees of tilt at the far edge of the frame. Small on purpose. */
 const TILT = 5;
 
-export default function SiteFrame({ site, run, live }) {
+const PHASES = [
+  { id: 'assemble', label: 'Structure' },
+  { id: 'pullback', label: 'Design' },
+  { id: 'publish', label: 'Publish' },
+];
+
+export default function SiteFrame({ site, run, live, phase = 'assemble' }) {
   const frameRef = useRef(null);
   const [typed, setTyped] = useState('');
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -64,7 +70,7 @@ export default function SiteFrame({ site, run, live }) {
 
   // The address, one character at a time
   useEffect(() => {
-    if (!live) return undefined;
+    if (!live || prefersReducedMotion) return undefined;
 
     let count = 0;
     let timer;
@@ -75,13 +81,34 @@ export default function SiteFrame({ site, run, live }) {
     };
     timer = setTimeout(tick, TYPE_MS);
     return () => clearTimeout(timer);
-  }, [live, site.url]);
+  }, [live, site.url, prefersReducedMotion]);
 
-  const shown = live ? typed : '';
+  const shown = prefersReducedMotion ? site.url : (live ? typed : '');
   const arrived = shown.length === site.url.length;
 
   return (
     <div className="frame" ref={frameRef}>
+      <div className="frame__generator" aria-label="Generation progress">
+        <div className="frame__generator-head">
+          <span className="frame__ai-mark">
+            <span className="material-symbols-outlined" aria-hidden="true">auto_awesome</span>
+          </span>
+          <span>
+            <strong>Generating your site</strong>
+            <small>{site.prompt}</small>
+          </span>
+          <span className={`frame__status frame__status--${phase}`}>
+            <i /> {phase === 'hold' ? 'Ready' : 'Working'}
+          </span>
+        </div>
+        <div className="frame__phases">
+          {PHASES.map((item, index) => {
+            const phaseIndex = phase === 'hold' ? PHASES.length : PHASES.findIndex(entry => entry.id === phase);
+            const state = index < phaseIndex ? 'is-done' : index === phaseIndex ? 'is-active' : '';
+            return <span key={item.id} className={state}><i />{item.label}</span>;
+          })}
+        </div>
+      </div>
       <div className="frame__body glass glow">
         <div className="frame__bar">
           <span className="frame__dot" />

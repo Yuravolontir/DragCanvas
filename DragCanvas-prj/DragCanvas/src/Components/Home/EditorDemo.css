@@ -7,15 +7,24 @@
  */
 
 .editor-demo {
-  max-width: 1240px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: clamp(48px, 8vh, 96px) clamp(20px, 5vw, 48px);
 }
 
 .editor-demo__intro {
-  max-width: 46em;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, .65fr);
+  gap: clamp(28px, 7vw, 96px);
+  align-items: end;
+  max-width: none;
   margin-bottom: clamp(20px, 3vh, 32px);
 }
+
+.editor-demo__eyebrow { display: block; margin-bottom: 14px; color: var(--beam); }
+.editor-demo__intro-copy { padding-bottom: 5px; }
+.editor-demo__try { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; color: var(--paper-soft); font-family: var(--meter); font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; }
+.editor-demo__try i { width: 7px; height: 7px; border-radius: 50%; background: var(--success); box-shadow: 0 0 12px rgb(93 220 138 / .65); }
 
 .editor-demo__title {
   font-family: var(--font-heading, system-ui, sans-serif);
@@ -36,10 +45,66 @@
 .editor-demo__shell {
   display: grid;
   gap: 14px;
-  padding: 14px;
+  padding: 0 14px 14px;
   border: 1px solid var(--outline-light, #e2e8f0);
-  border-radius: 16px;
+  border-radius: 20px;
   background: var(--surface-container, #f0ece3);
+}
+
+.editor-demo__chrome {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 54px;
+  border-bottom: 1px solid var(--outline-light, #e2e8f0);
+  color: var(--on-surface-variant, #49454f);
+}
+
+.editor-demo__mark {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: linear-gradient(145deg, var(--beam, #78e7ff), #8b7cff);
+  color: #07101e;
+  box-shadow: 0 8px 24px -10px color-mix(in oklab, var(--beam, #78e7ff) 80%, transparent);
+}
+
+.editor-demo__mark .material-symbols-outlined { font-size: 18px; }
+
+.editor-demo__document {
+  overflow: hidden;
+  font-size: 0.86rem;
+  font-weight: 700;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.editor-demo__saved,
+.editor-demo__preview {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.72rem;
+  color: var(--hint, #9994a0);
+}
+
+.editor-demo__saved-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #54e4a5;
+  box-shadow: 0 0 10px rgb(84 228 165 / 0.7);
+}
+
+.editor-demo__preview {
+  padding: 7px 12px;
+  border: 1px solid var(--outline-light, #e2e8f0);
+  border-radius: 999px;
+  color: var(--on-surface, #1c1b1f);
+  font-weight: 700;
 }
 
 /* Same footprint before the editor mounts, so nothing shifts */
@@ -177,7 +242,9 @@
   justify-content: center;
   padding: clamp(16px, 3vw, 34px);
   border-radius: 12px;
-  background: var(--surface-dim, #efece6);
+  background-color: var(--surface-dim, #efece6);
+  background-image: radial-gradient(circle, color-mix(in oklab, var(--outline-light, #e2e8f0) 65%, transparent) 1px, transparent 1px);
+  background-size: 20px 20px;
   /* The workspace is the recessed surface; the sheet sits on top of it */
   box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.16);
 }
@@ -199,6 +266,10 @@
   }
 }
 
+@media (max-width: 800px) {
+  .editor-demo__intro { grid-template-columns: 1fr; gap: 18px; }
+}
+
 /*
  * ── On the dark page ─────────────────────────────────────────
  *
@@ -214,9 +285,19 @@
   border-color: var(--edge);
 }
 
+.home .editor-demo__chrome { border-bottom-color: var(--edge); color: var(--paper-soft); }
+.home .editor-demo__preview { border-color: var(--edge); color: var(--paper-soft); }
+
 .home .editor-demo__workspace {
-  background: var(--ink-sunken);
+  background-color: var(--ink-sunken);
+  background-image: radial-gradient(circle, color-mix(in oklab, var(--paper) 10%, transparent) 1px, transparent 1px);
   box-shadow: inset 0 1px 4px rgb(0 0 0 / 0.6);
+}
+
+@media (max-width: 620px) {
+  .editor-demo__saved { display: none; }
+  .editor-demo__chrome { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .editor-demo__workspace { padding: 12px; }
 }
 
 .home .editor-demo__canvas {

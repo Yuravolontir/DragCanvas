@@ -55,7 +55,7 @@
       "cont57",
       "cont64",
       "cont66",
-      "cont73"
+      "cont78"
     ],
     "linkedNodes": {}
   },
@@ -460,9 +460,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -547,9 +547,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -621,13 +621,13 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
-      "shadow": 0,
-      "radius": 8,
+      "shadow": 14,
+      "radius": 14,
       "width": "100%",
       "height": "auto",
       "animationDelay": 0
@@ -771,13 +771,13 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
-      "shadow": 0,
-      "radius": 8,
+      "shadow": 14,
+      "radius": 14,
       "width": "100%",
       "height": "auto",
       "animationDelay": 90
@@ -921,13 +921,13 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
-      "shadow": 0,
-      "radius": 8,
+      "shadow": 14,
+      "radius": 14,
       "width": "100%",
       "height": "auto",
       "animationDelay": 180
@@ -1071,9 +1071,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -1198,9 +1198,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -1313,9 +1313,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -1428,9 +1428,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -1543,9 +1543,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -1617,9 +1617,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -1732,9 +1732,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -1822,9 +1822,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -1963,9 +1963,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -2173,9 +2173,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
+        "56",
         "48",
-        "48",
-        "48",
+        "44",
         "48"
       ],
       "margin": [
@@ -2191,9 +2191,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -2457,9 +2457,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -2512,7 +2512,7 @@
         "b": 19,
         "a": 1
       },
-      "radius": 16
+      "radius": 22
     },
     "displayName": "CTABanner",
     "custom": {
@@ -2534,9 +2534,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
+        "56",
         "48",
-        "48",
-        "48",
+        "44",
         "48"
       ],
       "margin": [
@@ -2552,9 +2552,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -2564,27 +2564,108 @@
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Modern tools"
+      "displayName": "Next step"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head67",
-      "tabs68",
-      "book69",
-      "colu70"
+      "cont67"
     ],
     "linkedNodes": {}
   },
-  "head67": {
+  "cont67": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "40",
+        "40",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 243,
+        "g": 230,
+        "b": 211,
+        "a": 1
+      },
+      "color": {
+        "r": 42,
+        "g": 29,
+        "b": 19,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 22,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Next step panel"
+    },
+    "parent": "cont66",
+    "hidden": false,
+    "nodes": [
+      "badg68",
+      "head69",
+      "text70",
+      "colu71",
+      "cont75"
+    ],
+    "linkedNodes": {}
+  },
+  "badg68": {
+    "type": {
+      "resolvedName": "Badge"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "THE NEXT STEP",
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 164,
+        "g": 74,
+        "b": 34,
+        "a": 1
+      },
+      "radius": 0
+    },
+    "displayName": "Badge",
+    "custom": {
+      "displayName": "Section label"
+    },
+    "parent": "cont67",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head69": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "Everything in one place",
+      "text": "Start with a conversation",
       "level": "2",
-      "fontSize": "28",
+      "fontSize": "32",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
@@ -2594,56 +2675,169 @@
         "a": 1
       },
       "margin": [
+        "12",
         "0",
-        "0",
-        "0",
+        "8",
         "0"
       ]
     },
     "displayName": "Heading",
     "custom": {
-      "displayName": "Modern tools heading"
+      "displayName": "Next step heading"
     },
-    "parent": "cont66",
+    "parent": "cont67",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "tabs68": {
+  "text70": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "16",
+      "textAlign": "left",
+      "fontWeight": "400",
+      "color": {
+        "r": 42,
+        "g": 29,
+        "b": 19,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "28",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Choose a time that works. You will know what happens next before the call ends."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Next step introduction"
+    },
+    "parent": "cont67",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "colu71": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "32",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "3:2"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Next step details"
+    },
+    "parent": "cont67",
+    "hidden": false,
+    "nodes": [
+      "tabs72",
+      "cont73"
+    ],
+    "linkedNodes": {}
+  },
+  "tabs72": {
     "type": {
       "resolvedName": "Tabs"
     },
     "isCanvas": false,
     "props": {
       "items": [
-        "What to expect",
-        "Clear steps and no surprises.",
-        "What is included",
-        "Everything described in your chosen option."
+        "Before we meet",
+        "A short note is enough to prepare.",
+        "After the call",
+        "You will receive a clear recommendation and next steps."
       ],
       "accent": {
         "r": 164,
         "g": 74,
         "b": 34,
         "a": 1
+      },
+      "color": {
+        "r": 42,
+        "g": 29,
+        "b": 19,
+        "a": 1
       }
     },
     "displayName": "Tabs",
     "custom": {
-      "displayName": "Quick facts"
+      "displayName": "Useful details"
     },
-    "parent": "cont66",
+    "parent": "colu71",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "book69": {
+  "cont73": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 42,
+        "g": 29,
+        "b": 19,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Primary next step"
+    },
+    "parent": "colu71",
+    "hidden": false,
+    "nodes": [
+      "book74"
+    ],
+    "linkedNodes": {}
+  },
+  "book74": {
     "type": {
       "resolvedName": "Booking"
     },
     "isCanvas": false,
     "props": {
-      "heading": "Book a convenient time",
+      "heading": "Choose a time",
       "buttonText": "Confirm booking",
       "duration": 60,
       "startHour": 9,
@@ -2660,75 +2854,95 @@
     "custom": {
       "displayName": "Appointment booking"
     },
-    "parent": "cont66",
+    "parent": "cont73",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "colu70": {
+  "cont75": {
     "type": {
-      "resolvedName": "Columns"
+      "resolvedName": "Container"
     },
     "isCanvas": true,
     "props": {
-      "count": "2",
-      "gap": "24",
-      "align": "stretch",
-      "stack": "yes",
-      "ratio": "3:2"
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "28",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
     },
-    "displayName": "Columns",
+    "displayName": "Container",
     "custom": {
-      "displayName": "Stay connected"
+      "displayName": "Visitor response"
     },
-    "parent": "cont66",
+    "parent": "cont67",
     "hidden": false,
     "nodes": [
-      "news71",
-      "enga72"
+      "divi76",
+      "enga77"
     ],
     "linkedNodes": {}
   },
-  "news71": {
+  "divi76": {
     "type": {
-      "resolvedName": "Newsletter"
+      "resolvedName": "Divider"
     },
     "isCanvas": false,
     "props": {
-      "heading": "Get the next useful update",
-      "placeholder": "you@example.com",
-      "buttonText": "Subscribe",
-      "successMessage": "Check your inbox to confirm.",
-      "accent": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
+      "thickness": "1",
       "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      }
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.12
+      },
+      "inset": "0",
+      "spacing": "16"
     },
-    "displayName": "Newsletter",
+    "displayName": "Divider",
     "custom": {
-      "displayName": "Newsletter signup"
+      "displayName": "Divider"
     },
-    "parent": "colu70",
+    "parent": "cont75",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "enga72": {
+  "enga77": {
     "type": {
       "resolvedName": "Engagement"
     },
     "isCanvas": false,
     "props": {
       "mode": "review",
-      "heading": "Share your experience",
+      "heading": "How did this feel?",
       "options": [
         "👍",
         "❤️",
@@ -2745,12 +2959,12 @@
     "custom": {
       "displayName": "Visitor feedback"
     },
-    "parent": "colu70",
+    "parent": "cont75",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont73": {
+  "cont78": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2796,12 +3010,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont74",
-      "soci77"
+      "cont79",
+      "soci82"
     ],
     "linkedNodes": {}
   },
-  "cont74": {
+  "cont79": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2844,15 +3058,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont73",
+    "parent": "cont78",
     "hidden": false,
     "nodes": [
-      "text75",
-      "text76"
+      "text80",
+      "text81"
     ],
     "linkedNodes": {}
   },
-  "text75": {
+  "text80": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2880,12 +3094,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont74",
+    "parent": "cont79",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text76": {
+  "text81": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2913,12 +3127,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont74",
+    "parent": "cont79",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci77": {
+  "soci82": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -2949,7 +3163,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont73",
+    "parent": "cont78",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

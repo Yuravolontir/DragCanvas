@@ -140,7 +140,7 @@ export default function saas() {
     background: INDIGO, color: WHITE, buttonBackground: WHITE, buttonColor: INDIGO,
   });
 
-  b.modernSuite(root, { mode: 'commerce', background: INK, panel: CARD, ink: rgba(255, 255, 255), accent: INDIGO_ON_INK });
+  b.modernSuite(root, { mode: 'content', background: INK, panel: CARD, ink: rgba(255, 255, 255), accent: INDIGO_ON_INK });
   b.footer(root, {
     brand: 'NovaFlow',
     note: 'Made by a small team. No card needed to start.',

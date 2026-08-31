@@ -53,7 +53,7 @@
       "cont60",
       "ctab64",
       "cont65",
-      "cont73"
+      "cont78"
     ],
     "linkedNodes": {}
   },
@@ -128,9 +128,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -364,7 +364,7 @@
     "props": {
       "src": "https://images.pexels.com/photos/8633662/pexels-photo-8633662.jpeg?auto=compress&cs=tinysrgb&w=900",
       "alt": "Fresh loaves cooling after the morning bake",
-      "radius": 6,
+      "radius": 8,
       "width": "100%",
       "height": "420px",
       "maxWidth": "100%"
@@ -407,9 +407,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
       "shadow": 0,
@@ -476,9 +476,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
+        "56",
         "48",
-        "48",
-        "48",
+        "44",
         "48"
       ],
       "margin": [
@@ -494,9 +494,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -621,13 +621,13 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
-      "shadow": 0,
-      "radius": 8,
+      "shadow": 14,
+      "radius": 14,
       "width": "100%",
       "height": "auto",
       "animationDelay": 0
@@ -762,13 +762,13 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
-      "shadow": 0,
-      "radius": 8,
+      "shadow": 14,
+      "radius": 14,
       "width": "100%",
       "height": "auto",
       "animationDelay": 90
@@ -903,13 +903,13 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
-      "shadow": 0,
-      "radius": 8,
+      "shadow": 14,
+      "radius": 14,
       "width": "100%",
       "height": "auto",
       "animationDelay": 180
@@ -1026,9 +1026,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
+        "56",
         "48",
-        "48",
-        "48",
+        "44",
         "48"
       ],
       "margin": [
@@ -1044,9 +1044,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -1924,7 +1924,7 @@
         "b": 19,
         "a": 1
       },
-      "radius": 10
+      "radius": 14
     },
     "displayName": "Accordion",
     "custom": {
@@ -1964,9 +1964,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -2038,9 +2038,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -2213,9 +2213,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -2303,9 +2303,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -2455,9 +2455,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
+        "56",
         "48",
-        "48",
-        "48",
+        "44",
         "48"
       ],
       "margin": [
@@ -2473,9 +2473,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -2485,28 +2485,109 @@
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Modern tools"
+      "displayName": "Next step"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head66",
-      "tabs67",
-      "coun68",
-      "prod69",
-      "colu70"
+      "cont66"
     ],
     "linkedNodes": {}
   },
-  "head66": {
+  "cont66": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "40",
+        "40",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 246,
+        "g": 226,
+        "b": 211,
+        "a": 1
+      },
+      "color": {
+        "r": 42,
+        "g": 29,
+        "b": 19,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 22,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Next step panel"
+    },
+    "parent": "cont65",
+    "hidden": false,
+    "nodes": [
+      "badg67",
+      "head68",
+      "text69",
+      "colu70",
+      "prod74",
+      "cont75"
+    ],
+    "linkedNodes": {}
+  },
+  "badg67": {
+    "type": {
+      "resolvedName": "Badge"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "A SMALL EDIT",
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 164,
+        "g": 74,
+        "b": 34,
+        "a": 1
+      },
+      "radius": 0
+    },
+    "displayName": "Badge",
+    "custom": {
+      "displayName": "Section label"
+    },
+    "parent": "cont66",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head68": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "Shop the essentials",
+      "text": "Made to be chosen slowly",
       "level": "2",
-      "fontSize": "28",
+      "fontSize": "32",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
@@ -2516,22 +2597,79 @@
         "a": 1
       },
       "margin": [
+        "12",
         "0",
-        "0",
-        "0",
+        "8",
         "0"
       ]
     },
     "displayName": "Heading",
     "custom": {
-      "displayName": "Modern tools heading"
+      "displayName": "Next step heading"
     },
-    "parent": "cont65",
+    "parent": "cont66",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "tabs67": {
+  "text69": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "16",
+      "textAlign": "left",
+      "fontWeight": "400",
+      "color": {
+        "r": 42,
+        "g": 29,
+        "b": 19,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "28",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "A concise selection, honest details and no artificial urgency."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Next step introduction"
+    },
+    "parent": "cont66",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "colu70": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "32",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "3:2"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Next step details"
+    },
+    "parent": "cont66",
+    "hidden": false,
+    "nodes": [
+      "tabs71",
+      "cont72"
+    ],
+    "linkedNodes": {}
+  },
+  "tabs71": {
     "type": {
       "resolvedName": "Tabs"
     },
@@ -2539,34 +2677,90 @@
     "props": {
       "items": [
         "Delivery",
-        "Packed in 1–2 business days.",
+        "Packed carefully in 1–2 business days.",
         "Returns",
-        "Return unused items within 30 days."
+        "Unused pieces can be returned within 30 days."
       ],
       "accent": {
         "r": 164,
         "g": 74,
         "b": 34,
         "a": 1
+      },
+      "color": {
+        "r": 42,
+        "g": 29,
+        "b": 19,
+        "a": 1
       }
     },
     "displayName": "Tabs",
     "custom": {
-      "displayName": "Quick facts"
+      "displayName": "Useful details"
     },
-    "parent": "cont65",
+    "parent": "colu70",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "coun68": {
+  "cont72": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 42,
+        "g": 29,
+        "b": 19,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Primary next step"
+    },
+    "parent": "colu70",
+    "hidden": false,
+    "nodes": [
+      "coun73"
+    ],
+    "linkedNodes": {}
+  },
+  "coun73": {
     "type": {
       "resolvedName": "Countdown"
     },
     "isCanvas": false,
     "props": {
       "target": "2030-01-01T00:00:00Z",
-      "label": "Seasonal offer ends in",
+      "label": "Current collection closes in",
       "expiredText": "This offer has ended.",
       "accent": {
         "r": 164,
@@ -2577,26 +2771,26 @@
     },
     "displayName": "Countdown",
     "custom": {
-      "displayName": "Offer countdown"
+      "displayName": "Collection countdown"
     },
-    "parent": "cont65",
+    "parent": "cont72",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "prod69": {
+  "prod74": {
     "type": {
       "resolvedName": "ProductCatalog"
     },
     "isCanvas": false,
     "props": {
       "products": [
-        "Essential",
-        "A practical everyday choice",
+        "Everyday",
+        "A simple, useful place to begin",
         "29.00",
         "",
         "Signature",
-        "Our most popular option",
+        "The piece people return for",
         "59.00",
         ""
       ],
@@ -2612,77 +2806,97 @@
     },
     "displayName": "ProductCatalog",
     "custom": {
-      "displayName": "Featured products"
+      "displayName": "Selected pieces"
     },
-    "parent": "cont65",
+    "parent": "cont66",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "colu70": {
+  "cont75": {
     "type": {
-      "resolvedName": "Columns"
+      "resolvedName": "Container"
     },
     "isCanvas": true,
     "props": {
-      "count": "2",
-      "gap": "24",
-      "align": "stretch",
-      "stack": "yes",
-      "ratio": "3:2"
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "28",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
     },
-    "displayName": "Columns",
+    "displayName": "Container",
     "custom": {
-      "displayName": "Stay connected"
+      "displayName": "Visitor response"
     },
-    "parent": "cont65",
+    "parent": "cont66",
     "hidden": false,
     "nodes": [
-      "news71",
-      "enga72"
+      "divi76",
+      "enga77"
     ],
     "linkedNodes": {}
   },
-  "news71": {
+  "divi76": {
     "type": {
-      "resolvedName": "Newsletter"
+      "resolvedName": "Divider"
     },
     "isCanvas": false,
     "props": {
-      "heading": "Get the next useful update",
-      "placeholder": "you@example.com",
-      "buttonText": "Subscribe",
-      "successMessage": "Check your inbox to confirm.",
-      "accent": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
+      "thickness": "1",
       "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      }
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.12
+      },
+      "inset": "0",
+      "spacing": "16"
     },
-    "displayName": "Newsletter",
+    "displayName": "Divider",
     "custom": {
-      "displayName": "Newsletter signup"
+      "displayName": "Divider"
     },
-    "parent": "colu70",
+    "parent": "cont75",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "enga72": {
+  "enga77": {
     "type": {
       "resolvedName": "Engagement"
     },
     "isCanvas": false,
     "props": {
       "mode": "review",
-      "heading": "Share your experience",
+      "heading": "How did this feel?",
       "options": [
         "👍",
         "❤️",
@@ -2699,12 +2913,12 @@
     "custom": {
       "displayName": "Visitor feedback"
     },
-    "parent": "colu70",
+    "parent": "cont75",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont73": {
+  "cont78": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2750,12 +2964,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont74",
-      "soci77"
+      "cont79",
+      "soci82"
     ],
     "linkedNodes": {}
   },
-  "cont74": {
+  "cont79": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2798,15 +3012,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont73",
+    "parent": "cont78",
     "hidden": false,
     "nodes": [
-      "text75",
-      "text76"
+      "text80",
+      "text81"
     ],
     "linkedNodes": {}
   },
-  "text75": {
+  "text80": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2834,12 +3048,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont74",
+    "parent": "cont79",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text76": {
+  "text81": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2867,12 +3081,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont74",
+    "parent": "cont79",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci77": {
+  "soci82": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -2903,7 +3117,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont73",
+    "parent": "cont78",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

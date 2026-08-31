@@ -78,18 +78,35 @@ export default function EditorDemo() {
   return (
     <section className="editor-demo" ref={sectionRef}>
       <div className="editor-demo__intro reveal" ref={introRef}>
-        <h2 className="editor-demo__title">And then you edit it</h2>
-        <p className="editor-demo__subtitle">
-          This is the real editor, not a picture of one.{' '}
-          {coarse
-            ? 'Tap a block to add it, or hold and drag it in.'
-            : 'Drag a block into the canvas, or tap it to add.'}
-        </p>
+        <div>
+          <span className="editor-demo__eyebrow eyebrow">02 / Shape every detail</span>
+          <h2 className="editor-demo__title">AI gets you moving.<br />You stay in control.</h2>
+        </div>
+        <div className="editor-demo__intro-copy">
+          <p className="editor-demo__subtitle">
+            This is the real editor, not a picture of one.{' '}
+            {coarse
+              ? 'Tap a block to add it, or hold and drag it in.'
+              : 'Drag a block into the canvas, or tap it to add.'}
+          </p>
+          <span className="editor-demo__try"><i /> Interactive demo — try it</span>
+        </div>
       </div>
 
       {reached ? (
         <Editor resolver={{ Container, Text, Button: EditorButton }}>
           <div className="editor-demo__shell">
+            <div className="editor-demo__chrome" aria-hidden="true">
+              <span className="editor-demo__mark">
+                <span className="material-symbols-outlined">drag_indicator</span>
+              </span>
+              <span className="editor-demo__document">Untitled page</span>
+              <span className="editor-demo__saved">
+                <span className="editor-demo__saved-dot" />
+                All changes saved
+              </span>
+              <span className="editor-demo__preview">Preview</span>
+            </div>
             <div className="editor-demo__toolbar">
               <Toolbox />
               <Controls />

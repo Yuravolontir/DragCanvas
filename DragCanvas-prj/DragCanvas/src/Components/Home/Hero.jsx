@@ -95,17 +95,16 @@ export default function Hero() {
       <div className="home-hero__copy">
         <div className="home-hero__eyebrow">
           <span className="material-symbols-outlined" aria-hidden="true">auto_awesome</span>
-          AI-native website builder
+          AI website studio
         </div>
         <h1 className="home-hero__title">
-          From one sentence
-          <br />
-          to a <span className="home-hero__accent">live website</span>
+          Build the site<br />
+          you <span className="home-hero__accent">actually mean.</span>
         </h1>
 
         <p className="home-hero__subtitle lede">
-          Describe what you want. The layout gets generated, you refine it by
-          talking to it, and one click puts it online with its own address.
+          Turn a short brief into a polished, editable website. Shape it visually,
+          refine it with AI, and publish when it feels right.
         </p>
 
         <form className="home-hero__form" onSubmit={handleSubmit}>
@@ -132,14 +131,14 @@ export default function Hero() {
               type="submit"
               disabled={prompt.trim() === ''}
             >
-              Build it
+              Generate site
             </button>
           </div>
 
           <p className="home-hero__hint">
             {currentUser
-              ? 'Opens in the editor with your prompt ready to run.'
-              : 'Free to start. You will be asked to create an account before it builds.'}
+              ? 'Your brief opens in the editor, ready to generate.'
+              : 'No credit card. Create an account when you are ready to generate.'}
           </p>
         </form>
 
@@ -164,9 +163,11 @@ export default function Hero() {
 
       <div className="home-hero__stage" ref={stageRef}>
         <SiteFrame
+          key={SITES[index].id}
           site={SITES[index]}
           run={run}
-          live={onScreen && (phase === 'publish' || phase === 'hold')}
+          phase={prefersReducedMotion ? 'hold' : phase}
+          live={prefersReducedMotion || (onScreen && (phase === 'publish' || phase === 'hold'))}
         />
       </div>
     </section>

@@ -44,10 +44,11 @@ export default function PublishDemo() {
   return (
     <section className="publish-demo">
       <div className="publish-demo__copy reveal" ref={copyRef}>
-        <h2 className="publish-demo__title">And it goes online for real</h2>
+        <span className="publish-demo__eyebrow eyebrow">03 / Go live</span>
+        <h2 className="publish-demo__title">From canvas to a real address.</h2>
         <p className="publish-demo__subtitle">
-          Not a preview link. A deployed site on its own address, working on any
-          device.
+          No export ritual and no hosting setup. Publish a responsive site,
+          share the link and keep editing whenever you want.
         </p>
 
         <ol className="publish-demo__steps">
@@ -64,6 +65,10 @@ export default function PublishDemo() {
       </div>
 
       <figure className="publish-demo__qr paper reveal" ref={qrRef}>
+        <div className="publish-demo__qr-head">
+          <span><i /> Live</span>
+          <span className="material-symbols-outlined" aria-hidden="true">north_east</span>
+        </div>
         {qrFailed ? (
           // The reports service sleeps between visits, so a cold start can lose
           // this image. The address is the point; the code is only a shortcut
@@ -83,7 +88,7 @@ export default function PublishDemo() {
           />
         )}
         <figcaption className="publish-demo__caption">
-          Scan it — that is a published site, not a mock-up
+          Scan to open the live site
         </figcaption>
       </figure>
     </section>

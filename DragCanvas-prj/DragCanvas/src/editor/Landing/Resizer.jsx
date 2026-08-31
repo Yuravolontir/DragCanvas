@@ -14,6 +14,8 @@ import {
   getElementDimensions,
 } from '../../utils/numToMeasurement';
 
+const ROOT_DROP_RUNWAY = 180;
+
 const Indicators = styled.div`
   position: absolute;
   top: 0;
@@ -138,11 +140,7 @@ export const Resizer = ({ propKey, children, ...props }) => {
     height: effectiveHeight,
   });
 
-  // App owns the page flow. Its saved height is a useful empty-canvas size,
-  // but must never become a ceiling once children are inserted.
-  const rootMinHeight = effectiveHeight && effectiveHeight !== 'auto'
-    ? effectiveHeight
-    : '600px';
+  const hasFixedHeight = Boolean(effectiveHeight && effectiveHeight !== 'auto');
 
   const updateInternalDimensionsInPx = useCallback(() => {
     const { width: nodeWidth, height: nodeHeight } = nodeDimensions.current;
@@ -198,6 +196,8 @@ export const Resizer = ({ propKey, children, ...props }) => {
     };
   }, [updateInternalDimensionsWithOriginal]);
 
+  // A manually resized App uses its saved height. The root also gets a small,
+  // stable minimum instead of treating its current height as the minimum.
   return (
     <Resizable
       enable={[
@@ -226,18 +226,23 @@ export const Resizer = ({ propKey, children, ...props }) => {
           connect(resizable.current.resizable);
         }
       }}
-      size={isRootNode
-        ? { ...internalDimensions, height: 'auto' }
-        : internalDimensions}
+      size={internalDimensions}
       onResizeStart={(e) => {
         updateInternalDimensionsInPx();
         e.preventDefault();
         e.stopPropagation();
         const dom = resizable.current.resizable;
         if (!dom) return;
+        const bounds = dom.getBoundingClientRect();
         editingDimensions.current = {
-          width: dom.getBoundingClientRect().width,
-          height: dom.getBoundingClientRect().height,
+          width: bounds.width,
+          // The runway is an editor affordance, not page content. Starting a
+          // manual resize from its outer edge used to bake that extra gap into
+          // the first saved height and made the page look impossible to close.
+          height: Math.max(
+            96,
+            bounds.height - (isRootNode && !hasFixedHeight ? ROOT_DROP_RUNWAY : 0)
+          ),
         };
         isResizing.current = true;
       }}
@@ -276,23 +281,28 @@ export const Resizer = ({ propKey, children, ...props }) => {
         updateInternalDimensionsWithOriginal();
       }}
       {...props}
-      minHeight={isRootNode ? rootMinHeight : props.minHeight}
+      minHeight={isRootNode && editorEnabled ? '96px' : props.minHeight}
       maxWidth={isRootNode ? props.maxWidth : (props.maxWidth || '100%')}
       style={{
         boxSizing: 'border-box',
         minWidth: 0,
+        // A fixed boundary is authoritative. Wide or tall children stay
+        // inside it instead of increasing the resizable element's min-content
+        // size or painting over the next section on the page.
+        overflowX: 'clip',
+        overflowY: hasFixedHeight ? 'clip' : 'visible',
         ...props.style,
         // Saved projects and older templates may contain pixel widths larger
         // than their App container. Keep the stored authoring value (so it is
         // not silently rewritten), but never let a child paint outside its
         // current parent. The root App itself remains free to define the
         // canvas measure.
-        ...(isRootNode && editorEnabled
+        ...(isRootNode && editorEnabled && !hasFixedHeight
           ? {
               // Keep a real drop runway below the last element. Auto-growing
               // after a drop is not enough: without empty space before the
               // drop there is nowhere to place the next node.
-              paddingBottom: 'calc(var(--dc-container-padding-bottom, 0px) + 180px)',
+              paddingBottom: `calc(var(--dc-container-padding-bottom, 0px) + ${ROOT_DROP_RUNWAY}px)`,
             }
           : {}),
       }}

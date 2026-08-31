@@ -56,6 +56,7 @@
   color: var(--paper);
   background: var(--ink);
   font-family: var(--body);
+  overflow: clip;
 }
 
 /* ── Type roles ─────────────────────────────────────────────── */
@@ -181,3 +182,10 @@
   position: relative;
   z-index: 1;
 }
+
+.home .editor-demo,
+.home .templates-strip {
+  border-top: 1px solid color-mix(in oklab, var(--edge) 72%, transparent);
+}
+
+.home .publish-demo { margin-block: clamp(34px, 6vh, 78px); }

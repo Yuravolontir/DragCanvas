@@ -57,7 +57,7 @@
       "cont49",
       "cont58",
       "cont60",
-      "cont67"
+      "cont72"
     ],
     "linkedNodes": {}
   },
@@ -132,9 +132,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
       "shadow": 0,
@@ -208,9 +208,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
       "shadow": 0,
@@ -325,9 +325,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
       "shadow": 0,
@@ -412,9 +412,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
       "shadow": 0,
@@ -469,7 +469,7 @@
     "props": {
       "src": "https://images.pexels.com/photos/23991042/pexels-photo-23991042.jpeg?auto=compress&cs=tinysrgb&w=700",
       "alt": "Editorial portrait from the studio portfolio",
-      "radius": 2,
+      "radius": 8,
       "width": "100%",
       "height": "300px",
       "maxWidth": "100%"
@@ -491,7 +491,7 @@
     "props": {
       "src": "https://images.pexels.com/photos/14257415/pexels-photo-14257415.jpeg?auto=compress&cs=tinysrgb&w=700",
       "alt": "Editorial portrait from the studio portfolio",
-      "radius": 2,
+      "radius": 8,
       "width": "100%",
       "height": "300px",
       "maxWidth": "100%"
@@ -513,7 +513,7 @@
     "props": {
       "src": "https://images.pexels.com/photos/5611592/pexels-photo-5611592.jpeg?auto=compress&cs=tinysrgb&w=700",
       "alt": "Editorial portrait from the studio portfolio",
-      "radius": 2,
+      "radius": 8,
       "width": "100%",
       "height": "300px",
       "maxWidth": "100%"
@@ -535,7 +535,7 @@
     "props": {
       "src": "https://images.pexels.com/photos/29085930/pexels-photo-29085930.jpeg?auto=compress&cs=tinysrgb&w=700",
       "alt": "Editorial portrait from the studio portfolio",
-      "radius": 2,
+      "radius": 8,
       "width": "100%",
       "height": "300px",
       "maxWidth": "100%"
@@ -557,7 +557,7 @@
     "props": {
       "src": "https://images.pexels.com/photos/20029576/pexels-photo-20029576.jpeg?auto=compress&cs=tinysrgb&w=700",
       "alt": "Editorial portrait from the studio portfolio",
-      "radius": 2,
+      "radius": 8,
       "width": "100%",
       "height": "300px",
       "maxWidth": "100%"
@@ -579,7 +579,7 @@
     "props": {
       "src": "https://images.pexels.com/photos/34921744/pexels-photo-34921744.jpeg?auto=compress&cs=tinysrgb&w=700",
       "alt": "Editorial portrait from the studio portfolio",
-      "radius": 2,
+      "radius": 8,
       "width": "100%",
       "height": "300px",
       "maxWidth": "100%"
@@ -622,9 +622,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
       "shadow": 0,
@@ -748,13 +748,13 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
-      "shadow": 0,
-      "radius": 4,
+      "shadow": 14,
+      "radius": 14,
       "width": "100%",
       "height": "auto",
       "animationDelay": 0
@@ -898,13 +898,13 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
-      "shadow": 0,
-      "radius": 4,
+      "shadow": 14,
+      "radius": 14,
       "width": "100%",
       "height": "auto",
       "animationDelay": 90
@@ -1048,13 +1048,13 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
-      "shadow": 0,
-      "radius": 4,
+      "shadow": 14,
+      "radius": 14,
       "width": "100%",
       "height": "auto",
       "animationDelay": 180
@@ -1198,9 +1198,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
       "shadow": 0,
@@ -1339,9 +1339,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
       "shadow": 0,
@@ -1494,9 +1494,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
       "shadow": 0,
@@ -1565,9 +1565,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
+        "56",
         "48",
-        "48",
-        "48",
+        "44",
         "48"
       ],
       "margin": [
@@ -1583,9 +1583,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
       "shadow": 0,
@@ -1771,7 +1771,7 @@
         "b": 235,
         "a": 1
       },
-      "radius": 4
+      "radius": 8
     },
     "displayName": "Accordion",
     "custom": {
@@ -1811,9 +1811,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
       "shadow": 0,
@@ -2034,7 +2034,7 @@
       ],
       "submitText": "Send enquiry",
       "successMessage": "Thank you — we will be in touch.",
-      "radius": 10,
+      "radius": 14,
       "background": {
         "r": 24,
         "g": 24,
@@ -2145,9 +2145,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
       "shadow": 0,
@@ -2200,7 +2200,7 @@
         "b": 92,
         "a": 1
       },
-      "radius": 16
+      "radius": 22
     },
     "displayName": "CTABanner",
     "custom": {
@@ -2222,9 +2222,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
+        "56",
         "48",
-        "48",
-        "48",
+        "44",
         "48"
       ],
       "margin": [
@@ -2240,9 +2240,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 255,
+        "b": 255,
         "a": 1
       },
       "shadow": 0,
@@ -2252,27 +2252,108 @@
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Modern tools"
+      "displayName": "Next step"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head61",
-      "tabs62",
-      "book63",
-      "colu64"
+      "cont61"
     ],
     "linkedNodes": {}
   },
-  "head61": {
+  "cont61": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "40",
+        "40",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 24,
+        "g": 24,
+        "b": 28,
+        "a": 1
+      },
+      "color": {
+        "r": 240,
+        "g": 238,
+        "b": 235,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 22,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Next step panel"
+    },
+    "parent": "cont60",
+    "hidden": false,
+    "nodes": [
+      "badg62",
+      "head63",
+      "text64",
+      "colu65",
+      "cont69"
+    ],
+    "linkedNodes": {}
+  },
+  "badg62": {
+    "type": {
+      "resolvedName": "Badge"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "THE NEXT STEP",
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 224,
+        "g": 168,
+        "b": 92,
+        "a": 1
+      },
+      "radius": 0
+    },
+    "displayName": "Badge",
+    "custom": {
+      "displayName": "Section label"
+    },
+    "parent": "cont61",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head63": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "Everything in one place",
+      "text": "Start with a conversation",
       "level": "2",
-      "fontSize": "28",
+      "fontSize": "32",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
@@ -2282,56 +2363,169 @@
         "a": 1
       },
       "margin": [
+        "12",
         "0",
-        "0",
-        "0",
+        "8",
         "0"
       ]
     },
     "displayName": "Heading",
     "custom": {
-      "displayName": "Modern tools heading"
+      "displayName": "Next step heading"
     },
-    "parent": "cont60",
+    "parent": "cont61",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "tabs62": {
+  "text64": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "16",
+      "textAlign": "left",
+      "fontWeight": "400",
+      "color": {
+        "r": 240,
+        "g": 238,
+        "b": 235,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "28",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "Choose a time that works. You will know what happens next before the call ends."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Next step introduction"
+    },
+    "parent": "cont61",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "colu65": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "32",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "3:2"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Next step details"
+    },
+    "parent": "cont61",
+    "hidden": false,
+    "nodes": [
+      "tabs66",
+      "cont67"
+    ],
+    "linkedNodes": {}
+  },
+  "tabs66": {
     "type": {
       "resolvedName": "Tabs"
     },
     "isCanvas": false,
     "props": {
       "items": [
-        "What to expect",
-        "Clear steps and no surprises.",
-        "What is included",
-        "Everything described in your chosen option."
+        "Before we meet",
+        "A short note is enough to prepare.",
+        "After the call",
+        "You will receive a clear recommendation and next steps."
       ],
       "accent": {
         "r": 224,
         "g": 168,
         "b": 92,
         "a": 1
+      },
+      "color": {
+        "r": 240,
+        "g": 238,
+        "b": 235,
+        "a": 1
       }
     },
     "displayName": "Tabs",
     "custom": {
-      "displayName": "Quick facts"
+      "displayName": "Useful details"
     },
-    "parent": "cont60",
+    "parent": "colu65",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "book63": {
+  "cont67": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 240,
+        "g": 238,
+        "b": 235,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Primary next step"
+    },
+    "parent": "colu65",
+    "hidden": false,
+    "nodes": [
+      "book68"
+    ],
+    "linkedNodes": {}
+  },
+  "book68": {
     "type": {
       "resolvedName": "Booking"
     },
     "isCanvas": false,
     "props": {
-      "heading": "Book a convenient time",
+      "heading": "Choose a time",
       "buttonText": "Confirm booking",
       "duration": 60,
       "startHour": 9,
@@ -2348,75 +2542,95 @@
     "custom": {
       "displayName": "Appointment booking"
     },
-    "parent": "cont60",
+    "parent": "cont67",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "colu64": {
+  "cont69": {
     "type": {
-      "resolvedName": "Columns"
+      "resolvedName": "Container"
     },
     "isCanvas": true,
     "props": {
-      "count": "2",
-      "gap": "24",
-      "align": "stretch",
-      "stack": "yes",
-      "ratio": "3:2"
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "28",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
     },
-    "displayName": "Columns",
+    "displayName": "Container",
     "custom": {
-      "displayName": "Stay connected"
+      "displayName": "Visitor response"
     },
-    "parent": "cont60",
+    "parent": "cont61",
     "hidden": false,
     "nodes": [
-      "news65",
-      "enga66"
+      "divi70",
+      "enga71"
     ],
     "linkedNodes": {}
   },
-  "news65": {
+  "divi70": {
     "type": {
-      "resolvedName": "Newsletter"
+      "resolvedName": "Divider"
     },
     "isCanvas": false,
     "props": {
-      "heading": "Get the next useful update",
-      "placeholder": "you@example.com",
-      "buttonText": "Subscribe",
-      "successMessage": "Check your inbox to confirm.",
-      "accent": {
-        "r": 224,
-        "g": 168,
-        "b": 92,
-        "a": 1
-      },
+      "thickness": "1",
       "color": {
-        "r": 240,
-        "g": 238,
-        "b": 235,
-        "a": 1
-      }
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.12
+      },
+      "inset": "0",
+      "spacing": "16"
     },
-    "displayName": "Newsletter",
+    "displayName": "Divider",
     "custom": {
-      "displayName": "Newsletter signup"
+      "displayName": "Divider"
     },
-    "parent": "colu64",
+    "parent": "cont69",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "enga66": {
+  "enga71": {
     "type": {
       "resolvedName": "Engagement"
     },
     "isCanvas": false,
     "props": {
       "mode": "review",
-      "heading": "Share your experience",
+      "heading": "How did this feel?",
       "options": [
         "👍",
         "❤️",
@@ -2433,12 +2647,12 @@
     "custom": {
       "displayName": "Visitor feedback"
     },
-    "parent": "colu64",
+    "parent": "cont69",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont67": {
+  "cont72": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2484,12 +2698,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont68",
-      "soci71"
+      "cont73",
+      "soci76"
     ],
     "linkedNodes": {}
   },
-  "cont68": {
+  "cont73": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2532,15 +2746,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont67",
+    "parent": "cont72",
     "hidden": false,
     "nodes": [
-      "text69",
-      "text70"
+      "text74",
+      "text75"
     ],
     "linkedNodes": {}
   },
-  "text69": {
+  "text74": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2568,12 +2782,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont68",
+    "parent": "cont73",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text70": {
+  "text75": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2601,12 +2815,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont68",
+    "parent": "cont73",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci71": {
+  "soci76": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -2637,7 +2851,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont67",
+    "parent": "cont72",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

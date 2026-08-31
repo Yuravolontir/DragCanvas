@@ -56,7 +56,7 @@
       "cont62",
       "cont69",
       "cont71",
-      "cont79"
+      "cont84"
     ],
     "linkedNodes": {}
   },
@@ -131,9 +131,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -345,9 +345,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -432,9 +432,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -507,13 +507,13 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
-      "shadow": 0,
-      "radius": 18,
+      "shadow": 14,
+      "radius": 14,
       "width": "100%",
       "height": "auto",
       "animationDelay": 0
@@ -539,7 +539,7 @@
     "props": {
       "src": "https://images.pexels.com/photos/34004100/pexels-photo-34004100.jpeg?auto=compress&cs=tinysrgb&w=700",
       "alt": "Handmade ceramic bowls",
-      "radius": 18,
+      "radius": 22,
       "width": "100%",
       "height": "280px",
       "maxWidth": "100%"
@@ -648,13 +648,13 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
-      "shadow": 0,
-      "radius": 18,
+      "shadow": 14,
+      "radius": 14,
       "width": "100%",
       "height": "auto",
       "animationDelay": 90
@@ -680,7 +680,7 @@
     "props": {
       "src": "https://images.pexels.com/photos/8063833/pexels-photo-8063833.jpeg?auto=compress&cs=tinysrgb&w=700",
       "alt": "Handmade ceramic mugs",
-      "radius": 18,
+      "radius": 22,
       "width": "100%",
       "height": "280px",
       "maxWidth": "100%"
@@ -789,13 +789,13 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
-      "shadow": 0,
-      "radius": 18,
+      "shadow": 14,
+      "radius": 14,
       "width": "100%",
       "height": "auto",
       "animationDelay": 180
@@ -821,7 +821,7 @@
     "props": {
       "src": "https://images.pexels.com/photos/6693557/pexels-photo-6693557.jpeg?auto=compress&cs=tinysrgb&w=700",
       "alt": "Handmade ceramic plates",
-      "radius": 18,
+      "radius": 22,
       "width": "100%",
       "height": "280px",
       "maxWidth": "100%"
@@ -930,9 +930,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -1056,12 +1056,12 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
-      "shadow": 0,
+      "shadow": 14,
       "radius": 14,
       "width": "100%",
       "height": "auto",
@@ -1206,12 +1206,12 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
-      "shadow": 0,
+      "shadow": 14,
       "radius": 14,
       "width": "100%",
       "height": "auto",
@@ -1356,12 +1356,12 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
-      "shadow": 0,
+      "shadow": 14,
       "radius": 14,
       "width": "100%",
       "height": "auto",
@@ -1488,9 +1488,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
+        "56",
         "48",
-        "48",
-        "48",
+        "44",
         "48"
       ],
       "margin": [
@@ -1506,9 +1506,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -1630,9 +1630,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
+        "56",
         "48",
-        "48",
-        "48",
+        "44",
         "48"
       ],
       "margin": [
@@ -1648,9 +1648,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -1967,9 +1967,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
+        "56",
         "48",
-        "48",
-        "48",
+        "44",
         "48"
       ],
       "margin": [
@@ -1985,9 +1985,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -2137,9 +2137,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
+        "56",
         "48",
-        "48",
-        "48",
+        "44",
         "48"
       ],
       "margin": [
@@ -2155,9 +2155,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -2365,9 +2365,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
+        "56",
         "48",
-        "48",
-        "48",
+        "44",
         "48"
       ],
       "margin": [
@@ -2383,9 +2383,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -2603,7 +2603,7 @@
       ],
       "submitText": "Hold a wheel",
       "successMessage": "Held. We will confirm the Saturday by email.",
-      "radius": 10,
+      "radius": 14,
       "background": {
         "r": 234,
         "g": 226,
@@ -2681,9 +2681,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -2736,7 +2736,7 @@
         "b": 44,
         "a": 1
       },
-      "radius": 16
+      "radius": 22
     },
     "displayName": "CTABanner",
     "custom": {
@@ -2758,9 +2758,9 @@
       "justifyContent": "flex-start",
       "fillSpace": "no",
       "padding": [
+        "56",
         "48",
-        "48",
-        "48",
+        "44",
         "48"
       ],
       "margin": [
@@ -2776,9 +2776,9 @@
         "a": 1
       },
       "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 24,
+        "g": 24,
+        "b": 27,
         "a": 1
       },
       "shadow": 0,
@@ -2788,28 +2788,109 @@
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Modern tools"
+      "displayName": "Next step"
     },
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head72",
-      "tabs73",
-      "coun74",
-      "prod75",
-      "colu76"
+      "cont72"
     ],
     "linkedNodes": {}
   },
-  "head72": {
+  "cont72": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "40",
+        "40",
+        "40",
+        "40"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 234,
+        "g": 226,
+        "b": 212,
+        "a": 1
+      },
+      "color": {
+        "r": 58,
+        "g": 53,
+        "b": 44,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 22,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Next step panel"
+    },
+    "parent": "cont71",
+    "hidden": false,
+    "nodes": [
+      "badg73",
+      "head74",
+      "text75",
+      "colu76",
+      "prod80",
+      "cont81"
+    ],
+    "linkedNodes": {}
+  },
+  "badg73": {
+    "type": {
+      "resolvedName": "Badge"
+    },
+    "isCanvas": false,
+    "props": {
+      "text": "A SMALL EDIT",
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 88,
+        "g": 101,
+        "b": 72,
+        "a": 1
+      },
+      "radius": 0
+    },
+    "displayName": "Badge",
+    "custom": {
+      "displayName": "Section label"
+    },
+    "parent": "cont72",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "head74": {
     "type": {
       "resolvedName": "Heading"
     },
     "isCanvas": false,
     "props": {
-      "text": "Shop the essentials",
+      "text": "Made to be chosen slowly",
       "level": "2",
-      "fontSize": "28",
+      "fontSize": "32",
       "fontWeight": "700",
       "textAlign": "left",
       "color": {
@@ -2819,22 +2900,79 @@
         "a": 1
       },
       "margin": [
+        "12",
         "0",
-        "0",
-        "0",
+        "8",
         "0"
       ]
     },
     "displayName": "Heading",
     "custom": {
-      "displayName": "Modern tools heading"
+      "displayName": "Next step heading"
     },
-    "parent": "cont71",
+    "parent": "cont72",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "tabs73": {
+  "text75": {
+    "type": {
+      "resolvedName": "Text"
+    },
+    "isCanvas": false,
+    "props": {
+      "fontSize": "16",
+      "textAlign": "left",
+      "fontWeight": "400",
+      "color": {
+        "r": 58,
+        "g": 53,
+        "b": 44,
+        "a": 1
+      },
+      "margin": [
+        "0",
+        "0",
+        "28",
+        "0"
+      ],
+      "shadow": 0,
+      "text": "A concise selection, honest details and no artificial urgency."
+    },
+    "displayName": "Text",
+    "custom": {
+      "displayName": "Next step introduction"
+    },
+    "parent": "cont72",
+    "hidden": false,
+    "nodes": [],
+    "linkedNodes": {}
+  },
+  "colu76": {
+    "type": {
+      "resolvedName": "Columns"
+    },
+    "isCanvas": true,
+    "props": {
+      "count": "2",
+      "gap": "32",
+      "align": "stretch",
+      "stack": "yes",
+      "ratio": "3:2"
+    },
+    "displayName": "Columns",
+    "custom": {
+      "displayName": "Next step details"
+    },
+    "parent": "cont72",
+    "hidden": false,
+    "nodes": [
+      "tabs77",
+      "cont78"
+    ],
+    "linkedNodes": {}
+  },
+  "tabs77": {
     "type": {
       "resolvedName": "Tabs"
     },
@@ -2842,34 +2980,90 @@
     "props": {
       "items": [
         "Delivery",
-        "Packed in 1–2 business days.",
+        "Packed carefully in 1–2 business days.",
         "Returns",
-        "Return unused items within 30 days."
+        "Unused pieces can be returned within 30 days."
       ],
       "accent": {
         "r": 88,
         "g": 101,
         "b": 72,
         "a": 1
+      },
+      "color": {
+        "r": 58,
+        "g": 53,
+        "b": 44,
+        "a": 1
       }
     },
     "displayName": "Tabs",
     "custom": {
-      "displayName": "Quick facts"
+      "displayName": "Useful details"
     },
-    "parent": "cont71",
+    "parent": "colu76",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "coun74": {
+  "cont78": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "isCanvas": true,
+    "props": {
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "fillSpace": "no",
+      "padding": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 58,
+        "g": 53,
+        "b": 44,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
+    },
+    "displayName": "Container",
+    "custom": {
+      "displayName": "Primary next step"
+    },
+    "parent": "colu76",
+    "hidden": false,
+    "nodes": [
+      "coun79"
+    ],
+    "linkedNodes": {}
+  },
+  "coun79": {
     "type": {
       "resolvedName": "Countdown"
     },
     "isCanvas": false,
     "props": {
       "target": "2030-01-01T00:00:00Z",
-      "label": "Seasonal offer ends in",
+      "label": "Current collection closes in",
       "expiredText": "This offer has ended.",
       "accent": {
         "r": 88,
@@ -2880,26 +3074,26 @@
     },
     "displayName": "Countdown",
     "custom": {
-      "displayName": "Offer countdown"
+      "displayName": "Collection countdown"
     },
-    "parent": "cont71",
+    "parent": "cont78",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "prod75": {
+  "prod80": {
     "type": {
       "resolvedName": "ProductCatalog"
     },
     "isCanvas": false,
     "props": {
       "products": [
-        "Essential",
-        "A practical everyday choice",
+        "Everyday",
+        "A simple, useful place to begin",
         "29.00",
         "",
         "Signature",
-        "Our most popular option",
+        "The piece people return for",
         "59.00",
         ""
       ],
@@ -2915,77 +3109,97 @@
     },
     "displayName": "ProductCatalog",
     "custom": {
-      "displayName": "Featured products"
+      "displayName": "Selected pieces"
     },
-    "parent": "cont71",
+    "parent": "cont72",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "colu76": {
+  "cont81": {
     "type": {
-      "resolvedName": "Columns"
+      "resolvedName": "Container"
     },
     "isCanvas": true,
     "props": {
-      "count": "2",
-      "gap": "24",
-      "align": "stretch",
-      "stack": "yes",
-      "ratio": "3:2"
+      "flexDirection": "column",
+      "alignItems": "flex-start",
+      "justifyContent": "flex-start",
+      "fillSpace": "no",
+      "padding": [
+        "28",
+        "0",
+        "0",
+        "0"
+      ],
+      "margin": [
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "background": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 1
+      },
+      "shadow": 0,
+      "radius": 0,
+      "width": "100%",
+      "height": "auto"
     },
-    "displayName": "Columns",
+    "displayName": "Container",
     "custom": {
-      "displayName": "Stay connected"
+      "displayName": "Visitor response"
     },
-    "parent": "cont71",
+    "parent": "cont72",
     "hidden": false,
     "nodes": [
-      "news77",
-      "enga78"
+      "divi82",
+      "enga83"
     ],
     "linkedNodes": {}
   },
-  "news77": {
+  "divi82": {
     "type": {
-      "resolvedName": "Newsletter"
+      "resolvedName": "Divider"
     },
     "isCanvas": false,
     "props": {
-      "heading": "Get the next useful update",
-      "placeholder": "you@example.com",
-      "buttonText": "Subscribe",
-      "successMessage": "Check your inbox to confirm.",
-      "accent": {
-        "r": 88,
-        "g": 101,
-        "b": 72,
-        "a": 1
-      },
+      "thickness": "1",
       "color": {
-        "r": 58,
-        "g": 53,
-        "b": 44,
-        "a": 1
-      }
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.12
+      },
+      "inset": "0",
+      "spacing": "16"
     },
-    "displayName": "Newsletter",
+    "displayName": "Divider",
     "custom": {
-      "displayName": "Newsletter signup"
+      "displayName": "Divider"
     },
-    "parent": "colu76",
+    "parent": "cont81",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "enga78": {
+  "enga83": {
     "type": {
       "resolvedName": "Engagement"
     },
     "isCanvas": false,
     "props": {
       "mode": "review",
-      "heading": "Share your experience",
+      "heading": "How did this feel?",
       "options": [
         "👍",
         "❤️",
@@ -3002,12 +3216,12 @@
     "custom": {
       "displayName": "Visitor feedback"
     },
-    "parent": "colu76",
+    "parent": "cont81",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont79": {
+  "cont84": {
     "type": {
       "resolvedName": "Container"
     },
@@ -3053,12 +3267,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont80",
-      "soci83"
+      "cont85",
+      "soci88"
     ],
     "linkedNodes": {}
   },
-  "cont80": {
+  "cont85": {
     "type": {
       "resolvedName": "Container"
     },
@@ -3101,15 +3315,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont79",
+    "parent": "cont84",
     "hidden": false,
     "nodes": [
-      "text81",
-      "text82"
+      "text86",
+      "text87"
     ],
     "linkedNodes": {}
   },
-  "text81": {
+  "text86": {
     "type": {
       "resolvedName": "Text"
     },
@@ -3137,12 +3351,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont80",
+    "parent": "cont85",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text82": {
+  "text87": {
     "type": {
       "resolvedName": "Text"
     },
@@ -3170,12 +3384,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont80",
+    "parent": "cont85",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci83": {
+  "soci88": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -3206,7 +3420,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont79",
+    "parent": "cont84",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
