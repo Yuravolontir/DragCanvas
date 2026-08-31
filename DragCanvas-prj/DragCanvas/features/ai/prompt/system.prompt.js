@@ -318,5 +318,14 @@ from those words, so the seed is the only thing deciding what the visitor sees.
     nothing in particular, which is worse than a random photo because it looks
     deliberate.
   - Describe the subject of THIS page. A bakery's gallery is bread, not "gallery1".
-- Be bold with colors — use vibrant backgrounds, gradients via rgba, and high contrast
+- Be bold with colour: full-bleed dark sections, saturated accents, one strong
+  hue carried through the page.
+- COLOUR THAT CAN BE READ. The palette gives you a dark, a light and an accent.
+  Text is set in the dark on light grounds and in the light on dark ones - those
+  pairings are the readable ones. The accent is for fills and for large type:
+  a heading at 24px or more may take it, body text never may. Accent-coloured
+  body copy on a light ground measures below the readable floor in every palette
+  we ship, and the server corrects it, so writing it only loses you the colour.
+- Never set a text colour close to the background behind it. Cream on cream is
+  invisible whichever one you chose first.
 - Make every page look like a premium, professional website`;

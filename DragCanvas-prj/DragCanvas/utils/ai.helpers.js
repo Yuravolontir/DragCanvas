@@ -5,6 +5,18 @@
  */
 
 import { pickStockClip } from '../src/utils/stockVideo.js';
+import { readableInk } from '../src/utils/readableInk.js';
+import {
+    ON_ACCENT,
+    TEXT_PROPS,
+    composite,
+    contrastRatio,
+    floorFor,
+    isColour,
+    selfFill,
+    specSize,
+    specWeight,
+} from '../src/utils/contrast.js';
 
 /** Take only the first balanced { ... } block, ignoring anything around it. */
 export function extractBalancedJsonObject(text) {
@@ -133,12 +145,89 @@ export function normalizeNode(node) {
         };
     }
 
-    const { type, children, props, ...rest } = node;
+    const { type, children: _children, props, ...rest } = node;
     return {
         type: canonicalType(type) || 'Container',
         props: { ...(props || {}), ...(rest || {}) },
         children: safeChildren,
     };
+}
+
+/** The canvas a section lands on when nothing above it paints one. */
+const CANVAS = { r: 255, g: 255, b: 255, a: 1 };
+
+/**
+ * Make the text the model coloured actually readable, in place.
+ *
+ * The prompt asks for contrast in prose and nothing ever checked: a heading in
+ * the palette's accent on the palette's light ground is below the WCAG floor in
+ * every palette we ship, and that is the most natural thing to do with an
+ * accent. Asking the model again would cost a round trip and might fail twice,
+ * while the correct colour here is computable - readableInk answers it from the
+ * ground itself - so this repairs rather than retries.
+ *
+ * Same rules as scripts/check-contrast.mjs, from the same module, because the
+ * script is what tells a template author their page cannot be read and the two
+ * must not disagree about the same page.
+ *
+ * Text over a photograph or footage is left alone: what it sits on depends on
+ * the pixels, which no prop knows. The `overlay` prop owns that case.
+ */
+function repairNodeContrast(node, ground, overMedia) {
+    if (!node || typeof node !== 'object') return;
+
+    const props = node.props || {};
+
+    // What this node's children will be sitting on.
+    let childGround = ground;
+    let childOverMedia = overMedia;
+
+    if (node.type === 'Video' && props.sourceType === 'background') {
+        childOverMedia = true;
+    } else if (props.backgroundImage) {
+        childOverMedia = true;
+    } else if (isColour(props.background) && (props.background.a ?? 1) > 0) {
+        childGround = composite(props.background, ground);
+    }
+
+    const specs = TEXT_PROPS[node.type];
+    if (specs && !overMedia) {
+        for (const spec of specs) {
+            // The label that follows its own fill is already readableInk's
+            // answer at render time. There is nothing here to correct.
+            if (spec.colour === ON_ACCENT) continue;
+
+            const current = isColour(spec.colour) ? spec.colour : props[spec.colour];
+            if (!isColour(current)) continue;
+
+            // An element that paints its own card sits on that card, not on the
+            // section behind it.
+            const fill = selfFill(spec, props);
+            const seat = fill ? composite(fill, ground) : ground;
+
+            const text = composite(current, seat);
+            const need = floorFor(specSize(spec, props), specWeight(spec, props));
+            if (contrastRatio(text, seat) + 0.005 >= need) continue;
+
+            props[spec.colour] = readableInk(seat);
+        }
+        node.props = props;
+    }
+
+    const children = Array.isArray(node.children) ? node.children : [];
+    for (const child of children) repairNodeContrast(child, childGround, childOverMedia);
+}
+
+/** Walk every page's sections, repairing any text that cannot be read. */
+export function repairContrast(layout) {
+    const pages = Array.isArray(layout?.pages)
+        ? layout.pages
+        : [{ sections: layout?.sections || [] }];
+
+    for (const page of pages) {
+        for (const section of page.sections || []) repairNodeContrast(section, CANVAS, false);
+    }
+    return layout;
 }
 
 export function normalizeLayout(parsed) {
@@ -152,10 +241,10 @@ export function normalizeLayout(parsed) {
             const wrapped = wrapToSections(page);
             return { name, slug, sections: (wrapped.sections || []).map(normalizeNode).filter(Boolean) };
         }).filter((page) => page.sections.length);
-        return { pages };
+        return repairContrast({ pages });
     }
     const wrapped = wrapToSections(parsed);
-    return { sections: (wrapped.sections || []).map(normalizeNode).filter(Boolean) };
+    return repairContrast({ sections: (wrapped.sections || []).map(normalizeNode).filter(Boolean) });
 }
 
 /** Swap IMAGE_PLACEHOLDER_n / VIDEO_PLACEHOLDER_n for real media, in place. */

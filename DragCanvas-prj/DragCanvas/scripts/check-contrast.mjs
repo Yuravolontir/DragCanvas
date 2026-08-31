@@ -23,132 +23,28 @@ import { fileURLToPath, pathToFileURL } from 'url';
 import { applyDefaultMotion } from './templates/_builder.mjs';
 import { templatePages } from './templates/_validate.mjs';
 import { readableInk } from '../src/utils/readableInk.js';
+import {
+  ON_ACCENT,
+  TEXT_PROPS,
+  composite,
+  contrastRatio as contrast,
+  isColour,
+  isLarge,
+} from '../src/utils/contrast.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /* ------------------------------------------------------------------ *
  * Colour
+ *
+ * The arithmetic, the WCAG size rule and the map of which prop is text all
+ * live in src/utils/contrast.js, because the AI path repairs colours with the
+ * same rules and the two must never disagree about the same page. What stays
+ * here is the walk, which has no counterpart there: this side has a flat
+ * Craft.js node map with parent pointers, that side has a nested tree.
  * ------------------------------------------------------------------ */
-
-const isColour = (value) => value && typeof value === 'object' && typeof value.r === 'number';
-
-/** sRGB relative luminance, per WCAG. */
-function luminance({ r, g, b }) {
-  const channel = (value) => {
-    const v = value / 255;
-    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
-  };
-  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
-}
-
-function contrast(foreground, background) {
-  const [light, dark] = [luminance(foreground), luminance(background)].sort((a, b) => b - a);
-  return (light + 0.05) / (dark + 0.05);
-}
-
-/** What `over` actually looks like once its alpha is applied to `under`. */
-function composite(over, under) {
-  const alpha = over.a ?? 1;
-  if (alpha >= 1) return over;
-  return {
-    r: Math.round(over.r * alpha + under.r * (1 - alpha)),
-    g: Math.round(over.g * alpha + under.g * (1 - alpha)),
-    b: Math.round(over.b * alpha + under.b * (1 - alpha)),
-    a: 1,
-  };
-}
 
 const show = (colour) => `rgb(${colour.r},${colour.g},${colour.b})`;
-
-/* ------------------------------------------------------------------ *
- * Which prop is the text, and which is the ground
- * ------------------------------------------------------------------ */
-
-/**
- * The text colours each element type carries, and how big that text is.
- *
- * `size` is the prop naming the font size when the element has one, and a
- * number when the element sets it in its own stylesheet — Stats prints its
- * figure at 42px whatever the page says, and a rule that assumed 15px would
- * report a heading-sized number as body text.
- *
- * `on` is the ground the element paints for itself: a badge's pill, a button's
- * fill. A function, when whether it paints one at all depends on another prop —
- * an unpadded Icon has no chip, and reading its `background` anyway reported
- * every icon in the gallery as invisible.
- *
- * `colour` is usually a prop name, and sometimes a colour outright: seven
- * elements print white on their accent with no way to change it — the pricing
- * table's featured button, the timeline's numbered rail, and every submit
- * button in the set. An accent light enough to be pretty is an accent those
- * labels vanish into, and nothing anywhere said so.
- */
-/** The label those seven elements actually print, which follows the fill. */
-const ON_ACCENT = 'auto';
-const TEXT_PROPS = {
-  Text: [{ colour: 'color', size: 'fontSize', weight: 'fontWeight' }],
-  Heading: [{ colour: 'color', size: 'fontSize', weight: 700 }],
-  Button: [{ colour: 'color', on: 'background', size: 16, weight: 600 }],
-  Link: [{ colour: 'color', size: 'fontSize' }],
-  Badge: [{ colour: 'color', on: 'background', size: 13, weight: 600 }],
-  Quote: [{ colour: 'color', size: 'fontSize' }],
-  List: [{ colour: 'color', size: 15 }],
-  Stats: [
-    { colour: 'accent', size: 42, weight: 800 },
-    { colour: 'color', size: 14 },
-  ],
-  Testimonial: [{ colour: 'color', on: 'background', size: 18 }],
-  Timeline: [
-    { colour: 'color', size: 15 },
-    { colour: 'accent', size: 15 },
-    { colour: ON_ACCENT, on: 'accent', size: 14, weight: 700 },
-  ],
-  TeamGrid: [{ colour: 'color', size: 15 }],
-  Accordion: [{ colour: 'color', on: 'background', size: 15 }],
-  Pricing: [
-    { colour: 'color', on: 'background', size: 15 },
-    { colour: ON_ACCENT, on: 'accent', size: 15, weight: 600 },
-  ],
-  CTABanner: [
-    { colour: 'color', on: 'background', size: 26, weight: 700 },
-    { colour: 'buttonColor', on: 'buttonBackground', size: 16, weight: 600 },
-  ],
-  SocialLinks: [{ colour: 'color', on: 'background', size: 16 }],
-  LogoStrip: [{ colour: 'color', size: 16 }],
-  Newsletter: [
-    { colour: 'color', size: 15 },
-    { colour: ON_ACCENT, on: 'accent', size: 15, weight: 600 },
-  ],
-  Tabs: [{ colour: 'accent', size: 15, weight: 700 }],
-  Countdown: [{ colour: 'accent', size: 30, weight: 700 }],
-  ProductCatalog: [
-    { colour: 'accent', size: 15 },
-    { colour: ON_ACCENT, on: 'accent', size: 15, weight: 600 },
-  ],
-  NavbarElement: [{ colour: 'textColor', on: 'background', size: 15 }],
-  Icon: [{ colour: 'color', on: (props) => (props.padded === 'yes' ? props.background : null), size: 32, weight: 700 }],
-  Form: [
-    { colour: 'textColor', on: 'background', size: 15 },
-    { colour: ON_ACCENT, on: 'accent', size: 15, weight: 600 },
-  ],
-  Booking: [
-    { colour: 'color', size: 15 },
-    { colour: ON_ACCENT, on: 'accent', size: 15, weight: 600 },
-  ],
-  Engagement: [
-    { colour: 'color', size: 15 },
-    { colour: ON_ACCENT, on: 'accent', size: 15, weight: 600 },
-  ],
-  Map: [{ colour: 'color', size: 14 }],
-};
-
-/** Large text gets the easier threshold, exactly as WCAG defines it. */
-const isLarge = (size, weight) => {
-  const px = Number(size) || 15;
-  const bold = Number(weight) >= 700;
-  return px >= 24 || (bold && px >= 18.66);
-};
-
 /* ------------------------------------------------------------------ *
  * Walking the tree
  * ------------------------------------------------------------------ */

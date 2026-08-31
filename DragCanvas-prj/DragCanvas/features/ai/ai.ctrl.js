@@ -11,6 +11,28 @@ const pagesOf = layout => Array.isArray(layout?.pages) ? layout.pages : [{ name:
 const sectionCount = layout => pagesOf(layout).reduce((total, page) => total + (page.sections || []).length, 0);
 const PAGE_REFINE_TOKENS = Number(process.env.AI_PAGE_MAX_TOKENS) || 12000;
 
+/**
+ * Words that mean the visitor asked for a page that moves.
+ *
+ * The prompt tells the model to open with a background video and it complies
+ * when it feels like it, so the one criterion worth spending a retry on is the
+ * one the person actually asked for. A law firm or a dashboard is usually
+ * better without a video hero - the prompt says a video opening suits *most*
+ * sites, not all - so requiring one everywhere would spend an attempt on every
+ * site that is better off plain and make every opening identical.
+ */
+const MOTION_WORDS = /\b(video|animat|motion|moving|footage|cinematic|dynamic|parallax|reel|clip)/i;
+export const wantsMotion = (prompt) => MOTION_WORDS.test(String(prompt || ''));
+
+/** Does any page open on footage? */
+export function hasVideoHero(layout) {
+    const found = (nodes) => (nodes || []).some(node => (
+        (node?.type === 'Video' && node?.props?.sourceType === 'background')
+        || found(node?.children)
+    ));
+    return pagesOf(layout).some(page => found(page.sections));
+}
+
 /** Run `work` over `items` at bounded concurrency, keeping every outcome instead
  *  of rejecting the whole batch on the first failure. */
 async function mapConcurrentSettled(items, concurrency, work) {
@@ -158,6 +180,10 @@ export async function generateWebsite(req, res) {
         ? `${cleanPrompt}\n\nCreate a complete multi-page site with 3-5 purposeful pages. Use real page links in every navbar.`
         : cleanPrompt;
     let lastProblem = 'unknown';
+    // A page that is good except for the motion the visitor asked for is still a
+    // page. It is held here so the last attempt can return it rather than fail.
+    let bestSoFar = null;
+    const motionWanted = wantsMotion(cleanPrompt);
 
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
         try {
@@ -166,6 +192,17 @@ export async function generateWebsite(req, res) {
             const totalSections = sectionCount(layout);
             if (totalSections < MIN_SECTIONS || (multiPage && pagesOf(layout).length < 2)) {
                 lastProblem = multiPage && pagesOf(layout).length < 2 ? 'only one page generated' : `only ${totalSections} section(s) generated`;
+                console.log(`[AI] attempt ${attempt}/${MAX_ATTEMPTS}: ${lastProblem}`);
+                continue;
+            }
+
+            // Asked for motion and opened on a still image: worth one more ask.
+            // Retrying rather than repairing on purpose - grafting a video
+            // section into a composition built around an image would be our
+            // judgement replacing the model's, and it reads as neither.
+            if (motionWanted && !hasVideoHero(layout) && attempt < MAX_ATTEMPTS) {
+                bestSoFar = layout;
+                lastProblem = 'no video hero although the request asked for motion';
                 console.log(`[AI] attempt ${attempt}/${MAX_ATTEMPTS}: ${lastProblem}`);
                 continue;
             }
@@ -195,7 +232,15 @@ export async function generateWebsite(req, res) {
 
             // A configuration or billing problem will not fix itself by asking again
             if (providerRefusal(error)) {
-                return res.status(502).json(buildErrorResponse(error.message));
+                // Never withhold a usable page because it opens on a still: the criterion
+    // exists to raise the average, not to punish a visitor who is waiting.
+    if (bestSoFar) {
+        console.log(`[AI] returning a layout without a video hero after ${MAX_ATTEMPTS} attempts`);
+        fillRemainingVideoPlaceholders(bestSoFar, cleanPrompt);
+        return res.status(200).json(buildSuccessResponse(bestSoFar));
+    }
+
+    return res.status(502).json(buildErrorResponse(error.message));
             }
             if (error.retryable && attempt < MAX_ATTEMPTS) {
                 await sleep(retryBackoffMs(attempt));
