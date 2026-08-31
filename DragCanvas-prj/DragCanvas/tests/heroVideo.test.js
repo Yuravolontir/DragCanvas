@@ -49,10 +49,16 @@ test('the still hero keeps its words, its crop and its photograph', () => {
     assert.equal(hasVideoHero(layout), true);
 });
 
-test('a hero that is not a full-bleed photograph is left alone', () => {
-    const plain = { sections: [{ type: 'Container', props: {}, children: [{ type: 'Heading', props: {}, children: [] }] }] };
-    assert.equal(promoteHeroToVideo(plain, 'anything'), false);
+test('a hero with no photograph of its own still gets the clip', () => {
+    // Widened deliberately: requiring a background image meant almost no
+    // generated page qualified, because the model usually opens with a two
+    // column band and an ordinary Image rather than a full-bleed photo.
+    const plain = { sections: [{ type: 'Container', props: {}, children: [{ type: 'Heading', props: { text: 'Hello' }, children: [] }] }] };
+    assert.equal(promoteHeroToVideo(plain, 'anything'), true);
+    assert.equal(plain.sections[0].children[0].props.poster, undefined, 'no still to show first, so no poster');
+});
 
+test('a section with nothing in it is left alone', () => {
     const empty = { sections: [{ type: 'Container', props: { backgroundImage: 'x.jpg' }, children: [] }] };
     assert.equal(promoteHeroToVideo(empty, 'anything'), false, 'nothing to put in front of the footage');
 });

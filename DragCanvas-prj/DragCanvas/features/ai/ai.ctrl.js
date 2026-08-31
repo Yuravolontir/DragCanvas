@@ -1,5 +1,5 @@
 import * as aiService from './ai.service.js';
-import { safeParseAIJson, normalizeLayout, replacePlaceholdersInJson, fillRemainingVideoPlaceholders, promoteHeroToVideo } from '../../utils/ai.helpers.js';
+import { safeParseAIJson, normalizeLayout, replacePlaceholdersInJson, fillRemainingVideoPlaceholders, promoteHeroToVideo, splitConcatenatedPages } from '../../utils/ai.helpers.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
 import { cloudinary } from '../../middlewares/files.js';
 import AssetMdl from '../assets/asset.mdl.js';
@@ -238,14 +238,18 @@ export async function generateWebsite(req, res) {
             // requests a file named after the placeholder and shows nothing.
             fillRemainingVideoPlaceholders(layout, cleanPrompt);
 
+            // A whole site written as one page, navbars and all, before any of
+            // the below looks at "the first section of the first page".
+            const split = splitConcatenatedPages(layout);
+
             // Still opening on a photograph: give the hero a clip behind the
             // words it already has, rather than shipping the one thing the
             // prompt says most sites want moving and nothing ever enforced.
-            if (motionWanted && !hasVideoHero(layout) && promoteHeroToVideo(layout, cleanPrompt)) {
+            if (motionWanted && !hasVideoHero(split) && promoteHeroToVideo(split, cleanPrompt)) {
                 console.log('[AI] promoted the still hero to a background video');
             }
 
-            return res.status(200).json(buildSuccessResponse(layout));
+            return res.status(200).json(buildSuccessResponse(split));
         } catch (error) {
             lastProblem = error.message;
             console.log(`[AI] attempt ${attempt}/${MAX_ATTEMPTS} failed: ${error.message}`);
@@ -257,8 +261,9 @@ export async function generateWebsite(req, res) {
     if (bestSoFar) {
         console.log(`[AI] returning a layout without a video hero after ${MAX_ATTEMPTS} attempts`);
         fillRemainingVideoPlaceholders(bestSoFar, cleanPrompt);
-        if (!hasVideoHero(bestSoFar)) promoteHeroToVideo(bestSoFar, cleanPrompt);
-        return res.status(200).json(buildSuccessResponse(bestSoFar));
+        const splitBest = splitConcatenatedPages(bestSoFar);
+        if (!hasVideoHero(splitBest)) promoteHeroToVideo(splitBest, cleanPrompt);
+        return res.status(200).json(buildSuccessResponse(splitBest));
     }
 
     return res.status(502).json(buildErrorResponse(error.message));

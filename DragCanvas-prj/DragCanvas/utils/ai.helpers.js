@@ -219,45 +219,112 @@ function repairNodeContrast(node, ground, overMedia) {
     for (const child of children) repairNodeContrast(child, childGround, childOverMedia);
 }
 
+/** A navbar, whether it is the section itself or the only thing in it. */
+function navbarOf(section) {
+    if (!section || typeof section !== 'object') return null;
+    if (section.type === 'NavbarElement') return section;
+    const kids = Array.isArray(section.children) ? section.children : [];
+    return kids.find(kid => kid?.type === 'NavbarElement') || null;
+}
+
+/** The first piece of text in a chunk, for naming the page it becomes. */
+function firstHeading(nodes) {
+    for (const node of nodes || []) {
+        if (!node || typeof node !== 'object') continue;
+        if ((node.type === 'Heading' || node.type === 'Text') && typeof node.props?.text === 'string') {
+            const text = node.props.text.trim();
+            if (text) return text;
+        }
+        const found = firstHeading(node.children);
+        if (found) return found;
+    }
+    return '';
+}
+
 /**
- * Give a still hero the motion it was asked for, without inventing a section.
+ * Cut a whole site that arrived as one page into the pages it describes.
  *
- * Retrying is the honest answer to a missing video hero - grafting one in is our
- * judgement replacing the model's - but a retry can come back still. This is the
- * last resort, and it is deliberately the smallest possible edit: the model
- * already chose a full-bleed opening with a photograph behind it, so the
- * photograph becomes the poster and a clip plays behind the same words, in the
- * same composition, at the same crop. Nothing moves and nothing is added.
+ * Asked for a site with real page links, the model writes the navbar links
+ * correctly - /about/, /classes/, /contact/ - and then keeps writing, so About,
+ * Classes and Contact arrive as more sections of the home page. The result is
+ * one enormous page carrying four navbars and four footers, whose links point at
+ * pages that do not exist, and every site looks the same because what you are
+ * looking at is every page of it at once.
  *
- * Only ever the first section of the first page, and only when that section
- * really is a full-bleed hero: a background image with children sitting on it.
- * A page whose opening is a plain white band is left alone, because turning that
- * into footage is a design decision nobody asked for.
+ * A second navbar is the tell. Nothing else in the vocabulary repeats a whole
+ * navigation bar mid-page, so each one after the first opens a new page, and the
+ * heading that follows it names that page.
+ */
+export function splitConcatenatedPages(layout) {
+    if (!layout || (Array.isArray(layout.pages) && layout.pages.length > 1)) return layout;
+
+    const sections = Array.isArray(layout.sections)
+        ? layout.sections
+        : (layout.pages?.[0]?.sections || []);
+    const cuts = sections.map((section, index) => (navbarOf(section) ? index : -1)).filter(index => index >= 0);
+    if (cuts.length < 2) return layout;
+
+    // A navbar that is not the very first section still opens its own page; the
+    // sections before it belong to the page that came earlier.
+    const starts = cuts[0] === 0 ? cuts : [0, ...cuts];
+    const chunks = starts.map((start, i) => sections.slice(start, starts[i + 1] ?? sections.length))
+        .filter(chunk => chunk.length);
+
+    const used = new Set(['home']);
+    const pages = chunks.map((chunk, index) => {
+        if (index === 0) return { name: 'Home', slug: 'home', sections: chunk };
+        const name = (firstHeading(chunk) || `Page ${index + 1}`).slice(0, 80);
+        let slug = name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40);
+        if (!slug || used.has(slug)) slug = `page-${index + 1}`;
+        used.add(slug);
+        return { name, slug, sections: chunk };
+    });
+
+    console.log(`[AI] one page carrying ${cuts.length} navbars: split into ${pages.length} pages`);
+    return { pages };
+}
+
+/**
+ * Open the page on moving footage.
  *
- * @returns {boolean} whether anything was promoted
+ * The prompt has asked for a background video hero for a long time and the model
+ * supplies one when it feels like it, so this stops asking. The composition the
+ * model chose is kept exactly: whatever it put at the top stays at the top, in
+ * the same order, at the same crop - a clip is simply placed behind it, with the
+ * best still already on the page as the poster, so nothing changes until the
+ * footage loads.
+ *
+ * The navbar is skipped rather than wrapped. It is a section like any other in
+ * this shape, and putting footage behind the navigation is not a hero.
+ *
+ * @returns {boolean} whether a hero now carries video
  */
 export function promoteHeroToVideo(layout, subject) {
-    const pages = Array.isArray(layout?.pages)
-        ? layout.pages
-        : [{ sections: layout?.sections || [] }];
-    const hero = pages[0]?.sections?.[0];
-    if (!hero || typeof hero !== 'object') return false;
+    const pages = Array.isArray(layout?.pages) ? layout.pages : [{ sections: layout?.sections || [] }];
+    const sections = pages[0]?.sections;
+    if (!Array.isArray(sections) || !sections.length) return false;
 
+    const heroIndex = sections.findIndex(section => section && typeof section === 'object' && !navbarOf(section));
+    if (heroIndex === -1) return false;
+
+    const hero = sections[heroIndex];
     const props = hero.props || {};
-    const poster = props.backgroundImage;
-    if (!poster || typeof poster !== 'string') return false;
     if (!Array.isArray(hero.children) || hero.children.length === 0) return false;
 
+    // The best still already on this hero becomes the poster, so the first
+    // frame a visitor sees is the picture the model chose for the page.
+    const poster = typeof props.backgroundImage === 'string' ? props.backgroundImage : firstImageSrc(hero);
     const clip = pickStockClip(subject);
+
     hero.children = [
         {
             type: 'Video',
             props: {
                 sourceType: 'background',
                 src: clip.url,
-                poster,
-                // The scrim the prompt asks for by default: enough that white
-                // type reads over footage nobody has seen yet.
+                ...(poster ? { poster } : {}),
+                // The scrim the prompt asks for by default: enough that type
+                // reads over footage nobody has seen yet.
                 overlay: 45,
                 position: 'center',
                 minHeight: '480px',
@@ -273,6 +340,20 @@ export function promoteHeroToVideo(layout, subject) {
     delete props.backgroundImage;
     hero.props = props;
     return true;
+}
+
+/** The first image URL anywhere inside a node, for use as a poster. */
+function firstImageSrc(node) {
+    if (!node || typeof node !== 'object') return '';
+    const src = node.props?.src;
+    if (node.type === 'Image' && typeof src === 'string' && /^https?:\/\//.test(src)) return src;
+    const bg = node.props?.backgroundImage;
+    if (typeof bg === 'string' && /^https?:\/\//.test(bg)) return bg;
+    for (const child of node.children || []) {
+        const found = firstImageSrc(child);
+        if (found) return found;
+    }
+    return '';
 }
 
 /** Walk every page's sections, repairing any text that cannot be read. */
