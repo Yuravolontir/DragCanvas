@@ -37,6 +37,9 @@ function stageLabel(stage) {
      * wait can say which it is in, and how many pictures are left.
      */
     const [stage, setStage] = useState(null);
+    // The layout phase reports nothing until it answers, so the bar's estimate
+    // needs its own heartbeat or it would sit still for half a minute.
+    const [elapsed, setElapsed] = useState(0);
     const [error, setError] = useState(null);
     // low / balanced / bold -> temperature on the server
     const [creativity, setCreativity] = useState('balanced');
@@ -174,6 +177,14 @@ function stageLabel(stage) {
      * permanent HTTPS URL. A null means "leave the placeholder", so one failed
      * image never costs the whole page.
      */
+    useEffect(() => {
+      if (!loading) { setElapsed(0); return undefined; }
+      const startedAt = Date.now();
+      setElapsed(0);
+      const id = setInterval(() => setElapsed(Date.now() - startedAt), 250);
+      return () => clearInterval(id);
+    }, [loading]);
+
     const generateImage = async (imagePrompt) => {
       try {
         const res = await fetch(`${API_URL}/api/ai/image`, {
@@ -346,27 +357,24 @@ function stageLabel(stage) {
             <div className="ai-generation-spinner" aria-hidden="true" />
             <strong>{stageLabel(stage)}</strong>
             {(() => {
-              const progress = stageProgress(stage);
+              const progress = stageProgress(stage, elapsed);
               return (
                 <>
                   <div
                     className="ai-generation-progress"
-                    data-mode={progress.mode}
                     role="progressbar"
                     aria-valuemin={0}
                     aria-valuemax={100}
-                    {...(progress.mode === 'value'
-                      ? { 'aria-valuenow': Math.round(progress.value * 100) }
-                      : {})}
+                    aria-valuenow={progress.percent}
                   >
                     <div
                       className="ai-generation-progress-fill"
-                      style={progress.mode === 'value'
-                        ? { width: `${Math.round(progress.value * 100)}%` }
-                        : undefined}
+                      style={{ width: `${progress.percent}%` }}
                     />
                   </div>
-                  {progress.step && <span className="ai-generation-step">{progress.step}</span>}
+                  <span className="ai-generation-step">
+                    {progress.percent}%{progress.step ? ` · ${progress.step}` : ''}
+                  </span>
                 </>
               );
             })()}

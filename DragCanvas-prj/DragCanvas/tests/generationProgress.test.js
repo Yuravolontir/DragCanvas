@@ -1,48 +1,61 @@
 /**
- * The bar over the generation modal.
+ * The percentage over the generation modal.
  *
- * Only one phase can measure itself, and the bar says so rather than inventing
- * a number for the others: a bar that creeps to 90% and waits is a lie people
- * learn to distrust, and then the honest phase is not believed either.
+ * "How much longer" is the question, so the bar always answers with a number.
+ * The image phase counts itself exactly; the layout call reports nothing until
+ * it answers, so its share is estimated from elapsed time - and the estimate
+ * must never reach the end of its phase, or the bar parks at a number and the
+ * next honest one is not believed.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { stageProgress } from '../src/utils/generationProgress.js';
 
-test('a phase that cannot measure itself sweeps instead of guessing', () => {
-    for (const stage of [null, { name: 'layout' }, { name: 'refining' }, { name: 'unknown' }]) {
-        assert.equal(stageProgress(stage).mode, 'sweep', JSON.stringify(stage));
-        assert.equal(stageProgress(stage).value, undefined);
+test('the bar starts at zero and always moves while the layout is written', () => {
+    assert.equal(stageProgress({ name: 'layout' }, 0).percent, 0);
+
+    let last = -1;
+    for (const ms of [500, 2000, 6000, 12000, 20000, 35000]) {
+        const { percent } = stageProgress({ name: 'layout' }, ms);
+        assert.ok(percent > last, `stalled at ${ms}ms`);
+        last = percent;
     }
 });
 
-test('drawing images reports a real fraction and a step count', () => {
-    const none = stageProgress({ name: 'images', remaining: 4, total: 4 });
-    assert.equal(none.mode, 'value');
-    assert.equal(none.step, '0 of 4');
-
-    const half = stageProgress({ name: 'images', remaining: 2, total: 4 });
-    assert.ok(half.value > none.value, 'the bar must move as images land');
-    assert.equal(half.step, '2 of 4');
-
-    const all = stageProgress({ name: 'images', remaining: 0, total: 4 });
-    assert.equal(all.step, '4 of 4');
-    assert.ok(all.value > half.value);
-    assert.ok(all.value < 1, 'placing the page still has to happen');
-});
-
-test('an image phase with nothing to draw does not divide by zero', () => {
-    assert.equal(stageProgress({ name: 'images', remaining: 0, total: 0 }).mode, 'sweep');
-});
-
-test('progress never runs backwards or past the end', () => {
-    let last = 0;
-    for (const remaining of [6, 5, 4, 3, 2, 1, 0]) {
-        const { value } = stageProgress({ name: 'images', remaining, total: 6 });
-        assert.ok(value >= last, `went backwards at ${remaining}`);
-        assert.ok(value <= 1);
-        last = value;
+test('the estimate never claims the layout phase is finished', () => {
+    // Even after five minutes it stays under its own share, so the jump to the
+    // image phase is always forwards.
+    for (const ms of [60000, 180000, 300000]) {
+        assert.ok(stageProgress({ name: 'layout' }, ms).percent < 45, `overshot at ${ms}ms`);
     }
-    assert.equal(stageProgress({ name: 'placing' }).value, 1);
+});
+
+test('drawing images is measured, not estimated', () => {
+    const start = stageProgress({ name: 'images', remaining: 4, total: 4 }, 99999);
+    assert.equal(start.percent, 45, 'the layout share is banked whole once images begin');
+    assert.equal(start.step, '0 of 4 images');
+
+    assert.equal(stageProgress({ name: 'images', remaining: 2, total: 4 }, 0).percent, 70);
+    assert.equal(stageProgress({ name: 'images', remaining: 0, total: 4 }, 0).percent, 95);
+    assert.equal(stageProgress({ name: 'images', remaining: 1, total: 4 }, 0).step, '3 of 4 images');
+});
+
+test('a run with no images to draw does not divide by zero', () => {
+    assert.equal(stageProgress({ name: 'images', remaining: 0, total: 0 }, 0).percent, 45);
+});
+
+test('progress never runs backwards across the whole run', () => {
+    const run = [
+        stageProgress({ name: 'layout' }, 1000),
+        stageProgress({ name: 'layout' }, 15000),
+        stageProgress({ name: 'images', remaining: 3, total: 3 }, 0),
+        stageProgress({ name: 'images', remaining: 1, total: 3 }, 0),
+        stageProgress({ name: 'images', remaining: 0, total: 3 }, 0),
+        stageProgress({ name: 'placing' }, 0),
+    ];
+    for (let i = 1; i < run.length; i += 1) {
+        assert.ok(run[i].percent >= run[i - 1].percent, `went backwards at step ${i}`);
+    }
+    assert.equal(run.at(-1).percent, 100);
 });

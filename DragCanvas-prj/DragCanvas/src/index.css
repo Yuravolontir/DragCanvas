@@ -143,12 +143,11 @@
 /*
  * How far along the generation is.
  *
- * Two modes on purpose. Drawing the images is the one phase that knows its own
- * size - the client holds the list of prompts and counts them down - so there
- * the bar is real and moves in proportion. Writing the layout is one call to a
- * provider that reports nothing until it answers, so the bar sweeps instead of
- * inventing a percentage. A bar that creeps to 90% and waits is a lie people
- * learn to distrust, and then the honest phase is not believed either.
+ * Always a number, because "how much longer" is the question being asked.
+ * Drawing the images is measured exactly; the layout call reports nothing until
+ * it answers, so its share is estimated from elapsed time on a curve that
+ * approaches the end of the phase without reaching it - the bar always moves,
+ * and never claims a phase finished early.
  */
 .ai-generation-progress {
   width: 100%;
@@ -165,32 +164,14 @@
   transition: width 320ms ease;
 }
 
-.ai-generation-progress[data-mode="sweep"] .ai-generation-progress-fill {
-  width: 35%;
-  animation: ai-generation-sweep 1.4s ease-in-out infinite;
-}
-
-@keyframes ai-generation-sweep {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(340%); }
-}
-
 .ai-generation-step {
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ai-generation-progress[data-mode="sweep"] .ai-generation-progress-fill {
-    width: 100%;
-    animation: none;
-    opacity: 0.55;
-  }
-  .ai-generation-progress-fill { transition: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
   .ai-generation-spinner { animation-duration: 1.8s; }
+  .ai-generation-progress-fill { transition: none; }
 }
 
 /*
