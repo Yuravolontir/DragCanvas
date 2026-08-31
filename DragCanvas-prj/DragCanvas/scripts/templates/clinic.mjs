@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 
 /** Dental clinic — reassurance, then the practical facts, then the questions people are afraid to ask. */
@@ -26,7 +26,7 @@ export default function clinic() {
     fontSize: '17', color: rgba(255, 255, 255, 0.82),
   });
   b.button(words, 'Book a check-up', { background: TEAL, color: WHITE, buttonStyle: 'full' });
-  b.image(top, P.clinic.hygienist(900), { alt: 'Dental hygienist preparing a bright treatment room', radius: 12, width: '100%', height: '400px' });
+  b.image(top, P.clinic.hygienist(900), { alt: 'Dental hygienist preparing a bright treatment room', radius: RADIUS.card, width: '100%', height: '400px' });
 
   // ── the practice in three numbers ──────────────────────────────
   const num = b.container(root, { background: MIST, padding: ['32', '48', '8', '48'], width: '100%' }, 'Numbers');
@@ -43,7 +43,7 @@ export default function clinic() {
     ['Hygiene', 'cleaning_services', 'A proper clean, and honest advice about the brushing.'],
     ['Repairs', 'build', 'Fillings, crowns and the rest, quoted before we start.'],
   ]) {
-    const card = b.container(cols, { background: PANEL, padding: ['26', '24', '26', '24'], radius: 12 }, name);
+    const card = b.container(cols, { background: PANEL, padding: ['26', '24', '26', '24'], shadow: SHADOW.lifted, radius: RADIUS.card }, name);
     b.icon(card, symbol, { color: WHITE, background: TEAL });
     b.heading(card, name, { level: '3', fontSize: '19', color: INK, margin: ['14', '0', '6', '0'] });
     b.text(card, copy, { fontSize: '15', color: MUTED });
@@ -59,7 +59,7 @@ export default function clinic() {
   ], { columns: '3', accent: PANEL, color: INK });
 
   // ── what it costs, in writing ──────────────────────────────────
-  const cost = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%', alignItems: 'center' }, 'Prices');
+  const cost = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%', alignItems: 'center' }, 'Prices');
   b.heading(cost, 'The prices, on the website', { fontSize: '30', textAlign: 'center', color: INK });
   b.text(cost, 'Nobody should have to ask. Anything beyond these is quoted in writing before it starts.', {
     fontSize: '15', textAlign: 'center', color: MUTED, margin: ['10', '0', '24', '0'],
@@ -70,14 +70,14 @@ export default function clinic() {
     'Whitening', '₪900', 'one course', 'Ask us', 'Assessment first; Not for everyone; Results in writing',
   ], { featured: 1, accent: TEAL, background: MIST, color: INK });
 
-  const said = b.container(root, { background: MIST, padding: ['48', '48', '48', '48'], width: '100%' }, 'Said');
+  const said = b.container(root, { background: MIST, padding: PAD.regular, width: '100%' }, 'Said');
   b.testimonial(said, {
     quote: 'I had not been to a dentist in six years. They did not lecture me once, and the plan was on paper before anything hurt.',
     author: 'Michal Arad', role: 'Patient since 2024',
     background: PANEL, color: INK, accent: TEAL,
   });
 
-  const q = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'questions' }, 'Questions');
+  const q = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%', anchor: 'questions' }, 'Questions');
   b.heading(q, 'The things people do not like asking', { fontSize: '30', color: INK });
   b.spacer(q, '20');
   b.accordion(q, [
@@ -87,10 +87,10 @@ export default function clinic() {
     'A check-up is ₪250. Anything else is quoted in writing before we begin.',
     'I have not been in years.',
     'Most of our new patients say that. Come in for a look and we will make a plan.',
-  ], { background: MIST, color: INK, radius: 12 });
+  ], { background: MIST, color: INK, radius: RADIUS.card });
 
   // ── booking, then the door ─────────────────────────────────────
-  const book = b.container(root, { background: MIST, padding: ['48', '48', '48', '48'], width: '100%' }, 'Book');
+  const book = b.container(root, { background: MIST, padding: PAD.regular, width: '100%' }, 'Book');
   const bookSplit = b.columns(book, { count: '2', gap: '40', ratio: '3:2', stack: 'yes' });
   const bookCopy = b.container(bookSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Book copy');
   b.heading(bookCopy, 'Book the first look', { fontSize: '30', color: INK });

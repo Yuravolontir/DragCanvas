@@ -1,258 +1,166 @@
 import { apiFetch } from './api.js';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import NavBar from './NavBar';
-import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from './userContext.js';
 import DOMPurify from 'dompurify';
+import './NotificationsPage.css';
 
-/**
- * Notification bodies are written by admins and rendered as HTML, so they are
- * cleaned before they reach the DOM.
- *
- * Note on the actual risk: innerHTML does not execute <script> tags, so the
- * real vector is an event handler - <img src=x onerror="...">. The allowlist
- * below drops both, along with anything else not needed for a short message.
- */
 const ALLOWED_TAGS = ['b', 'i', 'em', 'strong', 'u', 'p', 'br', 'ul', 'ol', 'li', 'a', 'span', 'h1', 'h2', 'h3'];
 const ALLOWED_ATTR = ['href', 'title', 'target', 'rel'];
-
-const cleanHtml = (html) =>
-  DOMPurify.sanitize(String(html ?? ''), { ALLOWED_TAGS, ALLOWED_ATTR });
+const TYPES = {
+  newsletter: { label: 'Newsletter', icon: 'mail' },
+  birthday: { label: 'Birthday', icon: 'cake' },
+  event: { label: 'Event', icon: 'event' },
+  general: { label: 'General', icon: 'notifications' },
+};
+const cleanHtml = (html) => DOMPurify.sanitize(String(html ?? ''), { ALLOWED_TAGS, ALLOWED_ATTR });
+const plainText = (html) => String(html ?? '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+const isDocument = (html) => /<!doctype|<html/i.test(String(html ?? ''));
+const formatDate = (value) => {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? 'Date unavailable' : new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(date);
+};
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
-  const [expandedType, setExpandedType] = useState(null);
-  const [expandedNotificationId, setExpandedNotificationId] = useState(null);
+  const [activeType, setActiveType] = useState('all');
+  const [expandedId, setExpandedId] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [loadError, setLoadError] = useState('');
   const [notificationToDelete, setNotificationToDelete] = useState(null);
-  const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
   const navigate = useNavigate();
   const { currentUser, refreshNotifications } = useUserContext();
 
   useEffect(() => {
     if (!currentUser && !loading) {
       navigate('/login', { replace: true });
-      return;
+      return undefined;
     }
-    if (!currentUser?.User_ID) return;
+    if (!currentUser?.User_ID) return undefined;
 
-    const fetchNotifications = async () => {
+    let cancelled = false;
+    const load = async () => {
       try {
-        const data = await apiFetch('/api/notifications/user');
-        setNotifications(Array.isArray(data) ? data : []);
-
-        const viewedIds = data.map(n => n.Notification_ID);
-        localStorage.setItem(`viewedNotifications_${currentUser.User_ID}`, JSON.stringify(viewedIds));
-
-        if (viewedIds.length > 0) {
-          apiFetch('/api/notifications/mark-viewed', {
-            method: 'PUT',
-            body: { notificationIds: viewedIds }
-          }).catch(err => console.error('Mark viewed error:', err));
-        }
+        const response = await apiFetch('/api/notifications/user');
+        const data = Array.isArray(response) ? response : [];
+        if (cancelled) return;
+        setNotifications(data);
+        const ids = data.map((item) => item.Notification_ID);
+        localStorage.setItem(`viewedNotifications_${currentUser.User_ID}`, JSON.stringify(ids));
+        if (ids.length) apiFetch('/api/notifications/mark-viewed', { method: 'PUT', body: { notificationIds: ids } }).catch(console.error);
         refreshNotifications();
-      } catch (err) {
-        console.error('Failed to fetch notifications:', err);
+      } catch (error) {
+        if (!cancelled) setLoadError('We could not load your notifications. Please refresh and try again.');
+        console.error('Failed to fetch notifications:', error);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
-    fetchNotifications();
-    // `loading` is listed because the guard above reads it. `refreshNotifications`
-    // is not: it comes from the context and is a new function on every render, so
-    // listing it would make this effect refetch forever.
+    load();
+    return () => { cancelled = true; };
+    // refreshNotifications changes identity on context renders.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser, navigate, loading]);
+  }, [currentUser?.User_ID, navigate]);
 
-  const handleDeleteClick = (notificationId) => {
-    setNotificationToDelete(notificationId);
-    setShowDeleteModal(true);
-  };
+  const counts = useMemo(() => notifications.reduce((result, item) => {
+    const type = item.NotificationType || 'general';
+    result[type] = (result[type] || 0) + 1;
+    return result;
+  }, {}), [notifications]);
 
+  const visible = useMemo(() => [...notifications]
+    .filter((item) => activeType === 'all' || (item.NotificationType || 'general') === activeType)
+    .sort((a, b) => new Date(b.SentDate).getTime() - new Date(a.SentDate).getTime()), [activeType, notifications]);
+
+  const askDelete = (id) => setNotificationToDelete(id);
   const confirmDelete = async () => {
-    setShowDeleteModal(false);
+    const id = notificationToDelete;
+    setNotificationToDelete(null);
     try {
-      await apiFetch(`/api/notifications/${notificationToDelete}`, { method: 'DELETE' });
-      setNotifications(notifications.filter(n => n.Notification_ID !== notificationToDelete));
+      await apiFetch(`/api/notifications/${id}`, { method: 'DELETE' });
+      setNotifications((items) => items.filter((item) => item.Notification_ID !== id));
+      setExpandedId((current) => current === id ? null : current);
       refreshNotifications();
-    } catch (err) {
-      console.error('Delete error:', err);
-      setErrorMessage('Error deleting notification');
-      setShowErrorModal(true);
-    } finally {
-      setNotificationToDelete(null);
+    } catch (error) {
+      console.error('Delete error:', error);
+      setErrorMessage('The notification could not be deleted. Please try again.');
     }
   };
 
-  const groupedNotifications = notifications.reduce((groups, notif) => {
-    const type = notif.NotificationType || 'general';
-    if (!groups[type]) groups[type] = [];
-    groups[type].push(notif);
-    return groups;
-  }, {});
-
-  const typeConfig = {
-    newsletter: { color: 'var(--primary)', bg: 'var(--primary-light)', label: 'Newsletter' },
-    birthday: { color: 'var(--tertiary)', bg: 'var(--tertiary-light)', label: 'Birthday' },
-    event: { color: 'var(--success)', bg: '#d1fae5', label: 'Event' },
-    general: { color: 'var(--muted)', bg: 'var(--surface-container)', label: 'General' },
-  };
-
-  if (loading) {
-    return (
-      <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
-        <NavBar />
-        <Container style={{ paddingTop: '120px', textAlign: 'center', maxWidth: '700px' }}>
-          <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: 'var(--muted)', fontSize: '0.95rem' }}>
-            Loading notifications...
-          </div>
-        </Container>
-      </div>
-    );
-  }
-
   return (
-    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
+    <div className="notifications-page">
       <NavBar />
-      <Container style={{ paddingTop: '100px', maxWidth: '700px', paddingBottom: '60px' }}>
-        {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '28px' }}>
-          <div style={{
-            width: '40px', height: '40px', background: 'var(--primary-light)',
-            borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--primary)' }}>notifications</span>
-          </div>
+      <main className="notifications-shell">
+        <header className="notifications-heading">
+          <div className="notifications-heading__icon" aria-hidden="true"><span className="material-symbols-outlined">notifications</span></div>
           <div>
-            <h1 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '1.5rem', fontWeight: 800, color: 'var(--on-surface)', letterSpacing: '-0.03em', margin: 0 }}>
-              Notifications
-            </h1>
-            <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.85rem', color: 'var(--muted)', margin: 0 }}>
-              {notifications.length} {notifications.length === 1 ? 'notification' : 'notifications'}
-            </p>
+            <p className="notifications-heading__eyebrow">Inbox</p>
+            <h1>Notifications</h1>
+            <p>Updates, announcements and reminders from DragCanvas.</p>
           </div>
-        </div>
+          {!loading && !loadError && <span className="notifications-heading__count">{notifications.length} {notifications.length === 1 ? 'message' : 'messages'}</span>}
+        </header>
 
-        {notifications.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '80px 0', background: 'white', borderRadius: '20px', border: '1px solid var(--outline-light)', boxShadow: 'var(--shadow-sm)' }}>
-            <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", color: 'var(--muted)', fontSize: '0.9rem' }}>
-              No notifications yet.
-            </p>
-          </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {Object.entries(groupedNotifications).map(([type, notifs]) => {
-              const config = typeConfig[type] || typeConfig.general;
-              const isExpanded = expandedType === type;
+        {loading ? <PageState icon="" title="Loading notifications" text="Your inbox will be ready in a moment." loading />
+          : loadError ? <PageState icon="cloud_off" title="Notifications are unavailable" text={loadError}><Button onClick={() => window.location.reload()}>Refresh page</Button></PageState>
+            : notifications.length === 0 ? <PageState icon="notifications_off" title="You’re all caught up" text="New announcements and reminders will appear here." />
+              : <>
+                <nav className="notification-filters" aria-label="Filter notifications">
+                  <Filter active={activeType === 'all'} onClick={() => setActiveType('all')}>All <span>{notifications.length}</span></Filter>
+                  {Object.keys(counts).map((type) => <Filter key={type} active={activeType === type} onClick={() => setActiveType(type)}>{(TYPES[type] || TYPES.general).label} <span>{counts[type]}</span></Filter>)}
+                </nav>
+                <section className="notification-list" aria-label="Notification list">
+                  {visible.map((item) => {
+                    const id = item.Notification_ID;
+                    const type = item.NotificationType || 'general';
+                    const config = TYPES[type] || TYPES.general;
+                    const expanded = expandedId === id;
+                    const message = String(item.Message ?? '');
+                    return <article className={`notification-card notification-card--${type}`} key={id}>
+                      <button className="notification-card__toggle" type="button" aria-expanded={expanded} aria-controls={`notification-${id}`} onClick={() => setExpandedId(expanded ? null : id)}>
+                        <span className="notification-card__type-icon material-symbols-outlined" aria-hidden="true">{config.icon}</span>
+                        <span className="notification-card__summary">
+                          <span className="notification-card__meta"><span>{config.label}</span><time dateTime={item.SentDate}>{formatDate(item.SentDate)}</time></span>
+                          <strong>{item.Subject || 'Untitled notification'}</strong>
+                          {!expanded && <span className="notification-card__preview">{plainText(message) || 'Open to view this notification.'}</span>}
+                        </span>
+                        <span className={`notification-card__chevron material-symbols-outlined ${expanded ? 'is-open' : ''}`} aria-hidden="true">expand_more</span>
+                      </button>
+                      {expanded && <div className="notification-card__content" id={`notification-${id}`}>
+                        {isDocument(message) ? <iframe srcDoc={message} title={item.Subject || 'Notification content'} sandbox="" /> : <div className="notification-rich-text" dangerouslySetInnerHTML={{ __html: cleanHtml(message) }} />}
+                        <div className="notification-card__actions"><button type="button" className="notification-delete" onClick={() => askDelete(id)}><span className="material-symbols-outlined" aria-hidden="true">delete</span>Delete notification</button></div>
+                      </div>}
+                    </article>;
+                  })}
+                </section>
+              </>}
+      </main>
 
-              return (
-                <div key={type} style={{ background: 'white', borderRadius: '20px', border: '1px solid var(--outline-light)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
-                  <div
-                    onClick={() => setExpandedType(isExpanded ? null : type)}
-                    style={{ padding: '16px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', transition: 'background 0.15s ease' }}
-                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--surface-dim)'}
-                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: config.color }} />
-                      <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.9rem', fontWeight: 600, color: 'var(--on-surface)' }}>
-                        {config.label}
-                      </span>
-                      <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.75rem', color: 'var(--muted)', background: 'var(--surface-container)', padding: '2px 8px', borderRadius: '9999px' }}>
-                        {notifs.length}
-                      </span>
-                    </div>
-                    <span className="material-symbols-outlined" style={{
-                      fontSize: '16px', color: 'var(--muted)',
-                      transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s ease',
-                    }}>expand_more</span>
-                  </div>
-
-                  {isExpanded && (
-                    <div style={{ borderTop: '1px solid var(--outline-light)' }}>
-                      {notifs.map((notif, idx) => (
-                        <div key={notif.Notification_ID}
-                          style={{ padding: '16px 20px', borderBottom: idx < notifs.length - 1 ? '1px solid var(--outline-light)' : 'none' }}
-                        >
-                          <div onClick={() => setExpandedNotificationId(expandedNotificationId === notif.Notification_ID ? null : notif.Notification_ID)}
-                            style={{ cursor: 'pointer' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                              <div style={{ flex: 1, minWidth: 0 }}>
-                                <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.9rem', fontWeight: 600, color: 'var(--on-surface)', marginBottom: '4px' }}>
-                                  {notif.Subject}
-                                </div>
-                                <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.8rem', color: 'var(--on-surface-variant)', marginBottom: '6px', lineHeight: 1.5 }}>
-                                  {notif.Message.includes('<html') || notif.Message.includes('<!DOCTYPE')
-                                    ? 'HTML content \u2014 click to preview'
-                                    : notif.Message.replace(/<[^>]*>/g, '').substring(0, 120) + (notif.Message.length > 120 ? '...' : '')
-                                  }
-                                </div>
-                                <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.7rem', color: 'var(--hint)' }}>
-                                  {new Date(notif.SentDate).toLocaleString()}
-                                </div>
-                              </div>
-                              <button onClick={(e) => { e.stopPropagation(); handleDeleteClick(notif.Notification_ID); }}
-                                style={{ marginLeft: '12px', padding: '6px', background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--muted)', borderRadius: '8px', transition: 'all 0.15s ease', flexShrink: 0 }}
-                                onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--error)'; e.currentTarget.style.background = 'rgba(186,26,26,0.05)'; }}
-                                onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--muted)'; e.currentTarget.style.background = 'transparent'; }}
-                              >
-                                <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>delete</span>
-                              </button>
-                            </div>
-                          </div>
-
-                          {expandedNotificationId === notif.Notification_ID && (
-                            <div style={{ marginTop: '12px', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--outline-light)', background: 'var(--surface-dim)' }}>
-                              {notif.Message.includes('<html') || notif.Message.includes('<!DOCTYPE') ? (
-                                <iframe
-                                  srcDoc={notif.Message}
-                                  style={{ width: '100%', minHeight: '400px', border: 'none' }}
-                                  title="Notification content"
-                                  /* No allow-same-origin and no allow-scripts: the frame gets an
-                                     opaque origin, so even if the content tries, it cannot reach
-                                     our storage or the token. */
-                                  sandbox=""
-                                />
-                              ) : (
-                                <div style={{ padding: '14px', fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.85rem', color: 'var(--on-surface-variant)' }}>
-                                  <div dangerouslySetInnerHTML={{ __html: cleanHtml(notif.Message) }} />
-                                </div>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </Container>
-
-      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
-        <Modal.Header closeButton><Modal.Title>Delete Notification</Modal.Title></Modal.Header>
-        <Modal.Body>Are you sure you want to delete this notification?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
-          <Button variant="danger" onClick={confirmDelete}>Delete</Button>
-        </Modal.Footer>
+      <Modal show={notificationToDelete !== null} onHide={() => setNotificationToDelete(null)} centered>
+        <Modal.Header closeButton><Modal.Title>Delete notification?</Modal.Title></Modal.Header>
+        <Modal.Body>This notification will be permanently removed from your inbox.</Modal.Body>
+        <Modal.Footer><Button variant="secondary" onClick={() => setNotificationToDelete(null)}>Keep it</Button><Button variant="danger" onClick={confirmDelete}>Delete</Button></Modal.Footer>
       </Modal>
-
-      <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)} centered>
-        <Modal.Header closeButton><Modal.Title>Error</Modal.Title></Modal.Header>
+      <Modal show={Boolean(errorMessage)} onHide={() => setErrorMessage('')} centered>
+        <Modal.Header closeButton><Modal.Title>Something went wrong</Modal.Title></Modal.Header>
         <Modal.Body>{errorMessage}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={() => setShowErrorModal(false)}>OK</Button>
-        </Modal.Footer>
+        <Modal.Footer><Button onClick={() => setErrorMessage('')}>Close</Button></Modal.Footer>
       </Modal>
     </div>
   );
+}
+
+function Filter({ active, children, onClick }) {
+  return <button type="button" className={active ? 'is-active' : ''} aria-pressed={active} onClick={onClick}>{children}</button>;
+}
+
+function PageState({ children, icon, loading: isLoading, text, title }) {
+  return <section className="notifications-state" role={isLoading ? 'status' : undefined} aria-live={isLoading ? 'polite' : undefined}>
+    {isLoading ? <span className="notifications-spinner" aria-hidden="true" /> : <span className="material-symbols-outlined" aria-hidden="true">{icon}</span>}
+    <h2>{title}</h2><p>{text}</p>{children}
+  </section>;
 }

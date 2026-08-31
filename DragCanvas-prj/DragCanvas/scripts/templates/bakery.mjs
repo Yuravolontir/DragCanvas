@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 
 /** Bakery — a neighbourhood shop. Warm, short, and mostly about when to come. */
@@ -27,14 +27,14 @@ export default function bakery() {
     fontSize: '17', color: rgba(255, 255, 255, 0.82), margin: ['12', '0', '20', '0'],
   });
   b.button(words, 'Order for tomorrow', { background: TERRA, color: WHITE, buttonStyle: 'full' });
-  b.image(top, P.bakery.loaves(900), { alt: 'Fresh loaves cooling after the morning bake', radius: 6, width: '100%', height: '420px' });
+  b.image(top, P.bakery.loaves(900), { alt: 'Fresh loaves cooling after the morning bake', radius: RADIUS.chip, width: '100%', height: '420px' });
 
   const night = b.container(root, { background: INK, padding: ['36', '48', '36', '48'], width: '100%' }, 'Overnight');
   b.stats(night, ['340', 'loaves before six', '3', 'bakers on the night shift', '2 days', 'for a sourdough'], {
     accent: rgba(232, 176, 116), color: rgba(255, 255, 255, 0.72),
   });
 
-  const bread = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'bread' }, 'Bread');
+  const bread = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%', anchor: 'bread' }, 'Bread');
   b.heading(bread, 'What we bake', { fontSize: '32', color: INK });
   b.spacer(bread, '24');
   const cols = b.columns(bread, { count: '3', gap: '20' });
@@ -43,13 +43,13 @@ export default function bakery() {
     ['Croissants', 'Laminated over three days. Out at seven, gone by nine.', P.bakery.croissant(600)],
     ['Baguettes', 'Baked through the morning, so there is always a warm one.', P.bakery.trays(600)],
   ]) {
-    const card = b.container(cols, { background: CREAM, padding: ['0', '0', '20', '0'], radius: 8 }, name);
-    b.image(card, img, { alt: `${name} from the bakery`, radius: 8, width: '100%', height: '240px' });
+    const card = b.container(cols, { background: CREAM, padding: ['0', '0', '20', '0'], shadow: SHADOW.lifted, radius: RADIUS.card }, name);
+    b.image(card, img, { alt: `${name} from the bakery`, radius: RADIUS.chip, width: '100%', height: '240px' });
     b.heading(card, name, { level: '3', fontSize: '19', color: INK, margin: ['16', '18', '6', '18'] });
     b.text(card, note, { fontSize: '15', color: MUTED, margin: ['0', '18', '0', '18'] });
   }
 
-  const order = b.container(root, { background: CREAM, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'order' }, 'Ordering');
+  const order = b.container(root, { background: CREAM, padding: PAD.regular, width: '100%', anchor: 'order' }, 'Ordering');
   const ordering = b.columns(order, { count: '2', gap: '48', ratio: '2:3' });
 
   const how = b.container(ordering, { background: TRANSPARENT, padding: ['0', '0', '0', '0'] }, 'How it works');

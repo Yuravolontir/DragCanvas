@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 import { clipFor } from '../../src/utils/stockVideo.js';
 
@@ -47,7 +47,7 @@ export default function conference() {
     ['Workshops', 'handyman', 'Ninety minutes, twenty seats, one concrete thing to take home.'],
     ['The hallway', 'forum', 'Coffee runs all day on purpose. Most collaborations here started in it.'],
   ]) {
-    const card = b.container(waysCols, { background: PANEL, padding: ['24', '22', '24', '22'], radius: 12 }, room);
+    const card = b.container(waysCols, { background: PANEL, padding: ['24', '22', '24', '22'], shadow: SHADOW.lifted, radius: RADIUS.card }, room);
     b.icon(card, symbol, { color: NAVY, background: GOLD });
     b.heading(card, room, { level: '3', fontSize: '18', color: BONE, margin: ['14', '0', '6', '0'] });
     b.text(card, copy, { fontSize: '15', color: MUTED });
@@ -101,7 +101,7 @@ export default function conference() {
   ], { featured: 1, accent: GOLD, background: NAVY, color: BONE });
 
   // ── practical questions, then how to find the room ─────────────
-  const ask = b.container(root, { background: NAVY, padding: ['48', '48', '48', '48'], width: '100%' }, 'Questions');
+  const ask = b.container(root, { background: NAVY, padding: PAD.regular, width: '100%' }, 'Questions');
   const askSplit = b.columns(ask, { count: '2', gap: '40', ratio: '2:3', stack: 'yes' });
   const askIntro = b.container(askSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Questions intro');
   b.heading(askIntro, 'Before you book', { fontSize: '30', color: BONE });
@@ -115,7 +115,7 @@ export default function conference() {
     'Yes - tick the box at checkout and it arrives the same day, VAT broken out.',
     'What if I cannot come after all?',
     'Pass the ticket to a colleague any time, or ask for a refund up to two weeks before.',
-  ], { background: PANEL, color: BONE, radius: 12 });
+  ], { background: PANEL, color: BONE, radius: RADIUS.card });
 
   const find = b.container(root, { background: NAVY, padding: ['16', '48', '64', '48'], width: '100%', anchor: 'venue' }, 'Venue');
   const venueSplit = b.columns(find, { count: '2', gap: '36', ratio: '2:3', stack: 'yes' });

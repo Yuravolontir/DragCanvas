@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 
 /** Developer portfolio — projects, what they know, and how to reach them. Sparse on purpose. */
@@ -43,7 +43,7 @@ export default function developer() {
     ['warmups', 'Cuts cold starts on a serverless fleet from 900ms to 80ms.'],
     ['tinyauth', 'Session auth in 300 lines, for people who do not need a provider.'],
   ]) {
-    const card = b.container(cols, { background: PANEL, padding: ['24', '24', '24', '24'], radius: 10 }, name);
+    const card = b.container(cols, { background: PANEL, padding: ['24', '24', '24', '24'], shadow: SHADOW.lifted, radius: RADIUS.card }, name);
     b.heading(card, name, { level: '3', fontSize: '18', color: CYAN });
     b.text(card, what, { fontSize: '15', color: MUTED, margin: ['8', '0', '0', '0'] });
   }
@@ -58,14 +58,14 @@ export default function developer() {
     ['Small interfaces', 'extension', 'Boundaries drawn on purpose. The fifth dependency is always the expensive one.'],
     ['Boring on purpose', 'verified_user', 'Provisioned in Terraform, reviewed by a second person, no heroics at 2am.'],
   ]) {
-    const card = b.container(howCols, { background: PANEL, padding: ['24', '22', '24', '22'], radius: 10 }, name);
+    const card = b.container(howCols, { background: PANEL, padding: ['24', '22', '24', '22'], shadow: SHADOW.lifted, radius: RADIUS.card }, name);
     b.icon(card, symbol, { color: INK, background: CYAN });
     b.heading(card, name, { level: '3', fontSize: '18', color: BONE, margin: ['14', '0', '6', '0'] });
     b.text(card, copy, { fontSize: '15', color: MUTED });
   }
 
   // ── the migration that taught the most ──────────────────────────
-  const war = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%' }, 'The migration');
+  const war = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%' }, 'The migration');
   b.heading(war, 'The migration that taught me most', { fontSize: '30', color: BONE });
   b.spacer(war, '24');
   b.timeline(war, [
@@ -74,7 +74,7 @@ export default function developer() {
     'Month 20', 'The cutover', 'A Sunday, a flag flip, and a queue that drained itself empty by Monday.',
   ], { accent: CYAN, color: BONE });
 
-  const stack = b.container(root, { background: INK, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'stack' }, 'Stack');
+  const stack = b.container(root, { background: INK, padding: PAD.regular, width: '100%', anchor: 'stack' }, 'Stack');
   const split = b.columns(stack, { count: '2', gap: '40' });
   const know = b.container(split, { background: TRANSPARENT, padding: ['0', '0', '0', '0'] }, 'Know');
   b.heading(know, 'What I reach for', { fontSize: '26', color: BONE });
@@ -100,7 +100,7 @@ export default function developer() {
   }, 'Project gallery');
 
   // ── what the time costs ─────────────────────────────────────────
-  const rates = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%', alignItems: 'center' }, 'Rates');
+  const rates = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%', alignItems: 'center' }, 'Rates');
   b.heading(rates, 'What the time costs', { fontSize: '30', textAlign: 'center', color: BONE });
   b.text(rates, 'Contract from October. Advisory slots open a month earlier.', {
     fontSize: '15', textAlign: 'center', color: MUTED, margin: ['10', '0', '24', '0'],
@@ -112,7 +112,7 @@ export default function developer() {
   ], { featured: 1, accent: CYAN, background: INK, color: BONE });
 
   // ── the questions that arrive by email ──────────────────────────
-  const ask = b.container(root, { background: INK, padding: ['48', '48', '48', '48'], width: '100%' }, 'Questions');
+  const ask = b.container(root, { background: INK, padding: PAD.regular, width: '100%' }, 'Questions');
   const askSplit = b.columns(ask, { count: '2', gap: '40', ratio: '2:3', stack: 'yes' });
   const askIntro = b.container(askSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Questions intro');
   b.heading(askIntro, 'The usual questions', { fontSize: '30', color: BONE });
@@ -126,7 +126,7 @@ export default function developer() {
     'Enough React to be dangerous, not enough to sell it. I pair well with someone who does it for a living.',
     'On site or remote?',
     'Remote, mostly. One day a week on site if it is in the country — the whiteboard still earns its keep.',
-  ], { background: PANEL, color: BONE, radius: 10 });
+  ], { background: PANEL, color: BONE, radius: RADIUS.card });
 
   const contact = b.container(root, { background: INK, padding: ['48', '48', '32', '48'], width: '100%', anchor: 'contact' }, 'Contact');
   const contactSplit = b.columns(contact, { count: '2', gap: '40', ratio: '3:2', stack: 'yes' });

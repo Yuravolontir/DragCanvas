@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 
 /** Ceramics shop — a small studio selling what two people make by hand. */
@@ -38,8 +38,8 @@ export default function ceramics() {
     ['Mugs', 'From ₪70', P.ceramics.bowls(700)],
     ['Plates', 'From ₪110', P.ceramics.tools(700)],
   ]) {
-    const card = b.container(grid, { background: PANEL, padding: ['0', '0', '18', '0'], radius: 18 }, name);
-    b.image(card, img, { alt: `Handmade ceramic ${name.toLowerCase()}`, radius: 18, width: '100%', height: '280px' });
+    const card = b.container(grid, { background: PANEL, padding: ['0', '0', '18', '0'], shadow: SHADOW.lifted, radius: RADIUS.card }, name);
+    b.image(card, img, { alt: `Handmade ceramic ${name.toLowerCase()}`, radius: RADIUS.panel, width: '100%', height: '280px' });
     b.heading(card, name, { level: '3', fontSize: '18', color: INK, margin: ['14', '18', '4', '18'] });
     b.text(card, price, { fontSize: '15', color: MOSS, margin: ['0', '18', '0', '18'] });
   }
@@ -54,13 +54,13 @@ export default function ceramics() {
     ['Glazes mixed here', 'science', 'Every colour weighed and mixed in the studio. Batches differ slightly, on purpose.'],
     ['Posted carefully', 'local_shipping', 'Double-boxed in shredded paper. Broken in the post means we make another.'],
   ]) {
-    const card = b.container(whyCols, { background: PANEL, padding: ['24', '22', '24', '22'], radius: 14 }, name);
+    const card = b.container(whyCols, { background: PANEL, padding: ['24', '22', '24', '22'], shadow: SHADOW.lifted, radius: RADIUS.card }, name);
     b.icon(card, symbol, { color: PANEL, background: MOSS });
     b.heading(card, name, { level: '3', fontSize: '18', color: INK, margin: ['14', '0', '6', '0'] });
     b.text(card, copy, { fontSize: '15', color: MUTED });
   }
 
-  const shops = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'workshops' }, 'Workshops');
+  const shops = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%', anchor: 'workshops' }, 'Workshops');
   b.heading(shops, 'Saturdays at the wheel', { fontSize: '30', color: INK });
   b.spacer(shops, '20');
   b.timeline(shops, [
@@ -69,7 +69,7 @@ export default function ceramics() {
     '14:00', 'Glazing', 'Pick a colour. We fire it and post it to you.',
   ], { accent: MOSS, color: INK });
 
-  const about = b.container(root, { background: SAND, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'about' }, 'About');
+  const about = b.container(root, { background: SAND, padding: PAD.regular, width: '100%', anchor: 'about' }, 'About');
   const split = b.columns(about, { count: '2', gap: '40' });
   const who = b.container(split, { background: TRANSPARENT, padding: ['0', '0', '0', '0'] }, 'Who');
   b.heading(who, 'The studio', { fontSize: '26', color: INK });
@@ -84,7 +84,7 @@ export default function ceramics() {
   });
 
   // ── what a Saturday costs ───────────────────────────────────────
-  const prices = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%', alignItems: 'center' }, 'Prices');
+  const prices = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%', alignItems: 'center' }, 'Prices');
   b.heading(prices, 'The wheels, priced', { fontSize: '30', textAlign: 'center', color: INK });
   b.text(prices, 'Clay, firing and the posted bowl are in every price.', {
     fontSize: '15', textAlign: 'center', color: MUTED, margin: ['10', '0', '24', '0'],
@@ -96,7 +96,7 @@ export default function ceramics() {
   ], { featured: 2, accent: MOSS, background: SAND, color: INK });
 
   // ── the questions the shop counter gets ─────────────────────────
-  const ask = b.container(root, { background: SAND, padding: ['48', '48', '48', '48'], width: '100%' }, 'Questions');
+  const ask = b.container(root, { background: SAND, padding: PAD.regular, width: '100%' }, 'Questions');
   const askSplit = b.columns(ask, { count: '2', gap: '40', ratio: '2:3', stack: 'yes' });
   const askIntro = b.container(askSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Questions intro');
   b.heading(askIntro, 'Asked at the counter', { fontSize: '30', color: INK });
@@ -110,10 +110,10 @@ export default function ceramics() {
     'Dishwasher, yes. For the oven, warm the pot with the food — stoneware forgives thermal shock no more than once.',
     'Do you ship abroad?',
     'Nationwide, double-boxed, always. Abroad, write to us — the kiln makes no promises to customs.',
-  ], { background: PANEL, color: INK, radius: 14 });
+  ], { background: PANEL, color: INK, radius: RADIUS.card });
 
   // ── book a wheel ────────────────────────────────────────────────
-  const book = b.container(root, { background: SAND, padding: ['48', '48', '48', '48'], width: '100%' }, 'Book');
+  const book = b.container(root, { background: SAND, padding: PAD.regular, width: '100%' }, 'Book');
   const bookSplit = b.columns(book, { count: '2', gap: '40', ratio: '3:2', stack: 'yes' });
   const bookCopy = b.container(bookSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Book copy');
   b.heading(bookCopy, 'Book a wheel', { fontSize: '30', color: INK });

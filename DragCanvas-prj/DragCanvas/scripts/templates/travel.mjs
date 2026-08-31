@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 import { clipFor } from '../../src/utils/stockVideo.js';
 
@@ -62,14 +62,14 @@ export default function travel() {
     ['Practical, not dreamy', 'route', 'Times, prices, and where the last bus actually leaves from.'],
     ['Nothing sponsored', 'verified', 'No press trips, no affiliate links. If a bed was free, the letter says so.'],
   ]) {
-    const card = b.container(rulesCols, { background: PANEL, padding: ['24', '22', '24', '22'], radius: 10 }, name);
+    const card = b.container(rulesCols, { background: PANEL, padding: ['24', '22', '24', '22'], shadow: SHADOW.lifted, radius: RADIUS.card }, name);
     b.icon(card, symbol, { color: PANEL, background: SEA });
     b.heading(card, name, { level: '3', fontSize: '18', color: INK, margin: ['14', '0', '6', '0'] });
     b.text(card, copy, { fontSize: '15', color: MUTED });
   }
 
   // ── how a trip becomes a letter ─────────────────────────────────
-  const how = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%' }, 'How');
+  const how = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%' }, 'How');
   b.heading(how, 'How a trip becomes a letter', { fontSize: '30', color: INK });
   b.spacer(how, '24');
   b.timeline(how, [
@@ -78,7 +78,7 @@ export default function travel() {
     'Month end', 'The letter', 'One route, a handful of photographs, and what we would do differently.',
   ], { accent: SEA, color: INK });
 
-  const about = b.container(root, { background: PAPER, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'about' }, 'About');
+  const about = b.container(root, { background: PAPER, padding: PAD.regular, width: '100%', anchor: 'about' }, 'About');
   const split = b.columns(about, { count: '2', gap: '40' });
   const bio = b.container(split, { background: TRANSPARENT, padding: ['0', '0', '0', '0'] }, 'Bio');
   b.heading(bio, 'Who is writing', { fontSize: '28', color: INK });
@@ -91,7 +91,7 @@ export default function travel() {
   });
 
   // ── the questions readers actually send ─────────────────────────
-  const ask = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%' }, 'Questions');
+  const ask = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%' }, 'Questions');
   const askSplit = b.columns(ask, { count: '2', gap: '40', ratio: '2:3', stack: 'yes' });
   const askIntro = b.container(askSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Questions intro');
   b.heading(askIntro, 'Asked, answered', { fontSize: '30', color: INK });
@@ -105,7 +105,7 @@ export default function travel() {
     'Sometimes, and it is marked. Crossing an ocean by ship is a week I do not always have.',
     'May I use your itineraries?',
     'Take them. A credit is welcome if you are publishing, but they are written to be used.',
-  ], { background: PAPER, color: INK, radius: 10 });
+  ], { background: PAPER, color: INK, radius: RADIUS.card });
 
   // ── the letter itself ───────────────────────────────────────────
   const sub = b.container(root, { background: PAPER, padding: ['48', '48', '32', '48'], width: '100%', anchor: 'subscribe' }, 'Subscribe');

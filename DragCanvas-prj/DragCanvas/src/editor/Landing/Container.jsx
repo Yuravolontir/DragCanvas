@@ -77,10 +77,25 @@ export const Container = (props) => {
         paddingBottom: `${effectivePadding[2]}px`,
         paddingLeft: `${effectivePadding[3]}px`,
         margin: `${effectiveMargin[0]}px ${effectiveMargin[1]}px ${effectiveMargin[2]}px ${effectiveMargin[3]}px`,
+        /*
+         * A shadow, rather than the haze this used to be.
+         *
+         * The old value blurred 100px and fed the dial into the *spread*, so
+         * any lift at all put the block inside a grey cloud reaching a hundred
+         * pixels in every direction. It is most of why both the gallery and the
+         * generated pages read as cheap, and why no template ever set it above
+         * zero: there was no setting that looked good.
+         *
+         * Two layers now, the way a real one works: a tight contact shadow that
+         * seats the block on the page, and a wider ambient one, lifted upward by
+         * a negative spread so it falls below rather than haloing. The dial
+         * still means "how far off the page", which is what anybody turning it
+         * expects.
+         */
         boxShadow:
           shadow === 0
             ? 'none'
-            : `0px 3px 100px ${shadow}px rgba(0, 0, 0, 0.13)`,
+            : `0 1px 2px rgba(0, 0, 0, 0.06), 0 ${shadow}px ${shadow * 2}px ${-Math.round(shadow / 2)}px rgba(0, 0, 0, 0.14)`,
         borderRadius: `${radius}px`,
         flex: fillSpace === 'yes' ? 1 : 'unset',
       }}

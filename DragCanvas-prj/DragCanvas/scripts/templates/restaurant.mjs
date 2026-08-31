@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 import { clipFor } from '../../src/utils/stockVideo.js';
 
@@ -43,7 +43,7 @@ export default function restaurant() {
     fontSize: '17', color: rgba(255, 255, 255, 0.82),
   });
   b.button(words, 'Book a table', { background: TERRA, color: WHITE, buttonStyle: 'full' });
-  b.image(top, P.restaurant.tasting(900), { alt: 'Seasonal tasting menu plated in the restaurant kitchen', radius: 8, width: '100%', height: '420px' });
+  b.image(top, P.restaurant.tasting(900), { alt: 'Seasonal tasting menu plated in the restaurant kitchen', radius: RADIUS.chip, width: '100%', height: '420px' });
 
   // ── the room in three numbers ──────────────────────────────────
   const num = b.container(root, { background: CREAM, padding: ['40', '48', '8', '48'], width: '100%' }, 'Numbers');
@@ -59,7 +59,7 @@ export default function restaurant() {
     ['Cooked over wood', 'local_fire_department', 'One oven, one fire, and nothing that needs a timer.'],
     ['Served when ready', 'schedule', 'Plates arrive when they should, in the order the kitchen can do them best.'],
   ]) {
-    const card = b.container(holdCols, { background: PANEL, padding: ['22', '20', '22', '20'], radius: 8 }, name);
+    const card = b.container(holdCols, { background: PANEL, padding: ['22', '20', '22', '20'], shadow: SHADOW.lifted, radius: RADIUS.card }, name);
     b.icon(card, symbol, { color: PANEL, background: TERRA });
     b.heading(card, name, { level: '3', fontSize: '17', color: INK, margin: ['12', '0', '6', '0'] });
     b.text(card, copy, { fontSize: '14', color: MUTED });
@@ -74,7 +74,7 @@ export default function restaurant() {
     ['Mains', ['Lamb, slowly', 'Sea bream, whole', 'Aubergine, smoked']],
     ['After', ['Olive oil cake', 'Figs and cream', 'Coffee and something']],
   ]) {
-    const col = b.container(dishes, { background: CREAM, padding: ['24', '22', '24', '22'], radius: 8 }, course);
+    const col = b.container(dishes, { background: CREAM, padding: ['24', '22', '24', '22'], radius: RADIUS.chip }, course);
     b.heading(col, course, { level: '3', fontSize: '18', color: TERRA });
     b.list(col, items, { color: MUTED, fontSize: '15', gap: '10' });
   }
@@ -117,9 +117,9 @@ export default function restaurant() {
     'The room does it once a night. Book early and take the long table by the window.',
     'How long does the evening take?',
     'About three hours. This is not a place to eat before somewhere else.',
-  ], { background: CREAM, color: INK, radius: 8 });
+  ], { background: CREAM, color: INK, radius: RADIUS.chip });
 
-  const find = b.container(root, { background: CREAM, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'find-us' }, 'Find us');
+  const find = b.container(root, { background: CREAM, padding: PAD.regular, width: '100%', anchor: 'find-us' }, 'Find us');
   const findSplit = b.columns(find, { count: '2', gap: '36', ratio: '2:3', stack: 'yes' });
   const findCopy = b.container(findSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Find copy');
   b.heading(findCopy, 'Yehuda Halevi 21', { fontSize: '28', color: INK });

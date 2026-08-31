@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 
 /** Photography studio — image-led, dark, one accent, a booking form at the end. */
@@ -48,7 +48,7 @@ export default function photography() {
                       P.photography.mono, P.photography.couple, P.photography.standing]) {
     // A fixed height, because a grid of photographs at their own aspect ratios
     // is a ragged grid. `object-fit: cover` does the rest.
-    b.image(grid, shot(700), { alt: 'Editorial portrait from the studio portfolio', radius: 2, width: '100%', height: '300px' });
+    b.image(grid, shot(700), { alt: 'Editorial portrait from the studio portfolio', radius: RADIUS.chip, width: '100%', height: '300px' });
   }
 
   // ── what every booking means here ───────────────────────────────
@@ -61,7 +61,7 @@ export default function photography() {
     ['Retouched by hand', 'auto_fix_high', 'Skin kept as skin. We remove the pimple, not the texture.'],
     ['Back within 48 hours', 'schedule', 'Galleries land two days after the shoot, usually the same evening.'],
   ]) {
-    const card = b.container(meansCols, { background: PANEL, padding: ['24', '22', '24', '22'], radius: 4 }, name);
+    const card = b.container(meansCols, { background: PANEL, padding: ['24', '22', '24', '22'], shadow: SHADOW.lifted, radius: RADIUS.card }, name);
     b.icon(card, symbol, { color: INK, background: AMBER });
     b.heading(card, name, { level: '3', fontSize: '18', color: BONE, margin: ['14', '0', '6', '0'] });
     b.text(card, copy, { fontSize: '15', color: MUTED });
@@ -94,7 +94,7 @@ export default function photography() {
   });
 
   // ── what people write before their first shoot ──────────────────
-  const ask = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%' }, 'Questions');
+  const ask = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%' }, 'Questions');
   const askSplit = b.columns(ask, { count: '2', gap: '40', ratio: '2:3', stack: 'yes' });
   const askIntro = b.container(askSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Questions intro');
   b.heading(askIntro, 'Before you book', { fontSize: '30', color: BONE });
@@ -108,7 +108,7 @@ export default function photography() {
     'Digital for the hour; film on request. Film adds a week and ₪300, and is worth it exactly twice a year.',
     'Can we shoot at our flat instead?',
     'Yes. Anywhere in the city costs the same — we bring the same lights and the same backdrop.',
-  ], { background: INK, color: BONE, radius: 4 });
+  ], { background: INK, color: BONE, radius: RADIUS.chip });
 
   const book = b.container(root, { background: INK, padding: ['48', '48', '32', '48'], width: '100%', anchor: 'book' }, 'Book');
   const bookSplit = b.columns(book, { count: '2', gap: '40', ratio: '3:2', stack: 'yes' });

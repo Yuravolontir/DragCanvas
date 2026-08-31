@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 import { clipFor } from '../../src/utils/stockVideo.js';
 
@@ -35,7 +35,7 @@ export default function coffee() {
   });
   b.button(heroText, 'Start a subscription', { background: RUST, color: WHITE, buttonStyle: 'full' });
 
-  const sub = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'subscribe', alignItems: 'center' }, 'Subscribe');
+  const sub = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%', anchor: 'subscribe', alignItems: 'center' }, 'Subscribe');
   b.heading(sub, 'How much coffee do you drink?', { fontSize: '30', textAlign: 'center', color: INK });
   b.spacer(sub, '24');
   b.pricing(sub, [
@@ -60,7 +60,7 @@ export default function coffee() {
     ['Roast date, not best-before', 'event', 'The date on the bag is the Tuesday it came out of the drum.'],
     ['Ground or whole', 'coffee', 'Tell us the brewer at sign-up and it arrives ready for it.'],
   ]) {
-    const card = b.container(meansCols, { background: PANEL, padding: ['24', '22', '24', '22'], radius: 12 }, name);
+    const card = b.container(meansCols, { background: PANEL, padding: ['24', '22', '24', '22'], shadow: SHADOW.lifted, radius: RADIUS.card }, name);
     b.icon(card, symbol, { color: PANEL, background: RUST });
     b.heading(card, name, { level: '3', fontSize: '18', color: INK, margin: ['14', '0', '6', '0'] });
     b.text(card, copy, { fontSize: '15', color: MUTED });
@@ -87,7 +87,7 @@ export default function coffee() {
   });
 
   // ── the questions subscribers ask ──────────────────────────────
-  const ask = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%' }, 'Questions');
+  const ask = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%' }, 'Questions');
   const askSplit = b.columns(ask, { count: '2', gap: '40', ratio: '2:3', stack: 'yes' });
   const askIntro = b.container(askSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Questions intro');
   b.heading(askIntro, 'Before you subscribe', { fontSize: '30', color: INK });
@@ -101,9 +101,9 @@ export default function coffee() {
     'Tick “ground for” at sign-up and say what you brew with. Or take the office plan and borrow ours.',
     'Can I switch coffees mid-plan?',
     'Yes, every delivery. The next bag can be a different farm without asking anyone.',
-  ], { background: PAPER, color: INK, radius: 12 });
+  ], { background: PAPER, color: INK, radius: RADIUS.card });
 
-  const visit = b.container(root, { background: PAPER, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'visit' }, 'Visit');
+  const visit = b.container(root, { background: PAPER, padding: PAD.regular, width: '100%', anchor: 'visit' }, 'Visit');
   const visitSplit = b.columns(visit, { count: '2', gap: '36', ratio: '2:3', stack: 'yes' });
   const visitCopy = b.container(visitSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Visit copy');
   b.heading(visitCopy, 'The shop', { fontSize: '26', color: INK });

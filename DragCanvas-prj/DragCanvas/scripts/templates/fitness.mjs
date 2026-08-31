@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 
 /**
@@ -42,7 +42,7 @@ export default function fitness() {
     ['Open gym', 'schedule', 'Full access, five in the morning to ten at night, coaches around.'],
     ['Your programming', 'edit_note', 'A written plan for the days without a class, reviewed each month.'],
   ]) {
-    const card = b.container(buysCols, { background: PANEL, padding: ['24', '22', '24', '22'], radius: 12 }, name);
+    const card = b.container(buysCols, { background: PANEL, padding: ['24', '22', '24', '22'], shadow: SHADOW.lifted, radius: RADIUS.card }, name);
     b.icon(card, symbol, { color: INK, background: LIME });
     b.heading(card, name, { level: '3', fontSize: '18', color: BONE, margin: ['14', '0', '6', '0'] });
     b.text(card, copy, { fontSize: '15', color: MUTED });
@@ -82,7 +82,7 @@ export default function fitness() {
   });
 
   // ── the questions before the first class ───────────────────────
-  const ask = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%' }, 'Questions');
+  const ask = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%' }, 'Questions');
   const askSplit = b.columns(ask, { count: '2', gap: '40', ratio: '2:3', stack: 'yes' });
   const askIntro = b.container(askSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Questions intro');
   b.heading(askIntro, 'Before the first class', { fontSize: '30', color: BONE });
@@ -96,7 +96,7 @@ export default function fitness() {
     'Flat shoes, a towel, water. Everything else - bars, plates, chalk - is on the floor.',
     'Can I pause the membership?',
     'Yes, for up to two months a year, from your phone, no phone call required.',
-  ], { background: INK, color: BONE, radius: 12 });
+  ], { background: INK, color: BONE, radius: RADIUS.card });
 
   const cost = b.container(root, { background: PANEL, padding: ['56', '48', '56', '48'], width: '100%', anchor: 'membership', alignItems: 'center' }, 'Membership');
   b.heading(cost, 'Membership', { fontSize: '34', textAlign: 'center', color: BONE });
@@ -108,7 +108,7 @@ export default function fitness() {
   ], { featured: 2, accent: LIME, background: INK, color: BONE });
 
   // ── book the free class ────────────────────────────────────────
-  const book = b.container(root, { background: INK, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'book' }, 'Book');
+  const book = b.container(root, { background: INK, padding: PAD.regular, width: '100%', anchor: 'book' }, 'Book');
   const bookSplit = b.columns(book, { count: '2', gap: '40', ratio: '3:2', stack: 'yes' });
   const bookCopy = b.container(bookSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Book copy');
   b.heading(bookCopy, 'Take the free class', { fontSize: '30', color: BONE });

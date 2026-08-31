@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 
 /**
@@ -56,7 +56,7 @@ export default function saas() {
     ['Written updates', 'draft', 'A digest that writes itself from what actually moved this week.'],
     ['Honest dates', 'schedule', 'Estimates that change when the work changes, not when someone asks.'],
   ]) {
-    const card = b.container(cols, { background: CARD, padding: ['26', '24', '26', '24'], radius: 12 }, name);
+    const card = b.container(cols, { background: CARD, padding: ['26', '24', '26', '24'], shadow: SHADOW.lifted, radius: RADIUS.card }, name);
     b.icon(card, symbol, { color: WHITE, background: INDIGO });
     b.heading(card, name, { level: '3', fontSize: '19', color: WHITE, margin: ['14', '0', '6', '0'] });
     b.text(card, copy, { fontSize: '15', color: MUTED });
@@ -82,7 +82,7 @@ export default function saas() {
   }, 'Digest');
   const split = b.columns(digest, { count: '2', gap: '36', ratio: '3:2', stack: 'yes' });
   const photoSide = b.container(split, { background: TRANSPARENT, width: '100%' }, 'Digest photo');
-  b.image(photoSide, P.saas.desks(1000), { alt: 'Product team reviewing project activity together', width: '100%', height: '420px', objectFit: 'cover', radius: 12 });
+  b.image(photoSide, P.saas.desks(1000), { alt: 'Product team reviewing project activity together', width: '100%', height: '420px', objectFit: 'cover', radius: RADIUS.card });
   const copySide = b.container(split, {
     background: TRANSPARENT, width: '100%', justifyContent: 'center', padding: ['0', '0', '0', '8'],
   }, 'Digest copy');
@@ -123,7 +123,7 @@ export default function saas() {
     'Nothing disappears. The board goes read-only until you pick a plan or remove one.',
     'Do you charge per person?',
     'No. A plan covers the whole team, however many of you there are.',
-  ], { background: CARD, color: WHITE, radius: 12 });
+  ], { background: CARD, color: WHITE, radius: RADIUS.card });
 
   const proof = b.container(root, { background: INK, padding: ['16', '48', '64', '48'], width: '100%' }, 'Proof');
   b.testimonial(proof, {

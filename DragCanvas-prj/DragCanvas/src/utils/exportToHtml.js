@@ -270,7 +270,8 @@ const converters = {
       color: rgbaToString(props.color),
       borderRadius: `${props.radius || 0}px`,
       boxShadow: props.shadow > 0
-        ? `0px 3px 100px ${props.shadow}px rgba(0, 0, 0, 0.13)`
+        // Same two layers as the canvas; see Container.jsx.
+        ? `0 1px 2px rgba(0,0,0,0.06), 0 ${props.shadow}px ${props.shadow * 2}px ${-Math.round(props.shadow / 2)}px rgba(0,0,0,0.14)`
         : 'none',
       flex: props.fillSpace === 'yes' ? '1' : 'unset',
       boxSizing: 'border-box',

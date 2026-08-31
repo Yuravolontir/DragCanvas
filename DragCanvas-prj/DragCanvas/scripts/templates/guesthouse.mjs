@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 import { clipFor } from '../../src/utils/stockVideo.js';
 
@@ -88,14 +88,14 @@ function home() {
     ['No reception desk', 'key', 'You are handed a key on arrival and left alone until you want company.'],
     ['Boots by the door', 'hiking', 'Six paths start at the gate. We will tell you which one is muddy today.'],
   ]) {
-    const card = b.container(whatCols, { background: PANEL, padding: ['24', '22', '24', '22'], radius: 10 }, name);
+    const card = b.container(whatCols, { background: PANEL, padding: ['24', '22', '24', '22'], shadow: SHADOW.lifted, radius: RADIUS.card }, name);
     b.icon(card, symbol, { color: PANEL, background: PINE });
     b.heading(card, name, { level: '3', fontSize: '18', color: INK, margin: ['14', '0', '6', '0'] });
     b.text(card, copy, { fontSize: '15', color: MUTED });
   }
 
   // ── the room, and what somebody said about it ───────────────────
-  const room = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%' }, 'A room');
+  const room = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%' }, 'A room');
   const roomSplit = b.columns(room, { count: '2', gap: '40', ratio: '3:2', align: 'center' });
   const roomCopy = b.container(roomSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Room copy');
   b.heading(roomCopy, 'Rooms that face the morning', { fontSize: '28', color: INK });
@@ -106,7 +106,7 @@ function home() {
     background: TRANSPARENT, color: INK, buttonStyle: 'outline', action: 'page', actionValue: 'rooms',
   });
   b.image(roomSplit, P.interiors.living(900), {
-    alt: 'A pale guest room with the stairs behind it', radius: 10, width: '100%', height: '380px',
+    alt: 'A pale guest room with the stairs behind it', radius: RADIUS.card, width: '100%', height: '380px',
   });
 
   const said = b.container(root, { background: PAPER, padding: ['48', '48', '24', '48'], width: '100%' }, 'Said');
@@ -153,10 +153,10 @@ function rooms() {
     'Long room', '€180', 'per night', 'Ask about the Long room', 'Four, two rooms;Bath;The corner windows',
   ], { featured: 2, accent: PINE, background: PANEL, color: INK });
 
-  const detail = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%' }, 'Detail');
+  const detail = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%' }, 'Detail');
   const detailSplit = b.columns(detail, { count: '2', gap: '40', ratio: '2:3', align: 'center' });
   b.image(detailSplit, P.interiors.kitchen(900), {
-    alt: 'The white kitchen where breakfast is laid out', radius: 10, width: '100%', height: '360px',
+    alt: 'The white kitchen where breakfast is laid out', radius: RADIUS.card, width: '100%', height: '360px',
   });
   const detailCopy = b.container(detailSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Detail copy');
   b.heading(detailCopy, 'What is in every room', { fontSize: '28', color: INK });
@@ -167,7 +167,7 @@ function rooms() {
     'No television, and no apology for it',
   ], { color: MUTED, fontSize: '15' });
 
-  const ask = b.container(root, { background: PAPER, padding: ['48', '48', '48', '48'], width: '100%' }, 'Questions');
+  const ask = b.container(root, { background: PAPER, padding: PAD.regular, width: '100%' }, 'Questions');
   b.heading(ask, 'Before you book', { fontSize: '30', color: INK });
   b.spacer(ask, '20');
   b.accordion(ask, [
@@ -177,7 +177,7 @@ function rooms() {
     'Four spaces at the gate, first come. The lane is steep and narrow; a small car is a happier car.',
     'What about children?',
     'The Long room sleeps four and has done for ninety years. The stairs are old and there is no lift.',
-  ], { background: PANEL, color: INK, radius: 10 });
+  ], { background: PANEL, color: INK, radius: RADIUS.card });
 
   const close = b.container(root, { background: PAPER, padding: ['8', '48', '72', '48'], width: '100%' }, 'Close');
   b.ctaBanner(close, {
@@ -214,7 +214,7 @@ function valley() {
     src3: P.travel.dusk(1000), heading3: 'Last of the light', label3: 'From the terrace', p3: 'The half hour that makes people book a third night.',
   });
 
-  const day = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%' }, 'A day');
+  const day = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%' }, 'A day');
   b.heading(day, 'How the day goes', { fontSize: '30', color: INK });
   b.spacer(day, '24');
   b.timeline(day, [
@@ -295,7 +295,7 @@ function stay() {
     ['By car', 'directions_car', 'The lane is steep and single track. Four spaces at the gate.'],
     ['On foot', 'hiking', 'Fifty minutes up from the village, and worth it with a light bag.'],
   ]) {
-    const card = b.container(knowCols, { background: PAPER, padding: ['22', '20', '22', '20'], radius: 10 }, name);
+    const card = b.container(knowCols, { background: PAPER, padding: ['22', '20', '22', '20'], shadow: SHADOW.lifted, radius: RADIUS.card }, name);
     b.icon(card, symbol, { color: PANEL, background: PINE });
     b.heading(card, name, { level: '3', fontSize: '17', color: INK, margin: ['12', '0', '6', '0'] });
     b.text(card, copy, { fontSize: '14', color: MUTED });

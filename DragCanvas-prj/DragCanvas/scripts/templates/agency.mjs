@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 
 /** Design agency — case studies, the logos that vouch for them, and a brief form. */
@@ -34,14 +34,14 @@ export default function agency() {
     ['Kettle', 'A brand that survives being printed small', P.agency.proofs(800)],
     ['Fathom', 'Turning a dense product into three screens', P.agency.monitor(800)],
   ]) {
-    const card = b.container(cases, { background: PANEL, padding: ['0', '0', '22', '0'], radius: 12 }, client);
-    b.image(card, img, { alt: `${client} identity design case study`, radius: 12, width: '100%', height: '260px' });
+    const card = b.container(cases, { background: PANEL, padding: ['0', '0', '22', '0'], shadow: SHADOW.lifted, radius: RADIUS.card }, client);
+    b.image(card, img, { alt: `${client} identity design case study`, radius: RADIUS.card, width: '100%', height: '260px' });
     b.heading(card, client, { level: '3', fontSize: '20', color: INK, margin: ['16', '22', '4', '22'] });
     b.text(card, what, { fontSize: '15', color: MUTED, margin: ['0', '22', '0', '22'] });
   }
 
   // ── how a project runs ─────────────────────────────────────────
-  const how = b.container(root, { background: PAPER, padding: ['48', '48', '48', '48'], width: '100%' }, 'Process');
+  const how = b.container(root, { background: PAPER, padding: PAD.regular, width: '100%' }, 'Process');
   b.heading(how, 'How eight weeks actually go', { fontSize: '32', color: INK });
   b.spacer(how, '24');
   b.timeline(how, [
@@ -69,7 +69,7 @@ export default function agency() {
   });
 
   // ── ways to hire the room ──────────────────────────────────────
-  const ways = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%', alignItems: 'center' }, 'Engagements');
+  const ways = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%', alignItems: 'center' }, 'Engagements');
   b.heading(ways, 'Ways to hire the room', { fontSize: '30', textAlign: 'center', color: INK });
   b.text(ways, 'Starting points, not ceilings. Most projects bend between these.', {
     fontSize: '15', textAlign: 'center', color: MUTED, margin: ['10', '0', '24', '0'],
@@ -81,7 +81,7 @@ export default function agency() {
   ], { featured: 2, accent: RED, background: PAPER, color: INK });
 
   // ── the questions a brief usually raises ───────────────────────
-  const ask = b.container(root, { background: PAPER, padding: ['48', '48', '48', '48'], width: '100%' }, 'Questions');
+  const ask = b.container(root, { background: PAPER, padding: PAD.regular, width: '100%' }, 'Questions');
   const askSplit = b.columns(ask, { count: '2', gap: '40', ratio: '2:3', stack: 'yes' });
   const askIntro = b.container(askSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Questions intro');
   b.heading(askIntro, 'Before you write the brief', { fontSize: '30', color: INK });
@@ -95,9 +95,9 @@ export default function agency() {
     'We design and art-direct the build. For code we bring in two studios we have worked with for years.',
     'What if we cannot articulate what we want?',
     'That is the normal case, not the exception. It is what the first week is for.',
-  ], { background: PANEL, color: INK, radius: 12 });
+  ], { background: PANEL, color: INK, radius: RADIUS.card });
 
-  const brief = b.container(root, { background: PAPER, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'brief' }, 'Brief');
+  const brief = b.container(root, { background: PAPER, padding: PAD.regular, width: '100%', anchor: 'brief' }, 'Brief');
   const briefSplit = b.columns(brief, { count: '2', gap: '40', ratio: '3:2', stack: 'yes' });
   const briefCopy = b.container(briefSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Brief copy');
   b.heading(briefCopy, 'Send us a brief', { fontSize: '30', color: INK });

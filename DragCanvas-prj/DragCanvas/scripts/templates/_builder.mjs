@@ -19,6 +19,70 @@ const WHITE = rgba(255, 255, 255);
 /** For blocks that sit on a photograph and must not hide it. */
 const TRANSPARENT = rgba(0, 0, 0, 0);
 
+/* ------------------------------------------------------------------ *
+ * The house style
+ *
+ * Fifteen templates had eleven different corner radii between them and
+ * forty-two sections padded to exactly 48 on all four sides. Neither is a
+ * decision - the first is nobody choosing, the second is everybody choosing the
+ * same safe number - and together they are why the gallery reads flat: every
+ * block the same height off the page, every section the same distance from its
+ * neighbour, nothing telling you what matters.
+ *
+ * These are the only values a template should reach for.
+ * ------------------------------------------------------------------ */
+
+/**
+ * Four steps, far enough apart to read as different.
+ *
+ * 8 / 14 / 22 rather than 8 / 10 / 12: a two-pixel difference is noise at card
+ * size, and the point of a scale is that a panel is visibly rounder than the
+ * chip inside it. 14 for a card rather than the usual 12 - 12 is the value
+ * every framework ships and it reads as unconsidered.
+ */
+export const RADIUS = {
+    chip: 8,      // inputs, small labels, an icon's badge
+    card: 14,     // the common case: a card, an image, a quote
+    panel: 22,    // the one block on the page that is the offer
+    pill: 999,    // a tag that should read as a tag
+};
+
+/**
+ * Section rhythm, and the one liberty taken here.
+ *
+ * The top of a section is generous and the bottom is tighter, so a section
+ * breathes into the one below rather than sitting in its own equal box. Equal
+ * padding is what makes a page read as blocks stacked by a machine; the
+ * asymmetry is small enough that nobody names it and large enough that the page
+ * reads as one thing.
+ */
+export const PAD = {
+    /** The opening, and the one section that carries the offer. */
+    airy: ['72', '48', '56', '48'],
+    /** Everything else. */
+    regular: ['56', '48', '44', '48'],
+    /** Bands that are a single line of content: stats, logos, a strip of tags. */
+    tight: ['40', '48', '36', '48'],
+    /** Inside a card. */
+    card: ['24', '24', '24', '24'],
+    /** A container that only groups things and should add nothing. */
+    none: ['0', '0', '0', '0'],
+};
+
+/**
+ * Two levels, and a real shadow rather than a glow.
+ *
+ * The blur was 100px with 20px of spread, which is not a shadow - it is a haze
+ * the card floats in, and it is most of why these read as cheap. A shadow that
+ * says "this is lifted" is short, tight and mostly transparent.
+ */
+export const SHADOW = {
+    /** A card that is one of several. Let the border do the work. */
+    flat: 0,
+    /** The one card that is the point of its section. */
+    lifted: 14,
+};
+
 export function createBuilder() {
   const map = {};
   let counter = 0;
@@ -229,13 +293,13 @@ export function createBuilder() {
 
   const badge = (parent, str, props = {}, label = 'Badge') =>
     node('Badge', parent, {
-      text: str, background: rgba(238, 240, 255), color: rgba(0, 64, 224), radius: 999, ...props,
+      text: str, background: rgba(238, 240, 255), color: rgba(0, 64, 224), radius: RADIUS.pill, ...props,
     }, { label });
 
   // Alternating lines: question, then its answer
   const accordion = (parent, items, props = {}, label = 'Accordion') =>
     node('Accordion', parent, {
-      items, background: rgba(244, 243, 242), color: rgba(26, 28, 28), radius: 10, ...props,
+      items, background: rgba(244, 243, 242), color: rgba(26, 28, 28), radius: RADIUS.card, ...props,
     }, { label });
 
   // Five lines per tier: name, price, period, button, features joined by ";"
@@ -270,7 +334,7 @@ export function createBuilder() {
     node('CTABanner', parent, {
       title: '', text: '', cta: '', href: '#',
       background: rgba(0, 64, 224), color: WHITE,
-      buttonBackground: WHITE, buttonColor: rgba(0, 64, 224), radius: 16, ...props,
+      buttonBackground: WHITE, buttonColor: rgba(0, 64, 224), radius: RADIUS.panel, ...props,
     }, { label });
 
   const logoStrip = (parent, logos, props = {}, label = 'LogoStrip') =>
@@ -298,7 +362,7 @@ export function createBuilder() {
         { label: 'Message', type: 'textarea', placeholder: 'How can we help?' },
       ],
       submitText: 'Send', successMessage: 'Thank you — we will be in touch.',
-      radius: 10, background: WHITE, accent: rgba(0, 64, 224),
+      radius: RADIUS.card, background: WHITE, accent: rgba(0, 64, 224),
       textColor: rgba(73, 69, 79), inputBackground: WHITE, inputBorder: rgba(221, 221, 221),
       width: '100%', height: 'auto', ...props,
     }, { label });

@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT, PAD } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 
 /**
@@ -59,7 +59,7 @@ export default function portfolio() {
     b.text(card, copy, { fontSize: '15', color: MUTED });
   }
 
-  const process = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%' }, 'Process');
+  const process = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%' }, 'Process');
   b.heading(process, 'How a project runs', { fontSize: '30', color: BONE });
   b.spacer(process, '24');
   b.timeline(process, [
@@ -86,7 +86,7 @@ export default function portfolio() {
   });
 
   // ── the smallest unit is a day ──────────────────────────────────
-  const rates = b.container(root, { background: INK, padding: ['48', '48', '48', '48'], width: '100%', alignItems: 'center' }, 'Rates');
+  const rates = b.container(root, { background: INK, padding: PAD.regular, width: '100%', alignItems: 'center' }, 'Rates');
   b.heading(rates, 'Rates', { fontSize: '30', textAlign: 'center', color: BONE });
   b.text(rates, 'A day is the smallest unit — enough for a poster, a label, or rescuing a mark that shrinks badly.', {
     fontSize: '15', textAlign: 'center', color: MUTED, margin: ['10', '0', '24', '0'],
@@ -98,7 +98,7 @@ export default function portfolio() {
   ], { featured: 1, accent: GOLD, background: PANEL, color: BONE });
 
   // ── the questions that arrive by email ──────────────────────────
-  const ask = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%' }, 'Questions');
+  const ask = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%' }, 'Questions');
   const askSplit = b.columns(ask, { count: '2', gap: '40', ratio: '2:3', stack: 'yes' });
   const askIntro = b.container(askSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Questions intro');
   b.heading(askIntro, 'Asked by email, mostly', { fontSize: '30', color: BONE });

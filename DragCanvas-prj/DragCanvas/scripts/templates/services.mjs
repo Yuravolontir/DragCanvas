@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT } from './_builder.mjs';
+import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 
 /**
@@ -34,7 +34,7 @@ export default function services() {
     fontSize: '17', color: rgba(255, 255, 255, 0.82),
   });
   b.button(words, 'Get a quote', { background: AMBER, color: INK, buttonStyle: 'full' });
-  b.image(top, P.joinery.bench(900), { alt: 'Joiner shaping timber at a workshop bench', radius: 10, width: '100%', height: '400px' });
+  b.image(top, P.joinery.bench(900), { alt: 'Joiner shaping timber at a workshop bench', radius: RADIUS.card, width: '100%', height: '400px' });
 
   // ── the joinery in three numbers ────────────────────────────────
   const num = b.container(root, { background: PAPER, padding: ['32', '48', '8', '48'], width: '100%' }, 'Numbers');
@@ -47,8 +47,8 @@ export default function services() {
   b.spacer(work, '20');
   const ba = b.columns(work, { count: '2', gap: '20' });
   for (const [label, img] of [['In the workshop', P.joinery.saw(800)], ['In your house', P.interiors.kitchen(800)]]) {
-    const card = b.container(ba, { background: PANEL, padding: ['0', '0', '16', '0'], radius: 10 }, label);
-    b.image(card, img, { alt: label, radius: 10, width: '100%', height: '300px' });
+    const card = b.container(ba, { background: PANEL, padding: ['0', '0', '16', '0'], shadow: SHADOW.lifted, radius: RADIUS.card }, label);
+    b.image(card, img, { alt: label, radius: RADIUS.card, width: '100%', height: '300px' });
     b.badge(card, label, { background: WHITE, color: INK });
   }
 
@@ -62,14 +62,14 @@ export default function services() {
     ['Built in our shop', 'carpenter', 'Cut and finished twenty minutes away, not flat-packed three seas away.'],
     ['Fixed for ten years', 'handshake', 'Hinges, runners and drawer bottoms, in writing. A squeak is my problem.'],
   ]) {
-    const card = b.container(holdCols, { background: PANEL, padding: ['24', '22', '24', '22'], radius: 10 }, name);
+    const card = b.container(holdCols, { background: PANEL, padding: ['24', '22', '24', '22'], shadow: SHADOW.lifted, radius: RADIUS.card }, name);
     b.icon(card, symbol, { color: INK, background: AMBER });
     b.heading(card, name, { level: '3', fontSize: '18', color: INK, margin: ['14', '0', '6', '0'] });
     b.text(card, copy, { fontSize: '15', color: MUTED });
   }
 
   // ── how a job actually runs ─────────────────────────────────────
-  const how = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%' }, 'Process');
+  const how = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%' }, 'Process');
   b.heading(how, 'How a job runs', { fontSize: '30', color: INK });
   b.spacer(how, '24');
   b.timeline(how, [
@@ -78,7 +78,7 @@ export default function services() {
     'Week 6', 'The fit', 'Two or three days in the house. We vacuum every evening and take the old units away.',
   ], { accent: AMBER_INK, color: INK });
 
-  const prices = b.container(root, { background: PAPER, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'prices' }, 'Prices');
+  const prices = b.container(root, { background: PAPER, padding: PAD.regular, width: '100%', anchor: 'prices' }, 'Prices');
   b.heading(prices, 'What things cost', { fontSize: '30', color: INK });
   b.text(prices, 'Rough guides. The quote is fixed once I have seen the room.', {
     fontSize: '15', color: MUTED, margin: ['8', '0', '20', '0'],
@@ -97,7 +97,7 @@ export default function services() {
   });
 
   // ── the questions every kitchen conversation reaches ────────────
-  const ask = b.container(root, { background: PANEL, padding: ['48', '48', '48', '48'], width: '100%' }, 'Questions');
+  const ask = b.container(root, { background: PANEL, padding: PAD.regular, width: '100%' }, 'Questions');
   const askSplit = b.columns(ask, { count: '2', gap: '40', ratio: '2:3', stack: 'yes' });
   const askIntro = b.container(askSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Questions intro');
   b.heading(askIntro, 'Before you ask', { fontSize: '30', color: INK });
@@ -111,10 +111,10 @@ export default function services() {
     'Fixed. If the wall behind the units is worse than it looked, that is between me and the wall.',
     'Do you do the whole kitchen — plumbing, stone?',
     'The wood is mine. The stonemason and the electrician I have worked beside for a decade bill through the same quote.',
-  ], { background: PAPER, color: INK, radius: 10 });
+  ], { background: PAPER, color: INK, radius: RADIUS.card });
 
   // ── the form everything above was for ───────────────────────────
-  const quote = b.container(root, { background: PAPER, padding: ['48', '48', '48', '48'], width: '100%', anchor: 'quote' }, 'Quote');
+  const quote = b.container(root, { background: PAPER, padding: PAD.regular, width: '100%', anchor: 'quote' }, 'Quote');
   const quoteSplit = b.columns(quote, { count: '2', gap: '40', ratio: '3:2', stack: 'yes' });
   const quoteCopy = b.container(quoteSplit, { background: TRANSPARENT, width: '100%', justifyContent: 'center' }, 'Quote copy');
   b.heading(quoteCopy, 'Tell me about the job', { fontSize: '30', color: INK });
