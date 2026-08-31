@@ -13,6 +13,7 @@ import { deviceModeForWidth } from '../../utils/deviceModes.js';
 import { DeviceModeProvider } from '../../DeviceModeProvider.jsx';
 import { useMediaQuery } from '../../useMediaQuery.js';
 import { installTouchDrag } from '../../utils/touchDragBridge.js';
+import { editingOverride } from '../editingOverride.js';
 
 /*
  * Three bands, and the numbers are measured rather than chosen. The shell is
@@ -160,13 +161,19 @@ export const Viewport = ({ children }) => {
    * handles, no selection outlines, no contenteditable - and turning the phone
    * into a tablet turns it back on without unmounting anything.
    */
+  /*
+   * A phone cannot edit, so the flag comes down - but it is not this
+   * component's flag. The Preview button owns it too, and the rule for sharing
+   * it lives in editingOverride, where it can be read and tested rather than
+   * inferred from an effect.
+   */
+  const forcedOff = useRef(false);
   useEffect(() => {
-    // Only when it actually changes. Writing the same value still pushes a new
-    // state through Craft, which rebuilds the tree and re-runs every ref on a
-    // canvas that did not need touching.
-    if (enabled === !phone) return;
+    const next = editingOverride({ phone, enabled, forcedOff: forcedOff.current });
+    if (!next) return;
+    forcedOff.current = next.forcedOff;
     actions.setOptions((options) => {
-      options.enabled = !phone;
+      options.enabled = next.enabled;
     });
   }, [phone, enabled, actions]);
 
