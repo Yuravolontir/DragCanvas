@@ -10,7 +10,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { repairContrast } from '../utils/ai.helpers.js';
+import { repairContrast, normalizeLayout } from '../utils/ai.helpers.js';
 import { contrastRatio } from '../src/utils/readableInk.js';
 
 /* Real values from features/ai/prompt/design.presets.js */
@@ -154,18 +154,38 @@ test('a light navbar keeps dark type', () => {
     assert.ok(contrastRatio(nav.props.textColor, { r: 248, g: 249, b: 250, a: 1 }) >= 4.5, 'white on bg-light must be repaired');
 });
 
-test('a container with no background of its own is judged as the white it paints', () => {
-    // Container.defaultProps.background is opaque white, so "no background prop"
-    // does not mean "inherit the dark section behind me". A heading in the
-    // palette's light colour inside such a container measured 1.09:1 on screen
-    // while every tool reading props called it fine.
-    const PALE = { r: 243, g: 245, b: 248, a: 1 };
-    const heading = { type: 'Heading', props: { text: 'Master the Art', fontSize: '48', color: { ...PALE } }, children: [] };
-    const band = { type: 'Container', props: {}, children: [heading] };
-    repairContrast(layoutOf(section({ background: { r: 28, g: 32, b: 38, a: 1 } }, [band])));
+test('a container the model gave no background to lets the section through', () => {
+    // Container.defaultProps.background is opaque white, which is right on a
+    // blank canvas and wrong for every container the model writes: it nests
+    // them in dark sections and expects the section to show. The default put a
+    // white rectangle in the middle of a purple footer, and over a background
+    // video it put a white slab under white type at 1.00:1.
+    const PALE = { r: 248, g: 244, b: 250, a: 1 };
+    const DARK = { r: 30, g: 18, b: 36, a: 1 };
+    const label = { type: 'Text', props: { text: 'BMX School', fontSize: '18', fontWeight: '700', color: { ...PALE } }, children: [] };
+    const out = normalizeLayout({ sections: [
+        { type: 'Container', props: { background: { ...DARK } }, children: [
+            { type: 'Container', props: {}, children: [label] },
+        ] },
+    ] });
 
-    assert.notDeepEqual(colourOf(heading), PALE, 'pale on the default white must not survive');
-    assert.ok(contrastRatio(colourOf(heading), { r: 255, g: 255, b: 255, a: 1 }) >= 3);
+    const inner = out.sections[0].children[0];
+    assert.equal(inner.props.background.a, 0, 'says transparent rather than falling through to white');
+    assert.deepEqual(inner.children[0].props.color, PALE, 'light type on a dark footer is left alone');
+    assert.ok(contrastRatio(inner.children[0].props.color, DARK) >= 4.5);
+});
+
+test('a container that does declare white is taken at its word', () => {
+    const PALE = { r: 248, g: 244, b: 250, a: 1 };
+    const label = { type: 'Text', props: { text: 'On a card', fontSize: '16', color: { ...PALE } }, children: [] };
+    const out = normalizeLayout({ sections: [
+        { type: 'Container', props: { background: { r: 30, g: 18, b: 36, a: 1 } }, children: [
+            { type: 'Container', props: { background: { r: 255, g: 255, b: 255, a: 1 } }, children: [label] },
+        ] },
+    ] });
+
+    const ink = out.sections[0].children[0].children[0].props.color;
+    assert.notDeepEqual(ink, PALE, 'pale on a declared white card must be repaired');
 });
 
 test('a container that does declare a background still inherits normally', () => {

@@ -10,7 +10,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { splitConcatenatedPages, promoteHeroToVideo, anchorNavLinks } from '../utils/ai.helpers.js';
+import { splitConcatenatedPages, promoteHeroToVideo, anchorNavLinks, normalizeLayout } from '../utils/ai.helpers.js';
 import { contrastRatio } from '../src/utils/readableInk.js';
 import { hasVideoHero } from '../features/ai/ai.ctrl.js';
 
@@ -223,4 +223,26 @@ test('a section that is only the navigation is still skipped', () => {
 
     assert.equal(layout.sections[0].type, 'NavbarElement', 'untouched');
     assert.equal(layout.sections[1].children[0].type, 'Video');
+});
+
+test('the hero text over the video is readable, not white on white', () => {
+    // The exact shape a real generation produced: the hero holds a two-column
+    // band, and the text column had no background of its own. It painted the
+    // opaque default over the footage and the white type landed on it at
+    // 1.00:1 - the headline simply was not there.
+    const words = { type: 'Container', props: {}, children: [
+        { type: 'Heading', props: { text: 'Master the Ride', fontSize: '52', color: { r: 30, g: 18, b: 36, a: 1 } }, children: [] },
+    ] };
+    const hero = { type: 'Container', props: { background: { r: 30, g: 18, b: 36, a: 1 } }, children: [words] };
+    const out = normalizeLayout({ sections: [navbar(), hero] });
+    promoteHeroToVideo(out, 'BMX school');
+
+    const video = out.sections[1].children.find(c => c.type === 'Video');
+    assert.ok(video, 'the hero got the footage');
+
+    const column = video.children[0];
+    assert.equal(column.props.background.a, 0, 'nothing opaque in front of the clip');
+
+    const ink = column.children[0].props.color;
+    assert.ok(contrastRatio(ink, { r: 0, g: 0, b: 0, a: 1 }) >= 4.5, 'type reads against the scrim');
 });

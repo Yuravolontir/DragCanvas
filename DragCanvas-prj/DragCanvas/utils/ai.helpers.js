@@ -129,6 +129,22 @@ function canonicalType(value) {
     return [...SUPPORTED_ELEMENT_TYPES].find(type => type.toLowerCase() === raw.toLowerCase()) || null;
 }
 
+/**
+ * Nothing behind me: what the model means by leaving a background off.
+ *
+ * Container.defaultProps.background is an opaque white, which is right for
+ * somebody dragging a container onto a blank canvas and wrong for every
+ * container the model writes. It nests them inside dark sections and expects
+ * the section to show through, so the default painted a white rectangle in the
+ * middle of a purple footer, and - after a hero was given a background video -
+ * a white slab over the footage with white type on it, at 1.00:1.
+ *
+ * Saying transparent out loud is what the model meant, and it makes the ground
+ * resolvable: the repair below can then see that the heading sits on the dark
+ * section, or on the scrim over the video, rather than guessing.
+ */
+const TRANSPARENT = { r: 0, g: 0, b: 0, a: 0 };
+
 export function normalizeNode(node) {
     if (!node || typeof node !== 'object' || Array.isArray(node)) return null;
 
@@ -141,7 +157,7 @@ export function normalizeNode(node) {
     if (node.type && node.props) {
         return {
             type: safeType,
-            props: node.props || {},
+            props: withDeclaredGround(safeType, node.props || {}),
             children: safeChildren,
         };
     }
@@ -149,9 +165,17 @@ export function normalizeNode(node) {
     const { type, children: _children, props, ...rest } = node;
     return {
         type: canonicalType(type) || 'Container',
-        props: { ...(props || {}), ...(rest || {}) },
+        props: withDeclaredGround(canonicalType(type) || 'Container', { ...(props || {}), ...(rest || {}) }),
         children: safeChildren,
     };
+}
+
+/** Containers say transparent rather than falling through to the opaque default. */
+function withDeclaredGround(type, props) {
+    if (type !== 'Container') return props;
+    if (isColour(props.background)) return props;
+    if (props.backgroundImage) return props;
+    return { ...props, background: { ...TRANSPARENT } };
 }
 
 /** The canvas a section lands on when nothing above it paints one. */
@@ -192,13 +216,6 @@ function repairNodeContrast(node, ground, overMedia) {
         childOverMedia = true;
     } else if (isColour(props.background) && (props.background.a ?? 1) > 0) {
         childGround = composite(props.background, ground);
-    } else if (node.type === 'Container' && !isColour(props.background)) {
-        // A Container the model gave no background to is not transparent: it
-        // paints the opaque white in its defaultProps. Treating "no prop" as
-        // "inherit" is how a heading in the palette's light colour ended up
-        // invisible at 1.09:1 inside a dark section - the section was dark, the
-        // container it actually sat on was white, and nothing said so.
-        childGround = CANVAS;
     }
 
     const specs = TEXT_PROPS[node.type];
