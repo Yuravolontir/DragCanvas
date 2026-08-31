@@ -136,7 +136,7 @@ async function callModel(messages, { temperature = 0.8, jsonOnly = true, maxToke
 /** Ask the model to design a website layout for the given prompt. */
 export async function generateLayout(prompt, creativity) {
     const { kind, brief, systemPrompt } = await buildSystemPrompt(prompt);
-    console.log(`[AI] kind=${kind.key} palette=${brief.palette} type=${brief.type} density=${brief.density} | prompt ${systemPrompt.length} chars`);
+    console.log(`[AI] kind=${kind.key} palette=${brief.palette} type=${brief.type} density=${brief.density} composition=${brief.composition} | prompt ${systemPrompt.length} chars`);
 
     return callModel(
         [

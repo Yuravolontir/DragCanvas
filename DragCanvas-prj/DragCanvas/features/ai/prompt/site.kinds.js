@@ -36,7 +36,7 @@ const SITE_KINDS = {
         label: 'local business / services',
         sections: 'hero · the services offered · why choose us · gallery of past work · prices or a quote request · the team · what customers say · contact details with a map · footer',
         notes: 'Trust and reachability matter. A map is useful. Testimonial and TeamGrid are what build the trust; Pricing suits a fixed price list.',
-        keywords: ['salon', 'barber', 'clinic', 'dentist', 'gym', 'fitness', 'studio', 'repair', 'plumber', 'garage', 'law', 'agency', 'shop', 'store'],
+        keywords: ['salon', 'barber', 'clinic', 'dentist', 'gym', 'fitness', 'studio', 'repair', 'plumber', 'garage', 'law', 'agency', 'shop', 'store', 'florist', 'dealership', 'veterinary', 'vet ', 'estate', 'charity', 'nonprofit', 'foundation', 'shelter'],
     },
     event: {
         label: 'event / conference / wedding',
@@ -44,11 +44,18 @@ const SITE_KINDS = {
         notes: 'The date and the call to register are the point. A Timeline is the natural shape for a schedule, TeamGrid for the speakers, CTABanner for registering.',
         keywords: ['event', 'conference', 'wedding', 'festival', 'meetup', 'summit', 'workshop', 'concert', 'exhibition'],
     },
+    education: {
+        label: 'school / academy / lessons / course',
+        sections: 'hero showing the thing being taught · the classes or levels offered · who the instructors are · how a beginner starts · safety and what to bring · what students and parents say · prices or packages · the timetable · where it happens with a map · sign up or book a trial · footer',
+        notes: 'A parent or a beginner is deciding whether this is for them, so the levels and the first step matter more than the history. A Timeline suits a syllabus or a term schedule, TeamGrid the instructors, Pricing the packages, Countdown a term or intake that starts on a date. Photographs of real lessons do more than any amount of copy.',
+        keywords: ['school', 'academy', 'lesson', 'lessons', 'course', 'courses', 'class', 'classes', 'training', 'coaching', 'tutor', 'tutoring', 'instructor', 'teacher', 'learn', 'camp', 'workshop for', 'driving', 'language', 'music school', 'dance', 'yoga', 'martial', 'swimming', 'bmx', 'skate', 'climbing'],
+    },
+
     content: {
         label: 'blog / magazine / personal page',
-        sections: 'hero, a list of recent posts, an about section, subscribe, footer',
+        sections: 'hero with what this publication is about · the latest pieces · one piece featured in full · who writes it · subscribe by email · what readers say · an archive or topics list · footer',
         notes: 'Reading comfort first: narrow text column, clear typography. Rarely needs a carousel or a map.',
-        keywords: ['blog', 'magazine', 'journal', 'newsletter', 'articles', 'writer', 'travel diary', 'recipes'],
+        keywords: ['blog', 'magazine', 'journal', 'newsletter', 'articles', 'writer', 'travel diary', 'recipes', 'podcast', 'essays', 'column'],
     },
 };
 
