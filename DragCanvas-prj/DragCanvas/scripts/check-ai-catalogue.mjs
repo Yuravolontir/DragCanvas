@@ -2,7 +2,7 @@
  * Guards the AI prompt against drifting away from the editor.
  *
  * The prompt tells the model which components exist and which props they take.
- * When someone adds a component to the resolver in CreateNewProject.jsx, or adds
+ * When someone adds a component to the editor resolver, or adds
  * a prop to a component, the prompt silently goes stale and the model keeps
  * building pages out of yesterday's vocabulary.
  *
@@ -41,14 +41,14 @@ const NOT_AUTHORED = [
 const LEGACY_ONLY = ['BackgroundVideo'];
 
 function resolverComponents() {
-    const source = fs.readFileSync('src/CreateNewProject.jsx', 'utf8');
-    const block = source.match(/resolver=\{\{([\s\S]*?)\}\}/) || source.match(/const resolver\s*=\s*\{([\s\S]*?)\n\};/);
-    if (!block) throw new Error('resolver not found in CreateNewProject.jsx');
+    const source = fs.readFileSync('src/editor/editorResolver.js', 'utf8');
+    const block = source.match(/export const editorResolver\s*=\s*\{([\s\S]*?)\n\};/);
+    if (!block) throw new Error('resolver not found in src/editor/editorResolver.js');
     return [...block[1].matchAll(/\b(\w+)\s*:\s*Landing\./g)].map(m => m[1]);
 }
 
 function componentProps(name) {
-    const path = `src/Components/Landing/${name}.jsx`;
+    const path = `src/editor/Landing/${name}.jsx`;
     if (!fs.existsSync(path)) return null;
     const source = fs.readFileSync(path, 'utf8');
     const block = source.match(/craft\s*=\s*\{[\s\S]*?props:\s*\{([\s\S]*?)\n\s{2,4}\}/);
@@ -79,7 +79,7 @@ function promptProps() {
  * stays dependency-free and does not have to import JSX.
  */
 function catalogueEntries() {
-    const path = 'src/Components/Landing/elements.catalogue.jsx';
+    const path = 'src/editor/Landing/elements.catalogue.jsx';
     const source = fs.readFileSync(path, 'utf8');
     const groups = source.match(/ELEMENT_GROUPS\s*=\s*\[([^\]]*)\]/);
     const known = groups ? [...groups[1].matchAll(/'([^']+)'/g)].map(m => m[1]) : [];

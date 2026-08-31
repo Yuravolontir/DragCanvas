@@ -1,66 +1,8 @@
 import React from "react";
-import { Editor, Frame, Element } from "@craftjs/core";
-import { createTheme, ThemeProvider } from "@mui/material";
-import NavBar from "./NavBar";
-import LoadProjectOnMount from "./LoadProjectOnMount";
-import * as Landing from "./Components/Landing";
-import { clipFor } from "./utils/stockVideo.js";
+import { Element } from "@craftjs/core";
+import * as Landing from "./Landing";
+import { clipFor } from "../utils/stockVideo.js";
 
-const theme = createTheme({
-  typography: {
-    fontFamily: [
-      "Plus Jakarta Sans",
-      "Roboto",
-      "Helvetica Neue",
-      "Arial",
-      "sans-serif",
-    ].join(","),
-  },
-  palette: { primary: { main: "#0060ac" }, secondary: { main: "#a93349" } },
-});
-const resolver = {
-  Container: Landing.Container,
-  Text: Landing.Text,
-  Custom1: Landing.Custom1,
-  Custom2: Landing.Custom2,
-  Custom2VideoDrop: Landing.Custom2VideoDrop,
-  Custom3: Landing.Custom3,
-  Custom3BtnDrop: Landing.Custom3BtnDrop,
-  OnlyButtons: Landing.OnlyButtons,
-  Button: Landing.Button,
-  Video: Landing.Video,
-  YouTube: Landing.YouTube,
-  BackgroundVideo: Landing.BackgroundVideo,
-  Link: Landing.Link,
-  Form: Landing.Form,
-  Image: Landing.Image,
-  Carousel: Landing.Carousel,
-  Map: Landing.Map,
-  NavbarElement: Landing.NavbarElement,
-  Heading: Landing.Heading,
-  Columns: Landing.Columns,
-  Spacer: Landing.Spacer,
-  Divider: Landing.Divider,
-  List: Landing.List,
-  Quote: Landing.Quote,
-  Icon: Landing.Icon,
-  Badge: Landing.Badge,
-  Accordion: Landing.Accordion,
-  Pricing: Landing.Pricing,
-  Testimonial: Landing.Testimonial,
-  Stats: Landing.Stats,
-  TeamGrid: Landing.TeamGrid,
-  Timeline: Landing.Timeline,
-  CTABanner: Landing.CTABanner,
-  LogoStrip: Landing.LogoStrip,
-  SocialLinks: Landing.SocialLinks,
-  Newsletter: Landing.Newsletter,
-  Booking: Landing.Booking,
-  ProductCatalog: Landing.ProductCatalog,
-  Engagement: Landing.Engagement,
-  Tabs: Landing.Tabs,
-  Countdown: Landing.Countdown,
-};
 const BLUE = { r: 37, g: 99, b: 235, a: 1 };
 const INK = { r: 15, g: 23, b: 42, a: 1 };
 const MUTED = { r: 71, g: 85, b: 105, a: 1 };
@@ -68,7 +10,7 @@ const WHITE = { r: 255, g: 255, b: 255, a: 1 };
 const PALE = { r: 239, g: 246, b: 255, a: 1 };
 const TRANSPARENT = { r: 0, g: 0, b: 0, a: 0 };
 
-function DefaultProjectCanvas() {
+export function DefaultProjectCanvas() {
   return (
     <Element
       canvas
@@ -429,23 +371,5 @@ function DefaultProjectCanvas() {
         />
       </Element>
     </Element>
-  );
-}
-
-export default function CreateNewProject() {
-  return (
-    <>
-      <NavBar />
-      <ThemeProvider theme={theme}>
-        <div className="h-full h-screen">
-          <Editor resolver={resolver} enabled onRender={Landing.RenderNode}>
-            <LoadProjectOnMount />
-            <Landing.Viewport>
-              <Frame>{DefaultProjectCanvas()}</Frame>
-            </Landing.Viewport>
-          </Editor>
-        </div>
-      </ThemeProvider>
-    </>
   );
 }

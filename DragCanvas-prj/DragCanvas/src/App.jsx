@@ -10,7 +10,7 @@ import RouteErrorBoundary from './RouteErrorBoundary';
 const Login = lazy(() => import('./Login'));
 const Register = lazy(() => import('./Register'));
 const LandingPage = lazy(() => import('./LandingPage'));
-const CreateNewProject = lazy(() => import('./CreateNewProject'));
+const CreateNewProject = lazy(() => import('./editor/CreateNewProject'));
 const MyProject = lazy(() => import('./MyProject'));
 const InspireMe = lazy(() => import('./InspireMe'));
 const AdminPanel = lazy(() => import('./AdminPanel'));

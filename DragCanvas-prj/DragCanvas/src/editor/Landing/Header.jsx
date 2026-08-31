@@ -12,9 +12,9 @@ import { apiFetch } from '../../api.js';
   import { exportToHtml } from '../../utils/exportToHtml';
   import { inspectBeforePublish } from '../../utils/publishPreflight.js';
   import { blankPageFrom, emptyPageFrom, syncSharedChrome } from '../../utils/projectPages.js';
-  import PublishInfoModal from '../PublishInfoModal';
-import AuthPromptModal from '../AuthPromptModal';
-import { useDialogs } from '../useDialogs.jsx';
+  import PublishInfoModal from '../../Components/PublishInfoModal';
+import AuthPromptModal from '../../Components/AuthPromptModal';
+import { useDialogs } from '../../Components/useDialogs.jsx';
 
 const PY_API = import.meta.env.VITE_PY_API_URL || 'http://localhost:8000';
 

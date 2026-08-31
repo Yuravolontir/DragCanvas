@@ -14,7 +14,7 @@
 /**
  * The types the editor can actually resolve.
  *
- * Mirrors the resolver in src/CreateNewProject.jsx. A template naming anything
+ * Mirrors the resolver in src/editor/editorResolver.js. A template naming anything
  * else deserialises to nothing - Craft.js drops the node silently, so the
  * symptom is a section that is simply absent rather than an error. The Custom*
  * names are the older hand-built blocks; they resolve, but nothing should be

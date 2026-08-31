@@ -5,9 +5,9 @@ import { useReveal } from './useReveal.js';
 import { useMediaQuery } from '../../useMediaQuery.js';
 import { installTouchDrag } from '../../utils/touchDragBridge.js';
 
-import { Container } from '../Landing/Container';
-import { Text } from '../Landing/Text';
-import { Button as EditorButton } from '../Landing/Button';
+import { Container } from '../../editor/Landing/Container';
+import { Text } from '../../editor/Landing/Text';
+import { Button as EditorButton } from '../../editor/Landing/Button';
 import './EditorDemo.css';
 
 /**
@@ -15,7 +15,7 @@ import './EditorDemo.css';
  *
  * Every builder's site has a screenshot of its editor. This is the editor: the
  * same Craft.js components the real canvas uses, imported from
- * `Components/Landing`. A visitor can add a block before deciding whether to
+ * `editor/Landing`. A visitor can add a block before deciding whether to
  * sign up - by dragging it with a mouse, or by pressing it, which is the only
  * one of the two that works on a phone. See `Toolbox` below for why.
  *
@@ -25,7 +25,7 @@ import './EditorDemo.css';
  * splitting would take the editor off the landing entirely) but a separate
  * change. Given they ship either way, the honest version is free.
  *
- * They are imported by file, never through `Components/Landing/index.jsx`: that
+ * They are imported by file, never through `editor/Landing/index.jsx`: that
  * barrel re-exports everything, including the map and carousel elements, and
  * would drag the lot in behind three imports.
  *
@@ -179,7 +179,7 @@ function Controls() {
  * at all.
  *
  * So the button also inserts on click, exactly as the real toolbox does
- * (`Components/Landing/Toolbox.jsx`, where it was added for the keyboard). A
+ * (`editor/Landing/Toolbox.jsx`, where it was added for the keyboard). A
  * completed drag does not fire `click`, so a mouse gets one behaviour and a
  * thumb gets the other and they never collide.
  */

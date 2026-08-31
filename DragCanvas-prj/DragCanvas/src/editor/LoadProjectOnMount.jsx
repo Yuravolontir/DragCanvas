@@ -1,9 +1,9 @@
-import { apiFetch } from './api.js';
+import { apiFetch } from '../api.js';
 import { useEffect } from 'react';
   import { useEditor } from '@craftjs/core';
   import { useLocation, useNavigate } from 'react-router-dom';
-  import { useDialogs } from './Components/useDialogs.jsx';
-import { parseDesign } from './utils/projectPages.js';
+  import { useDialogs } from '../Components/useDialogs.jsx';
+import { parseDesign } from '../utils/projectPages.js';
 
  export default function LoadProjectOnMount() {
     const { actions } = useEditor();
