@@ -97,14 +97,16 @@ test('a node whose colour the model never set is not given one', () => {
 
 // ---------- structure ----------
 
-test('the ground is inherited through nested containers', () => {
+test('a declared ground is inherited through nested containers', () => {
+    // Two levels down, both declaring the same dark: still dark on dark.
     const heading = { type: 'Heading', props: { text: 'Deep', fontSize: '16', color: { ...MIDNIGHT_DARK } }, children: [] };
-    const inner = section({}, [heading]);
+    const inner = section({ background: { ...MIDNIGHT_DARK } }, [heading]);
     const outer = section({ background: { ...MIDNIGHT_DARK } }, [inner]);
 
     repairContrast(layoutOf(outer));
 
     assert.notDeepEqual(colourOf(heading), MIDNIGHT_DARK, 'dark on dark two levels down is still dark on dark');
+    assert.ok(contrastRatio(colourOf(heading), MIDNIGHT_DARK) >= 4.5);
 });
 
 test('multipage layouts are repaired on every page', () => {
@@ -150,4 +152,27 @@ test('a light navbar keeps dark type', () => {
     repairContrast(layoutOf(section({ background: { r: 18, g: 18, b: 28, a: 1 } }, [nav])));
 
     assert.ok(contrastRatio(nav.props.textColor, { r: 248, g: 249, b: 250, a: 1 }) >= 4.5, 'white on bg-light must be repaired');
+});
+
+test('a container with no background of its own is judged as the white it paints', () => {
+    // Container.defaultProps.background is opaque white, so "no background prop"
+    // does not mean "inherit the dark section behind me". A heading in the
+    // palette's light colour inside such a container measured 1.09:1 on screen
+    // while every tool reading props called it fine.
+    const PALE = { r: 243, g: 245, b: 248, a: 1 };
+    const heading = { type: 'Heading', props: { text: 'Master the Art', fontSize: '48', color: { ...PALE } }, children: [] };
+    const band = { type: 'Container', props: {}, children: [heading] };
+    repairContrast(layoutOf(section({ background: { r: 28, g: 32, b: 38, a: 1 } }, [band])));
+
+    assert.notDeepEqual(colourOf(heading), PALE, 'pale on the default white must not survive');
+    assert.ok(contrastRatio(colourOf(heading), { r: 255, g: 255, b: 255, a: 1 }) >= 3);
+});
+
+test('a container that does declare a background still inherits normally', () => {
+    const PALE = { r: 243, g: 245, b: 248, a: 1 };
+    const heading = { type: 'Heading', props: { text: 'On dark', fontSize: '48', color: { ...PALE } }, children: [] };
+    const band = { type: 'Container', props: { background: { r: 28, g: 32, b: 38, a: 1 } }, children: [heading] };
+    repairContrast(layoutOf(section({}, [band])));
+
+    assert.deepEqual(colourOf(heading), PALE, 'readable on the dark it declared');
 });

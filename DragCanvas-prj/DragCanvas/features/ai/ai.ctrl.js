@@ -1,5 +1,5 @@
 import * as aiService from './ai.service.js';
-import { safeParseAIJson, normalizeLayout, replacePlaceholdersInJson, fillRemainingVideoPlaceholders, promoteHeroToVideo, splitConcatenatedPages } from '../../utils/ai.helpers.js';
+import { safeParseAIJson, normalizeLayout, replacePlaceholdersInJson, fillRemainingVideoPlaceholders, promoteHeroToVideo, splitConcatenatedPages, anchorNavLinks } from '../../utils/ai.helpers.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
 import { cloudinary } from '../../middlewares/files.js';
 import AssetMdl from '../assets/asset.mdl.js';
@@ -241,6 +241,8 @@ export async function generateWebsite(req, res) {
             // A whole site written as one page, navbars and all, before any of
             // the below looks at "the first section of the first page".
             const split = splitConcatenatedPages(layout);
+            // One page, so its navigation has to point at itself.
+            anchorNavLinks(split);
 
             // Still opening on a photograph: give the hero a clip behind the
             // words it already has, rather than shipping the one thing the
@@ -262,6 +264,7 @@ export async function generateWebsite(req, res) {
         console.log(`[AI] returning a layout without a video hero after ${MAX_ATTEMPTS} attempts`);
         fillRemainingVideoPlaceholders(bestSoFar, cleanPrompt);
         const splitBest = splitConcatenatedPages(bestSoFar);
+        anchorNavLinks(splitBest);
         if (!hasVideoHero(splitBest)) promoteHeroToVideo(splitBest, cleanPrompt);
         return res.status(200).json(buildSuccessResponse(splitBest));
     }

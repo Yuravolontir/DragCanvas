@@ -157,6 +157,9 @@ export function normalizeNode(node) {
 /** The canvas a section lands on when nothing above it paints one. */
 const CANVAS = { r: 255, g: 255, b: 255, a: 1 };
 
+/** What a background video looks like behind its scrim: unknowable, so black. */
+const SCRIM = { r: 0, g: 0, b: 0, a: 1 };
+
 /**
  * Make the text the model coloured actually readable, in place.
  *
@@ -189,6 +192,13 @@ function repairNodeContrast(node, ground, overMedia) {
         childOverMedia = true;
     } else if (isColour(props.background) && (props.background.a ?? 1) > 0) {
         childGround = composite(props.background, ground);
+    } else if (node.type === 'Container' && !isColour(props.background)) {
+        // A Container the model gave no background to is not transparent: it
+        // paints the opaque white in its defaultProps. Treating "no prop" as
+        // "inherit" is how a heading in the palette's light colour ended up
+        // invisible at 1.09:1 inside a dark section - the section was dark, the
+        // container it actually sat on was white, and nothing said so.
+        childGround = CANVAS;
     }
 
     const specs = TEXT_PROPS[node.type];
@@ -316,6 +326,18 @@ export function promoteHeroToVideo(layout, subject) {
     const poster = typeof props.backgroundImage === 'string' ? props.backgroundImage : firstImageSrc(hero);
     const clip = pickStockClip(subject);
 
+    // A child painting the Container default - opaque white - sits on top of the
+    // footage and hides it. Whatever the model chose as the hero's own ground is
+    // the video now, so the band in front of it becomes transparent.
+    for (const child of hero.children) {
+        if (child?.type !== 'Container') continue;
+        child.props = { ...(child.props || {}), background: { r: 0, g: 0, b: 0, a: 0 } };
+    }
+    // The type now sits on footage nobody has seen behind a dark scrim, which is
+    // the one ground no measurement can resolve. The exporter and the contrast
+    // check both assume black under the scrim, so the ink follows that.
+    for (const child of hero.children) inkOverFootage(child);
+
     hero.children = [
         {
             type: 'Video',
@@ -342,6 +364,21 @@ export function promoteHeroToVideo(layout, subject) {
     return true;
 }
 
+/** Set every text colour in a subtree to the ink that reads over dark footage. */
+function inkOverFootage(node) {
+    if (!node || typeof node !== 'object') return;
+    const specs = TEXT_PROPS[node.type];
+    if (specs) {
+        const props = node.props || {};
+        for (const spec of specs) {
+            if (spec.colour === ON_ACCENT || isColour(spec.colour)) continue;
+            if (isColour(props[spec.colour])) props[spec.colour] = readableInk(SCRIM);
+        }
+        node.props = props;
+    }
+    for (const child of node.children || []) inkOverFootage(child);
+}
+
 /** The first image URL anywhere inside a node, for use as a poster. */
 function firstImageSrc(node) {
     if (!node || typeof node !== 'object') return '';
@@ -354,6 +391,40 @@ function firstImageSrc(node) {
         if (found) return found;
     }
     return '';
+}
+
+/**
+ * Point a single page's navigation at itself.
+ *
+ * The model writes cross-page links whether or not it was asked for pages -
+ * /about-us/, /classes/, /contact/ - and on a one-page site every one of them
+ * is a link to nothing. The sections are all there, each with its own anchor,
+ * so the same names work as anchors: the navigation starts working instead of
+ * promising pages nobody generated.
+ */
+export function anchorNavLinks(layout) {
+    if (!layout || Array.isArray(layout.pages)) return layout;
+
+    const asAnchor = (href) => {
+        const path = String(href || '').trim();
+        if (!path.startsWith('/')) return path;
+        const slug = path.replace(/^\/+|\/+$/g, '');
+        return slug ? `#${slug}` : '#home';
+    };
+
+    const walk = (nodes) => {
+        for (const node of nodes || []) {
+            if (!node || typeof node !== 'object') continue;
+            if (node.type === 'NavbarElement' && Array.isArray(node.props?.links)) {
+                node.props.links = node.props.links.map(link => (
+                    link && typeof link === 'object' ? { ...link, href: asAnchor(link.href) } : link
+                ));
+            }
+            walk(node.children);
+        }
+    };
+    walk(layout.sections);
+    return layout;
 }
 
 /** Walk every page's sections, repairing any text that cannot be read. */

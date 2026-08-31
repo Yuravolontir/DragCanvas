@@ -10,7 +10,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { splitConcatenatedPages, promoteHeroToVideo } from '../utils/ai.helpers.js';
+import { splitConcatenatedPages, promoteHeroToVideo, anchorNavLinks } from '../utils/ai.helpers.js';
+import { contrastRatio } from '../src/utils/readableInk.js';
 import { hasVideoHero } from '../features/ai/ai.ctrl.js';
 
 const navbar = () => ({ type: 'NavbarElement', props: { variant: 'dark', brand: 'BMX School' }, children: [] });
@@ -105,4 +106,54 @@ test('a hero with no picture at all still gets its clip', () => {
     const layout = { sections: [navbar(), band(heading('Words only'))] };
     assert.equal(promoteHeroToVideo(layout, 'BMX'), true);
     assert.match(layout.sections[1].children[0].props.src, /^https:\/\/videos\.pexels\.com\//);
+});
+
+// ---------- what the model paints over the footage ----------
+
+test('the band in front of the video stops painting over it', () => {
+    // A Container the model gave no background to renders the opaque white in
+    // its defaultProps, so it covered the clip completely.
+    const band = { type: 'Container', props: {}, children: [heading('Master the Art of BMX')] };
+    const layout = { sections: [navbar(), { type: 'Container', props: {}, children: [band] }] };
+    promoteHeroToVideo(layout, 'BMX');
+
+    const video = layout.sections[1].children[0];
+    assert.equal(video.type, 'Video');
+    assert.equal(video.children[0].props.background.a, 0, 'transparent, or the footage is hidden');
+});
+
+test('type over the footage is set to ink that reads on a scrim', () => {
+    const band = { type: 'Container', props: {}, children: [{ type: 'Heading', props: { text: 'Hi', color: { r: 20, g: 20, b: 20, a: 1 } }, children: [] }] };
+    const layout = { sections: [navbar(), { type: 'Container', props: {}, children: [band] }] };
+    promoteHeroToVideo(layout, 'BMX');
+
+    const ink = layout.sections[1].children[0].children[0].children[0].props.color;
+    assert.ok(contrastRatio(ink, { r: 0, g: 0, b: 0, a: 1 }) >= 4.5, 'must read against a dark scrim');
+});
+
+// ---------- navigation that points at pages nobody generated ----------
+
+test('a one-page site gets anchors, not links to pages that do not exist', () => {
+    const nav = { type: 'NavbarElement', props: { links: [
+        { text: 'Home', href: '/' },
+        { text: 'About Us', href: '/about-us/' },
+        { text: 'Classes', href: '/classes/' },
+    ] }, children: [] };
+    anchorNavLinks({ sections: [nav] });
+
+    assert.deepEqual(nav.props.links.map(l => l.href), ['#home', '#about-us', '#classes']);
+});
+
+test('a real multipage site keeps its real links', () => {
+    const nav = { type: 'NavbarElement', props: { links: [{ text: 'About', href: '/about/' }] }, children: [] };
+    const layout = { pages: [{ name: 'Home', slug: 'home', sections: [nav] }] };
+    anchorNavLinks(layout);
+
+    assert.equal(nav.props.links[0].href, '/about/', 'these pages exist');
+});
+
+test('an anchor the model already wrote is left alone', () => {
+    const nav = { type: 'NavbarElement', props: { links: [{ text: 'Pricing', href: '#pricing' }] }, children: [] };
+    anchorNavLinks({ sections: [nav] });
+    assert.equal(nav.props.links[0].href, '#pricing');
 });
