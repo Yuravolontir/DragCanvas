@@ -133,15 +133,47 @@ test('type over the footage is set to ink that reads on a scrim', () => {
 
 // ---------- navigation that points at pages nobody generated ----------
 
-test('a one-page site gets anchors, not links to pages that do not exist', () => {
+const sectionAt = (anchor, title) => ({ type: 'Container', props: { anchor }, children: [heading(title)] });
+
+test('a one-page site is navigated by the anchors it actually has', () => {
+    // The model wrote /about/ and /services/ on a site with one page: every
+    // link led nowhere.
     const nav = { type: 'NavbarElement', props: { links: [
         { text: 'Home', href: '/' },
         { text: 'About Us', href: '/about-us/' },
-        { text: 'Classes', href: '/classes/' },
     ] }, children: [] };
-    anchorNavLinks({ sections: [nav] });
+    const layout = { sections: [nav, sectionAt('hero', 'Your Vision'), sectionAt('what-we-do', 'What We Do'), sectionAt('stats', 'Our Achievements')] };
+    anchorNavLinks(layout);
 
-    assert.deepEqual(nav.props.links.map(l => l.href), ['#home', '#about-us', '#classes']);
+    assert.deepEqual(nav.props.links.map(l => l.href), ['#hero', '#what-we-do', '#stats']);
+    assert.equal(nav.props.links[1].text, 'What We Do', 'the heading names the link');
+});
+
+test('a navbar left to its defaults is given real destinations', () => {
+    // NavbarElement falls back to #home, #features and #pricing when the model
+    // sets no links at all - three anchors no section claims.
+    const nav = { type: 'NavbarElement', props: {}, children: [] };
+    const layout = { sections: [nav, sectionAt('hero', 'Welcome'), sectionAt('testimonials', 'What Our Clients Say')] };
+    anchorNavLinks(layout);
+
+    assert.deepEqual(nav.props.links.map(l => l.href), ['#hero', '#testimonials']);
+});
+
+test('the footer is reachable by scrolling and does not need a tab', () => {
+    const nav = { type: 'NavbarElement', props: {}, children: [] };
+    anchorNavLinks({ sections: [nav, sectionAt('hero', 'Hi'), sectionAt('pricing', 'Pricing'), sectionAt('footer', 'Footer')] });
+
+    assert.deepEqual(nav.props.links.map(l => l.href), ['#hero', '#pricing']);
+});
+
+test("the model's own wording survives when it points somewhere real", () => {
+    const nav = { type: 'NavbarElement', props: { links: [
+        { text: 'Start here', href: '#hero' },
+        { text: 'Prices', href: '#pricing' },
+    ] }, children: [] };
+    anchorNavLinks({ sections: [nav, sectionAt('hero', 'Welcome'), sectionAt('pricing', 'Our Prices')] });
+
+    assert.deepEqual(nav.props.links.map(l => l.text), ['Start here', 'Prices'], 'better wording than a heading');
 });
 
 test('a real multipage site keeps its real links', () => {
@@ -152,10 +184,11 @@ test('a real multipage site keeps its real links', () => {
     assert.equal(nav.props.links[0].href, '/about/', 'these pages exist');
 });
 
-test('an anchor the model already wrote is left alone', () => {
-    const nav = { type: 'NavbarElement', props: { links: [{ text: 'Pricing', href: '#pricing' }] }, children: [] };
-    anchorNavLinks({ sections: [nav] });
-    assert.equal(nav.props.links[0].href, '#pricing');
+test('a page whose sections carry no anchors is left alone', () => {
+    const nav = { type: 'NavbarElement', props: { links: [{ text: 'Home', href: '/' }] }, children: [] };
+    anchorNavLinks({ sections: [nav, { type: 'Container', props: {}, children: [heading('No anchor')] }] });
+
+    assert.equal(nav.props.links[0].href, '/', 'nothing better to offer');
 });
 
 // ---------- the bar that lives inside the opening section ----------

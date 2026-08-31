@@ -415,37 +415,64 @@ function firstImageSrc(node) {
     return '';
 }
 
+/** Turn "what-we-do" into "What We Do", for a link somebody has to read. */
+const titleise = (slug) => String(slug || '')
+    .split('-')
+    .filter(Boolean)
+    .map(word => (word.length <= 2 ? word : word[0].toUpperCase() + word.slice(1)))
+    .join(' ');
+
 /**
- * Point a single page's navigation at itself.
+ * Point the navigation at sections that exist.
  *
- * The model writes cross-page links whether or not it was asked for pages -
- * /about-us/, /classes/, /contact/ - and on a one-page site every one of them
- * is a link to nothing. The sections are all there, each with its own anchor,
- * so the same names work as anchors: the navigation starts working instead of
- * promising pages nobody generated.
+ * Two ways this went wrong on the same page. The model wrote cross-page links -
+ * /about/, /services/ - on a site with one page, so every one of them led
+ * nowhere. And when it left the navbar's props off entirely, NavbarElement fell
+ * back to its own defaults: a brand reading "Brand" and links to #home,
+ * #features and #pricing, none of which any section claims.
+ *
+ * Both are the same fault - navigation describing a page that was not built -
+ * and both have one answer, because the sections say what they are. Every
+ * top-level section carries an anchor, so the bar is rebuilt from those: the
+ * heading names the link, the anchor is the target, and a visitor clicking
+ * "Stats" arrives at the stats.
+ *
+ * A site with real pages is left alone; there the paths are real.
  */
 export function anchorNavLinks(layout) {
     if (!layout || Array.isArray(layout.pages)) return layout;
 
-    const asAnchor = (href) => {
-        const path = String(href || '').trim();
-        if (!path.startsWith('/')) return path;
-        const slug = path.replace(/^\/+|\/+$/g, '');
-        return slug ? `#${slug}` : '#home';
-    };
+    const sections = Array.isArray(layout.sections) ? layout.sections : [];
+    const destinations = [];
+    for (const section of sections) {
+        const anchor = section?.props?.anchor;
+        if (typeof anchor !== 'string' || !anchor.trim()) continue;
+        if (anchor === 'footer') continue;   // reachable by scrolling, not worth a tab
+        destinations.push({
+            text: (firstHeading([section]) || titleise(anchor)).slice(0, 28),
+            href: `#${anchor.trim()}`,
+        });
+    }
+    if (!destinations.length) return layout;
+
+    // More than five and the bar wraps; the first few are the ones that matter.
+    const links = destinations.slice(0, 5);
+    const claimed = new Set(links.map(link => link.href));
 
     const walk = (nodes) => {
         for (const node of nodes || []) {
             if (!node || typeof node !== 'object') continue;
-            if (node.type === 'NavbarElement' && Array.isArray(node.props?.links)) {
-                node.props.links = node.props.links.map(link => (
-                    link && typeof link === 'object' ? { ...link, href: asAnchor(link.href) } : link
-                ));
+            if (node.type === 'NavbarElement') {
+                const existing = Array.isArray(node.props?.links) ? node.props.links : [];
+                // Keep the model's own wording wherever it already points at a
+                // section that exists; replace the rest with ones that do.
+                const kept = existing.filter(link => claimed.has(String(link?.href || '')));
+                node.props = { ...(node.props || {}), links: kept.length >= 2 ? kept : links };
             }
             walk(node.children);
         }
     };
-    walk(layout.sections);
+    walk(sections);
     return layout;
 }
 
