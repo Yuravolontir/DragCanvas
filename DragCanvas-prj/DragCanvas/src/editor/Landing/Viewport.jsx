@@ -30,18 +30,21 @@ import { installTouchDrag } from '../../utils/touchDragBridge.js';
 const DRAWERS = '(max-width: 1023px)';
 
 /*
- * A phone is edited in landscape or not at all.
+ * A phone does not edit, in either orientation.
  *
- * Both panels now run the full width of the shell, and in portrait that width
- * is ~400px: the open drawer covers the canvas completely, so every insert is
- * made blind and the settings panel edits something you cannot see. Turned the
- * other way the same drawer is 874px, the elements fall into a grid four or
- * five across, and there is a canvas worth looking at between openings.
+ * Both panels run the full width of the shell. Upright that width is ~400px:
+ * the open drawer covers the canvas completely, so every insert is made blind
+ * and the settings panel edits something nobody can see. Turned sideways the
+ * drawer is wide enough, but the canvas it leaves is under 400px tall - a strip
+ * two elements deep, with the keyboard taking half of it the moment any text is
+ * touched. Neither is editing; one is just worse at admitting it.
  *
- * The bound is the phone one rather than the drawer one: a tablet held upright
- * is 768px and has room for both, so it keeps the editor.
+ * Two bounds, because a phone lies about its width when it is turned: 767px
+ * catches it upright, and a viewport shorter than 600px catches it sideways. A
+ * tablet is 768x1024 and clears both, so it keeps the editor, with the panels
+ * as drawers.
  */
-const ROTATE = '(max-width: 767px) and (orientation: portrait)';
+const PHONE = '(max-width: 767px), (max-height: 599px) and (orientation: landscape)';
 
 const PreviewBanner = styled.div`
   display: flex;
@@ -63,10 +66,14 @@ const PreviewBanner = styled.div`
     font-size: 20px;
   }
   a {
-    align-self: flex-start;
-    margin-top: 2px;
     color: var(--primary, #4e5ba6);
     font-weight: 700;
+  }
+  .preview-banner__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 8px;
   }
 `;
 
@@ -127,9 +134,10 @@ export const Viewport = ({ children }) => {
   const [openPanel, setOpenPanel] = useState(null);
   const pageRef = useRef(null);
   const drawers = useMediaQuery(DRAWERS);
-  // Turning the phone re-runs the query and the editor appears; nothing is
-  // unmounted on the way, so the project in Craft's store survives the rotation.
-  const preview = useMediaQuery(ROTATE);
+  // The query re-runs on rotation and on resize, and nothing is unmounted on
+  // the way - a project open in Craft's store survives a phone being turned or
+  // a laptop window being dragged narrow and back.
+  const phone = useMediaQuery(PHONE);
   const {
     enabled,
     connectors,
@@ -243,12 +251,15 @@ export const Viewport = ({ children }) => {
   );
 
   /*
-   * A phone held upright: the real project, read-only, at the phone's real
-   * width. Not a dead end and not a shrunken editor — no Header means no save
-   * control, and there is no autosave in this codebase, so a phone in portrait
-   * cannot overwrite a project even by accident.
+   * A phone: the real project, read-only, at the phone's real width.
+   *
+   * Not a dead end and not a shrunken editor - no Header means no save control,
+   * and there is no autosave in this codebase, so a phone cannot overwrite a
+   * project even by accident. Somebody who arrived here on a phone still has
+   * somewhere to go: their own work, and the gallery, both of which read
+   * perfectly at this width.
    */
-  if (preview) {
+  if (phone) {
     return (
       <DeviceModeProvider value={deviceMode}>
         <ViewportDiv>
@@ -257,9 +268,9 @@ export const Viewport = ({ children }) => {
               <PreviewBanner role="status">
                 <strong>
                   <span className="material-symbols-outlined" aria-hidden="true">
-                    screen_rotation
+                    tablet_mac
                   </span>
-                  Turn your phone sideways to edit
+                  Editing needs a tablet or a computer
                 </strong>
                 {/*
                   Not "this is your published site". The canvas keeps the width
@@ -268,11 +279,15 @@ export const Viewport = ({ children }) => {
                   that would not scroll there. Saying otherwise would make this
                   screen lie about the one thing it is for.
                 */}
-                The elements and settings panels each take the full width of the
-                screen, and upright that leaves nothing of the page to edit
-                against. Below is your page, read-only — the editor canvas rather
-                than the published layout, so wide sections scroll sideways here.{' '}
-                <a href="/my-projects">Back to My Projects</a>
+                The elements and settings panels each need the full width of a
+                phone, which leaves nothing of the page to edit against. From a
+                tablet upwards they open as drawers over a canvas you can still
+                see. Below is your page, read-only — the editor canvas rather
+                than the published layout, so wide sections scroll sideways here.
+                <span className="preview-banner__links">
+                  <a href="/my-projects">My projects</a>
+                  <a href="/inspire-me">Browse templates</a>
+                </span>
               </PreviewBanner>
               {canvas(false)}
             </div>

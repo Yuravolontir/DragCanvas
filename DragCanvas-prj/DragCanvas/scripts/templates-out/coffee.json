@@ -2133,9 +2133,9 @@
         "a": 0
       },
       "color": {
-        "r": 170,
-        "g": 87,
-        "b": 45,
+        "r": 155,
+        "g": 81,
+        "b": 43,
         "a": 1
       },
       "radius": 0
@@ -2252,9 +2252,9 @@
         "Unused pieces can be returned within 30 days."
       ],
       "accent": {
-        "r": 170,
-        "g": 87,
-        "b": 45,
+        "r": 155,
+        "g": 81,
+        "b": 43,
         "a": 1
       },
       "color": {
@@ -2333,9 +2333,9 @@
       "label": "Current collection closes in",
       "expiredText": "This offer has ended.",
       "accent": {
-        "r": 170,
-        "g": 87,
-        "b": 45,
+        "r": 155,
+        "g": 81,
+        "b": 43,
         "a": 1
       }
     },
@@ -2368,9 +2368,9 @@
       "buttonText": "Buy now",
       "currency": "ILS",
       "accent": {
-        "r": 170,
-        "g": 87,
-        "b": 45,
+        "r": 155,
+        "g": 81,
+        "b": 43,
         "a": 1
       }
     },
@@ -2473,9 +2473,9 @@
         "👏"
       ],
       "accent": {
-        "r": 170,
-        "g": 87,
-        "b": 45,
+        "r": 155,
+        "g": 81,
+        "b": 43,
         "a": 1
       }
     },

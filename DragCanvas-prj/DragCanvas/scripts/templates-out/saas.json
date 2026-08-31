@@ -2100,9 +2100,9 @@
         "a": 0
       },
       "color": {
-        "r": 120,
-        "g": 123,
-        "b": 240,
+        "r": 134,
+        "g": 136,
+        "b": 242,
         "a": 1
       },
       "radius": 0
@@ -2219,9 +2219,9 @@
         "Occasionally — never just to fill a schedule."
       ],
       "accent": {
-        "r": 120,
-        "g": 123,
-        "b": 240,
+        "r": 134,
+        "g": 136,
+        "b": 242,
         "a": 1
       },
       "color": {
@@ -2301,9 +2301,9 @@
       "buttonText": "Subscribe",
       "successMessage": "Check your inbox to confirm.",
       "accent": {
-        "r": 120,
-        "g": 123,
-        "b": 240,
+        "r": 134,
+        "g": 136,
+        "b": 242,
         "a": 1
       },
       "color": {
@@ -2412,9 +2412,9 @@
         "👏"
       ],
       "accent": {
-        "r": 120,
-        "g": 123,
-        "b": 240,
+        "r": 134,
+        "g": 136,
+        "b": 242,
         "a": 1
       }
     },

@@ -12,7 +12,7 @@
 const px = (id, w = 1200) =>
   `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}`;
 
-import { readableInk } from '../../src/utils/readableInk.js';
+import { contrastRatio, readableInk } from '../../src/utils/readableInk.js';
 
 const rgba = (r, g, b, a = 1) => ({ r, g, b, a });
 
@@ -440,6 +440,24 @@ export function createBuilder() {
     timeZone = 'Asia/Jerusalem',
     currency = 'USD',
   } = {}) => {
+    // Brand colours that work beautifully as a fill can miss 4.5:1 when the
+    // same colour is used for a small tab label. Keep its hue, moving it toward
+    // the panel's readable ink only as far as the text needs.
+    const safeAccent = (() => {
+      if (contrastRatio(accent, panel) >= 4.5) return accent;
+      const target = readableInk(panel);
+      for (let step = 1; step <= 10; step += 1) {
+        const amount = step / 10;
+        const candidate = rgba(
+          Math.round(accent.r + (target.r - accent.r) * amount),
+          Math.round(accent.g + (target.g - accent.g) * amount),
+          Math.round(accent.b + (target.b - accent.b) * amount),
+        );
+        if (contrastRatio(candidate, panel) >= 4.5) return candidate;
+      }
+      return target;
+    })();
+
     const copy = {
       service: {
         eyebrow: 'THE NEXT STEP',
@@ -484,7 +502,7 @@ export function createBuilder() {
 
     badge(shell, copy.eyebrow, {
       background: TRANSPARENT,
-      color: accent,
+      color: safeAccent,
       radius: 0,
     }, 'Section label');
     heading(shell, copy.title, {
@@ -500,7 +518,7 @@ export function createBuilder() {
     }, 'Next step introduction');
 
     const journey = columns(shell, { count: '2', gap: '32', ratio: '3:2', stack: 'yes' }, 'Next step details');
-    tabs(journey, copy.facts, { accent, color: ink }, 'Useful details');
+    tabs(journey, copy.facts, { accent: safeAccent, color: ink }, 'Useful details');
 
     const action = container(journey, {
       background: TRANSPARENT,
@@ -510,20 +528,20 @@ export function createBuilder() {
     }, 'Primary next step');
 
     if (mode === 'commerce') {
-      countdown(action, { label: 'Current collection closes in', accent }, 'Collection countdown');
+      countdown(action, { label: 'Current collection closes in', accent: safeAccent }, 'Collection countdown');
       productCatalog(shell, [
         'Everyday', 'A simple, useful place to begin', '29.00', '',
         'Signature', 'The piece people return for', '59.00', '',
-      ], { currency, accent }, 'Selected pieces');
+      ], { currency, accent: safeAccent }, 'Selected pieces');
     } else if (mode === 'event') {
-      countdown(action, { label: 'Until doors open', accent }, 'Event countdown');
-      booking(shell, { heading: 'Reserve your place', duration: 60, timeZone, accent }, 'Reservation');
+      countdown(action, { label: 'Until doors open', accent: safeAccent }, 'Event countdown');
+      booking(shell, { heading: 'Reserve your place', duration: 60, timeZone, accent: safeAccent }, 'Reservation');
     } else if (mode === 'service') {
-      booking(action, { heading: 'Choose a time', duration: 60, timeZone, accent }, 'Appointment booking');
+      booking(action, { heading: 'Choose a time', duration: 60, timeZone, accent: safeAccent }, 'Appointment booking');
     } else {
       newsletter(action, {
         heading: 'Receive the next edition',
-        accent,
+        accent: safeAccent,
         color: ink,
       }, 'Newsletter signup');
     }
@@ -537,7 +555,7 @@ export function createBuilder() {
     engagement(response, {
       mode: mode === 'content' ? 'reaction' : 'review',
       heading: mode === 'content' ? 'Was this worth your time?' : 'How did this feel?',
-      accent,
+      accent: safeAccent,
     }, 'Visitor feedback');
 
     return section;
