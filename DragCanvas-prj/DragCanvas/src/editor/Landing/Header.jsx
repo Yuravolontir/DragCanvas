@@ -1175,18 +1175,18 @@ const handlePublish = async () => {
                 <span className="material-symbols-outlined">redo</span>
               </Item>
             </Tooltip>
-            <Tooltip title="Remove all elements from the current page" placement="bottom">
-              <Btn
-                type="button"
-                onClick={clearPage}
-                style={{ background: '#b54747', cursor: 'pointer', marginLeft: '8px' }}
-              >
-                <span className="material-symbols-outlined" aria-hidden="true">delete_sweep</span>
-                Clear
-              </Btn>
-            </Tooltip>
           </div>
         )}
+        <Tooltip title="Remove all elements from the current page" placement="bottom">
+          <Btn
+            type="button"
+            onClick={clearPage}
+            style={{ background: '#b54747', cursor: 'pointer', marginLeft: '8px' }}
+          >
+            <span className="material-symbols-outlined" aria-hidden="true">delete_sweep</span>
+            Clear
+          </Btn>
+        </Tooltip>
         <div className="flex" style={{ gap: '7px', alignItems: 'center' }}>
           <Btn
             className={cx([
