@@ -12,6 +12,8 @@
 const px = (id, w = 1200) =>
   `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}`;
 
+import { readableInk } from '../../src/utils/readableInk.js';
+
 const rgba = (r, g, b, a = 1) => ({ r, g, b, a });
 
 const WHITE = rgba(255, 255, 255);
@@ -134,8 +136,28 @@ export function createBuilder() {
     return id;
   };
 
-  const container = (parent, props = {}, label = 'Container') =>
-    node('Container', parent, { ...baseContainer, ...props }, { canvas: true, label });
+  /**
+   * A container, with a text colour that suits the ground it paints.
+   *
+   * `color` on a Container is what everything inside it inherits when it sets
+   * no colour of its own, and the default is black. A template writing
+   * `{ background: INK }` for a dark section therefore declared black type on
+   * near-black - 1.10:1 - and every element that relies on inheritance went
+   * with it: an Accordion's answer, a Tabs panel, the small print in a footer.
+   * Nothing in the contrast check could see it, because inherited colour is not
+   * a prop on the element that suffers.
+   *
+   * So a container that paints an opaque ground and says nothing about type
+   * gets the ink that reads on it. Saying so explicitly beats inheriting a
+   * colour chosen for a white canvas.
+   */
+  const container = (parent, props = {}, label = 'Container') => {
+    const merged = { ...baseContainer, ...props };
+    if (props.color === undefined && merged.background && (merged.background.a ?? 1) >= 1) {
+      merged.color = readableInk(merged.background);
+    }
+    return node('Container', parent, merged, { canvas: true, label });
+  };
 
   const text = (parent, str, props = {}, label = 'Text') =>
     node(

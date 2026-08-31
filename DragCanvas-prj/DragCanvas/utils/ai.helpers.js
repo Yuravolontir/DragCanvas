@@ -170,12 +170,27 @@ export function normalizeNode(node) {
     };
 }
 
-/** Containers say transparent rather than falling through to the opaque default. */
+/**
+ * Containers say out loud what they paint and what type suits it.
+ *
+ * Two defaults come from Container.craft and neither fits a generated page: an
+ * opaque white ground, and black text. The ground is dealt with above. The text
+ * is what everything inside inherits when it sets no colour of its own, so a
+ * section written as `{ background: <dark> }` declared black type on near-black
+ * - 1.10:1 - and every element relying on inheritance went with it: an
+ * accordion's answer, a tabs panel, the small print in a footer. None of it is
+ * visible to the contrast repair either, because the colour that fails is not a
+ * prop on the element that suffers.
+ */
 function withDeclaredGround(type, props) {
     if (type !== 'Container') return props;
-    if (isColour(props.background)) return props;
     if (props.backgroundImage) return props;
-    return { ...props, background: { ...TRANSPARENT } };
+
+    if (!isColour(props.background)) return { ...props, background: { ...TRANSPARENT } };
+    if (props.color === undefined && (props.background.a ?? 1) >= 1) {
+        return { ...props, color: readableInk(props.background) };
+    }
+    return props;
 }
 
 /** The canvas a section lands on when nothing above it paints one. */

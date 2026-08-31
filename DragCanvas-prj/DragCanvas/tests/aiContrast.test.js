@@ -196,3 +196,28 @@ test('a container that does declare a background still inherits normally', () =>
 
     assert.deepEqual(colourOf(heading), PALE, 'readable on the dark it declared');
 });
+
+test('a dark section declares type that reads on it, rather than inheriting black', () => {
+    // Container.craft's colour default is black, and colour is what everything
+    // inside inherits when it sets none of its own. A section written as a dark
+    // ground therefore declared black on near-black - 1.10:1 - and took the
+    // accordion answers, the tabs panels and the footer small print with it.
+    const DARK = { r: 14, g: 16, b: 20, a: 1 };
+    const out = normalizeLayout({ sections: [
+        { type: 'Container', props: { background: { ...DARK } }, children: [
+            { type: 'Text', props: { text: 'inherits its colour' }, children: [] },
+        ] },
+    ] });
+
+    const declared = out.sections[0].props.color;
+    assert.ok(declared, 'the section says what its type is');
+    assert.ok(contrastRatio(declared, DARK) >= 4.5, 'and it reads on its own ground');
+});
+
+test('a colour the model chose for a section is left alone', () => {
+    const CHOSEN = { r: 86, g: 204, b: 218, a: 1 };
+    const out = normalizeLayout({ sections: [
+        { type: 'Container', props: { background: { r: 14, g: 16, b: 20, a: 1 }, color: { ...CHOSEN } }, children: [] },
+    ] });
+    assert.deepEqual(out.sections[0].props.color, CHOSEN);
+});

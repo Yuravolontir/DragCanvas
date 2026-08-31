@@ -5,6 +5,7 @@ import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import { Badge, Form, InputGroup, Button, Modal, Alert } from 'react-bootstrap';
 import AdminStatistics from './AdminStatistics';
+import './AdminPanel.css';
 
 export default function AdminPanel() {
   const [users, setUsers] = useState([]);
@@ -552,29 +553,39 @@ const confirmRoleChange = async () => {
   }, [currentUser?.User_ID]);
 
   if (loading) return (
-    <div>
+    <div className="admin-page-shell">
       <NavBar />
-      <div className="text-center mt-5">
-        <h3>Loading users...</h3>
+      <div className="admin-page-state" role="status" aria-live="polite">
+        <span className="admin-spinner" aria-hidden="true" />
+        <h2>Loading admin workspace</h2>
+        <p>Preparing users, templates and notifications.</p>
       </div>
     </div>
   );
 
   if (error) return (
-    <div>
+    <div className="admin-page-shell">
       <NavBar />
       <Container className="dc-admin-page">
-        <div className="alert alert-danger">Error: {error}</div>
+        <div className="admin-page-state" role="alert">
+          <span className="material-symbols-outlined" aria-hidden="true">error</span>
+          <h2>Admin workspace is unavailable</h2>
+          <p>{error}</p>
+        </div>
       </Container>
     </div>
   );
 
    return (
-      <div>
+      <div className="admin-page-shell">
         <NavBar />
         <Container className="dc-admin-page">
           <div className="d-flex justify-content-between align-items-center mb-4 dc-admin-row">
-            <h2>Admin Panel</h2>
+            <div className="admin-page-title">
+              <span className="admin-page-eyebrow">Workspace</span>
+              <h1>Admin panel</h1>
+              <p>Manage people, templates, communications and platform activity.</p>
+            </div>
             <div>
               <Button
                 variant={activeTab === 'users' ? 'primary' :
