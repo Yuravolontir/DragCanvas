@@ -424,3 +424,120 @@
     transition: none;
   }
 }
+
+/*
+ * ── The phone's navigation ───────────────────────────────────
+ *
+ * A hamburger hides every destination behind a press and says nothing about
+ * where you are. At this width the whole map fits along the bottom, within
+ * reach of a thumb, with the current place lit - which is what a phone has
+ * taught everybody to expect.
+ *
+ * Below 768px the collapsing navbar's toggle and panel are removed outright
+ * rather than hidden: a `display: none` on the panel alone would leave the
+ * toggle sitting there opening nothing.
+ */
+
+.app-tabbar {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .app-navbar .navbar-toggler,
+  .app-navbar .navbar-collapse {
+    display: none !important;
+  }
+
+  .app-tabbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100100;
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+    gap: 4px;
+    padding: 6px 8px calc(6px + var(--safe-bottom, 0px));
+    background: var(--surface);
+    border-top: 1px solid var(--outline-light);
+    /* Lifts the bar off the page it floats over, without the haze a large
+       blur would put across the content behind it. */
+    box-shadow: 0 -1px 2px rgb(0 0 0 / 0.06), 0 -8px 20px -12px rgb(0 0 0 / 0.35);
+  }
+
+  .app-tabbar__tab {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    /* 48px is the smallest target a finger hits reliably. */
+    min-height: 48px;
+    padding: 6px 4px;
+    border: 0;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--muted);
+    font: 600 11px/1.2 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+  }
+
+  .app-tabbar__tab[aria-current='page'] {
+    color: var(--primary);
+    background: var(--primary-light, color-mix(in oklab, var(--primary) 12%, transparent));
+  }
+
+  .app-tabbar__tab:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: -2px;
+  }
+
+  .app-tabbar__icon {
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+
+  .app-tabbar__icon .material-symbols-outlined {
+    font-size: 22px;
+  }
+
+  .app-tabbar__badge {
+    position: absolute;
+    top: -3px;
+    right: -8px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 9999px;
+    background: var(--secondary);
+    color: var(--on-primary);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+  }
+
+  /*
+   * Room for the bar to float over, so the last thing on a page is reachable
+   * rather than sitting underneath the navigation.
+   */
+  body {
+    padding-bottom: calc(56px + var(--safe-bottom, 0px));
+  }
+}
+
+/* Announced but not shown: a count a screen reader can hear. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

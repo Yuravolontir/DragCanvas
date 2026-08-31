@@ -6,6 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from './userContext.js';
 import { APP_NAV_ITEMS, APP_NAV_Z_INDEX, userDisplayName } from './utils/appNavigation.js';
+import AppTabBar from './AppTabBar.jsx';
 
 export default function NavBar() {
   const navbarRef = useRef(null);
@@ -58,11 +59,12 @@ export default function NavBar() {
   };
 
   return (
+    <>
     <Navbar
       ref={navbarRef}
       expand="lg"
       fixed="top"
-      className="dragcanvas-app-navbar"
+      className="dragcanvas-app-navbar app-navbar"
       style={{
         // Do not rely only on Bootstrap's .fixed-top. The editor has its own
         // high stacking contexts, which can otherwise cover the application
@@ -253,5 +255,13 @@ export default function NavBar() {
         </Navbar.Collapse>
       </Container>
     </Navbar>
+
+    {/*
+      The phone's navigation. Rendered always and shown by CSS below 768px,
+      so there is no width read in JavaScript to disagree with the media query
+      that hides the toggle - one breakpoint, in one place.
+    */}
+    <AppTabBar unreadCount={unreadCount} />
+    </>
   );
 }
