@@ -45,17 +45,17 @@
     "hidden": false,
     "nodes": [
       "navb01",
-      "cont02",
-      "cont08",
-      "cont24",
-      "cont28",
-      "cont34",
-      "cont36",
-      "cont42",
-      "cont46",
-      "cont53",
-      "cont55",
-      "cont67"
+      "vide02",
+      "cont09",
+      "cont25",
+      "cont29",
+      "cont35",
+      "cont37",
+      "cont43",
+      "cont47",
+      "cont54",
+      "cont56",
+      "cont68"
     ],
     "linkedNodes": {}
   },
@@ -101,7 +101,37 @@
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont02": {
+  "vide02": {
+    "type": {
+      "resolvedName": "Video"
+    },
+    "isCanvas": true,
+    "props": {
+      "sourceType": "background",
+      "videoId": "",
+      "videoUrl": "",
+      "text": "",
+      "src": "https://videos.pexels.com/video-files/6326715/6326715-hd_1920_1080_25fps.mp4",
+      "poster": "https://images.pexels.com/photos/2261477/pexels-photo-2261477.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "overlay": 68,
+      "position": "center",
+      "minHeight": "540px",
+      "loop": true,
+      "animation": "fade",
+      "animationDuration": 780
+    },
+    "displayName": "Video",
+    "custom": {
+      "displayName": "Hero"
+    },
+    "parent": "ROOT",
+    "hidden": false,
+    "nodes": [
+      "cont03"
+    ],
+    "linkedNodes": {}
+  },
+  "cont03": {
     "type": {
       "resolvedName": "Container"
     },
@@ -124,45 +154,38 @@
         "0"
       ],
       "background": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
-        "a": 1
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
       },
       "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
+        "r": 0,
+        "g": 0,
+        "b": 0,
         "a": 1
       },
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto",
-      "backgroundImage": "https://images.pexels.com/photos/2261477/pexels-photo-2261477.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      "overlay": {
-        "r": 16,
-        "g": 18,
-        "b": 17,
-        "a": 0.7
-      }
+      "height": "auto"
     },
     "displayName": "Container",
     "custom": {
-      "displayName": "Hero"
+      "displayName": "Hero copy"
     },
-    "parent": "ROOT",
+    "parent": "vide02",
     "hidden": false,
     "nodes": [
-      "head03",
-      "text04",
-      "butt05",
-      "spac06",
-      "stat07"
+      "head04",
+      "text05",
+      "butt06",
+      "spac07",
+      "stat08"
     ],
     "linkedNodes": {}
   },
-  "head03": {
+  "head04": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -184,18 +207,21 @@
         "0",
         "0",
         "0"
-      ]
+      ],
+      "animation": "blurIn",
+      "animationDelay": 100,
+      "animationDuration": 760
     },
     "displayName": "Heading",
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont02",
+    "parent": "cont03",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text04": {
+  "text05": {
     "type": {
       "resolvedName": "Text"
     },
@@ -223,12 +249,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont02",
+    "parent": "cont03",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "butt05": {
+  "butt06": {
     "type": {
       "resolvedName": "Button"
     },
@@ -281,12 +307,12 @@
     "custom": {
       "displayName": "Button"
     },
-    "parent": "cont02",
+    "parent": "cont03",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac06": {
+  "spac07": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -298,12 +324,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont02",
+    "parent": "cont03",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "stat07": {
+  "stat08": {
     "type": {
       "resolvedName": "Stats"
     },
@@ -335,12 +361,12 @@
     "custom": {
       "displayName": "Stats"
     },
-    "parent": "cont02",
+    "parent": "cont03",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont08": {
+  "cont09": {
     "type": {
       "resolvedName": "Container"
     },
@@ -377,7 +403,9 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -386,13 +414,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head09",
-      "spac10",
-      "colu11"
+      "head10",
+      "spac11",
+      "colu12"
     ],
     "linkedNodes": {}
   },
-  "head09": {
+  "head10": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -420,12 +448,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont08",
+    "parent": "cont09",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac10": {
+  "spac11": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -437,12 +465,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont08",
+    "parent": "cont09",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "colu11": {
+  "colu12": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -457,16 +485,16 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont08",
+    "parent": "cont09",
     "hidden": false,
     "nodes": [
-      "cont12",
-      "cont16",
-      "cont20"
+      "cont13",
+      "cont17",
+      "cont21"
     ],
     "linkedNodes": {}
   },
-  "cont12": {
+  "cont13": {
     "type": {
       "resolvedName": "Container"
     },
@@ -504,22 +532,24 @@
       "radius": 14,
       "width": "100%",
       "height": "auto",
-      "animationDelay": 0
+      "animation": "fadeUp",
+      "animationDelay": 0,
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Coached classes"
     },
-    "parent": "colu11",
+    "parent": "colu12",
     "hidden": false,
     "nodes": [
-      "icon13",
-      "head14",
-      "text15"
+      "icon14",
+      "head15",
+      "text16"
     ],
     "linkedNodes": {}
   },
-  "icon13": {
+  "icon14": {
     "type": {
       "resolvedName": "Icon"
     },
@@ -545,12 +575,12 @@
     "custom": {
       "displayName": "Icon"
     },
-    "parent": "cont12",
+    "parent": "cont13",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "head14": {
+  "head15": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -578,12 +608,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont12",
+    "parent": "cont13",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text15": {
+  "text16": {
     "type": {
       "resolvedName": "Text"
     },
@@ -611,12 +641,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont12",
+    "parent": "cont13",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont16": {
+  "cont17": {
     "type": {
       "resolvedName": "Container"
     },
@@ -654,22 +684,24 @@
       "radius": 14,
       "width": "100%",
       "height": "auto",
-      "animationDelay": 90
+      "animation": "fadeUp",
+      "animationDelay": 90,
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Open gym"
     },
-    "parent": "colu11",
+    "parent": "colu12",
     "hidden": false,
     "nodes": [
-      "icon17",
-      "head18",
-      "text19"
+      "icon18",
+      "head19",
+      "text20"
     ],
     "linkedNodes": {}
   },
-  "icon17": {
+  "icon18": {
     "type": {
       "resolvedName": "Icon"
     },
@@ -695,12 +727,12 @@
     "custom": {
       "displayName": "Icon"
     },
-    "parent": "cont16",
+    "parent": "cont17",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "head18": {
+  "head19": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -728,12 +760,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont16",
+    "parent": "cont17",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text19": {
+  "text20": {
     "type": {
       "resolvedName": "Text"
     },
@@ -761,12 +793,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont16",
+    "parent": "cont17",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont20": {
+  "cont21": {
     "type": {
       "resolvedName": "Container"
     },
@@ -804,22 +836,24 @@
       "radius": 14,
       "width": "100%",
       "height": "auto",
-      "animationDelay": 180
+      "animation": "fadeUp",
+      "animationDelay": 180,
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
       "displayName": "Your programming"
     },
-    "parent": "colu11",
+    "parent": "colu12",
     "hidden": false,
     "nodes": [
-      "icon21",
-      "head22",
-      "text23"
+      "icon22",
+      "head23",
+      "text24"
     ],
     "linkedNodes": {}
   },
-  "icon21": {
+  "icon22": {
     "type": {
       "resolvedName": "Icon"
     },
@@ -845,12 +879,12 @@
     "custom": {
       "displayName": "Icon"
     },
-    "parent": "cont20",
+    "parent": "cont21",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "head22": {
+  "head23": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -878,12 +912,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont20",
+    "parent": "cont21",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text23": {
+  "text24": {
     "type": {
       "resolvedName": "Text"
     },
@@ -911,12 +945,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont20",
+    "parent": "cont21",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont24": {
+  "cont25": {
     "type": {
       "resolvedName": "Container"
     },
@@ -954,7 +988,9 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "timetable"
+      "anchor": "timetable",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -963,13 +999,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head25",
-      "spac26",
-      "time27"
+      "head26",
+      "spac27",
+      "time28"
     ],
     "linkedNodes": {}
   },
-  "head25": {
+  "head26": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -997,12 +1033,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont24",
+    "parent": "cont25",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac26": {
+  "spac27": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -1014,12 +1050,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont24",
+    "parent": "cont25",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "time27": {
+  "time28": {
     "type": {
       "resolvedName": "Timeline"
     },
@@ -1056,12 +1092,12 @@
     "custom": {
       "displayName": "Timeline"
     },
-    "parent": "cont24",
+    "parent": "cont25",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont28": {
+  "cont29": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1099,7 +1135,9 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "coaches"
+      "anchor": "coaches",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -1108,15 +1146,15 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head29",
-      "spac30",
-      "team31",
-      "spac32",
-      "caro33"
+      "head30",
+      "spac31",
+      "team32",
+      "spac33",
+      "caro34"
     ],
     "linkedNodes": {}
   },
-  "head29": {
+  "head30": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1144,12 +1182,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont28",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac30": {
+  "spac31": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -1161,12 +1199,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont28",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "team31": {
+  "team32": {
     "type": {
       "resolvedName": "TeamGrid"
     },
@@ -1201,12 +1239,12 @@
     "custom": {
       "displayName": "TeamGrid"
     },
-    "parent": "cont28",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac32": {
+  "spac33": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -1218,12 +1256,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont28",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "caro33": {
+  "caro34": {
     "type": {
       "resolvedName": "Carousel"
     },
@@ -1270,12 +1308,12 @@
     "custom": {
       "displayName": "Inside FORGE"
     },
-    "parent": "cont28",
+    "parent": "cont29",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont34": {
+  "cont35": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1312,7 +1350,9 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -1321,11 +1361,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "test35"
+      "test36"
     ],
     "linkedNodes": {}
   },
-  "test35": {
+  "test36": {
     "type": {
       "resolvedName": "Testimonial"
     },
@@ -1359,12 +1399,12 @@
     "custom": {
       "displayName": "Testimonial"
     },
-    "parent": "cont34",
+    "parent": "cont35",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont36": {
+  "cont37": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1401,7 +1441,9 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -1410,11 +1452,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu37"
+      "colu38"
     ],
     "linkedNodes": {}
   },
-  "colu37": {
+  "colu38": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -1430,15 +1472,15 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont36",
+    "parent": "cont37",
     "hidden": false,
     "nodes": [
-      "cont38",
-      "acco41"
+      "cont39",
+      "acco42"
     ],
     "linkedNodes": {}
   },
-  "cont38": {
+  "cont39": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1481,15 +1523,15 @@
     "custom": {
       "displayName": "Questions intro"
     },
-    "parent": "colu37",
+    "parent": "colu38",
     "hidden": false,
     "nodes": [
-      "head39",
-      "text40"
+      "head40",
+      "text41"
     ],
     "linkedNodes": {}
   },
-  "head39": {
+  "head40": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1517,12 +1559,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont38",
+    "parent": "cont39",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text40": {
+  "text41": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1550,12 +1592,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont38",
+    "parent": "cont39",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "acco41": {
+  "acco42": {
     "type": {
       "resolvedName": "Accordion"
     },
@@ -1587,12 +1629,12 @@
     "custom": {
       "displayName": "Accordion"
     },
-    "parent": "colu37",
+    "parent": "colu38",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont42": {
+  "cont43": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1630,7 +1672,9 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "membership"
+      "anchor": "membership",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -1639,13 +1683,13 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "head43",
-      "spac44",
-      "pric45"
+      "head44",
+      "spac45",
+      "pric46"
     ],
     "linkedNodes": {}
   },
-  "head43": {
+  "head44": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1673,12 +1717,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont42",
+    "parent": "cont43",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "spac44": {
+  "spac45": {
     "type": {
       "resolvedName": "Spacer"
     },
@@ -1690,12 +1734,12 @@
     "custom": {
       "displayName": "Spacer"
     },
-    "parent": "cont42",
+    "parent": "cont43",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "pric45": {
+  "pric46": {
     "type": {
       "resolvedName": "Pricing"
     },
@@ -1742,12 +1786,12 @@
     "custom": {
       "displayName": "Pricing"
     },
-    "parent": "cont42",
+    "parent": "cont43",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont46": {
+  "cont47": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1785,7 +1829,9 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "book"
+      "anchor": "book",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -1794,11 +1840,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "colu47"
+      "colu48"
     ],
     "linkedNodes": {}
   },
-  "colu47": {
+  "colu48": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -1814,15 +1860,15 @@
     "custom": {
       "displayName": "Columns"
     },
-    "parent": "cont46",
+    "parent": "cont47",
     "hidden": false,
     "nodes": [
-      "cont48",
-      "form52"
+      "cont49",
+      "form53"
     ],
     "linkedNodes": {}
   },
-  "cont48": {
+  "cont49": {
     "type": {
       "resolvedName": "Container"
     },
@@ -1865,16 +1911,16 @@
     "custom": {
       "displayName": "Book copy"
     },
-    "parent": "colu47",
+    "parent": "colu48",
     "hidden": false,
     "nodes": [
-      "head49",
-      "text50",
-      "list51"
+      "head50",
+      "text51",
+      "list52"
     ],
     "linkedNodes": {}
   },
-  "head49": {
+  "head50": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -1902,12 +1948,12 @@
     "custom": {
       "displayName": "Heading"
     },
-    "parent": "cont48",
+    "parent": "cont49",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text50": {
+  "text51": {
     "type": {
       "resolvedName": "Text"
     },
@@ -1935,12 +1981,12 @@
     "custom": {
       "displayName": "Text"
     },
-    "parent": "cont48",
+    "parent": "cont49",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "list51": {
+  "list52": {
     "type": {
       "resolvedName": "List"
     },
@@ -1965,12 +2011,12 @@
     "custom": {
       "displayName": "List"
     },
-    "parent": "cont48",
+    "parent": "cont49",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "form52": {
+  "form53": {
     "type": {
       "resolvedName": "Form"
     },
@@ -2035,12 +2081,12 @@
     "custom": {
       "displayName": "Form"
     },
-    "parent": "colu47",
+    "parent": "colu48",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont53": {
+  "cont54": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2077,7 +2123,9 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -2086,11 +2134,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "ctab54"
+      "ctab55"
     ],
     "linkedNodes": {}
   },
-  "ctab54": {
+  "ctab55": {
     "type": {
       "resolvedName": "CTABanner"
     },
@@ -2130,12 +2178,12 @@
     "custom": {
       "displayName": "CTABanner"
     },
-    "parent": "cont53",
+    "parent": "cont54",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont55": {
+  "cont56": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2172,7 +2220,9 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -2181,11 +2231,11 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont56"
+      "cont57"
     ],
     "linkedNodes": {}
   },
-  "cont56": {
+  "cont57": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2228,18 +2278,18 @@
     "custom": {
       "displayName": "Next step panel"
     },
-    "parent": "cont55",
+    "parent": "cont56",
     "hidden": false,
     "nodes": [
-      "badg57",
-      "head58",
-      "text59",
-      "colu60",
-      "cont64"
+      "badg58",
+      "head59",
+      "text60",
+      "colu61",
+      "cont65"
     ],
     "linkedNodes": {}
   },
-  "badg57": {
+  "badg58": {
     "type": {
       "resolvedName": "Badge"
     },
@@ -2264,12 +2314,12 @@
     "custom": {
       "displayName": "Section label"
     },
-    "parent": "cont56",
+    "parent": "cont57",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "head58": {
+  "head59": {
     "type": {
       "resolvedName": "Heading"
     },
@@ -2297,12 +2347,12 @@
     "custom": {
       "displayName": "Next step heading"
     },
-    "parent": "cont56",
+    "parent": "cont57",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text59": {
+  "text60": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2330,12 +2380,12 @@
     "custom": {
       "displayName": "Next step introduction"
     },
-    "parent": "cont56",
+    "parent": "cont57",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "colu60": {
+  "colu61": {
     "type": {
       "resolvedName": "Columns"
     },
@@ -2351,15 +2401,15 @@
     "custom": {
       "displayName": "Next step details"
     },
-    "parent": "cont56",
+    "parent": "cont57",
     "hidden": false,
     "nodes": [
-      "tabs61",
-      "cont62"
+      "tabs62",
+      "cont63"
     ],
     "linkedNodes": {}
   },
-  "tabs61": {
+  "tabs62": {
     "type": {
       "resolvedName": "Tabs"
     },
@@ -2388,12 +2438,12 @@
     "custom": {
       "displayName": "Useful details"
     },
-    "parent": "colu60",
+    "parent": "colu61",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont62": {
+  "cont63": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2436,14 +2486,14 @@
     "custom": {
       "displayName": "Primary next step"
     },
-    "parent": "colu60",
+    "parent": "colu61",
     "hidden": false,
     "nodes": [
-      "book63"
+      "book64"
     ],
     "linkedNodes": {}
   },
-  "book63": {
+  "book64": {
     "type": {
       "resolvedName": "Booking"
     },
@@ -2466,12 +2516,12 @@
     "custom": {
       "displayName": "Appointment booking"
     },
-    "parent": "cont62",
+    "parent": "cont63",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont64": {
+  "cont65": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2514,15 +2564,15 @@
     "custom": {
       "displayName": "Visitor response"
     },
-    "parent": "cont56",
+    "parent": "cont57",
     "hidden": false,
     "nodes": [
-      "divi65",
-      "enga66"
+      "divi66",
+      "enga67"
     ],
     "linkedNodes": {}
   },
-  "divi65": {
+  "divi66": {
     "type": {
       "resolvedName": "Divider"
     },
@@ -2542,12 +2592,12 @@
     "custom": {
       "displayName": "Divider"
     },
-    "parent": "cont64",
+    "parent": "cont65",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "enga66": {
+  "enga67": {
     "type": {
       "resolvedName": "Engagement"
     },
@@ -2571,12 +2621,12 @@
     "custom": {
       "displayName": "Visitor feedback"
     },
-    "parent": "cont64",
+    "parent": "cont65",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "cont67": {
+  "cont68": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2613,7 +2663,9 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -2622,12 +2674,12 @@
     "parent": "ROOT",
     "hidden": false,
     "nodes": [
-      "cont68",
-      "soci71"
+      "cont69",
+      "soci72"
     ],
     "linkedNodes": {}
   },
-  "cont68": {
+  "cont69": {
     "type": {
       "resolvedName": "Container"
     },
@@ -2670,15 +2722,15 @@
     "custom": {
       "displayName": "Footer text"
     },
-    "parent": "cont67",
+    "parent": "cont68",
     "hidden": false,
     "nodes": [
-      "text69",
-      "text70"
+      "text70",
+      "text71"
     ],
     "linkedNodes": {}
   },
-  "text69": {
+  "text70": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2706,12 +2758,12 @@
     "custom": {
       "displayName": "Footer brand"
     },
-    "parent": "cont68",
+    "parent": "cont69",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "text70": {
+  "text71": {
     "type": {
       "resolvedName": "Text"
     },
@@ -2739,12 +2791,12 @@
     "custom": {
       "displayName": "Small print"
     },
-    "parent": "cont68",
+    "parent": "cont69",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}
   },
-  "soci71": {
+  "soci72": {
     "type": {
       "resolvedName": "SocialLinks"
     },
@@ -2775,7 +2827,7 @@
     "custom": {
       "displayName": "Footer links"
     },
-    "parent": "cont67",
+    "parent": "cont68",
     "hidden": false,
     "nodes": [],
     "linkedNodes": {}

@@ -1,3171 +1,4655 @@
 {
-  "ROOT": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "App"
-    },
-    "hidden": false,
-    "nodes": [
-      "navb01",
-      "vide02",
-      "cont11",
-      "cont13",
-      "cont27",
-      "cont40",
-      "cont47",
-      "cont51",
-      "cont57",
-      "cont64",
-      "cont66",
-      "cont78"
-    ],
-    "linkedNodes": {}
-  },
-  "navb01": {
-    "type": {
-      "resolvedName": "NavbarElement"
-    },
-    "isCanvas": false,
-    "props": {
-      "variant": "light",
-      "brand": "Casa Oliva",
-      "links": [
-        {
-          "text": "Menu",
-          "href": "#menu"
+  "__dragcanvasPages": true,
+  "currentSlug": "home",
+  "pages": [
+    {
+      "name": "Home",
+      "slug": "home",
+      "data": {
+        "ROOT": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "App"
+          },
+          "hidden": false,
+          "nodes": [
+            "navb01",
+            "vide02",
+            "cont11",
+            "cont13",
+            "cont27",
+            "cont40",
+            "cont47",
+            "cont51",
+            "cont57",
+            "cont64",
+            "cont66",
+            "cont78"
+          ],
+          "linkedNodes": {}
         },
-        {
-          "text": "Hours",
-          "href": "#hours"
+        "navb01": {
+          "type": {
+            "resolvedName": "NavbarElement"
+          },
+          "isCanvas": false,
+          "props": {
+            "variant": "light",
+            "brand": "Casa Oliva",
+            "links": [
+              {
+                "text": "Home",
+                "href": "/"
+              },
+              {
+                "text": "Menu",
+                "href": "/menu/"
+              }
+            ],
+            "sticky": true,
+            "textColor": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "height": "56px",
+            "width": "100%",
+            "animation": "none"
+          },
+          "displayName": "NavbarElement",
+          "custom": {
+            "displayName": "Navbar"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
         },
-        {
-          "text": "Find us",
-          "href": "#find-us"
+        "vide02": {
+          "type": {
+            "resolvedName": "Video"
+          },
+          "isCanvas": true,
+          "props": {
+            "sourceType": "background",
+            "videoId": "",
+            "videoUrl": "",
+            "text": "",
+            "src": "https://videos.pexels.com/video-files/6529488/6529488-hd_1920_1080_30fps.mp4",
+            "poster": "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1600",
+            "overlay": 60,
+            "position": "center",
+            "minHeight": "560px",
+            "loop": true,
+            "animation": "fade",
+            "animationDuration": 780
+          },
+          "displayName": "Video",
+          "custom": {
+            "displayName": "Hero"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont03"
+          ],
+          "linkedNodes": {}
+        },
+        "cont03": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "64",
+              "48",
+              "48",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Hero content"
+          },
+          "parent": "vide02",
+          "hidden": false,
+          "nodes": [
+            "colu04"
+          ],
+          "linkedNodes": {}
+        },
+        "colu04": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "40",
+            "align": "center",
+            "stack": "yes"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [
+            "cont05",
+            "imag10"
+          ],
+          "linkedNodes": {}
+        },
+        "cont05": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Words"
+          },
+          "parent": "colu04",
+          "hidden": false,
+          "nodes": [
+            "badg06",
+            "head07",
+            "text08",
+            "butt09"
+          ],
+          "linkedNodes": {}
+        },
+        "badg06": {
+          "type": {
+            "resolvedName": "Badge"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Open for dinner",
+            "background": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "color": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            },
+            "radius": 999
+          },
+          "displayName": "Badge",
+          "custom": {
+            "displayName": "Badge"
+          },
+          "parent": "cont05",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head07": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Slow food, small room",
+            "level": "1",
+            "fontSize": "46",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "10",
+              "0"
+            ],
+            "animation": "blurIn",
+            "animationDelay": 100,
+            "animationDuration": 760
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont05",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text08": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "17",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 0.82
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Twenty-four covers, one sitting a night, and whatever the market had that morning."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont05",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "butt09": {
+          "type": {
+            "resolvedName": "Button"
+          },
+          "isCanvas": false,
+          "props": {
+            "background": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "buttonStyle": "full",
+            "text": "Book a table",
+            "margin": [
+              "8",
+              "0",
+              "8",
+              "0"
+            ],
+            "action": "none",
+            "actionValue": "",
+            "newTab": false,
+            "textComponent": {
+              "fontSize": "16",
+              "textAlign": "center",
+              "fontWeight": "600",
+              "color": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 1
+              },
+              "margin": [
+                "0",
+                "0",
+                "0",
+                "0"
+              ],
+              "shadow": 0,
+              "text": "Book a table"
+            }
+          },
+          "displayName": "Button",
+          "custom": {
+            "displayName": "Button"
+          },
+          "parent": "cont05",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "imag10": {
+          "type": {
+            "resolvedName": "Image"
+          },
+          "isCanvas": false,
+          "props": {
+            "src": "https://images.pexels.com/photos/1327393/pexels-photo-1327393.jpeg?auto=compress&cs=tinysrgb&w=900",
+            "alt": "Seasonal tasting menu plated in the restaurant kitchen",
+            "radius": 8,
+            "width": "100%",
+            "height": "420px",
+            "maxWidth": "100%",
+            "animation": "zoomIn",
+            "animationDelay": 0,
+            "animationDuration": 720
+          },
+          "displayName": "Image",
+          "custom": {
+            "displayName": "Image"
+          },
+          "parent": "colu04",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont11": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "48",
+              "8",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Numbers"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "stat12"
+          ],
+          "linkedNodes": {}
+        },
+        "stat12": {
+          "type": {
+            "resolvedName": "Stats"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "24",
+              "covers, no more",
+              "1",
+              "sitting, at seven",
+              "5pm",
+              "the market closes, we start"
+            ],
+            "align": "center",
+            "accent": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            },
+            "color": {
+              "r": 109,
+              "g": 90,
+              "b": 69,
+              "a": 1
+            }
+          },
+          "displayName": "Stats",
+          "custom": {
+            "displayName": "Stats"
+          },
+          "parent": "cont11",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont13": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "32",
+              "48",
+              "40",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Hold"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu14"
+          ],
+          "linkedNodes": {}
+        },
+        "colu14": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "3",
+            "gap": "20",
+            "align": "stretch",
+            "stack": "yes"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [
+            "cont15",
+            "cont19",
+            "cont23"
+          ],
+          "linkedNodes": {}
+        },
+        "cont15": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "22",
+              "20",
+              "22",
+              "20"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 0,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Bought that morning"
+          },
+          "parent": "colu14",
+          "hidden": false,
+          "nodes": [
+            "icon16",
+            "head17",
+            "text18"
+          ],
+          "linkedNodes": {}
+        },
+        "icon16": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "storefront",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "background": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont15",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head17": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Bought that morning",
+            "level": "3",
+            "fontSize": "17",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont15",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text18": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "14",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 109,
+              "g": 90,
+              "b": 69,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "The menu is written after the market, not before it."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont15",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont19": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "22",
+              "20",
+              "22",
+              "20"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 90,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Cooked over wood"
+          },
+          "parent": "colu14",
+          "hidden": false,
+          "nodes": [
+            "icon20",
+            "head21",
+            "text22"
+          ],
+          "linkedNodes": {}
+        },
+        "icon20": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "local_fire_department",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "background": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont19",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head21": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Cooked over wood",
+            "level": "3",
+            "fontSize": "17",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont19",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text22": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "14",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 109,
+              "g": 90,
+              "b": 69,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "One oven, one fire, and nothing that needs a timer."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont19",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont23": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "22",
+              "20",
+              "22",
+              "20"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 180,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Served when ready"
+          },
+          "parent": "colu14",
+          "hidden": false,
+          "nodes": [
+            "icon24",
+            "head25",
+            "text26"
+          ],
+          "linkedNodes": {}
+        },
+        "icon24": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "schedule",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "background": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head25": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Served when ready",
+            "level": "3",
+            "fontSize": "17",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text26": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "14",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 109,
+              "g": 90,
+              "b": 69,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Plates arrive when they should, in the order the kitchen can do them best."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont27": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "56",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "anchor": "menu",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Menu"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head28",
+            "spac29",
+            "colu30"
+          ],
+          "linkedNodes": {}
+        },
+        "head28": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "This week",
+            "level": "2",
+            "fontSize": "32",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont27",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "spac29": {
+          "type": {
+            "resolvedName": "Spacer"
+          },
+          "isCanvas": false,
+          "props": {
+            "height": "24"
+          },
+          "displayName": "Spacer",
+          "custom": {
+            "displayName": "Spacer"
+          },
+          "parent": "cont27",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "colu30": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "3",
+            "gap": "24",
+            "align": "stretch",
+            "stack": "yes"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont27",
+          "hidden": false,
+          "nodes": [
+            "cont31",
+            "cont34",
+            "cont37"
+          ],
+          "linkedNodes": {}
+        },
+        "cont31": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "22",
+              "24",
+              "22"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 8,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 0,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "To start"
+          },
+          "parent": "colu30",
+          "hidden": false,
+          "nodes": [
+            "head32",
+            "list33"
+          ],
+          "linkedNodes": {}
+        },
+        "head32": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "To start",
+            "level": "3",
+            "fontSize": "18",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont31",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "list33": {
+          "type": {
+            "resolvedName": "List"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Bread, oil, salt",
+              "Anchovy and butter",
+              "Tomato, done simply"
+            ],
+            "ordered": "no",
+            "fontSize": "15",
+            "gap": "10",
+            "color": {
+              "r": 109,
+              "g": 90,
+              "b": 69,
+              "a": 1
+            }
+          },
+          "displayName": "List",
+          "custom": {
+            "displayName": "List"
+          },
+          "parent": "cont31",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont34": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "22",
+              "24",
+              "22"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 8,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 90,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Mains"
+          },
+          "parent": "colu30",
+          "hidden": false,
+          "nodes": [
+            "head35",
+            "list36"
+          ],
+          "linkedNodes": {}
+        },
+        "head35": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Mains",
+            "level": "3",
+            "fontSize": "18",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont34",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "list36": {
+          "type": {
+            "resolvedName": "List"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Lamb, slowly",
+              "Sea bream, whole",
+              "Aubergine, smoked"
+            ],
+            "ordered": "no",
+            "fontSize": "15",
+            "gap": "10",
+            "color": {
+              "r": 109,
+              "g": 90,
+              "b": 69,
+              "a": 1
+            }
+          },
+          "displayName": "List",
+          "custom": {
+            "displayName": "List"
+          },
+          "parent": "cont34",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont37": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "22",
+              "24",
+              "22"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 8,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 180,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "After"
+          },
+          "parent": "colu30",
+          "hidden": false,
+          "nodes": [
+            "head38",
+            "list39"
+          ],
+          "linkedNodes": {}
+        },
+        "head38": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "After",
+            "level": "3",
+            "fontSize": "18",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont37",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "list39": {
+          "type": {
+            "resolvedName": "List"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Olive oil cake",
+              "Figs and cream",
+              "Coffee and something"
+            ],
+            "ordered": "no",
+            "fontSize": "15",
+            "gap": "10",
+            "color": {
+              "r": 109,
+              "g": 90,
+              "b": 69,
+              "a": 1
+            }
+          },
+          "displayName": "List",
+          "custom": {
+            "displayName": "List"
+          },
+          "parent": "cont37",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont40": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "32",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "anchor": "hours",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Hours"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu41"
+          ],
+          "linkedNodes": {}
+        },
+        "colu41": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "40",
+            "align": "stretch",
+            "stack": "yes"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont40",
+          "hidden": false,
+          "nodes": [
+            "cont42",
+            "cont45"
+          ],
+          "linkedNodes": {}
+        },
+        "cont42": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 0,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "When"
+          },
+          "parent": "colu41",
+          "hidden": false,
+          "nodes": [
+            "head43",
+            "list44"
+          ],
+          "linkedNodes": {}
+        },
+        "head43": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "When we are open",
+            "level": "2",
+            "fontSize": "28",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont42",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "list44": {
+          "type": {
+            "resolvedName": "List"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Tuesday to Saturday, 18:00",
+              "One sitting, seven o’clock",
+              "Closed Sunday and Monday"
+            ],
+            "ordered": "no",
+            "fontSize": "16",
+            "gap": "8",
+            "color": {
+              "r": 109,
+              "g": 90,
+              "b": 69,
+              "a": 1
+            }
+          },
+          "displayName": "List",
+          "custom": {
+            "displayName": "List"
+          },
+          "parent": "cont42",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont45": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 90,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Said"
+          },
+          "parent": "colu41",
+          "hidden": false,
+          "nodes": [
+            "test46"
+          ],
+          "linkedNodes": {}
+        },
+        "test46": {
+          "type": {
+            "resolvedName": "Testimonial"
+          },
+          "isCanvas": false,
+          "props": {
+            "quote": "The menu is short because everything on it is worth eating.",
+            "author": "Ronit Adler",
+            "role": "Time Out Tel Aviv",
+            "avatar": "",
+            "align": "left",
+            "background": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "accent": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 0.6
+            }
+          },
+          "displayName": "Testimonial",
+          "custom": {
+            "displayName": "Testimonial"
+          },
+          "parent": "cont45",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont47": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "32",
+              "48",
+              "32",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "A night"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head48",
+            "spac49",
+            "time50"
+          ],
+          "linkedNodes": {}
+        },
+        "head48": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "How a night runs",
+            "level": "2",
+            "fontSize": "28",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont47",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "spac49": {
+          "type": {
+            "resolvedName": "Spacer"
+          },
+          "isCanvas": false,
+          "props": {
+            "height": "20"
+          },
+          "displayName": "Spacer",
+          "custom": {
+            "displayName": "Spacer"
+          },
+          "parent": "cont47",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "time50": {
+          "type": {
+            "resolvedName": "Timeline"
+          },
+          "isCanvas": false,
+          "props": {
+            "steps": [
+              "18:00",
+              "The door opens",
+              "Aperitivo at the counter while the oven settles.",
+              "19:00",
+              "Everyone sits",
+              "One sitting, nine dishes, explained before they start.",
+              "21:30",
+              "The long end",
+              "Kitchen closes, the room decides when the night ends."
+            ],
+            "accent": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            },
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            }
+          },
+          "displayName": "Timeline",
+          "custom": {
+            "displayName": "Timeline"
+          },
+          "parent": "cont47",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont51": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "48",
+              "48",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Questions"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu52"
+          ],
+          "linkedNodes": {}
+        },
+        "colu52": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "40",
+            "align": "stretch",
+            "stack": "yes",
+            "ratio": "2:3"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont51",
+          "hidden": false,
+          "nodes": [
+            "cont53",
+            "acco56"
+          ],
+          "linkedNodes": {}
+        },
+        "cont53": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "center",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Questions intro"
+          },
+          "parent": "colu52",
+          "hidden": false,
+          "nodes": [
+            "head54",
+            "text55"
+          ],
+          "linkedNodes": {}
+        },
+        "head54": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Before you book",
+            "level": "2",
+            "fontSize": "28",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont53",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text55": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 109,
+              "g": 90,
+              "b": 69,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "A small room raises small questions. Here are the ones we get on the phone."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont53",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "acco56": {
+          "type": {
+            "resolvedName": "Accordion"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Can you cook around an allergy?",
+              "Yes, if you tell us two days ahead. The menu is short enough to bend around one table.",
+              "We are six. Is that possible?",
+              "The room does it once a night. Book early and take the long table by the window.",
+              "How long does the evening take?",
+              "About three hours. This is not a place to eat before somewhere else."
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "radius": 8
+          },
+          "displayName": "Accordion",
+          "custom": {
+            "displayName": "Accordion"
+          },
+          "parent": "colu52",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont57": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "anchor": "find-us",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Find us"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu58"
+          ],
+          "linkedNodes": {}
+        },
+        "colu58": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "36",
+            "align": "stretch",
+            "stack": "yes",
+            "ratio": "2:3"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont57",
+          "hidden": false,
+          "nodes": [
+            "cont59",
+            "cont62"
+          ],
+          "linkedNodes": {}
+        },
+        "cont59": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "center",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 0,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Find copy"
+          },
+          "parent": "colu58",
+          "hidden": false,
+          "nodes": [
+            "head60",
+            "text61"
+          ],
+          "linkedNodes": {}
+        },
+        "head60": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Yehuda Halevi 21",
+            "level": "2",
+            "fontSize": "28",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont59",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text61": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 109,
+              "g": 90,
+              "b": 69,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Between the tailor and the bicycle shop. Look for the olive tree in the yard - the door is under it."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont59",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont62": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 90,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Find map"
+          },
+          "parent": "colu58",
+          "hidden": false,
+          "nodes": [
+            "map63"
+          ],
+          "linkedNodes": {}
+        },
+        "map63": {
+          "type": {
+            "resolvedName": "Map"
+          },
+          "isCanvas": false,
+          "props": {
+            "lat": 32.0629,
+            "lng": 34.7745,
+            "zoom": 15,
+            "height": "320px",
+            "width": "100%",
+            "label": "Casa Oliva"
+          },
+          "displayName": "Map",
+          "custom": {
+            "displayName": "Map"
+          },
+          "parent": "cont62",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont64": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "48",
+              "72",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Close"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "ctab65"
+          ],
+          "linkedNodes": {}
+        },
+        "ctab65": {
+          "type": {
+            "resolvedName": "CTABanner"
+          },
+          "isCanvas": false,
+          "props": {
+            "title": "The table is small on purpose",
+            "text": "Twenty-four covers, one sitting, booked about a week out. Ring, or walk past and look at the tree.",
+            "cta": "Book a table",
+            "href": "tel:+97235000000",
+            "background": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "buttonBackground": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "buttonColor": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "radius": 22
+          },
+          "displayName": "CTABanner",
+          "custom": {
+            "displayName": "CTABanner"
+          },
+          "parent": "cont64",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont66": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Next step"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont67"
+          ],
+          "linkedNodes": {}
+        },
+        "cont67": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "40",
+              "40",
+              "40"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 22,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Next step panel"
+          },
+          "parent": "cont66",
+          "hidden": false,
+          "nodes": [
+            "badg68",
+            "head69",
+            "text70",
+            "colu71",
+            "cont75"
+          ],
+          "linkedNodes": {}
+        },
+        "badg68": {
+          "type": {
+            "resolvedName": "Badge"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "THE NEXT STEP",
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            },
+            "radius": 0
+          },
+          "displayName": "Badge",
+          "custom": {
+            "displayName": "Section label"
+          },
+          "parent": "cont67",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head69": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Start with a conversation",
+            "level": "2",
+            "fontSize": "32",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "8",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Next step heading"
+          },
+          "parent": "cont67",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text70": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "16",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "28",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Choose a time that works. You will know what happens next before the call ends."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Next step introduction"
+          },
+          "parent": "cont67",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "colu71": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "32",
+            "align": "stretch",
+            "stack": "yes",
+            "ratio": "3:2"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Next step details"
+          },
+          "parent": "cont67",
+          "hidden": false,
+          "nodes": [
+            "tabs72",
+            "cont73"
+          ],
+          "linkedNodes": {}
+        },
+        "tabs72": {
+          "type": {
+            "resolvedName": "Tabs"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Before we meet",
+              "A short note is enough to prepare.",
+              "After the call",
+              "You will receive a clear recommendation and next steps."
+            ],
+            "accent": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            },
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            }
+          },
+          "displayName": "Tabs",
+          "custom": {
+            "displayName": "Useful details"
+          },
+          "parent": "colu71",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont73": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "center",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Primary next step"
+          },
+          "parent": "colu71",
+          "hidden": false,
+          "nodes": [
+            "book74"
+          ],
+          "linkedNodes": {}
+        },
+        "book74": {
+          "type": {
+            "resolvedName": "Booking"
+          },
+          "isCanvas": false,
+          "props": {
+            "heading": "Choose a time",
+            "buttonText": "Confirm booking",
+            "duration": 60,
+            "startHour": 9,
+            "endHour": 17,
+            "timeZone": "Asia/Jerusalem",
+            "accent": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            }
+          },
+          "displayName": "Booking",
+          "custom": {
+            "displayName": "Appointment booking"
+          },
+          "parent": "cont73",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont75": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "28",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Visitor response"
+          },
+          "parent": "cont67",
+          "hidden": false,
+          "nodes": [
+            "divi76",
+            "enga77"
+          ],
+          "linkedNodes": {}
+        },
+        "divi76": {
+          "type": {
+            "resolvedName": "Divider"
+          },
+          "isCanvas": false,
+          "props": {
+            "thickness": "1",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.12
+            },
+            "inset": "0",
+            "spacing": "16"
+          },
+          "displayName": "Divider",
+          "custom": {
+            "displayName": "Divider"
+          },
+          "parent": "cont75",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "enga77": {
+          "type": {
+            "resolvedName": "Engagement"
+          },
+          "isCanvas": false,
+          "props": {
+            "mode": "review",
+            "heading": "How did this feel?",
+            "options": [
+              "👍",
+              "❤️",
+              "👏"
+            ],
+            "accent": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            }
+          },
+          "displayName": "Engagement",
+          "custom": {
+            "displayName": "Visitor feedback"
+          },
+          "parent": "cont75",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont78": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "row",
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "48",
+              "40",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "color": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont79",
+            "soci82"
+          ],
+          "linkedNodes": {}
+        },
+        "cont79": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "auto",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer text"
+          },
+          "parent": "cont78",
+          "hidden": false,
+          "nodes": [
+            "text80",
+            "text81"
+          ],
+          "linkedNodes": {}
+        },
+        "text80": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "17",
+            "textAlign": "left",
+            "fontWeight": "700",
+            "color": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Casa Oliva"
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Footer brand"
+          },
+          "parent": "cont79",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text81": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "13",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "margin": [
+              "6",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Dinner Tuesday to Saturday. Booking advised."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Small print"
+          },
+          "parent": "cont79",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "soci82": {
+          "type": {
+            "resolvedName": "SocialLinks"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Instagram",
+              "https://instagram.com/",
+              "Phone",
+              "tel:+97235000000"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.06
+            },
+            "color": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "size": "20",
+            "gap": "18"
+          },
+          "displayName": "SocialLinks",
+          "custom": {
+            "displayName": "Footer links"
+          },
+          "parent": "cont78",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
         }
-      ],
-      "sticky": false,
-      "textColor": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "height": "56px",
-      "width": "100%",
-      "animation": "none"
+      }
     },
-    "displayName": "NavbarElement",
-    "custom": {
-      "displayName": "Navbar"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "vide02": {
-    "type": {
-      "resolvedName": "Video"
-    },
-    "isCanvas": true,
-    "props": {
-      "sourceType": "background",
-      "videoId": "",
-      "videoUrl": "",
-      "text": "",
-      "src": "https://videos.pexels.com/video-files/6529488/6529488-hd_1920_1080_30fps.mp4",
-      "poster": "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      "overlay": 60,
-      "position": "center",
-      "minHeight": "560px",
-      "loop": true
-    },
-    "displayName": "Video",
-    "custom": {
-      "displayName": "Hero"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "cont03"
-    ],
-    "linkedNodes": {}
-  },
-  "cont03": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "64",
-        "48",
-        "48",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Hero content"
-    },
-    "parent": "vide02",
-    "hidden": false,
-    "nodes": [
-      "colu04"
-    ],
-    "linkedNodes": {}
-  },
-  "colu04": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "2",
-      "gap": "40",
-      "align": "center",
-      "stack": "yes"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Columns"
-    },
-    "parent": "cont03",
-    "hidden": false,
-    "nodes": [
-      "cont05",
-      "imag10"
-    ],
-    "linkedNodes": {}
-  },
-  "cont05": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Words"
-    },
-    "parent": "colu04",
-    "hidden": false,
-    "nodes": [
-      "badg06",
-      "head07",
-      "text08",
-      "butt09"
-    ],
-    "linkedNodes": {}
-  },
-  "badg06": {
-    "type": {
-      "resolvedName": "Badge"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Open for dinner",
-      "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "radius": 999
-    },
-    "displayName": "Badge",
-    "custom": {
-      "displayName": "Badge"
-    },
-    "parent": "cont05",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "head07": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Slow food, small room",
-      "level": "1",
-      "fontSize": "46",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "margin": [
-        "12",
-        "0",
-        "10",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont05",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text08": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "17",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 0.82
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "Twenty-four covers, one sitting a night, and whatever the market had that morning."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont05",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "butt09": {
-    "type": {
-      "resolvedName": "Button"
-    },
-    "isCanvas": false,
-    "props": {
-      "background": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "buttonStyle": "full",
-      "text": "Book a table",
-      "margin": [
-        "8",
-        "0",
-        "8",
-        "0"
-      ],
-      "action": "none",
-      "actionValue": "",
-      "newTab": false,
-      "textComponent": {
-        "fontSize": "16",
-        "textAlign": "center",
-        "fontWeight": "600",
-        "color": {
-          "r": 255,
-          "g": 255,
-          "b": 255,
-          "a": 1
+    {
+      "name": "Menu",
+      "slug": "menu",
+      "data": {
+        "ROOT": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "App"
+          },
+          "hidden": false,
+          "nodes": [
+            "navb01",
+            "vide02",
+            "cont07",
+            "cont21",
+            "cont27",
+            "cont30",
+            "cont32"
+          ],
+          "linkedNodes": {}
         },
-        "margin": [
-          "0",
-          "0",
-          "0",
-          "0"
-        ],
-        "shadow": 0,
-        "text": "Book a table"
+        "navb01": {
+          "type": {
+            "resolvedName": "NavbarElement"
+          },
+          "isCanvas": false,
+          "props": {
+            "variant": "light",
+            "brand": "Casa Oliva",
+            "links": [
+              {
+                "text": "Home",
+                "href": "/"
+              },
+              {
+                "text": "Menu",
+                "href": "/menu/"
+              }
+            ],
+            "sticky": true,
+            "textColor": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "height": "56px",
+            "width": "100%",
+            "animation": "none"
+          },
+          "displayName": "NavbarElement",
+          "custom": {
+            "displayName": "Navbar"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "vide02": {
+          "type": {
+            "resolvedName": "Video"
+          },
+          "isCanvas": true,
+          "props": {
+            "sourceType": "background",
+            "videoId": "",
+            "videoUrl": "",
+            "text": "",
+            "src": "https://videos.pexels.com/video-files/6529488/6529488-hd_1920_1080_30fps.mp4",
+            "poster": "https://images.pexels.com/photos/1327393/pexels-photo-1327393.jpeg?auto=compress&cs=tinysrgb&w=1600",
+            "overlay": 58,
+            "position": "center",
+            "minHeight": "430px",
+            "loop": true,
+            "animation": "fade",
+            "animationDuration": 780
+          },
+          "displayName": "Video",
+          "custom": {
+            "displayName": "Page hero"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont03"
+          ],
+          "linkedNodes": {}
+        },
+        "cont03": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "72",
+              "48",
+              "56",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Page hero copy"
+          },
+          "parent": "vide02",
+          "hidden": false,
+          "nodes": [
+            "badg04",
+            "head05",
+            "text06"
+          ],
+          "linkedNodes": {}
+        },
+        "badg04": {
+          "type": {
+            "resolvedName": "Badge"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "THIS WEEK",
+            "background": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "color": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            },
+            "radius": 999
+          },
+          "displayName": "Badge",
+          "custom": {
+            "displayName": "Badge"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head05": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "The menu follows the market",
+            "level": "1",
+            "fontSize": "46",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "12",
+              "0"
+            ],
+            "animation": "blurIn",
+            "animationDelay": 100,
+            "animationDuration": 760
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text06": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "18",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 0.86
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Five courses, one sitting and a few decisions made only after the morning delivery."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont07": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Overview"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu08"
+          ],
+          "linkedNodes": {}
+        },
+        "colu08": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "3",
+            "gap": "20",
+            "align": "stretch",
+            "stack": "yes"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Highlights"
+          },
+          "parent": "cont07",
+          "hidden": false,
+          "nodes": [
+            "cont09",
+            "cont13",
+            "cont17"
+          ],
+          "linkedNodes": {}
+        },
+        "cont09": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "24",
+              "24",
+              "24"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 0,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "From the market"
+          },
+          "parent": "colu08",
+          "hidden": false,
+          "nodes": [
+            "icon10",
+            "head11",
+            "text12"
+          ],
+          "linkedNodes": {}
+        },
+        "icon10": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "local_florist",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "background": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont09",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head11": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "From the market",
+            "level": "3",
+            "fontSize": "19",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont09",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text12": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 109,
+              "g": 90,
+              "b": 69,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Vegetables and herbs bought that morning, while they still decide the menu."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont09",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont13": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "24",
+              "24",
+              "24"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 90,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "From the fire"
+          },
+          "parent": "colu08",
+          "hidden": false,
+          "nodes": [
+            "icon14",
+            "head15",
+            "text16"
+          ],
+          "linkedNodes": {}
+        },
+        "icon14": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "outdoor_grill",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "background": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head15": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "From the fire",
+            "level": "3",
+            "fontSize": "19",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text16": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 109,
+              "g": 90,
+              "b": 69,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "One course cooked over olive wood and served as soon as it is ready."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont17": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "24",
+              "24",
+              "24"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 180,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "From the cellar"
+          },
+          "parent": "colu08",
+          "hidden": false,
+          "nodes": [
+            "icon18",
+            "head19",
+            "text20"
+          ],
+          "linkedNodes": {}
+        },
+        "icon18": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "wine_bar",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "background": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont17",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head19": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "From the cellar",
+            "level": "3",
+            "fontSize": "19",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont17",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text20": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 109,
+              "g": 90,
+              "b": 69,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Small regional bottles chosen to sit quietly beside the food."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont17",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont21": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Details"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu22"
+          ],
+          "linkedNodes": {}
+        },
+        "colu22": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "40",
+            "align": "stretch",
+            "stack": "yes",
+            "ratio": "3:2"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Detail split"
+          },
+          "parent": "cont21",
+          "hidden": false,
+          "nodes": [
+            "cont23",
+            "test26"
+          ],
+          "linkedNodes": {}
+        },
+        "cont23": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Detail copy"
+          },
+          "parent": "colu22",
+          "hidden": false,
+          "nodes": [
+            "head24",
+            "list25"
+          ],
+          "linkedNodes": {}
+        },
+        "head24": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "A typical evening",
+            "level": "2",
+            "fontSize": "30",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "list25": {
+          "type": {
+            "resolvedName": "List"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Warm bread, cultured butter and bitter leaves",
+              "Charred courgette with almond and lemon",
+              "Market fish, white beans and fennel",
+              "Stone fruit with olive oil cake"
+            ],
+            "ordered": "no",
+            "fontSize": "16",
+            "gap": "12",
+            "color": {
+              "r": 109,
+              "g": 90,
+              "b": 69,
+              "a": 1
+            }
+          },
+          "displayName": "List",
+          "custom": {
+            "displayName": "List"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "test26": {
+          "type": {
+            "resolvedName": "Testimonial"
+          },
+          "isCanvas": false,
+          "props": {
+            "quote": "The kind of dinner that feels generous without ever feeling busy.",
+            "author": "Leah Stern, The Table",
+            "role": "",
+            "avatar": "",
+            "align": "left",
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "accent": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            }
+          },
+          "displayName": "Testimonial",
+          "custom": {
+            "displayName": "Testimonial"
+          },
+          "parent": "colu22",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont27": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Questions"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head28",
+            "acco29"
+          ],
+          "linkedNodes": {}
+        },
+        "head28": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Good questions, answered",
+            "level": "2",
+            "fontSize": "28",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "20",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont27",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "acco29": {
+          "type": {
+            "resolvedName": "Accordion"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Can you accommodate allergies?",
+              "Yes, with forty-eight hours’ notice. The room is too small to improvise safely during service.",
+              "Is there a vegetarian menu?",
+              "Always. It follows the same five-course shape."
+            ],
+            "background": {
+              "r": 243,
+              "g": 230,
+              "b": 211,
+              "a": 1
+            },
+            "color": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "radius": 14
+          },
+          "displayName": "Accordion",
+          "custom": {
+            "displayName": "Accordion"
+          },
+          "parent": "cont27",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont30": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "16",
+              "48",
+              "64",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Close"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "ctab31"
+          ],
+          "linkedNodes": {}
+        },
+        "ctab31": {
+          "type": {
+            "resolvedName": "CTABanner"
+          },
+          "isCanvas": false,
+          "props": {
+            "title": "One table is still a table",
+            "text": "Tell us the date and how many are coming.",
+            "cta": "Call to reserve",
+            "href": "/",
+            "background": {
+              "r": 164,
+              "g": 74,
+              "b": 34,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "buttonBackground": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "buttonColor": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "radius": 22
+          },
+          "displayName": "CTABanner",
+          "custom": {
+            "displayName": "CTABanner"
+          },
+          "parent": "cont30",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont32": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "row",
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "48",
+              "40",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 42,
+              "g": 29,
+              "b": 19,
+              "a": 1
+            },
+            "color": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont33"
+          ],
+          "linkedNodes": {}
+        },
+        "cont33": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "auto",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer text"
+          },
+          "parent": "cont32",
+          "hidden": false,
+          "nodes": [
+            "text34",
+            "text35"
+          ],
+          "linkedNodes": {}
+        },
+        "text34": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "17",
+            "textAlign": "left",
+            "fontWeight": "700",
+            "color": {
+              "r": 251,
+              "g": 243,
+              "b": 233,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Casa Oliva"
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Footer brand"
+          },
+          "parent": "cont33",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text35": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "13",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 0.68
+            },
+            "margin": [
+              "6",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Dinner Tuesday to Saturday. One sitting at seven."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Small print"
+          },
+          "parent": "cont33",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        }
       }
-    },
-    "displayName": "Button",
-    "custom": {
-      "displayName": "Button"
-    },
-    "parent": "cont05",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "imag10": {
-    "type": {
-      "resolvedName": "Image"
-    },
-    "isCanvas": false,
-    "props": {
-      "src": "https://images.pexels.com/photos/1327393/pexels-photo-1327393.jpeg?auto=compress&cs=tinysrgb&w=900",
-      "alt": "Seasonal tasting menu plated in the restaurant kitchen",
-      "radius": 8,
-      "width": "100%",
-      "height": "420px",
-      "maxWidth": "100%"
-    },
-    "displayName": "Image",
-    "custom": {
-      "displayName": "Image"
-    },
-    "parent": "colu04",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont11": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "40",
-        "48",
-        "8",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Numbers"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "stat12"
-    ],
-    "linkedNodes": {}
-  },
-  "stat12": {
-    "type": {
-      "resolvedName": "Stats"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "24",
-        "covers, no more",
-        "1",
-        "sitting, at seven",
-        "5pm",
-        "the market closes, we start"
-      ],
-      "align": "center",
-      "accent": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
-        "a": 1
-      }
-    },
-    "displayName": "Stats",
-    "custom": {
-      "displayName": "Stats"
-    },
-    "parent": "cont11",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont13": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "32",
-        "48",
-        "40",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Hold"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "colu14"
-    ],
-    "linkedNodes": {}
-  },
-  "colu14": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "3",
-      "gap": "20",
-      "align": "stretch",
-      "stack": "yes"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Columns"
-    },
-    "parent": "cont13",
-    "hidden": false,
-    "nodes": [
-      "cont15",
-      "cont19",
-      "cont23"
-    ],
-    "linkedNodes": {}
-  },
-  "cont15": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "22",
-        "20",
-        "22",
-        "20"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 14,
-      "radius": 14,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 0
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Bought that morning"
-    },
-    "parent": "colu14",
-    "hidden": false,
-    "nodes": [
-      "icon16",
-      "head17",
-      "text18"
-    ],
-    "linkedNodes": {}
-  },
-  "icon16": {
-    "type": {
-      "resolvedName": "Icon"
-    },
-    "isCanvas": false,
-    "props": {
-      "name": "storefront",
-      "size": "32",
-      "padded": "yes",
-      "color": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "background": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      }
-    },
-    "displayName": "Icon",
-    "custom": {
-      "displayName": "Icon"
-    },
-    "parent": "cont15",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "head17": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Bought that morning",
-      "level": "3",
-      "fontSize": "17",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "margin": [
-        "12",
-        "0",
-        "6",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont15",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text18": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "14",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "The menu is written after the market, not before it."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont15",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont19": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "22",
-        "20",
-        "22",
-        "20"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 14,
-      "radius": 14,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 90
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Cooked over wood"
-    },
-    "parent": "colu14",
-    "hidden": false,
-    "nodes": [
-      "icon20",
-      "head21",
-      "text22"
-    ],
-    "linkedNodes": {}
-  },
-  "icon20": {
-    "type": {
-      "resolvedName": "Icon"
-    },
-    "isCanvas": false,
-    "props": {
-      "name": "local_fire_department",
-      "size": "32",
-      "padded": "yes",
-      "color": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "background": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      }
-    },
-    "displayName": "Icon",
-    "custom": {
-      "displayName": "Icon"
-    },
-    "parent": "cont19",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "head21": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Cooked over wood",
-      "level": "3",
-      "fontSize": "17",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "margin": [
-        "12",
-        "0",
-        "6",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont19",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text22": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "14",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "One oven, one fire, and nothing that needs a timer."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont19",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont23": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "22",
-        "20",
-        "22",
-        "20"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 14,
-      "radius": 14,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 180
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Served when ready"
-    },
-    "parent": "colu14",
-    "hidden": false,
-    "nodes": [
-      "icon24",
-      "head25",
-      "text26"
-    ],
-    "linkedNodes": {}
-  },
-  "icon24": {
-    "type": {
-      "resolvedName": "Icon"
-    },
-    "isCanvas": false,
-    "props": {
-      "name": "schedule",
-      "size": "32",
-      "padded": "yes",
-      "color": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "background": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      }
-    },
-    "displayName": "Icon",
-    "custom": {
-      "displayName": "Icon"
-    },
-    "parent": "cont23",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "head25": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Served when ready",
-      "level": "3",
-      "fontSize": "17",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "margin": [
-        "12",
-        "0",
-        "6",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont23",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text26": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "14",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "Plates arrive when they should, in the order the kitchen can do them best."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont23",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont27": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "56",
-        "48",
-        "56",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "anchor": "menu"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Menu"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "head28",
-      "spac29",
-      "colu30"
-    ],
-    "linkedNodes": {}
-  },
-  "head28": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "This week",
-      "level": "2",
-      "fontSize": "32",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont27",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "spac29": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "24"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "cont27",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "colu30": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "3",
-      "gap": "24",
-      "align": "stretch",
-      "stack": "yes"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Columns"
-    },
-    "parent": "cont27",
-    "hidden": false,
-    "nodes": [
-      "cont31",
-      "cont34",
-      "cont37"
-    ],
-    "linkedNodes": {}
-  },
-  "cont31": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "24",
-        "22",
-        "24",
-        "22"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 8,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 0
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "To start"
-    },
-    "parent": "colu30",
-    "hidden": false,
-    "nodes": [
-      "head32",
-      "list33"
-    ],
-    "linkedNodes": {}
-  },
-  "head32": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "To start",
-      "level": "3",
-      "fontSize": "18",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont31",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "list33": {
-    "type": {
-      "resolvedName": "List"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "Bread, oil, salt",
-        "Anchovy and butter",
-        "Tomato, done simply"
-      ],
-      "ordered": "no",
-      "fontSize": "15",
-      "gap": "10",
-      "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
-        "a": 1
-      }
-    },
-    "displayName": "List",
-    "custom": {
-      "displayName": "List"
-    },
-    "parent": "cont31",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont34": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "24",
-        "22",
-        "24",
-        "22"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 8,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 90
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Mains"
-    },
-    "parent": "colu30",
-    "hidden": false,
-    "nodes": [
-      "head35",
-      "list36"
-    ],
-    "linkedNodes": {}
-  },
-  "head35": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Mains",
-      "level": "3",
-      "fontSize": "18",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont34",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "list36": {
-    "type": {
-      "resolvedName": "List"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "Lamb, slowly",
-        "Sea bream, whole",
-        "Aubergine, smoked"
-      ],
-      "ordered": "no",
-      "fontSize": "15",
-      "gap": "10",
-      "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
-        "a": 1
-      }
-    },
-    "displayName": "List",
-    "custom": {
-      "displayName": "List"
-    },
-    "parent": "cont34",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont37": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "24",
-        "22",
-        "24",
-        "22"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 8,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 180
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "After"
-    },
-    "parent": "colu30",
-    "hidden": false,
-    "nodes": [
-      "head38",
-      "list39"
-    ],
-    "linkedNodes": {}
-  },
-  "head38": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "After",
-      "level": "3",
-      "fontSize": "18",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont37",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "list39": {
-    "type": {
-      "resolvedName": "List"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "Olive oil cake",
-        "Figs and cream",
-        "Coffee and something"
-      ],
-      "ordered": "no",
-      "fontSize": "15",
-      "gap": "10",
-      "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
-        "a": 1
-      }
-    },
-    "displayName": "List",
-    "custom": {
-      "displayName": "List"
-    },
-    "parent": "cont37",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont40": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "56",
-        "48",
-        "32",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "anchor": "hours"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Hours"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "colu41"
-    ],
-    "linkedNodes": {}
-  },
-  "colu41": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "2",
-      "gap": "40",
-      "align": "stretch",
-      "stack": "yes"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Columns"
-    },
-    "parent": "cont40",
-    "hidden": false,
-    "nodes": [
-      "cont42",
-      "cont45"
-    ],
-    "linkedNodes": {}
-  },
-  "cont42": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 0
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "When"
-    },
-    "parent": "colu41",
-    "hidden": false,
-    "nodes": [
-      "head43",
-      "list44"
-    ],
-    "linkedNodes": {}
-  },
-  "head43": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "When we are open",
-      "level": "2",
-      "fontSize": "28",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont42",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "list44": {
-    "type": {
-      "resolvedName": "List"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "Tuesday to Saturday, 18:00",
-        "One sitting, seven o’clock",
-        "Closed Sunday and Monday"
-      ],
-      "ordered": "no",
-      "fontSize": "16",
-      "gap": "8",
-      "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
-        "a": 1
-      }
-    },
-    "displayName": "List",
-    "custom": {
-      "displayName": "List"
-    },
-    "parent": "cont42",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont45": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 90
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Said"
-    },
-    "parent": "colu41",
-    "hidden": false,
-    "nodes": [
-      "test46"
-    ],
-    "linkedNodes": {}
-  },
-  "test46": {
-    "type": {
-      "resolvedName": "Testimonial"
-    },
-    "isCanvas": false,
-    "props": {
-      "quote": "The menu is short because everything on it is worth eating.",
-      "author": "Ronit Adler",
-      "role": "Time Out Tel Aviv",
-      "avatar": "",
-      "align": "left",
-      "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "accent": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 0.6
-      }
-    },
-    "displayName": "Testimonial",
-    "custom": {
-      "displayName": "Testimonial"
-    },
-    "parent": "cont45",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont47": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "32",
-        "48",
-        "32",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "A night"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "head48",
-      "spac49",
-      "time50"
-    ],
-    "linkedNodes": {}
-  },
-  "head48": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "How a night runs",
-      "level": "2",
-      "fontSize": "28",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont47",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "spac49": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "20"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "cont47",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "time50": {
-    "type": {
-      "resolvedName": "Timeline"
-    },
-    "isCanvas": false,
-    "props": {
-      "steps": [
-        "18:00",
-        "The door opens",
-        "Aperitivo at the counter while the oven settles.",
-        "19:00",
-        "Everyone sits",
-        "One sitting, nine dishes, explained before they start.",
-        "21:30",
-        "The long end",
-        "Kitchen closes, the room decides when the night ends."
-      ],
-      "accent": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      }
-    },
-    "displayName": "Timeline",
-    "custom": {
-      "displayName": "Timeline"
-    },
-    "parent": "cont47",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont51": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "24",
-        "48",
-        "48",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Questions"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "colu52"
-    ],
-    "linkedNodes": {}
-  },
-  "colu52": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "2",
-      "gap": "40",
-      "align": "stretch",
-      "stack": "yes",
-      "ratio": "2:3"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Columns"
-    },
-    "parent": "cont51",
-    "hidden": false,
-    "nodes": [
-      "cont53",
-      "acco56"
-    ],
-    "linkedNodes": {}
-  },
-  "cont53": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "center",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Questions intro"
-    },
-    "parent": "colu52",
-    "hidden": false,
-    "nodes": [
-      "head54",
-      "text55"
-    ],
-    "linkedNodes": {}
-  },
-  "head54": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Before you book",
-      "level": "2",
-      "fontSize": "28",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont53",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text55": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "15",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
-        "a": 1
-      },
-      "margin": [
-        "12",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "A small room raises small questions. Here are the ones we get on the phone."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont53",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "acco56": {
-    "type": {
-      "resolvedName": "Accordion"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "Can you cook around an allergy?",
-        "Yes, if you tell us two days ahead. The menu is short enough to bend around one table.",
-        "We are six. Is that possible?",
-        "The room does it once a night. Book early and take the long table by the window.",
-        "How long does the evening take?",
-        "About three hours. This is not a place to eat before somewhere else."
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "radius": 8
-    },
-    "displayName": "Accordion",
-    "custom": {
-      "displayName": "Accordion"
-    },
-    "parent": "colu52",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont57": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "56",
-        "48",
-        "44",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "anchor": "find-us"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Find us"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "colu58"
-    ],
-    "linkedNodes": {}
-  },
-  "colu58": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "2",
-      "gap": "36",
-      "align": "stretch",
-      "stack": "yes",
-      "ratio": "2:3"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Columns"
-    },
-    "parent": "cont57",
-    "hidden": false,
-    "nodes": [
-      "cont59",
-      "cont62"
-    ],
-    "linkedNodes": {}
-  },
-  "cont59": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "center",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 0
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Find copy"
-    },
-    "parent": "colu58",
-    "hidden": false,
-    "nodes": [
-      "head60",
-      "text61"
-    ],
-    "linkedNodes": {}
-  },
-  "head60": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Yehuda Halevi 21",
-      "level": "2",
-      "fontSize": "28",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont59",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text61": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "15",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 109,
-        "g": 90,
-        "b": 69,
-        "a": 1
-      },
-      "margin": [
-        "12",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "Between the tailor and the bicycle shop. Look for the olive tree in the yard - the door is under it."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont59",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont62": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 90
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Find map"
-    },
-    "parent": "colu58",
-    "hidden": false,
-    "nodes": [
-      "map63"
-    ],
-    "linkedNodes": {}
-  },
-  "map63": {
-    "type": {
-      "resolvedName": "Map"
-    },
-    "isCanvas": false,
-    "props": {
-      "lat": 32.0629,
-      "lng": 34.7745,
-      "zoom": 15,
-      "height": "320px",
-      "width": "100%",
-      "label": "Casa Oliva"
-    },
-    "displayName": "Map",
-    "custom": {
-      "displayName": "Map"
-    },
-    "parent": "cont62",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont64": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "24",
-        "48",
-        "72",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Close"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "ctab65"
-    ],
-    "linkedNodes": {}
-  },
-  "ctab65": {
-    "type": {
-      "resolvedName": "CTABanner"
-    },
-    "isCanvas": false,
-    "props": {
-      "title": "The table is small on purpose",
-      "text": "Twenty-four covers, one sitting, booked about a week out. Ring, or walk past and look at the tree.",
-      "cta": "Book a table",
-      "href": "tel:+97235000000",
-      "background": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "buttonBackground": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "buttonColor": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "radius": 22
-    },
-    "displayName": "CTABanner",
-    "custom": {
-      "displayName": "CTABanner"
-    },
-    "parent": "cont64",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont66": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "56",
-        "48",
-        "44",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Next step"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "cont67"
-    ],
-    "linkedNodes": {}
-  },
-  "cont67": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "40",
-        "40",
-        "40",
-        "40"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 22,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Next step panel"
-    },
-    "parent": "cont66",
-    "hidden": false,
-    "nodes": [
-      "badg68",
-      "head69",
-      "text70",
-      "colu71",
-      "cont75"
-    ],
-    "linkedNodes": {}
-  },
-  "badg68": {
-    "type": {
-      "resolvedName": "Badge"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "THE NEXT STEP",
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "radius": 0
-    },
-    "displayName": "Badge",
-    "custom": {
-      "displayName": "Section label"
-    },
-    "parent": "cont67",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "head69": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Start with a conversation",
-      "level": "2",
-      "fontSize": "32",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "margin": [
-        "12",
-        "0",
-        "8",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Next step heading"
-    },
-    "parent": "cont67",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text70": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "16",
-      "textAlign": "left",
-      "fontWeight": "400",
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "28",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "Choose a time that works. You will know what happens next before the call ends."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Next step introduction"
-    },
-    "parent": "cont67",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "colu71": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "2",
-      "gap": "32",
-      "align": "stretch",
-      "stack": "yes",
-      "ratio": "3:2"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Next step details"
-    },
-    "parent": "cont67",
-    "hidden": false,
-    "nodes": [
-      "tabs72",
-      "cont73"
-    ],
-    "linkedNodes": {}
-  },
-  "tabs72": {
-    "type": {
-      "resolvedName": "Tabs"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "Before we meet",
-        "A short note is enough to prepare.",
-        "After the call",
-        "You will receive a clear recommendation and next steps."
-      ],
-      "accent": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      },
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      }
-    },
-    "displayName": "Tabs",
-    "custom": {
-      "displayName": "Useful details"
-    },
-    "parent": "colu71",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont73": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "center",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Primary next step"
-    },
-    "parent": "colu71",
-    "hidden": false,
-    "nodes": [
-      "book74"
-    ],
-    "linkedNodes": {}
-  },
-  "book74": {
-    "type": {
-      "resolvedName": "Booking"
-    },
-    "isCanvas": false,
-    "props": {
-      "heading": "Choose a time",
-      "buttonText": "Confirm booking",
-      "duration": 60,
-      "startHour": 9,
-      "endHour": 17,
-      "timeZone": "Asia/Jerusalem",
-      "accent": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      }
-    },
-    "displayName": "Booking",
-    "custom": {
-      "displayName": "Appointment booking"
-    },
-    "parent": "cont73",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont75": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "28",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Visitor response"
-    },
-    "parent": "cont67",
-    "hidden": false,
-    "nodes": [
-      "divi76",
-      "enga77"
-    ],
-    "linkedNodes": {}
-  },
-  "divi76": {
-    "type": {
-      "resolvedName": "Divider"
-    },
-    "isCanvas": false,
-    "props": {
-      "thickness": "1",
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0.12
-      },
-      "inset": "0",
-      "spacing": "16"
-    },
-    "displayName": "Divider",
-    "custom": {
-      "displayName": "Divider"
-    },
-    "parent": "cont75",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "enga77": {
-    "type": {
-      "resolvedName": "Engagement"
-    },
-    "isCanvas": false,
-    "props": {
-      "mode": "review",
-      "heading": "How did this feel?",
-      "options": [
-        "👍",
-        "❤️",
-        "👏"
-      ],
-      "accent": {
-        "r": 164,
-        "g": 74,
-        "b": 34,
-        "a": 1
-      }
-    },
-    "displayName": "Engagement",
-    "custom": {
-      "displayName": "Visitor feedback"
-    },
-    "parent": "cont75",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont78": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "row",
-      "alignItems": "center",
-      "justifyContent": "space-between",
-      "fillSpace": "no",
-      "padding": [
-        "40",
-        "48",
-        "40",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 42,
-        "g": 29,
-        "b": 19,
-        "a": 1
-      },
-      "color": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Footer"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "cont79",
-      "soci82"
-    ],
-    "linkedNodes": {}
-  },
-  "cont79": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "auto",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Footer text"
-    },
-    "parent": "cont78",
-    "hidden": false,
-    "nodes": [
-      "text80",
-      "text81"
-    ],
-    "linkedNodes": {}
-  },
-  "text80": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "17",
-      "textAlign": "left",
-      "fontWeight": "700",
-      "color": {
-        "r": 251,
-        "g": 243,
-        "b": 233,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "Casa Oliva"
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Footer brand"
-    },
-    "parent": "cont79",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text81": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "13",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "margin": [
-        "6",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "Dinner Tuesday to Saturday. Booking advised."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Small print"
-    },
-    "parent": "cont79",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "soci82": {
-    "type": {
-      "resolvedName": "SocialLinks"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "Instagram",
-        "https://instagram.com/",
-        "Phone",
-        "tel:+97235000000"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0.06
-      },
-      "color": {
-        "r": 243,
-        "g": 230,
-        "b": 211,
-        "a": 1
-      },
-      "size": "20",
-      "gap": "18"
-    },
-    "displayName": "SocialLinks",
-    "custom": {
-      "displayName": "Footer links"
-    },
-    "parent": "cont78",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  }
+    }
+  ],
+  "siteSettings": {}
 }

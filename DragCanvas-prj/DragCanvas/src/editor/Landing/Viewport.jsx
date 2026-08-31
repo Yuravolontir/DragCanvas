@@ -139,11 +139,32 @@ export const Viewport = ({ children }) => {
   // a laptop window being dragged narrow and back.
   const phone = useMediaQuery(PHONE);
   const {
+    actions,
     enabled,
     connectors,
   } = useEditor((state) => ({
     enabled: state.options.enabled,
   }));
+
+  /*
+   * A phone is read-only, and that has to be true rather than described.
+   *
+   * The branch below says "the real project, read-only, at the phone's real
+   * width" and withholds the Header so nothing can be saved - but Craft was
+   * still enabled, because <Editor enabled> is set once and never revisited.
+   * Editing being on is what put the canvas at its authored 800px inside a
+   * 390px window, so the site arrived centred and cut off at both edges: half a
+   * screen, which is what this looked like from the outside.
+   *
+   * Turning the option off fixes the width and the claim at once - no drag
+   * handles, no selection outlines, no contenteditable - and turning the phone
+   * into a tablet turns it back on without unmounting anything.
+   */
+  useEffect(() => {
+    actions.setOptions((options) => {
+      options.enabled = !phone;
+    });
+  }, [phone, actions]);
 
   /*
    * Craft has no touch drag of its own. Called from here rather than at module
@@ -211,7 +232,21 @@ export const Viewport = ({ children }) => {
     >
       <div
         className="relative flex-col flex items-center pt-8"
-        style={{ minWidth: 'min-content' }}
+        /*
+         * Which way this box is sized depends on what it holds.
+         *
+         * Editing, the canvas is a fixed 800px. `min-content` is what lets it
+         * stay 800px in a narrower window and be scrolled to, rather than being
+         * squeezed and misreporting the width the page is authored at.
+         *
+         * Previewing, the canvas is `width: 100%` - and 100% of a box sized by
+         * `min-content` is the content's minimum, not the screen. The page came
+         * out as narrow as its widest word would allow and then `items-center`
+         * put that column in the middle: on a phone, a site rendered across
+         * about half the screen. Preview asks for the full width instead,
+         * which is what a fluid canvas was supposed to mean.
+         */
+        style={enabled ? { minWidth: 'min-content' } : { width: '100%' }}
       >
         <div
           className="device-canvas"

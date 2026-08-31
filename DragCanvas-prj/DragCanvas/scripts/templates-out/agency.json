@@ -1,2502 +1,5431 @@
 {
-  "ROOT": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "App"
-    },
-    "hidden": false,
-    "nodes": [
-      "navb01",
-      "cont02",
-      "cont06",
-      "cont18",
-      "cont22",
-      "cont30",
-      "cont34",
-      "cont40",
-      "cont47",
-      "cont49",
-      "cont61"
-    ],
-    "linkedNodes": {}
-  },
-  "navb01": {
-    "type": {
-      "resolvedName": "NavbarElement"
-    },
-    "isCanvas": false,
-    "props": {
-      "variant": "light",
-      "brand": "FIELD",
-      "links": [
-        {
-          "text": "Work",
-          "href": "#work"
+  "__dragcanvasPages": true,
+  "currentSlug": "home",
+  "pages": [
+    {
+      "name": "Home",
+      "slug": "home",
+      "data": {
+        "ROOT": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "App"
+          },
+          "hidden": false,
+          "nodes": [
+            "navb01",
+            "vide02",
+            "cont07",
+            "cont19",
+            "cont23",
+            "cont31",
+            "cont35",
+            "cont41",
+            "cont48",
+            "cont50",
+            "cont62"
+          ],
+          "linkedNodes": {}
         },
-        {
-          "text": "Studio",
-          "href": "#studio"
+        "navb01": {
+          "type": {
+            "resolvedName": "NavbarElement"
+          },
+          "isCanvas": false,
+          "props": {
+            "variant": "light",
+            "brand": "FIELD",
+            "links": [
+              {
+                "text": "Home",
+                "href": "/"
+              },
+              {
+                "text": "Work",
+                "href": "/work/"
+              },
+              {
+                "text": "Studio",
+                "href": "/studio/"
+              }
+            ],
+            "sticky": true,
+            "textColor": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "height": "56px",
+            "width": "100%",
+            "animation": "none"
+          },
+          "displayName": "NavbarElement",
+          "custom": {
+            "displayName": "Navbar"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
         },
-        {
-          "text": "Brief",
-          "href": "#brief"
+        "vide02": {
+          "type": {
+            "resolvedName": "Video"
+          },
+          "isCanvas": true,
+          "props": {
+            "sourceType": "background",
+            "videoId": "",
+            "videoUrl": "",
+            "text": "",
+            "src": "https://videos.pexels.com/video-files/8125994/8125994-hd_1920_1080_25fps.mp4",
+            "poster": "https://images.pexels.com/photos/2582933/pexels-photo-2582933.jpeg?auto=compress&cs=tinysrgb&w=1600",
+            "overlay": 62,
+            "position": "center",
+            "minHeight": "520px",
+            "loop": true,
+            "animation": "fade",
+            "animationDuration": 780
+          },
+          "displayName": "Video",
+          "custom": {
+            "displayName": "Hero"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont03"
+          ],
+          "linkedNodes": {}
+        },
+        "cont03": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "80",
+              "48",
+              "56",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Hero copy"
+          },
+          "parent": "vide02",
+          "hidden": false,
+          "nodes": [
+            "head04",
+            "text05",
+            "logo06"
+          ],
+          "linkedNodes": {}
+        },
+        "head04": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "We make the difficult part look obvious",
+            "level": "1",
+            "fontSize": "54",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "animation": "blurIn",
+            "animationDelay": 100,
+            "animationDuration": 760
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text05": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "19",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 0.82
+            },
+            "margin": [
+              "14",
+              "0",
+              "28",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Brand and product design for companies that have outgrown their first look."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "logo06": {
+          "type": {
+            "resolvedName": "LogoStrip"
+          },
+          "isCanvas": false,
+          "props": {
+            "logos": [
+              "Kettle",
+              "Fathom",
+              "Monday",
+              "Northwind",
+              "Sable"
+            ],
+            "height": "28",
+            "gap": "40",
+            "grayscale": "yes",
+            "color": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            }
+          },
+          "displayName": "LogoStrip",
+          "custom": {
+            "displayName": "LogoStrip"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont07": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "48",
+              "48",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "anchor": "work",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Work"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head08",
+            "spac09",
+            "colu10"
+          ],
+          "linkedNodes": {}
+        },
+        "head08": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Recent work",
+            "level": "2",
+            "fontSize": "32",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont07",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "spac09": {
+          "type": {
+            "resolvedName": "Spacer"
+          },
+          "isCanvas": false,
+          "props": {
+            "height": "24"
+          },
+          "displayName": "Spacer",
+          "custom": {
+            "displayName": "Spacer"
+          },
+          "parent": "cont07",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "colu10": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "24",
+            "align": "stretch",
+            "stack": "yes"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont07",
+          "hidden": false,
+          "nodes": [
+            "cont11",
+            "cont15"
+          ],
+          "linkedNodes": {}
+        },
+        "cont11": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "22",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 0,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Kettle"
+          },
+          "parent": "colu10",
+          "hidden": false,
+          "nodes": [
+            "imag12",
+            "head13",
+            "text14"
+          ],
+          "linkedNodes": {}
+        },
+        "imag12": {
+          "type": {
+            "resolvedName": "Image"
+          },
+          "isCanvas": false,
+          "props": {
+            "src": "https://images.pexels.com/photos/4348193/pexels-photo-4348193.jpeg?auto=compress&cs=tinysrgb&w=800",
+            "alt": "Kettle identity design case study",
+            "radius": 14,
+            "width": "100%",
+            "height": "260px",
+            "maxWidth": "100%",
+            "animation": "zoomIn",
+            "animationDelay": 0,
+            "animationDuration": 720
+          },
+          "displayName": "Image",
+          "custom": {
+            "displayName": "Image"
+          },
+          "parent": "cont11",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head13": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Kettle",
+            "level": "3",
+            "fontSize": "20",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "16",
+              "22",
+              "4",
+              "22"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont11",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text14": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 105,
+              "g": 103,
+              "b": 108,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "22",
+              "0",
+              "22"
+            ],
+            "shadow": 0,
+            "text": "A brand that survives being printed small"
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont11",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont15": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "22",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 90,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Fathom"
+          },
+          "parent": "colu10",
+          "hidden": false,
+          "nodes": [
+            "imag16",
+            "head17",
+            "text18"
+          ],
+          "linkedNodes": {}
+        },
+        "imag16": {
+          "type": {
+            "resolvedName": "Image"
+          },
+          "isCanvas": false,
+          "props": {
+            "src": "https://images.pexels.com/photos/1714202/pexels-photo-1714202.jpeg?auto=compress&cs=tinysrgb&w=800",
+            "alt": "Fathom identity design case study",
+            "radius": 14,
+            "width": "100%",
+            "height": "260px",
+            "maxWidth": "100%",
+            "animation": "zoomIn",
+            "animationDelay": 70,
+            "animationDuration": 720
+          },
+          "displayName": "Image",
+          "custom": {
+            "displayName": "Image"
+          },
+          "parent": "cont15",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head17": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Fathom",
+            "level": "3",
+            "fontSize": "20",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "16",
+              "22",
+              "4",
+              "22"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont15",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text18": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 105,
+              "g": 103,
+              "b": 108,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "22",
+              "0",
+              "22"
+            ],
+            "shadow": 0,
+            "text": "Turning a dense product into three screens"
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont15",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont19": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Process"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head20",
+            "spac21",
+            "time22"
+          ],
+          "linkedNodes": {}
+        },
+        "head20": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "How eight weeks actually go",
+            "level": "2",
+            "fontSize": "32",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont19",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "spac21": {
+          "type": {
+            "resolvedName": "Spacer"
+          },
+          "isCanvas": false,
+          "props": {
+            "height": "24"
+          },
+          "displayName": "Spacer",
+          "custom": {
+            "displayName": "Spacer"
+          },
+          "parent": "cont19",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "time22": {
+          "type": {
+            "resolvedName": "Timeline"
+          },
+          "isCanvas": false,
+          "props": {
+            "steps": [
+              "Week 1",
+              "Questions, not moodboards",
+              "Two days in your office, talking to the people who sell the thing.",
+              "Week 3",
+              "Two directions",
+              "Presented in situ - on the packaging, the site, the invoice - never on slides alone.",
+              "Week 6",
+              "Build",
+              "The chosen direction carried through everything, with the team who will own it.",
+              "Week 8",
+              "Handover",
+              "Files, rules, and two hours of nobody-is-allowed-to-say-“just” training."
+            ],
+            "accent": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            },
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            }
+          },
+          "displayName": "Timeline",
+          "custom": {
+            "displayName": "Timeline"
+          },
+          "parent": "cont19",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont23": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "56",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "anchor": "studio",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Studio"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head24",
+            "spac25",
+            "stat26",
+            "spac27",
+            "team28",
+            "spac29",
+            "test30"
+          ],
+          "linkedNodes": {}
+        },
+        "head24": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Six people, one room",
+            "level": "2",
+            "fontSize": "32",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "spac25": {
+          "type": {
+            "resolvedName": "Spacer"
+          },
+          "isCanvas": false,
+          "props": {
+            "height": "20"
+          },
+          "displayName": "Spacer",
+          "custom": {
+            "displayName": "Spacer"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "stat26": {
+          "type": {
+            "resolvedName": "Stats"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "11",
+              "years",
+              "60+",
+              "projects",
+              "6",
+              "people"
+            ],
+            "align": "center",
+            "accent": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            },
+            "color": {
+              "r": 180,
+              "g": 178,
+              "b": 182,
+              "a": 1
+            }
+          },
+          "displayName": "Stats",
+          "custom": {
+            "displayName": "Stats"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "spac27": {
+          "type": {
+            "resolvedName": "Spacer"
+          },
+          "isCanvas": false,
+          "props": {
+            "height": "28"
+          },
+          "displayName": "Spacer",
+          "custom": {
+            "displayName": "Spacer"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "team28": {
+          "type": {
+            "resolvedName": "TeamGrid"
+          },
+          "isCanvas": false,
+          "props": {
+            "people": [
+              "Noga Feld",
+              "Direction",
+              "https://images.pexels.com/photos/12311572/pexels-photo-12311572.jpeg?auto=compress&cs=tinysrgb&w=400",
+              "Assaf Liron",
+              "Identity",
+              "https://images.pexels.com/photos/30004325/pexels-photo-30004325.jpeg?auto=compress&cs=tinysrgb&w=400",
+              "Maya Dagan",
+              "Product",
+              "https://images.pexels.com/photos/9092311/pexels-photo-9092311.jpeg?auto=compress&cs=tinysrgb&w=400"
+            ],
+            "columns": "3",
+            "accent": {
+              "r": 32,
+              "g": 32,
+              "b": 35,
+              "a": 1
+            },
+            "color": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            }
+          },
+          "displayName": "TeamGrid",
+          "custom": {
+            "displayName": "TeamGrid"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "spac29": {
+          "type": {
+            "resolvedName": "Spacer"
+          },
+          "isCanvas": false,
+          "props": {
+            "height": "28"
+          },
+          "displayName": "Spacer",
+          "custom": {
+            "displayName": "Spacer"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "test30": {
+          "type": {
+            "resolvedName": "Testimonial"
+          },
+          "isCanvas": false,
+          "props": {
+            "quote": "They asked better questions than our board did, and then answered them in pictures.",
+            "author": "Ronit Adler",
+            "role": "CEO, Kettle",
+            "avatar": "",
+            "align": "left",
+            "background": {
+              "r": 32,
+              "g": 32,
+              "b": 35,
+              "a": 1
+            },
+            "color": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "accent": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            }
+          },
+          "displayName": "Testimonial",
+          "custom": {
+            "displayName": "Testimonial"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont31": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "center",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Engagements"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head32",
+            "text33",
+            "pric34"
+          ],
+          "linkedNodes": {}
+        },
+        "head32": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Ways to hire the room",
+            "level": "2",
+            "fontSize": "30",
+            "fontWeight": "700",
+            "textAlign": "center",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont31",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text33": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "center",
+            "fontWeight": "500",
+            "color": {
+              "r": 105,
+              "g": 103,
+              "b": 108,
+              "a": 1
+            },
+            "margin": [
+              "10",
+              "0",
+              "24",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Starting points, not ceilings. Most projects bend between these."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont31",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "pric34": {
+          "type": {
+            "resolvedName": "Pricing"
+          },
+          "isCanvas": false,
+          "props": {
+            "tiers": [
+              "Sprint",
+              "from ₪28k",
+              "two weeks",
+              "Book a sprint",
+              "One focused problem; Working files; A decision by Friday",
+              "Identity",
+              "from ₪95k",
+              "six to eight weeks",
+              "Start identity",
+              "Full brand; Voice and type; Everything handed over",
+              "Retainer",
+              "₪30k",
+              "per month",
+              "Talk to us",
+              "A set number of days; Same two people; Cancel per month"
+            ],
+            "featured": 2,
+            "accent": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            },
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            }
+          },
+          "displayName": "Pricing",
+          "custom": {
+            "displayName": "Pricing"
+          },
+          "parent": "cont31",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont35": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Questions"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu36"
+          ],
+          "linkedNodes": {}
+        },
+        "colu36": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "40",
+            "align": "stretch",
+            "stack": "yes",
+            "ratio": "2:3"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont35",
+          "hidden": false,
+          "nodes": [
+            "cont37",
+            "acco40"
+          ],
+          "linkedNodes": {}
+        },
+        "cont37": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "center",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Questions intro"
+          },
+          "parent": "colu36",
+          "hidden": false,
+          "nodes": [
+            "head38",
+            "text39"
+          ],
+          "linkedNodes": {}
+        },
+        "head38": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Before you write the brief",
+            "level": "2",
+            "fontSize": "30",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont37",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text39": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 105,
+              "g": 103,
+              "b": 108,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "The three things every first conversation gets to, usually in the first ten minutes."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont37",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "acco40": {
+          "type": {
+            "resolvedName": "Accordion"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Who owns the work when it is done?",
+              "You do, entirely, from the final payment. We keep only the right to show it here.",
+              "Do you build, or only design?",
+              "We design and art-direct the build. For code we bring in two studios we have worked with for years.",
+              "What if we cannot articulate what we want?",
+              "That is the normal case, not the exception. It is what the first week is for."
+            ],
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "radius": 14
+          },
+          "displayName": "Accordion",
+          "custom": {
+            "displayName": "Accordion"
+          },
+          "parent": "colu36",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont41": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "anchor": "brief",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Brief"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu42"
+          ],
+          "linkedNodes": {}
+        },
+        "colu42": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "40",
+            "align": "stretch",
+            "stack": "yes",
+            "ratio": "3:2"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont41",
+          "hidden": false,
+          "nodes": [
+            "cont43",
+            "form47"
+          ],
+          "linkedNodes": {}
+        },
+        "cont43": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "center",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Brief copy"
+          },
+          "parent": "colu42",
+          "hidden": false,
+          "nodes": [
+            "head44",
+            "text45",
+            "list46"
+          ],
+          "linkedNodes": {}
+        },
+        "head44": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Send us a brief",
+            "level": "2",
+            "fontSize": "30",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont43",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text45": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "16",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 105,
+              "g": 103,
+              "b": 108,
+              "a": 1
+            },
+            "margin": [
+              "10",
+              "0",
+              "16",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "A paragraph is plenty. We will tell you within a week whether we are the right studio."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont43",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "list46": {
+          "type": {
+            "resolvedName": "List"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "What the thing is, in one sentence",
+              "What “better” would look like to you",
+              "A date, if there is one"
+            ],
+            "ordered": "no",
+            "fontSize": "15",
+            "gap": "8",
+            "color": {
+              "r": 105,
+              "g": 103,
+              "b": 108,
+              "a": 1
+            }
+          },
+          "displayName": "List",
+          "custom": {
+            "displayName": "List"
+          },
+          "parent": "cont43",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "form47": {
+          "type": {
+            "resolvedName": "Form"
+          },
+          "isCanvas": false,
+          "props": {
+            "fields": [
+              {
+                "label": "Name",
+                "type": "text",
+                "placeholder": "Your name",
+                "required": true
+              },
+              {
+                "label": "Email",
+                "type": "email",
+                "placeholder": "you@example.com",
+                "required": true
+              },
+              {
+                "label": "Message",
+                "type": "textarea",
+                "placeholder": "How can we help?"
+              }
+            ],
+            "submitText": "Send the brief",
+            "successMessage": "Thank you — we will be in touch.",
+            "radius": 14,
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "accent": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            },
+            "textColor": {
+              "r": 73,
+              "g": 69,
+              "b": 79,
+              "a": 1
+            },
+            "inputBackground": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "inputBorder": {
+              "r": 221,
+              "g": 221,
+              "b": 221,
+              "a": 1
+            },
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Form",
+          "custom": {
+            "displayName": "Form"
+          },
+          "parent": "colu42",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont48": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "48",
+              "72",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Close"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "ctab49"
+          ],
+          "linkedNodes": {}
+        },
+        "ctab49": {
+          "type": {
+            "resolvedName": "CTABanner"
+          },
+          "isCanvas": false,
+          "props": {
+            "title": "Start with the awkward paragraph",
+            "text": "The briefs that begin “we are not sure how to say this” are the ones that end best.",
+            "cta": "Send a brief",
+            "href": "#brief",
+            "background": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "color": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "buttonBackground": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            },
+            "buttonColor": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "radius": 22
+          },
+          "displayName": "CTABanner",
+          "custom": {
+            "displayName": "CTABanner"
+          },
+          "parent": "cont48",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont50": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Next step"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont51"
+          ],
+          "linkedNodes": {}
+        },
+        "cont51": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "40",
+              "40",
+              "40"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 22,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Next step panel"
+          },
+          "parent": "cont50",
+          "hidden": false,
+          "nodes": [
+            "badg52",
+            "head53",
+            "text54",
+            "colu55",
+            "cont59"
+          ],
+          "linkedNodes": {}
+        },
+        "badg52": {
+          "type": {
+            "resolvedName": "Badge"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "THE NEXT STEP",
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 187,
+              "g": 62,
+              "b": 42,
+              "a": 1
+            },
+            "radius": 0
+          },
+          "displayName": "Badge",
+          "custom": {
+            "displayName": "Section label"
+          },
+          "parent": "cont51",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head53": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Start with a conversation",
+            "level": "2",
+            "fontSize": "32",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "8",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Next step heading"
+          },
+          "parent": "cont51",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text54": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "16",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "28",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Choose a time that works. You will know what happens next before the call ends."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Next step introduction"
+          },
+          "parent": "cont51",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "colu55": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "32",
+            "align": "stretch",
+            "stack": "yes",
+            "ratio": "3:2"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Next step details"
+          },
+          "parent": "cont51",
+          "hidden": false,
+          "nodes": [
+            "tabs56",
+            "cont57"
+          ],
+          "linkedNodes": {}
+        },
+        "tabs56": {
+          "type": {
+            "resolvedName": "Tabs"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Before we meet",
+              "A short note is enough to prepare.",
+              "After the call",
+              "You will receive a clear recommendation and next steps."
+            ],
+            "accent": {
+              "r": 187,
+              "g": 62,
+              "b": 42,
+              "a": 1
+            },
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            }
+          },
+          "displayName": "Tabs",
+          "custom": {
+            "displayName": "Useful details"
+          },
+          "parent": "colu55",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont57": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "center",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Primary next step"
+          },
+          "parent": "colu55",
+          "hidden": false,
+          "nodes": [
+            "book58"
+          ],
+          "linkedNodes": {}
+        },
+        "book58": {
+          "type": {
+            "resolvedName": "Booking"
+          },
+          "isCanvas": false,
+          "props": {
+            "heading": "Choose a time",
+            "buttonText": "Confirm booking",
+            "duration": 60,
+            "startHour": 9,
+            "endHour": 17,
+            "timeZone": "Asia/Jerusalem",
+            "accent": {
+              "r": 187,
+              "g": 62,
+              "b": 42,
+              "a": 1
+            }
+          },
+          "displayName": "Booking",
+          "custom": {
+            "displayName": "Appointment booking"
+          },
+          "parent": "cont57",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont59": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "28",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Visitor response"
+          },
+          "parent": "cont51",
+          "hidden": false,
+          "nodes": [
+            "divi60",
+            "enga61"
+          ],
+          "linkedNodes": {}
+        },
+        "divi60": {
+          "type": {
+            "resolvedName": "Divider"
+          },
+          "isCanvas": false,
+          "props": {
+            "thickness": "1",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.12
+            },
+            "inset": "0",
+            "spacing": "16"
+          },
+          "displayName": "Divider",
+          "custom": {
+            "displayName": "Divider"
+          },
+          "parent": "cont59",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "enga61": {
+          "type": {
+            "resolvedName": "Engagement"
+          },
+          "isCanvas": false,
+          "props": {
+            "mode": "review",
+            "heading": "How did this feel?",
+            "options": [
+              "👍",
+              "❤️",
+              "👏"
+            ],
+            "accent": {
+              "r": 187,
+              "g": 62,
+              "b": 42,
+              "a": 1
+            }
+          },
+          "displayName": "Engagement",
+          "custom": {
+            "displayName": "Visitor feedback"
+          },
+          "parent": "cont59",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont62": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "row",
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "48",
+              "40",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "color": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont63",
+            "soci66"
+          ],
+          "linkedNodes": {}
+        },
+        "cont63": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "auto",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer text"
+          },
+          "parent": "cont62",
+          "hidden": false,
+          "nodes": [
+            "text64",
+            "text65"
+          ],
+          "linkedNodes": {}
+        },
+        "text64": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "17",
+            "textAlign": "left",
+            "fontWeight": "700",
+            "color": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "FIELD"
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Footer brand"
+          },
+          "parent": "cont63",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text65": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "13",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 150,
+              "g": 148,
+              "b": 154,
+              "a": 1
+            },
+            "margin": [
+              "6",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Design and art direction. Tel Aviv and remote."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Small print"
+          },
+          "parent": "cont63",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "soci66": {
+          "type": {
+            "resolvedName": "SocialLinks"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Instagram",
+              "https://instagram.com/",
+              "Behance",
+              "https://behance.net/",
+              "Email",
+              "mailto:studio@field.co"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.06
+            },
+            "color": {
+              "r": 150,
+              "g": 148,
+              "b": 154,
+              "a": 1
+            },
+            "size": "20",
+            "gap": "18"
+          },
+          "displayName": "SocialLinks",
+          "custom": {
+            "displayName": "Footer links"
+          },
+          "parent": "cont62",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
         }
-      ],
-      "sticky": false,
-      "textColor": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      },
-      "height": "56px",
-      "width": "100%",
-      "animation": "none"
-    },
-    "displayName": "NavbarElement",
-    "custom": {
-      "displayName": "Navbar"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont02": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "80",
-        "48",
-        "40",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "backgroundImage": "https://images.pexels.com/photos/2582933/pexels-photo-2582933.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      "overlay": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 0.68
       }
     },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Hero"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "head03",
-      "text04",
-      "logo05"
-    ],
-    "linkedNodes": {}
-  },
-  "head03": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "We make the difficult part look obvious",
-      "level": "1",
-      "fontSize": "54",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont02",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text04": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "19",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 0.82
-      },
-      "margin": [
-        "14",
-        "0",
-        "28",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "Brand and product design for companies that have outgrown their first look."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont02",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "logo05": {
-    "type": {
-      "resolvedName": "LogoStrip"
-    },
-    "isCanvas": false,
-    "props": {
-      "logos": [
-        "Kettle",
-        "Fathom",
-        "Monday",
-        "Northwind",
-        "Sable"
-      ],
-      "height": "28",
-      "gap": "40",
-      "grayscale": "yes",
-      "color": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      }
-    },
-    "displayName": "LogoStrip",
-    "custom": {
-      "displayName": "LogoStrip"
-    },
-    "parent": "cont02",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont06": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "40",
-        "48",
-        "48",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "anchor": "work"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Work"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "head07",
-      "spac08",
-      "colu09"
-    ],
-    "linkedNodes": {}
-  },
-  "head07": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Recent work",
-      "level": "2",
-      "fontSize": "32",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont06",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "spac08": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "24"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "cont06",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "colu09": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "2",
-      "gap": "24",
-      "align": "stretch",
-      "stack": "yes"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Columns"
-    },
-    "parent": "cont06",
-    "hidden": false,
-    "nodes": [
-      "cont10",
-      "cont14"
-    ],
-    "linkedNodes": {}
-  },
-  "cont10": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "22",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 238,
-        "g": 237,
-        "b": 235,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 14,
-      "radius": 14,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 0
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Kettle"
-    },
-    "parent": "colu09",
-    "hidden": false,
-    "nodes": [
-      "imag11",
-      "head12",
-      "text13"
-    ],
-    "linkedNodes": {}
-  },
-  "imag11": {
-    "type": {
-      "resolvedName": "Image"
-    },
-    "isCanvas": false,
-    "props": {
-      "src": "https://images.pexels.com/photos/4348193/pexels-photo-4348193.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "alt": "Kettle identity design case study",
-      "radius": 14,
-      "width": "100%",
-      "height": "260px",
-      "maxWidth": "100%"
-    },
-    "displayName": "Image",
-    "custom": {
-      "displayName": "Image"
-    },
-    "parent": "cont10",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "head12": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Kettle",
-      "level": "3",
-      "fontSize": "20",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      },
-      "margin": [
-        "16",
-        "22",
-        "4",
-        "22"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont10",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text13": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "15",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 105,
-        "g": 103,
-        "b": 108,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "22",
-        "0",
-        "22"
-      ],
-      "shadow": 0,
-      "text": "A brand that survives being printed small"
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont10",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont14": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "22",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 238,
-        "g": 237,
-        "b": 235,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 14,
-      "radius": 14,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 90
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Fathom"
-    },
-    "parent": "colu09",
-    "hidden": false,
-    "nodes": [
-      "imag15",
-      "head16",
-      "text17"
-    ],
-    "linkedNodes": {}
-  },
-  "imag15": {
-    "type": {
-      "resolvedName": "Image"
-    },
-    "isCanvas": false,
-    "props": {
-      "src": "https://images.pexels.com/photos/1714202/pexels-photo-1714202.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "alt": "Fathom identity design case study",
-      "radius": 14,
-      "width": "100%",
-      "height": "260px",
-      "maxWidth": "100%"
-    },
-    "displayName": "Image",
-    "custom": {
-      "displayName": "Image"
-    },
-    "parent": "cont14",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "head16": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Fathom",
-      "level": "3",
-      "fontSize": "20",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      },
-      "margin": [
-        "16",
-        "22",
-        "4",
-        "22"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont14",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text17": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "15",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 105,
-        "g": 103,
-        "b": 108,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "22",
-        "0",
-        "22"
-      ],
-      "shadow": 0,
-      "text": "Turning a dense product into three screens"
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont14",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont18": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "56",
-        "48",
-        "44",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Process"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "head19",
-      "spac20",
-      "time21"
-    ],
-    "linkedNodes": {}
-  },
-  "head19": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "How eight weeks actually go",
-      "level": "2",
-      "fontSize": "32",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont18",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "spac20": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "24"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "cont18",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "time21": {
-    "type": {
-      "resolvedName": "Timeline"
-    },
-    "isCanvas": false,
-    "props": {
-      "steps": [
-        "Week 1",
-        "Questions, not moodboards",
-        "Two days in your office, talking to the people who sell the thing.",
-        "Week 3",
-        "Two directions",
-        "Presented in situ - on the packaging, the site, the invoice - never on slides alone.",
-        "Week 6",
-        "Build",
-        "The chosen direction carried through everything, with the team who will own it.",
-        "Week 8",
-        "Handover",
-        "Files, rules, and two hours of nobody-is-allowed-to-say-“just” training."
-      ],
-      "accent": {
-        "r": 205,
-        "g": 66,
-        "b": 44,
-        "a": 1
-      },
-      "color": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      }
-    },
-    "displayName": "Timeline",
-    "custom": {
-      "displayName": "Timeline"
-    },
-    "parent": "cont18",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont22": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "56",
-        "48",
-        "56",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "anchor": "studio"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Studio"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "head23",
-      "spac24",
-      "stat25",
-      "spac26",
-      "team27",
-      "spac28",
-      "test29"
-    ],
-    "linkedNodes": {}
-  },
-  "head23": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Six people, one room",
-      "level": "2",
-      "fontSize": "32",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont22",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "spac24": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "20"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "cont22",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "stat25": {
-    "type": {
-      "resolvedName": "Stats"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "11",
-        "years",
-        "60+",
-        "projects",
-        "6",
-        "people"
-      ],
-      "align": "center",
-      "accent": {
-        "r": 205,
-        "g": 66,
-        "b": 44,
-        "a": 1
-      },
-      "color": {
-        "r": 180,
-        "g": 178,
-        "b": 182,
-        "a": 1
-      }
-    },
-    "displayName": "Stats",
-    "custom": {
-      "displayName": "Stats"
-    },
-    "parent": "cont22",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "spac26": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "28"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "cont22",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "team27": {
-    "type": {
-      "resolvedName": "TeamGrid"
-    },
-    "isCanvas": false,
-    "props": {
-      "people": [
-        "Noga Feld",
-        "Direction",
-        "https://images.pexels.com/photos/12311572/pexels-photo-12311572.jpeg?auto=compress&cs=tinysrgb&w=400",
-        "Assaf Liron",
-        "Identity",
-        "https://images.pexels.com/photos/30004325/pexels-photo-30004325.jpeg?auto=compress&cs=tinysrgb&w=400",
-        "Maya Dagan",
-        "Product",
-        "https://images.pexels.com/photos/9092311/pexels-photo-9092311.jpeg?auto=compress&cs=tinysrgb&w=400"
-      ],
-      "columns": "3",
-      "accent": {
-        "r": 32,
-        "g": 32,
-        "b": 35,
-        "a": 1
-      },
-      "color": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      }
-    },
-    "displayName": "TeamGrid",
-    "custom": {
-      "displayName": "TeamGrid"
-    },
-    "parent": "cont22",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "spac28": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "28"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "cont22",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "test29": {
-    "type": {
-      "resolvedName": "Testimonial"
-    },
-    "isCanvas": false,
-    "props": {
-      "quote": "They asked better questions than our board did, and then answered them in pictures.",
-      "author": "Ronit Adler",
-      "role": "CEO, Kettle",
-      "avatar": "",
-      "align": "left",
-      "background": {
-        "r": 32,
-        "g": 32,
-        "b": 35,
-        "a": 1
-      },
-      "color": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      },
-      "accent": {
-        "r": 205,
-        "g": 66,
-        "b": 44,
-        "a": 1
-      }
-    },
-    "displayName": "Testimonial",
-    "custom": {
-      "displayName": "Testimonial"
-    },
-    "parent": "cont22",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont30": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "center",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "56",
-        "48",
-        "44",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 238,
-        "g": 237,
-        "b": 235,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Engagements"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "head31",
-      "text32",
-      "pric33"
-    ],
-    "linkedNodes": {}
-  },
-  "head31": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Ways to hire the room",
-      "level": "2",
-      "fontSize": "30",
-      "fontWeight": "700",
-      "textAlign": "center",
-      "color": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont30",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text32": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "15",
-      "textAlign": "center",
-      "fontWeight": "500",
-      "color": {
-        "r": 105,
-        "g": 103,
-        "b": 108,
-        "a": 1
-      },
-      "margin": [
-        "10",
-        "0",
-        "24",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "Starting points, not ceilings. Most projects bend between these."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont30",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "pric33": {
-    "type": {
-      "resolvedName": "Pricing"
-    },
-    "isCanvas": false,
-    "props": {
-      "tiers": [
-        "Sprint",
-        "from ₪28k",
-        "two weeks",
-        "Book a sprint",
-        "One focused problem; Working files; A decision by Friday",
-        "Identity",
-        "from ₪95k",
-        "six to eight weeks",
-        "Start identity",
-        "Full brand; Voice and type; Everything handed over",
-        "Retainer",
-        "₪30k",
-        "per month",
-        "Talk to us",
-        "A set number of days; Same two people; Cancel per month"
-      ],
-      "featured": 2,
-      "accent": {
-        "r": 205,
-        "g": 66,
-        "b": 44,
-        "a": 1
-      },
-      "background": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      },
-      "color": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      }
-    },
-    "displayName": "Pricing",
-    "custom": {
-      "displayName": "Pricing"
-    },
-    "parent": "cont30",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont34": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "56",
-        "48",
-        "44",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Questions"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "colu35"
-    ],
-    "linkedNodes": {}
-  },
-  "colu35": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "2",
-      "gap": "40",
-      "align": "stretch",
-      "stack": "yes",
-      "ratio": "2:3"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Columns"
-    },
-    "parent": "cont34",
-    "hidden": false,
-    "nodes": [
-      "cont36",
-      "acco39"
-    ],
-    "linkedNodes": {}
-  },
-  "cont36": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "center",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Questions intro"
-    },
-    "parent": "colu35",
-    "hidden": false,
-    "nodes": [
-      "head37",
-      "text38"
-    ],
-    "linkedNodes": {}
-  },
-  "head37": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Before you write the brief",
-      "level": "2",
-      "fontSize": "30",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont36",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text38": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "15",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 105,
-        "g": 103,
-        "b": 108,
-        "a": 1
-      },
-      "margin": [
-        "12",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "The three things every first conversation gets to, usually in the first ten minutes."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont36",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "acco39": {
-    "type": {
-      "resolvedName": "Accordion"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "Who owns the work when it is done?",
-        "You do, entirely, from the final payment. We keep only the right to show it here.",
-        "Do you build, or only design?",
-        "We design and art-direct the build. For code we bring in two studios we have worked with for years.",
-        "What if we cannot articulate what we want?",
-        "That is the normal case, not the exception. It is what the first week is for."
-      ],
-      "background": {
-        "r": 238,
-        "g": 237,
-        "b": 235,
-        "a": 1
-      },
-      "color": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      },
-      "radius": 14
-    },
-    "displayName": "Accordion",
-    "custom": {
-      "displayName": "Accordion"
-    },
-    "parent": "colu35",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont40": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "56",
-        "48",
-        "44",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "anchor": "brief"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Brief"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "colu41"
-    ],
-    "linkedNodes": {}
-  },
-  "colu41": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "2",
-      "gap": "40",
-      "align": "stretch",
-      "stack": "yes",
-      "ratio": "3:2"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Columns"
-    },
-    "parent": "cont40",
-    "hidden": false,
-    "nodes": [
-      "cont42",
-      "form46"
-    ],
-    "linkedNodes": {}
-  },
-  "cont42": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "center",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Brief copy"
-    },
-    "parent": "colu41",
-    "hidden": false,
-    "nodes": [
-      "head43",
-      "text44",
-      "list45"
-    ],
-    "linkedNodes": {}
-  },
-  "head43": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Send us a brief",
-      "level": "2",
-      "fontSize": "30",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont42",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text44": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "16",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 105,
-        "g": 103,
-        "b": 108,
-        "a": 1
-      },
-      "margin": [
-        "10",
-        "0",
-        "16",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "A paragraph is plenty. We will tell you within a week whether we are the right studio."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont42",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "list45": {
-    "type": {
-      "resolvedName": "List"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "What the thing is, in one sentence",
-        "What “better” would look like to you",
-        "A date, if there is one"
-      ],
-      "ordered": "no",
-      "fontSize": "15",
-      "gap": "8",
-      "color": {
-        "r": 105,
-        "g": 103,
-        "b": 108,
-        "a": 1
-      }
-    },
-    "displayName": "List",
-    "custom": {
-      "displayName": "List"
-    },
-    "parent": "cont42",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "form46": {
-    "type": {
-      "resolvedName": "Form"
-    },
-    "isCanvas": false,
-    "props": {
-      "fields": [
-        {
-          "label": "Name",
-          "type": "text",
-          "placeholder": "Your name",
-          "required": true
+    {
+      "name": "Work",
+      "slug": "work",
+      "data": {
+        "ROOT": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "App"
+          },
+          "hidden": false,
+          "nodes": [
+            "navb01",
+            "vide02",
+            "cont07",
+            "cont21",
+            "cont27",
+            "cont30",
+            "cont32"
+          ],
+          "linkedNodes": {}
         },
-        {
-          "label": "Email",
-          "type": "email",
-          "placeholder": "you@example.com",
-          "required": true
+        "navb01": {
+          "type": {
+            "resolvedName": "NavbarElement"
+          },
+          "isCanvas": false,
+          "props": {
+            "variant": "light",
+            "brand": "FIELD",
+            "links": [
+              {
+                "text": "Home",
+                "href": "/"
+              },
+              {
+                "text": "Work",
+                "href": "/work/"
+              },
+              {
+                "text": "Studio",
+                "href": "/studio/"
+              }
+            ],
+            "sticky": true,
+            "textColor": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "height": "56px",
+            "width": "100%",
+            "animation": "none"
+          },
+          "displayName": "NavbarElement",
+          "custom": {
+            "displayName": "Navbar"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
         },
-        {
-          "label": "Message",
-          "type": "textarea",
-          "placeholder": "How can we help?"
+        "vide02": {
+          "type": {
+            "resolvedName": "Video"
+          },
+          "isCanvas": true,
+          "props": {
+            "sourceType": "background",
+            "videoId": "",
+            "videoUrl": "",
+            "text": "",
+            "src": "https://videos.pexels.com/video-files/8125994/8125994-hd_1920_1080_25fps.mp4",
+            "poster": "https://images.pexels.com/photos/2582933/pexels-photo-2582933.jpeg?auto=compress&cs=tinysrgb&w=1600",
+            "overlay": 58,
+            "position": "center",
+            "minHeight": "430px",
+            "loop": true,
+            "animation": "fade",
+            "animationDuration": 780
+          },
+          "displayName": "Video",
+          "custom": {
+            "displayName": "Page hero"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont03"
+          ],
+          "linkedNodes": {}
+        },
+        "cont03": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "72",
+              "48",
+              "56",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Page hero copy"
+          },
+          "parent": "vide02",
+          "hidden": false,
+          "nodes": [
+            "badg04",
+            "head05",
+            "text06"
+          ],
+          "linkedNodes": {}
+        },
+        "badg04": {
+          "type": {
+            "resolvedName": "Badge"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "SELECTED WORK",
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            },
+            "radius": 999
+          },
+          "displayName": "Badge",
+          "custom": {
+            "displayName": "Badge"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head05": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Built to hold up in the real world",
+            "level": "1",
+            "fontSize": "46",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "12",
+              "0"
+            ],
+            "animation": "blurIn",
+            "animationDelay": 100,
+            "animationDuration": 760
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text06": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "18",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 0.86
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Identity and product systems tested on packaging, screens and the awkward places between."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont07": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Overview"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu08"
+          ],
+          "linkedNodes": {}
+        },
+        "colu08": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "3",
+            "gap": "20",
+            "align": "stretch",
+            "stack": "yes"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Highlights"
+          },
+          "parent": "cont07",
+          "hidden": false,
+          "nodes": [
+            "cont09",
+            "cont13",
+            "cont17"
+          ],
+          "linkedNodes": {}
+        },
+        "cont09": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "24",
+              "24",
+              "24"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 0,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Identity systems"
+          },
+          "parent": "colu08",
+          "hidden": false,
+          "nodes": [
+            "icon10",
+            "head11",
+            "text12"
+          ],
+          "linkedNodes": {}
+        },
+        "icon10": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "grid_view",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "background": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont09",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head11": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Identity systems",
+            "level": "3",
+            "fontSize": "19",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont09",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text12": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 105,
+              "g": 103,
+              "b": 108,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Marks, type and rules that remain coherent as the company grows."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont09",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont13": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "24",
+              "24",
+              "24"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 90,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Product direction"
+          },
+          "parent": "colu08",
+          "hidden": false,
+          "nodes": [
+            "icon14",
+            "head15",
+            "text16"
+          ],
+          "linkedNodes": {}
+        },
+        "icon14": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "layers",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "background": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head15": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Product direction",
+            "level": "3",
+            "fontSize": "19",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text16": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 105,
+              "g": 103,
+              "b": 108,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "A clear visual argument carried through the important customer journeys."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont17": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "24",
+              "24",
+              "24"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 180,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Launch support"
+          },
+          "parent": "colu08",
+          "hidden": false,
+          "nodes": [
+            "icon18",
+            "head19",
+            "text20"
+          ],
+          "linkedNodes": {}
+        },
+        "icon18": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "rocket_launch",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "background": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont17",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head19": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Launch support",
+            "level": "3",
+            "fontSize": "19",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont17",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text20": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 105,
+              "g": 103,
+              "b": 108,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "The last ten percent: templates, handover and a team that can use the work."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont17",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont21": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Details"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu22"
+          ],
+          "linkedNodes": {}
+        },
+        "colu22": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "40",
+            "align": "stretch",
+            "stack": "yes",
+            "ratio": "3:2"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Detail split"
+          },
+          "parent": "cont21",
+          "hidden": false,
+          "nodes": [
+            "cont23",
+            "test26"
+          ],
+          "linkedNodes": {}
+        },
+        "cont23": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Detail copy"
+          },
+          "parent": "colu22",
+          "hidden": false,
+          "nodes": [
+            "head24",
+            "list25"
+          ],
+          "linkedNodes": {}
+        },
+        "head24": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "What every case study includes",
+            "level": "2",
+            "fontSize": "30",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "list25": {
+          "type": {
+            "resolvedName": "List"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "The business problem in plain language",
+              "The decisions that changed the outcome",
+              "The system in use, not only on a presentation board"
+            ],
+            "ordered": "no",
+            "fontSize": "16",
+            "gap": "12",
+            "color": {
+              "r": 105,
+              "g": 103,
+              "b": 108,
+              "a": 1
+            }
+          },
+          "displayName": "List",
+          "custom": {
+            "displayName": "List"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "test26": {
+          "type": {
+            "resolvedName": "Testimonial"
+          },
+          "isCanvas": false,
+          "props": {
+            "quote": "FIELD made the product feel inevitable without sanding off what made us unusual.",
+            "author": "Mira Chen, Fathom",
+            "role": "",
+            "avatar": "",
+            "align": "left",
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "accent": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            }
+          },
+          "displayName": "Testimonial",
+          "custom": {
+            "displayName": "Testimonial"
+          },
+          "parent": "colu22",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont27": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Questions"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head28",
+            "acco29"
+          ],
+          "linkedNodes": {}
+        },
+        "head28": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Good questions, answered",
+            "level": "2",
+            "fontSize": "28",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "20",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont27",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "acco29": {
+          "type": {
+            "resolvedName": "Accordion"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Can we see work in our sector?",
+              "Yes. We share relevant private work during the first call.",
+              "Do you work with internal teams?",
+              "Always. The system has to belong to the people who will run it."
+            ],
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "radius": 14
+          },
+          "displayName": "Accordion",
+          "custom": {
+            "displayName": "Accordion"
+          },
+          "parent": "cont27",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont30": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "16",
+              "48",
+              "64",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Close"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "ctab31"
+          ],
+          "linkedNodes": {}
+        },
+        "ctab31": {
+          "type": {
+            "resolvedName": "CTABanner"
+          },
+          "isCanvas": false,
+          "props": {
+            "title": "Bring us the difficult part",
+            "text": "A short brief is enough to begin.",
+            "cta": "Meet the studio",
+            "href": "/studio/",
+            "background": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "buttonBackground": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "buttonColor": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "radius": 22
+          },
+          "displayName": "CTABanner",
+          "custom": {
+            "displayName": "CTABanner"
+          },
+          "parent": "cont30",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont32": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "row",
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "48",
+              "40",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "color": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont33"
+          ],
+          "linkedNodes": {}
+        },
+        "cont33": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "auto",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer text"
+          },
+          "parent": "cont32",
+          "hidden": false,
+          "nodes": [
+            "text34",
+            "text35"
+          ],
+          "linkedNodes": {}
+        },
+        "text34": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "17",
+            "textAlign": "left",
+            "fontWeight": "700",
+            "color": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "FIELD"
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Footer brand"
+          },
+          "parent": "cont33",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text35": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "13",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 0.68
+            },
+            "margin": [
+              "6",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Independent brand and product design studio."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Small print"
+          },
+          "parent": "cont33",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
         }
-      ],
-      "submitText": "Send the brief",
-      "successMessage": "Thank you — we will be in touch.",
-      "radius": 14,
-      "background": {
-        "r": 238,
-        "g": 237,
-        "b": 235,
-        "a": 1
-      },
-      "accent": {
-        "r": 205,
-        "g": 66,
-        "b": 44,
-        "a": 1
-      },
-      "textColor": {
-        "r": 73,
-        "g": 69,
-        "b": 79,
-        "a": 1
-      },
-      "inputBackground": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "inputBorder": {
-        "r": 221,
-        "g": 221,
-        "b": 221,
-        "a": 1
-      },
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Form",
-    "custom": {
-      "displayName": "Form"
-    },
-    "parent": "colu41",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont47": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "24",
-        "48",
-        "72",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Close"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "ctab48"
-    ],
-    "linkedNodes": {}
-  },
-  "ctab48": {
-    "type": {
-      "resolvedName": "CTABanner"
-    },
-    "isCanvas": false,
-    "props": {
-      "title": "Start with the awkward paragraph",
-      "text": "The briefs that begin “we are not sure how to say this” are the ones that end best.",
-      "cta": "Send a brief",
-      "href": "#brief",
-      "background": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      },
-      "color": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      },
-      "buttonBackground": {
-        "r": 205,
-        "g": 66,
-        "b": 44,
-        "a": 1
-      },
-      "buttonColor": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "radius": 22
-    },
-    "displayName": "CTABanner",
-    "custom": {
-      "displayName": "CTABanner"
-    },
-    "parent": "cont47",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont49": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "56",
-        "48",
-        "44",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      },
-      "color": {
-        "r": 24,
-        "g": 24,
-        "b": 27,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Next step"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "cont50"
-    ],
-    "linkedNodes": {}
-  },
-  "cont50": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "40",
-        "40",
-        "40",
-        "40"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 238,
-        "g": 237,
-        "b": 235,
-        "a": 1
-      },
-      "color": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 22,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Next step panel"
-    },
-    "parent": "cont49",
-    "hidden": false,
-    "nodes": [
-      "badg51",
-      "head52",
-      "text53",
-      "colu54",
-      "cont58"
-    ],
-    "linkedNodes": {}
-  },
-  "badg51": {
-    "type": {
-      "resolvedName": "Badge"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "THE NEXT STEP",
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 187,
-        "g": 62,
-        "b": 42,
-        "a": 1
-      },
-      "radius": 0
-    },
-    "displayName": "Badge",
-    "custom": {
-      "displayName": "Section label"
-    },
-    "parent": "cont50",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "head52": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Start with a conversation",
-      "level": "2",
-      "fontSize": "32",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      },
-      "margin": [
-        "12",
-        "0",
-        "8",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Next step heading"
-    },
-    "parent": "cont50",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text53": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "16",
-      "textAlign": "left",
-      "fontWeight": "400",
-      "color": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "28",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "Choose a time that works. You will know what happens next before the call ends."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Next step introduction"
-    },
-    "parent": "cont50",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "colu54": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "2",
-      "gap": "32",
-      "align": "stretch",
-      "stack": "yes",
-      "ratio": "3:2"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Next step details"
-    },
-    "parent": "cont50",
-    "hidden": false,
-    "nodes": [
-      "tabs55",
-      "cont56"
-    ],
-    "linkedNodes": {}
-  },
-  "tabs55": {
-    "type": {
-      "resolvedName": "Tabs"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "Before we meet",
-        "A short note is enough to prepare.",
-        "After the call",
-        "You will receive a clear recommendation and next steps."
-      ],
-      "accent": {
-        "r": 187,
-        "g": 62,
-        "b": 42,
-        "a": 1
-      },
-      "color": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
       }
     },
-    "displayName": "Tabs",
-    "custom": {
-      "displayName": "Useful details"
-    },
-    "parent": "colu54",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont56": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "center",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Primary next step"
-    },
-    "parent": "colu54",
-    "hidden": false,
-    "nodes": [
-      "book57"
-    ],
-    "linkedNodes": {}
-  },
-  "book57": {
-    "type": {
-      "resolvedName": "Booking"
-    },
-    "isCanvas": false,
-    "props": {
-      "heading": "Choose a time",
-      "buttonText": "Confirm booking",
-      "duration": 60,
-      "startHour": 9,
-      "endHour": 17,
-      "timeZone": "Asia/Jerusalem",
-      "accent": {
-        "r": 187,
-        "g": 62,
-        "b": 42,
-        "a": 1
+    {
+      "name": "Studio",
+      "slug": "studio",
+      "data": {
+        "ROOT": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "App"
+          },
+          "hidden": false,
+          "nodes": [
+            "navb01",
+            "vide02",
+            "cont07",
+            "cont21",
+            "cont27",
+            "cont30",
+            "cont32"
+          ],
+          "linkedNodes": {}
+        },
+        "navb01": {
+          "type": {
+            "resolvedName": "NavbarElement"
+          },
+          "isCanvas": false,
+          "props": {
+            "variant": "light",
+            "brand": "FIELD",
+            "links": [
+              {
+                "text": "Home",
+                "href": "/"
+              },
+              {
+                "text": "Work",
+                "href": "/work/"
+              },
+              {
+                "text": "Studio",
+                "href": "/studio/"
+              }
+            ],
+            "sticky": true,
+            "textColor": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "height": "56px",
+            "width": "100%",
+            "animation": "none"
+          },
+          "displayName": "NavbarElement",
+          "custom": {
+            "displayName": "Navbar"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "vide02": {
+          "type": {
+            "resolvedName": "Video"
+          },
+          "isCanvas": true,
+          "props": {
+            "sourceType": "background",
+            "videoId": "",
+            "videoUrl": "",
+            "text": "",
+            "src": "https://videos.pexels.com/video-files/8125994/8125994-hd_1920_1080_25fps.mp4",
+            "poster": "https://images.pexels.com/photos/2582933/pexels-photo-2582933.jpeg?auto=compress&cs=tinysrgb&w=1600",
+            "overlay": 58,
+            "position": "center",
+            "minHeight": "430px",
+            "loop": true,
+            "animation": "fade",
+            "animationDuration": 780
+          },
+          "displayName": "Video",
+          "custom": {
+            "displayName": "Page hero"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont03"
+          ],
+          "linkedNodes": {}
+        },
+        "cont03": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "72",
+              "48",
+              "56",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Page hero copy"
+          },
+          "parent": "vide02",
+          "hidden": false,
+          "nodes": [
+            "badg04",
+            "head05",
+            "text06"
+          ],
+          "linkedNodes": {}
+        },
+        "badg04": {
+          "type": {
+            "resolvedName": "Badge"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "THE STUDIO",
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            },
+            "radius": 999
+          },
+          "displayName": "Badge",
+          "custom": {
+            "displayName": "Badge"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head05": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Six people, one working table",
+            "level": "1",
+            "fontSize": "46",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "12",
+              "0"
+            ],
+            "animation": "blurIn",
+            "animationDelay": 100,
+            "animationDuration": 760
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text06": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "18",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 0.86
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Senior designers stay close to the work from the first question to the final file."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont07": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Overview"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu08"
+          ],
+          "linkedNodes": {}
+        },
+        "colu08": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "3",
+            "gap": "20",
+            "align": "stretch",
+            "stack": "yes"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Highlights"
+          },
+          "parent": "cont07",
+          "hidden": false,
+          "nodes": [
+            "cont09",
+            "cont13",
+            "cont17"
+          ],
+          "linkedNodes": {}
+        },
+        "cont09": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "24",
+              "24",
+              "24"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 0,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Small on purpose"
+          },
+          "parent": "colu08",
+          "hidden": false,
+          "nodes": [
+            "icon10",
+            "head11",
+            "text12"
+          ],
+          "linkedNodes": {}
+        },
+        "icon10": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "groups",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "background": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont09",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head11": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Small on purpose",
+            "level": "3",
+            "fontSize": "19",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont09",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text12": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 105,
+              "g": 103,
+              "b": 108,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "The people in the room are the people making the work."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont09",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont13": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "24",
+              "24",
+              "24"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 90,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Direct conversation"
+          },
+          "parent": "colu08",
+          "hidden": false,
+          "nodes": [
+            "icon14",
+            "head15",
+            "text16"
+          ],
+          "linkedNodes": {}
+        },
+        "icon14": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "forum",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "background": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head15": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Direct conversation",
+            "level": "3",
+            "fontSize": "19",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text16": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 105,
+              "g": 103,
+              "b": 108,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "No account layer translating your problem into somebody else’s brief."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont17": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "24",
+              "24",
+              "24"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 180,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Useful handover"
+          },
+          "parent": "colu08",
+          "hidden": false,
+          "nodes": [
+            "icon18",
+            "head19",
+            "text20"
+          ],
+          "linkedNodes": {}
+        },
+        "icon18": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "inventory_2",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "background": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont17",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head19": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Useful handover",
+            "level": "3",
+            "fontSize": "19",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont17",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text20": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 105,
+              "g": 103,
+              "b": 108,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Files, rules and training that make the system usable on Monday."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont17",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont21": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Details"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu22"
+          ],
+          "linkedNodes": {}
+        },
+        "colu22": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "40",
+            "align": "stretch",
+            "stack": "yes",
+            "ratio": "3:2"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Detail split"
+          },
+          "parent": "cont21",
+          "hidden": false,
+          "nodes": [
+            "cont23",
+            "test26"
+          ],
+          "linkedNodes": {}
+        },
+        "cont23": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Detail copy"
+          },
+          "parent": "colu22",
+          "hidden": false,
+          "nodes": [
+            "head24",
+            "list25"
+          ],
+          "linkedNodes": {}
+        },
+        "head24": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "How an engagement feels",
+            "level": "2",
+            "fontSize": "30",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "list25": {
+          "type": {
+            "resolvedName": "List"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "One weekly working session",
+              "Decisions documented as they are made",
+              "Two directions, never ten superficial options"
+            ],
+            "ordered": "no",
+            "fontSize": "16",
+            "gap": "12",
+            "color": {
+              "r": 105,
+              "g": 103,
+              "b": 108,
+              "a": 1
+            }
+          },
+          "displayName": "List",
+          "custom": {
+            "displayName": "List"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "test26": {
+          "type": {
+            "resolvedName": "Testimonial"
+          },
+          "isCanvas": false,
+          "props": {
+            "quote": "The rare studio that made our team sharper while making the brand better.",
+            "author": "Jon Bell, Kettle",
+            "role": "",
+            "avatar": "",
+            "align": "left",
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "accent": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            }
+          },
+          "displayName": "Testimonial",
+          "custom": {
+            "displayName": "Testimonial"
+          },
+          "parent": "colu22",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont27": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Questions"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head28",
+            "acco29"
+          ],
+          "linkedNodes": {}
+        },
+        "head28": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Good questions, answered",
+            "level": "2",
+            "fontSize": "28",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "20",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont27",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "acco29": {
+          "type": {
+            "resolvedName": "Accordion"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Where are you based?",
+              "Tel Aviv, working with teams across Europe.",
+              "How far ahead do you book?",
+              "Usually six to eight weeks. Smaller reviews can begin sooner."
+            ],
+            "background": {
+              "r": 238,
+              "g": 237,
+              "b": 235,
+              "a": 1
+            },
+            "color": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "radius": 14
+          },
+          "displayName": "Accordion",
+          "custom": {
+            "displayName": "Accordion"
+          },
+          "parent": "cont27",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont30": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "16",
+              "48",
+              "64",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Close"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "ctab31"
+          ],
+          "linkedNodes": {}
+        },
+        "ctab31": {
+          "type": {
+            "resolvedName": "CTABanner"
+          },
+          "isCanvas": false,
+          "props": {
+            "title": "There may be a fit",
+            "text": "Tell us what has changed and what the old identity can no longer do.",
+            "cta": "Send a brief",
+            "href": "/",
+            "background": {
+              "r": 205,
+              "g": 66,
+              "b": 44,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "buttonBackground": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "buttonColor": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "radius": 22
+          },
+          "displayName": "CTABanner",
+          "custom": {
+            "displayName": "CTABanner"
+          },
+          "parent": "cont30",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont32": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "row",
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "48",
+              "40",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 20,
+              "g": 20,
+              "b": 22,
+              "a": 1
+            },
+            "color": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont33"
+          ],
+          "linkedNodes": {}
+        },
+        "cont33": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "auto",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer text"
+          },
+          "parent": "cont32",
+          "hidden": false,
+          "nodes": [
+            "text34",
+            "text35"
+          ],
+          "linkedNodes": {}
+        },
+        "text34": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "17",
+            "textAlign": "left",
+            "fontWeight": "700",
+            "color": {
+              "r": 250,
+              "g": 249,
+              "b": 248,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "FIELD"
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Footer brand"
+          },
+          "parent": "cont33",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text35": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "13",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 0.68
+            },
+            "margin": [
+              "6",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Independent brand and product design studio."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Small print"
+          },
+          "parent": "cont33",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        }
       }
-    },
-    "displayName": "Booking",
-    "custom": {
-      "displayName": "Appointment booking"
-    },
-    "parent": "cont56",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont58": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "28",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Visitor response"
-    },
-    "parent": "cont50",
-    "hidden": false,
-    "nodes": [
-      "divi59",
-      "enga60"
-    ],
-    "linkedNodes": {}
-  },
-  "divi59": {
-    "type": {
-      "resolvedName": "Divider"
-    },
-    "isCanvas": false,
-    "props": {
-      "thickness": "1",
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0.12
-      },
-      "inset": "0",
-      "spacing": "16"
-    },
-    "displayName": "Divider",
-    "custom": {
-      "displayName": "Divider"
-    },
-    "parent": "cont58",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "enga60": {
-    "type": {
-      "resolvedName": "Engagement"
-    },
-    "isCanvas": false,
-    "props": {
-      "mode": "review",
-      "heading": "How did this feel?",
-      "options": [
-        "👍",
-        "❤️",
-        "👏"
-      ],
-      "accent": {
-        "r": 187,
-        "g": 62,
-        "b": 42,
-        "a": 1
-      }
-    },
-    "displayName": "Engagement",
-    "custom": {
-      "displayName": "Visitor feedback"
-    },
-    "parent": "cont58",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont61": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "row",
-      "alignItems": "center",
-      "justifyContent": "space-between",
-      "fillSpace": "no",
-      "padding": [
-        "40",
-        "48",
-        "40",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 20,
-        "g": 20,
-        "b": 22,
-        "a": 1
-      },
-      "color": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Footer"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "cont62",
-      "soci65"
-    ],
-    "linkedNodes": {}
-  },
-  "cont62": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "auto",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Footer text"
-    },
-    "parent": "cont61",
-    "hidden": false,
-    "nodes": [
-      "text63",
-      "text64"
-    ],
-    "linkedNodes": {}
-  },
-  "text63": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "17",
-      "textAlign": "left",
-      "fontWeight": "700",
-      "color": {
-        "r": 250,
-        "g": 249,
-        "b": 248,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "FIELD"
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Footer brand"
-    },
-    "parent": "cont62",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text64": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "13",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 150,
-        "g": 148,
-        "b": 154,
-        "a": 1
-      },
-      "margin": [
-        "6",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "Design and art direction. Tel Aviv and remote."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Small print"
-    },
-    "parent": "cont62",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "soci65": {
-    "type": {
-      "resolvedName": "SocialLinks"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "Instagram",
-        "https://instagram.com/",
-        "Behance",
-        "https://behance.net/",
-        "Email",
-        "mailto:studio@field.co"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0.06
-      },
-      "color": {
-        "r": 150,
-        "g": 148,
-        "b": 154,
-        "a": 1
-      },
-      "size": "20",
-      "gap": "18"
-    },
-    "displayName": "SocialLinks",
-    "custom": {
-      "displayName": "Footer links"
-    },
-    "parent": "cont61",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  }
+    }
+  ],
+  "siteSettings": {}
 }

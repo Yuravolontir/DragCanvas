@@ -81,7 +81,7 @@
           "href": "#subscribe"
         }
       ],
-      "sticky": false,
+      "sticky": true,
       "textColor": {
         "r": 38,
         "g": 34,
@@ -116,7 +116,9 @@
       "overlay": 55,
       "position": "center",
       "minHeight": "540px",
-      "loop": true
+      "loop": true,
+      "animation": "fade",
+      "animationDuration": 780
     },
     "displayName": "Video",
     "custom": {
@@ -234,7 +236,10 @@
         "0",
         "10",
         "0"
-      ]
+      ],
+      "animation": "blurIn",
+      "animationDelay": 100,
+      "animationDuration": 760
     },
     "displayName": "Heading",
     "custom": {
@@ -374,7 +379,9 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "recent"
+      "anchor": "recent",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -476,7 +483,9 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -563,7 +572,9 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -690,7 +701,9 @@
       "radius": 14,
       "width": "100%",
       "height": "auto",
-      "animationDelay": 0
+      "animation": "fadeUp",
+      "animationDelay": 0,
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -840,7 +853,9 @@
       "radius": 14,
       "width": "100%",
       "height": "auto",
-      "animationDelay": 90
+      "animation": "fadeUp",
+      "animationDelay": 90,
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -990,7 +1005,9 @@
       "radius": 14,
       "width": "100%",
       "height": "auto",
-      "animationDelay": 180
+      "animation": "fadeUp",
+      "animationDelay": 180,
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -1139,7 +1156,9 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -1281,7 +1300,9 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "about"
+      "anchor": "about",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -1355,7 +1376,9 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "animationDelay": 0
+      "animation": "fadeUp",
+      "animationDelay": 0,
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -1473,7 +1496,9 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "animationDelay": 90
+      "animation": "fadeUp",
+      "animationDelay": 90,
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -1555,7 +1580,9 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -1784,7 +1811,9 @@
       "radius": 0,
       "width": "100%",
       "height": "auto",
-      "anchor": "subscribe"
+      "anchor": "subscribe",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -2065,7 +2094,9 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -2160,7 +2191,9 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {
@@ -2605,7 +2638,9 @@
       "shadow": 0,
       "radius": 0,
       "width": "100%",
-      "height": "auto"
+      "height": "auto",
+      "animation": "fadeUp",
+      "animationDuration": 620
     },
     "displayName": "Container",
     "custom": {

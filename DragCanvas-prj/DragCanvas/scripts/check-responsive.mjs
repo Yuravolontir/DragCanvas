@@ -531,6 +531,7 @@ async function main() {
           links,
           editorBar: !!document.querySelector('.dc-mobile-editor-bar'),
           canvas: !!document.querySelector('.craftjs-renderer'),
+          canvasWidth: Math.round(document.querySelector('.device-canvas')?.getBoundingClientRect().width || 0),
         };
       })()`);
 
@@ -543,6 +544,15 @@ async function main() {
         problems.push(`the notice is a dead end — links were ${JSON.stringify(stub.links)}`);
       }
       if (!stub.canvas) problems.push('the project is not shown read-only beneath the notice');
+      /*
+       * The width the page is drawn at, which is the fault that was reported:
+       * editing stayed switched on, so the canvas kept its authored 800px
+       * inside a 390px window and the site arrived centred and cut off at both
+       * edges. A fluid canvas has to actually be fluid.
+       */
+      if (stub.canvasWidth && stub.canvasWidth < width - 4) {
+        problems.push(`the page is drawn ${stub.canvasWidth}px wide in a ${width}px window - it should fill it`);
+      }
     }
   };
 

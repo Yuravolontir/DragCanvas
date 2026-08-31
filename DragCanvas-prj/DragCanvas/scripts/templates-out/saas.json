@@ -1,2634 +1,4108 @@
 {
-  "ROOT": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 2,
-        "g": 6,
-        "b": 23,
-        "a": 1
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "App"
-    },
-    "hidden": false,
-    "nodes": [
-      "navb01",
-      "cont02",
-      "cont08",
-      "spac24",
-      "cont25",
-      "cont27",
-      "cont29",
-      "cont37",
-      "cont41",
-      "cont47",
-      "cont49",
-      "cont51",
-      "cont63"
-    ],
-    "linkedNodes": {}
-  },
-  "navb01": {
-    "type": {
-      "resolvedName": "NavbarElement"
-    },
-    "isCanvas": false,
-    "props": {
-      "variant": "dark",
-      "brand": "NovaFlow",
-      "links": [
-        {
-          "text": "Features",
-          "href": "#features"
+  "__dragcanvasPages": true,
+  "currentSlug": "home",
+  "pages": [
+    {
+      "name": "Home",
+      "slug": "home",
+      "data": {
+        "ROOT": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "App"
+          },
+          "hidden": false,
+          "nodes": [
+            "navb01",
+            "cont02",
+            "cont08",
+            "spac24",
+            "cont25",
+            "cont27",
+            "cont29",
+            "cont37",
+            "cont41",
+            "cont47",
+            "cont49",
+            "cont51",
+            "cont63"
+          ],
+          "linkedNodes": {}
         },
-        {
-          "text": "Pricing",
-          "href": "#pricing"
+        "navb01": {
+          "type": {
+            "resolvedName": "NavbarElement"
+          },
+          "isCanvas": false,
+          "props": {
+            "variant": "dark",
+            "brand": "NovaFlow",
+            "links": [
+              {
+                "text": "Home",
+                "href": "/"
+              },
+              {
+                "text": "Product",
+                "href": "/product/"
+              }
+            ],
+            "sticky": true,
+            "textColor": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "height": "56px",
+            "width": "100%",
+            "animation": "none"
+          },
+          "displayName": "NavbarElement",
+          "custom": {
+            "displayName": "Navbar"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
         },
-        {
-          "text": "Questions",
-          "href": "#questions"
+        "cont02": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "center",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "80",
+              "48",
+              "64",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "backgroundImage": "https://images.pexels.com/photos/6805161/pexels-photo-6805161.jpeg?auto=compress&cs=tinysrgb&w=1600",
+            "overlay": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 0.82
+            },
+            "animation": "fade",
+            "animationDuration": 780
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Hero"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head03",
+            "text04",
+            "butt05",
+            "spac06",
+            "logo07"
+          ],
+          "linkedNodes": {}
+        },
+        "head03": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Ship the work, not the status update",
+            "level": "1",
+            "fontSize": "52",
+            "fontWeight": "800",
+            "textAlign": "center",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "animation": "blurIn",
+            "animationDelay": 100,
+            "animationDuration": 760
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont02",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text04": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "19",
+            "textAlign": "center",
+            "fontWeight": "500",
+            "color": {
+              "r": 148,
+              "g": 163,
+              "b": 184,
+              "a": 1
+            },
+            "margin": [
+              "16",
+              "0",
+              "28",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "NovaFlow keeps a small team’s work in one place, and tells everyone else what changed without a meeting."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont02",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "butt05": {
+          "type": {
+            "resolvedName": "Button"
+          },
+          "isCanvas": false,
+          "props": {
+            "background": {
+              "r": 90,
+              "g": 93,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "buttonStyle": "full",
+            "text": "Start free",
+            "margin": [
+              "8",
+              "0",
+              "8",
+              "0"
+            ],
+            "action": "none",
+            "actionValue": "",
+            "newTab": false,
+            "textComponent": {
+              "fontSize": "16",
+              "textAlign": "center",
+              "fontWeight": "600",
+              "color": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 1
+              },
+              "margin": [
+                "0",
+                "0",
+                "0",
+                "0"
+              ],
+              "shadow": 0,
+              "text": "Start free"
+            }
+          },
+          "displayName": "Button",
+          "custom": {
+            "displayName": "Button"
+          },
+          "parent": "cont02",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "spac06": {
+          "type": {
+            "resolvedName": "Spacer"
+          },
+          "isCanvas": false,
+          "props": {
+            "height": "12"
+          },
+          "displayName": "Spacer",
+          "custom": {
+            "displayName": "Spacer"
+          },
+          "parent": "cont02",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "logo07": {
+          "type": {
+            "resolvedName": "LogoStrip"
+          },
+          "isCanvas": false,
+          "props": {
+            "logos": [
+              "Kettle",
+              "Fathom",
+              "Northwind",
+              "Sable"
+            ],
+            "height": "26",
+            "gap": "40",
+            "grayscale": "yes",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            }
+          },
+          "displayName": "LogoStrip",
+          "custom": {
+            "displayName": "LogoStrip"
+          },
+          "parent": "cont02",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont08": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "64",
+              "48",
+              "64",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "anchor": "features",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Features"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head09",
+            "spac10",
+            "colu11"
+          ],
+          "linkedNodes": {}
+        },
+        "head09": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Three things, done properly",
+            "level": "2",
+            "fontSize": "34",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont08",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "spac10": {
+          "type": {
+            "resolvedName": "Spacer"
+          },
+          "isCanvas": false,
+          "props": {
+            "height": "28"
+          },
+          "displayName": "Spacer",
+          "custom": {
+            "displayName": "Spacer"
+          },
+          "parent": "cont08",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "colu11": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "3",
+            "gap": "20",
+            "align": "stretch",
+            "stack": "yes"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont08",
+          "hidden": false,
+          "nodes": [
+            "cont12",
+            "cont16",
+            "cont20"
+          ],
+          "linkedNodes": {}
+        },
+        "cont12": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "26",
+              "24",
+              "26",
+              "24"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 0,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "One board"
+          },
+          "parent": "colu11",
+          "hidden": false,
+          "nodes": [
+            "icon13",
+            "head14",
+            "text15"
+          ],
+          "linkedNodes": {}
+        },
+        "icon13": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "view_kanban",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "background": {
+              "r": 90,
+              "g": 93,
+              "b": 233,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont12",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head14": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "One board",
+            "level": "3",
+            "fontSize": "19",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont12",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text15": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 148,
+              "g": 163,
+              "b": 184,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Everything in flight, in one place, with no columns nobody uses."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont12",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont16": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "26",
+              "24",
+              "26",
+              "24"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 90,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Written updates"
+          },
+          "parent": "colu11",
+          "hidden": false,
+          "nodes": [
+            "icon17",
+            "head18",
+            "text19"
+          ],
+          "linkedNodes": {}
+        },
+        "icon17": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "draft",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "background": {
+              "r": 90,
+              "g": 93,
+              "b": 233,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont16",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head18": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Written updates",
+            "level": "3",
+            "fontSize": "19",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont16",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text19": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 148,
+              "g": 163,
+              "b": 184,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "A digest that writes itself from what actually moved this week."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont16",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont20": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "26",
+              "24",
+              "26",
+              "24"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 180,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Honest dates"
+          },
+          "parent": "colu11",
+          "hidden": false,
+          "nodes": [
+            "icon21",
+            "head22",
+            "text23"
+          ],
+          "linkedNodes": {}
+        },
+        "icon21": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "schedule",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "background": {
+              "r": 90,
+              "g": 93,
+              "b": 233,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont20",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head22": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Honest dates",
+            "level": "3",
+            "fontSize": "19",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont20",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text23": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 148,
+              "g": 163,
+              "b": 184,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Estimates that change when the work changes, not when someone asks."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont20",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "spac24": {
+          "type": {
+            "resolvedName": "Spacer"
+          },
+          "isCanvas": false,
+          "props": {
+            "height": "8"
+          },
+          "displayName": "Spacer",
+          "custom": {
+            "displayName": "Spacer"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont25": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "48",
+              "64",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Numbers"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "stat26"
+          ],
+          "linkedNodes": {}
+        },
+        "stat26": {
+          "type": {
+            "resolvedName": "Stats"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "1,200+",
+              "teams shipping",
+              "4 min",
+              "to first board",
+              "99.9%",
+              "uptime last year"
+            ],
+            "align": "center",
+            "accent": {
+              "r": 90,
+              "g": 93,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 148,
+              "g": 163,
+              "b": 184,
+              "a": 1
+            }
+          },
+          "displayName": "Stats",
+          "custom": {
+            "displayName": "Stats"
+          },
+          "parent": "cont25",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont27": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "48",
+              "64",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Product tour"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "caro28"
+          ],
+          "linkedNodes": {}
+        },
+        "caro28": {
+          "type": {
+            "resolvedName": "Carousel"
+          },
+          "isCanvas": false,
+          "props": {
+            "width": "704px",
+            "height": "400px",
+            "title": "NovaFlow product tour",
+            "autoplay": false,
+            "loop": true,
+            "arrows": true,
+            "dots": true,
+            "perView": 1,
+            "perViewTablet": 1,
+            "perViewMobile": 1,
+            "slides": [
+              {
+                "src": "https://images.pexels.com/photos/1181461/pexels-photo-1181461.jpeg?auto=compress&cs=tinysrgb&w=1200",
+                "heading": "One calm board",
+                "label": "Plan",
+                "text": "See what is moving, blocked and actually finished."
+              },
+              {
+                "src": "https://images.pexels.com/photos/7988116/pexels-photo-7988116.jpeg?auto=compress&cs=tinysrgb&w=1200",
+                "heading": "Work together",
+                "label": "Collaborate",
+                "text": "Decisions and updates stay beside the work they changed."
+              },
+              {
+                "src": "https://images.pexels.com/photos/12902857/pexels-photo-12902857.jpeg?auto=compress&cs=tinysrgb&w=1200",
+                "heading": "Skip the status meeting",
+                "label": "Automate",
+                "text": "A useful weekly digest assembled from real activity."
+              }
+            ],
+            "accent": {
+              "r": 90,
+              "g": 93,
+              "b": 233,
+              "a": 1
+            }
+          },
+          "displayName": "Carousel",
+          "custom": {
+            "displayName": "NovaFlow product tour"
+          },
+          "parent": "cont27",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont29": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "48",
+              "64",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "anchor": "workflow",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Digest"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu30"
+          ],
+          "linkedNodes": {}
+        },
+        "colu30": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "36",
+            "align": "stretch",
+            "stack": "yes",
+            "ratio": "3:2"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont29",
+          "hidden": false,
+          "nodes": [
+            "cont31",
+            "cont33"
+          ],
+          "linkedNodes": {}
+        },
+        "cont31": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 0,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Digest photo"
+          },
+          "parent": "colu30",
+          "hidden": false,
+          "nodes": [
+            "imag32"
+          ],
+          "linkedNodes": {}
+        },
+        "imag32": {
+          "type": {
+            "resolvedName": "Image"
+          },
+          "isCanvas": false,
+          "props": {
+            "src": "https://images.pexels.com/photos/6804068/pexels-photo-6804068.jpeg?auto=compress&cs=tinysrgb&w=1000",
+            "alt": "Product team reviewing project activity together",
+            "radius": 14,
+            "width": "100%",
+            "height": "420px",
+            "maxWidth": "100%",
+            "objectFit": "cover",
+            "animation": "zoomIn",
+            "animationDelay": 0,
+            "animationDuration": 720
+          },
+          "displayName": "Image",
+          "custom": {
+            "displayName": "Image"
+          },
+          "parent": "cont31",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont33": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "center",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "8"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 90,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Digest copy"
+          },
+          "parent": "colu30",
+          "hidden": false,
+          "nodes": [
+            "head34",
+            "text35",
+            "link36"
+          ],
+          "linkedNodes": {}
+        },
+        "head34": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "The Monday meeting, written instead",
+            "level": "2",
+            "fontSize": "26",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont33",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text35": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 148,
+              "g": 163,
+              "b": 184,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "16",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Every Friday the digest goes out: what shipped, what slipped, and the one decision that is still open. It is assembled from the board, so nobody has to write a status update again."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont33",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "link36": {
+          "type": {
+            "resolvedName": "Link"
+          },
+          "isCanvas": false,
+          "props": {
+            "href": "#workflow",
+            "text": "Explore the workflow",
+            "width": "auto",
+            "height": "auto",
+            "maxWidth": "100%",
+            "color": {
+              "r": 120,
+              "g": 123,
+              "b": 240,
+              "a": 1
+            },
+            "fontSize": "15"
+          },
+          "displayName": "Link",
+          "custom": {
+            "displayName": "Link"
+          },
+          "parent": "cont33",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont37": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "center",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "64",
+              "48",
+              "64",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "anchor": "pricing",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Pricing"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head38",
+            "spac39",
+            "pric40"
+          ],
+          "linkedNodes": {}
+        },
+        "head38": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Priced per team, not per seat",
+            "level": "2",
+            "fontSize": "34",
+            "fontWeight": "700",
+            "textAlign": "center",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont37",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "spac39": {
+          "type": {
+            "resolvedName": "Spacer"
+          },
+          "isCanvas": false,
+          "props": {
+            "height": "28"
+          },
+          "displayName": "Spacer",
+          "custom": {
+            "displayName": "Spacer"
+          },
+          "parent": "cont37",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "pric40": {
+          "type": {
+            "resolvedName": "Pricing"
+          },
+          "isCanvas": false,
+          "props": {
+            "tiers": [
+              "Solo",
+              "$0",
+              "forever",
+              "Start free",
+              "One board; Two people; Weekly digest",
+              "Team",
+              "$29",
+              "per month",
+              "Choose Team",
+              "Ten boards; Unlimited people; Digests; Integrations",
+              "Studio",
+              "$79",
+              "per month",
+              "Talk to us",
+              "Everything in Team; Client access; Priority support; SSO"
+            ],
+            "featured": 2,
+            "accent": {
+              "r": 90,
+              "g": 93,
+              "b": 233,
+              "a": 1
+            },
+            "background": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            }
+          },
+          "displayName": "Pricing",
+          "custom": {
+            "displayName": "Pricing"
+          },
+          "parent": "cont37",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont41": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "64",
+              "48",
+              "48",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "anchor": "questions",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Questions"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu42"
+          ],
+          "linkedNodes": {}
+        },
+        "colu42": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "40",
+            "align": "stretch",
+            "stack": "yes",
+            "ratio": "2:3"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Columns"
+          },
+          "parent": "cont41",
+          "hidden": false,
+          "nodes": [
+            "cont43",
+            "acco46"
+          ],
+          "linkedNodes": {}
+        },
+        "cont43": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "center",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Questions intro"
+          },
+          "parent": "colu42",
+          "hidden": false,
+          "nodes": [
+            "head44",
+            "text45"
+          ],
+          "linkedNodes": {}
+        },
+        "head44": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Before you ask",
+            "level": "2",
+            "fontSize": "34",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont43",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text45": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 148,
+              "g": 163,
+              "b": 184,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "The three questions every team asks on day one, answered without a sales call."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont43",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "acco46": {
+          "type": {
+            "resolvedName": "Accordion"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Can I move my data out?",
+              "Yes, as JSON or CSV, whenever you like. It is your work.",
+              "What happens when the free tier runs out?",
+              "Nothing disappears. The board goes read-only until you pick a plan or remove one.",
+              "Do you charge per person?",
+              "No. A plan covers the whole team, however many of you there are."
+            ],
+            "background": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "radius": 14
+          },
+          "displayName": "Accordion",
+          "custom": {
+            "displayName": "Accordion"
+          },
+          "parent": "colu42",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont47": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "16",
+              "48",
+              "64",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Proof"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "test48"
+          ],
+          "linkedNodes": {}
+        },
+        "test48": {
+          "type": {
+            "resolvedName": "Testimonial"
+          },
+          "isCanvas": false,
+          "props": {
+            "quote": "We stopped having the Monday meeting. Nobody has asked for it back.",
+            "author": "Maya Chen",
+            "role": "Engineering lead, Fathom",
+            "avatar": "",
+            "align": "left",
+            "background": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "accent": {
+              "r": 90,
+              "g": 93,
+              "b": 233,
+              "a": 1
+            }
+          },
+          "displayName": "Testimonial",
+          "custom": {
+            "displayName": "Testimonial"
+          },
+          "parent": "cont47",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont49": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "48",
+              "72",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Close"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "ctab50"
+          ],
+          "linkedNodes": {}
+        },
+        "ctab50": {
+          "type": {
+            "resolvedName": "CTABanner"
+          },
+          "isCanvas": false,
+          "props": {
+            "title": "Try it with one board",
+            "text": "No card, no trial clock. Move a real project onto it and see.",
+            "cta": "Start free",
+            "href": "#pricing",
+            "background": {
+              "r": 90,
+              "g": 93,
+              "b": 233,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "buttonBackground": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "buttonColor": {
+              "r": 90,
+              "g": 93,
+              "b": 233,
+              "a": 1
+            },
+            "radius": 22
+          },
+          "displayName": "CTABanner",
+          "custom": {
+            "displayName": "CTABanner"
+          },
+          "parent": "cont49",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont51": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Next step"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont52"
+          ],
+          "linkedNodes": {}
+        },
+        "cont52": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "40",
+              "40",
+              "40"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 22,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Next step panel"
+          },
+          "parent": "cont51",
+          "hidden": false,
+          "nodes": [
+            "badg53",
+            "head54",
+            "text55",
+            "colu56",
+            "cont60"
+          ],
+          "linkedNodes": {}
+        },
+        "badg53": {
+          "type": {
+            "resolvedName": "Badge"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "STAY CURIOUS",
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 134,
+              "g": 136,
+              "b": 242,
+              "a": 1
+            },
+            "radius": 0
+          },
+          "displayName": "Badge",
+          "custom": {
+            "displayName": "Section label"
+          },
+          "parent": "cont52",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head54": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "The next good thing, occasionally",
+            "level": "2",
+            "fontSize": "32",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "12",
+              "0",
+              "8",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Next step heading"
+          },
+          "parent": "cont52",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text55": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "16",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "28",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "One considered update when there is something genuinely worth sharing."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Next step introduction"
+          },
+          "parent": "cont52",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "colu56": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "32",
+            "align": "stretch",
+            "stack": "yes",
+            "ratio": "3:2"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Next step details"
+          },
+          "parent": "cont52",
+          "hidden": false,
+          "nodes": [
+            "tabs57",
+            "cont58"
+          ],
+          "linkedNodes": {}
+        },
+        "tabs57": {
+          "type": {
+            "resolvedName": "Tabs"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "What arrives",
+              "New work, useful notes and behind-the-scenes details.",
+              "How often",
+              "Occasionally — never just to fill a schedule."
+            ],
+            "accent": {
+              "r": 134,
+              "g": 136,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            }
+          },
+          "displayName": "Tabs",
+          "custom": {
+            "displayName": "Useful details"
+          },
+          "parent": "colu56",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont58": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "center",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Primary next step"
+          },
+          "parent": "colu56",
+          "hidden": false,
+          "nodes": [
+            "news59"
+          ],
+          "linkedNodes": {}
+        },
+        "news59": {
+          "type": {
+            "resolvedName": "Newsletter"
+          },
+          "isCanvas": false,
+          "props": {
+            "heading": "Receive the next edition",
+            "placeholder": "you@example.com",
+            "buttonText": "Subscribe",
+            "successMessage": "Check your inbox to confirm.",
+            "accent": {
+              "r": 134,
+              "g": 136,
+              "b": 242,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            }
+          },
+          "displayName": "Newsletter",
+          "custom": {
+            "displayName": "Newsletter signup"
+          },
+          "parent": "cont58",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont60": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "28",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Visitor response"
+          },
+          "parent": "cont52",
+          "hidden": false,
+          "nodes": [
+            "divi61",
+            "enga62"
+          ],
+          "linkedNodes": {}
+        },
+        "divi61": {
+          "type": {
+            "resolvedName": "Divider"
+          },
+          "isCanvas": false,
+          "props": {
+            "thickness": "1",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.12
+            },
+            "inset": "0",
+            "spacing": "16"
+          },
+          "displayName": "Divider",
+          "custom": {
+            "displayName": "Divider"
+          },
+          "parent": "cont60",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "enga62": {
+          "type": {
+            "resolvedName": "Engagement"
+          },
+          "isCanvas": false,
+          "props": {
+            "mode": "reaction",
+            "heading": "Was this worth your time?",
+            "options": [
+              "👍",
+              "❤️",
+              "👏"
+            ],
+            "accent": {
+              "r": 134,
+              "g": 136,
+              "b": 242,
+              "a": 1
+            }
+          },
+          "displayName": "Engagement",
+          "custom": {
+            "displayName": "Visitor feedback"
+          },
+          "parent": "cont60",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont63": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "row",
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "48",
+              "40",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont64",
+            "soci67"
+          ],
+          "linkedNodes": {}
+        },
+        "cont64": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "auto",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer text"
+          },
+          "parent": "cont63",
+          "hidden": false,
+          "nodes": [
+            "text65",
+            "text66"
+          ],
+          "linkedNodes": {}
+        },
+        "text65": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "17",
+            "textAlign": "left",
+            "fontWeight": "700",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "NovaFlow"
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Footer brand"
+          },
+          "parent": "cont64",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text66": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "13",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 148,
+              "g": 163,
+              "b": 184,
+              "a": 1
+            },
+            "margin": [
+              "6",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Made by a small team. No card needed to start."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Small print"
+          },
+          "parent": "cont64",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "soci67": {
+          "type": {
+            "resolvedName": "SocialLinks"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Twitter",
+              "https://twitter.com/",
+              "GitHub",
+              "https://github.com/"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.06
+            },
+            "color": {
+              "r": 148,
+              "g": 163,
+              "b": 184,
+              "a": 1
+            },
+            "size": "20",
+            "gap": "18"
+          },
+          "displayName": "SocialLinks",
+          "custom": {
+            "displayName": "Footer links"
+          },
+          "parent": "cont63",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
         }
-      ],
-      "sticky": true,
-      "textColor": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "height": "56px",
-      "width": "100%",
-      "animation": "none"
-    },
-    "displayName": "NavbarElement",
-    "custom": {
-      "displayName": "Navbar"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont02": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "center",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "80",
-        "48",
-        "64",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 2,
-        "g": 6,
-        "b": 23,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "backgroundImage": "https://images.pexels.com/photos/6805161/pexels-photo-6805161.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      "overlay": {
-        "r": 2,
-        "g": 6,
-        "b": 23,
-        "a": 0.82
       }
     },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Hero"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "head03",
-      "text04",
-      "butt05",
-      "spac06",
-      "logo07"
-    ],
-    "linkedNodes": {}
-  },
-  "head03": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Ship the work, not the status update",
-      "level": "1",
-      "fontSize": "52",
-      "fontWeight": "800",
-      "textAlign": "center",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont02",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text04": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "19",
-      "textAlign": "center",
-      "fontWeight": "500",
-      "color": {
-        "r": 148,
-        "g": 163,
-        "b": 184,
-        "a": 1
-      },
-      "margin": [
-        "16",
-        "0",
-        "28",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "NovaFlow keeps a small team’s work in one place, and tells everyone else what changed without a meeting."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont02",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "butt05": {
-    "type": {
-      "resolvedName": "Button"
-    },
-    "isCanvas": false,
-    "props": {
-      "background": {
-        "r": 90,
-        "g": 93,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "buttonStyle": "full",
-      "text": "Start free",
-      "margin": [
-        "8",
-        "0",
-        "8",
-        "0"
-      ],
-      "action": "none",
-      "actionValue": "",
-      "newTab": false,
-      "textComponent": {
-        "fontSize": "16",
-        "textAlign": "center",
-        "fontWeight": "600",
-        "color": {
-          "r": 255,
-          "g": 255,
-          "b": 255,
-          "a": 1
+    {
+      "name": "Product",
+      "slug": "product",
+      "data": {
+        "ROOT": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "App"
+          },
+          "hidden": false,
+          "nodes": [
+            "navb01",
+            "vide02",
+            "cont07",
+            "cont21",
+            "cont27",
+            "cont30",
+            "cont32"
+          ],
+          "linkedNodes": {}
         },
-        "margin": [
-          "0",
-          "0",
-          "0",
-          "0"
-        ],
-        "shadow": 0,
-        "text": "Start free"
-      }
-    },
-    "displayName": "Button",
-    "custom": {
-      "displayName": "Button"
-    },
-    "parent": "cont02",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "spac06": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "12"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "cont02",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "logo07": {
-    "type": {
-      "resolvedName": "LogoStrip"
-    },
-    "isCanvas": false,
-    "props": {
-      "logos": [
-        "Kettle",
-        "Fathom",
-        "Northwind",
-        "Sable"
-      ],
-      "height": "26",
-      "gap": "40",
-      "grayscale": "yes",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      }
-    },
-    "displayName": "LogoStrip",
-    "custom": {
-      "displayName": "LogoStrip"
-    },
-    "parent": "cont02",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont08": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "64",
-        "48",
-        "64",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 2,
-        "g": 6,
-        "b": 23,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "anchor": "features"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Features"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "head09",
-      "spac10",
-      "colu11"
-    ],
-    "linkedNodes": {}
-  },
-  "head09": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Three things, done properly",
-      "level": "2",
-      "fontSize": "34",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont08",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "spac10": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "28"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "cont08",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "colu11": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "3",
-      "gap": "20",
-      "align": "stretch",
-      "stack": "yes"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Columns"
-    },
-    "parent": "cont08",
-    "hidden": false,
-    "nodes": [
-      "cont12",
-      "cont16",
-      "cont20"
-    ],
-    "linkedNodes": {}
-  },
-  "cont12": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "26",
-        "24",
-        "26",
-        "24"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 30,
-        "g": 41,
-        "b": 59,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 14,
-      "radius": 14,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 0
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "One board"
-    },
-    "parent": "colu11",
-    "hidden": false,
-    "nodes": [
-      "icon13",
-      "head14",
-      "text15"
-    ],
-    "linkedNodes": {}
-  },
-  "icon13": {
-    "type": {
-      "resolvedName": "Icon"
-    },
-    "isCanvas": false,
-    "props": {
-      "name": "view_kanban",
-      "size": "32",
-      "padded": "yes",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "background": {
-        "r": 90,
-        "g": 93,
-        "b": 233,
-        "a": 1
-      }
-    },
-    "displayName": "Icon",
-    "custom": {
-      "displayName": "Icon"
-    },
-    "parent": "cont12",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "head14": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "One board",
-      "level": "3",
-      "fontSize": "19",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "margin": [
-        "14",
-        "0",
-        "6",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont12",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text15": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "15",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 148,
-        "g": 163,
-        "b": 184,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "Everything in flight, in one place, with no columns nobody uses."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont12",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont16": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "26",
-        "24",
-        "26",
-        "24"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 30,
-        "g": 41,
-        "b": 59,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 14,
-      "radius": 14,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 90
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Written updates"
-    },
-    "parent": "colu11",
-    "hidden": false,
-    "nodes": [
-      "icon17",
-      "head18",
-      "text19"
-    ],
-    "linkedNodes": {}
-  },
-  "icon17": {
-    "type": {
-      "resolvedName": "Icon"
-    },
-    "isCanvas": false,
-    "props": {
-      "name": "draft",
-      "size": "32",
-      "padded": "yes",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "background": {
-        "r": 90,
-        "g": 93,
-        "b": 233,
-        "a": 1
-      }
-    },
-    "displayName": "Icon",
-    "custom": {
-      "displayName": "Icon"
-    },
-    "parent": "cont16",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "head18": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Written updates",
-      "level": "3",
-      "fontSize": "19",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "margin": [
-        "14",
-        "0",
-        "6",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont16",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text19": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "15",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 148,
-        "g": 163,
-        "b": 184,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "A digest that writes itself from what actually moved this week."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont16",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont20": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "26",
-        "24",
-        "26",
-        "24"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 30,
-        "g": 41,
-        "b": 59,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 14,
-      "radius": 14,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 180
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Honest dates"
-    },
-    "parent": "colu11",
-    "hidden": false,
-    "nodes": [
-      "icon21",
-      "head22",
-      "text23"
-    ],
-    "linkedNodes": {}
-  },
-  "icon21": {
-    "type": {
-      "resolvedName": "Icon"
-    },
-    "isCanvas": false,
-    "props": {
-      "name": "schedule",
-      "size": "32",
-      "padded": "yes",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "background": {
-        "r": 90,
-        "g": 93,
-        "b": 233,
-        "a": 1
-      }
-    },
-    "displayName": "Icon",
-    "custom": {
-      "displayName": "Icon"
-    },
-    "parent": "cont20",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "head22": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Honest dates",
-      "level": "3",
-      "fontSize": "19",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "margin": [
-        "14",
-        "0",
-        "6",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont20",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text23": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "15",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 148,
-        "g": 163,
-        "b": 184,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "Estimates that change when the work changes, not when someone asks."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont20",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "spac24": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "8"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont25": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "48",
-        "64",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 2,
-        "g": 6,
-        "b": 23,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Numbers"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "stat26"
-    ],
-    "linkedNodes": {}
-  },
-  "stat26": {
-    "type": {
-      "resolvedName": "Stats"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "1,200+",
-        "teams shipping",
-        "4 min",
-        "to first board",
-        "99.9%",
-        "uptime last year"
-      ],
-      "align": "center",
-      "accent": {
-        "r": 90,
-        "g": 93,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 148,
-        "g": 163,
-        "b": 184,
-        "a": 1
-      }
-    },
-    "displayName": "Stats",
-    "custom": {
-      "displayName": "Stats"
-    },
-    "parent": "cont25",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont27": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "48",
-        "64",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 2,
-        "g": 6,
-        "b": 23,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Product tour"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "caro28"
-    ],
-    "linkedNodes": {}
-  },
-  "caro28": {
-    "type": {
-      "resolvedName": "Carousel"
-    },
-    "isCanvas": false,
-    "props": {
-      "width": "704px",
-      "height": "400px",
-      "title": "NovaFlow product tour",
-      "autoplay": false,
-      "loop": true,
-      "arrows": true,
-      "dots": true,
-      "perView": 1,
-      "perViewTablet": 1,
-      "perViewMobile": 1,
-      "slides": [
-        {
-          "src": "https://images.pexels.com/photos/1181461/pexels-photo-1181461.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "heading": "One calm board",
-          "label": "Plan",
-          "text": "See what is moving, blocked and actually finished."
+        "navb01": {
+          "type": {
+            "resolvedName": "NavbarElement"
+          },
+          "isCanvas": false,
+          "props": {
+            "variant": "light",
+            "brand": "NovaFlow",
+            "links": [
+              {
+                "text": "Home",
+                "href": "/"
+              },
+              {
+                "text": "Product",
+                "href": "/product/"
+              }
+            ],
+            "sticky": true,
+            "textColor": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "height": "56px",
+            "width": "100%",
+            "animation": "none"
+          },
+          "displayName": "NavbarElement",
+          "custom": {
+            "displayName": "Navbar"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
         },
-        {
-          "src": "https://images.pexels.com/photos/7988116/pexels-photo-7988116.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "heading": "Work together",
-          "label": "Collaborate",
-          "text": "Decisions and updates stay beside the work they changed."
+        "vide02": {
+          "type": {
+            "resolvedName": "Video"
+          },
+          "isCanvas": true,
+          "props": {
+            "sourceType": "background",
+            "videoId": "",
+            "videoUrl": "",
+            "text": "",
+            "src": "https://videos.pexels.com/video-files/8125994/8125994-hd_1920_1080_25fps.mp4",
+            "poster": "https://images.pexels.com/photos/6804068/pexels-photo-6804068.jpeg?auto=compress&cs=tinysrgb&w=1600",
+            "overlay": 58,
+            "position": "center",
+            "minHeight": "430px",
+            "loop": true,
+            "animation": "fade",
+            "animationDuration": 780
+          },
+          "displayName": "Video",
+          "custom": {
+            "displayName": "Page hero"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont03"
+          ],
+          "linkedNodes": {}
         },
-        {
-          "src": "https://images.pexels.com/photos/12902857/pexels-photo-12902857.jpeg?auto=compress&cs=tinysrgb&w=1200",
-          "heading": "Skip the status meeting",
-          "label": "Automate",
-          "text": "A useful weekly digest assembled from real activity."
+        "cont03": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "72",
+              "48",
+              "56",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Page hero copy"
+          },
+          "parent": "vide02",
+          "hidden": false,
+          "nodes": [
+            "badg04",
+            "head05",
+            "text06"
+          ],
+          "linkedNodes": {}
+        },
+        "badg04": {
+          "type": {
+            "resolvedName": "Badge"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "THE PRODUCT",
+            "background": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "color": {
+              "r": 120,
+              "g": 123,
+              "b": 240,
+              "a": 1
+            },
+            "radius": 999
+          },
+          "displayName": "Badge",
+          "custom": {
+            "displayName": "Badge"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head05": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "One calm place for work in motion",
+            "level": "1",
+            "fontSize": "46",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "12",
+              "0"
+            ],
+            "animation": "blurIn",
+            "animationDelay": 100,
+            "animationDuration": 760
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text06": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "18",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 0.86
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Boards, decisions and weekly updates connected closely enough that nobody has to chase context."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont03",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont07": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Overview"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu08"
+          ],
+          "linkedNodes": {}
+        },
+        "colu08": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "3",
+            "gap": "20",
+            "align": "stretch",
+            "stack": "yes"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Highlights"
+          },
+          "parent": "cont07",
+          "hidden": false,
+          "nodes": [
+            "cont09",
+            "cont13",
+            "cont17"
+          ],
+          "linkedNodes": {}
+        },
+        "cont09": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "24",
+              "24",
+              "24"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 0,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Plan visibly"
+          },
+          "parent": "colu08",
+          "hidden": false,
+          "nodes": [
+            "icon10",
+            "head11",
+            "text12"
+          ],
+          "linkedNodes": {}
+        },
+        "icon10": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "view_kanban",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "background": {
+              "r": 120,
+              "g": 123,
+              "b": 240,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont09",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head11": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Plan visibly",
+            "level": "3",
+            "fontSize": "19",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont09",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text12": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 148,
+              "g": 163,
+              "b": 184,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "A board that shows ownership, decisions and the next useful action."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont09",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont13": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "24",
+              "24",
+              "24"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 90,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Write less status"
+          },
+          "parent": "colu08",
+          "hidden": false,
+          "nodes": [
+            "icon14",
+            "head15",
+            "text16"
+          ],
+          "linkedNodes": {}
+        },
+        "icon14": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "auto_awesome",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "background": {
+              "r": 120,
+              "g": 123,
+              "b": 240,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head15": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Write less status",
+            "level": "3",
+            "fontSize": "19",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text16": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 148,
+              "g": 163,
+              "b": 184,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "A weekly digest assembled from work the team has already done."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont13",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont17": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "24",
+              "24",
+              "24",
+              "24"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 14,
+            "radius": 14,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDelay": 180,
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Keep the history"
+          },
+          "parent": "colu08",
+          "hidden": false,
+          "nodes": [
+            "icon18",
+            "head19",
+            "text20"
+          ],
+          "linkedNodes": {}
+        },
+        "icon18": {
+          "type": {
+            "resolvedName": "Icon"
+          },
+          "isCanvas": false,
+          "props": {
+            "name": "history",
+            "size": "32",
+            "padded": "yes",
+            "color": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "background": {
+              "r": 120,
+              "g": 123,
+              "b": 240,
+              "a": 1
+            }
+          },
+          "displayName": "Icon",
+          "custom": {
+            "displayName": "Icon"
+          },
+          "parent": "cont17",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "head19": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Keep the history",
+            "level": "3",
+            "fontSize": "19",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "14",
+              "0",
+              "6",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont17",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text20": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "15",
+            "textAlign": "left",
+            "fontWeight": "400",
+            "color": {
+              "r": 148,
+              "g": 163,
+              "b": 184,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Decisions stay beside the work instead of disappearing into chat."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Text"
+          },
+          "parent": "cont17",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont21": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Details"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "colu22"
+          ],
+          "linkedNodes": {}
+        },
+        "colu22": {
+          "type": {
+            "resolvedName": "Columns"
+          },
+          "isCanvas": true,
+          "props": {
+            "count": "2",
+            "gap": "40",
+            "align": "stretch",
+            "stack": "yes",
+            "ratio": "3:2"
+          },
+          "displayName": "Columns",
+          "custom": {
+            "displayName": "Detail split"
+          },
+          "parent": "cont21",
+          "hidden": false,
+          "nodes": [
+            "cont23",
+            "test26"
+          ],
+          "linkedNodes": {}
+        },
+        "cont23": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Detail copy"
+          },
+          "parent": "colu22",
+          "hidden": false,
+          "nodes": [
+            "head24",
+            "list25"
+          ],
+          "linkedNodes": {}
+        },
+        "head24": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Included in every workspace",
+            "level": "2",
+            "fontSize": "30",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "list25": {
+          "type": {
+            "resolvedName": "List"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Unlimited collaborators and guests",
+              "Weekly project digests",
+              "Decision history and lightweight approvals",
+              "Exports that remain useful outside NovaFlow"
+            ],
+            "ordered": "no",
+            "fontSize": "16",
+            "gap": "12",
+            "color": {
+              "r": 148,
+              "g": 163,
+              "b": 184,
+              "a": 1
+            }
+          },
+          "displayName": "List",
+          "custom": {
+            "displayName": "List"
+          },
+          "parent": "cont23",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "test26": {
+          "type": {
+            "resolvedName": "Testimonial"
+          },
+          "isCanvas": false,
+          "props": {
+            "quote": "The first tool we adopted that made the weekly meeting shorter instead of moving it online.",
+            "author": "Amira, product lead at Northwind",
+            "role": "",
+            "avatar": "",
+            "align": "left",
+            "background": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "accent": {
+              "r": 120,
+              "g": 123,
+              "b": 240,
+              "a": 1
+            }
+          },
+          "displayName": "Testimonial",
+          "custom": {
+            "displayName": "Testimonial"
+          },
+          "parent": "colu22",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont27": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "56",
+              "48",
+              "44",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Questions"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "head28",
+            "acco29"
+          ],
+          "linkedNodes": {}
+        },
+        "head28": {
+          "type": {
+            "resolvedName": "Heading"
+          },
+          "isCanvas": false,
+          "props": {
+            "text": "Good questions, answered",
+            "level": "2",
+            "fontSize": "28",
+            "fontWeight": "700",
+            "textAlign": "left",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "20",
+              "0"
+            ]
+          },
+          "displayName": "Heading",
+          "custom": {
+            "displayName": "Heading"
+          },
+          "parent": "cont27",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "acco29": {
+          "type": {
+            "resolvedName": "Accordion"
+          },
+          "isCanvas": false,
+          "props": {
+            "items": [
+              "Can we import existing work?",
+              "Yes. CSV import and a guided migration are included.",
+              "Does it replace chat?",
+              "No. It gives decisions and commitments a durable home."
+            ],
+            "background": {
+              "r": 30,
+              "g": 41,
+              "b": 59,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "radius": 14
+          },
+          "displayName": "Accordion",
+          "custom": {
+            "displayName": "Accordion"
+          },
+          "parent": "cont27",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont30": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "16",
+              "48",
+              "64",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Close"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "ctab31"
+          ],
+          "linkedNodes": {}
+        },
+        "ctab31": {
+          "type": {
+            "resolvedName": "CTABanner"
+          },
+          "isCanvas": false,
+          "props": {
+            "title": "Try it with one real project",
+            "text": "No card and no artificial trial clock.",
+            "cta": "Start on the home page",
+            "href": "/",
+            "background": {
+              "r": 120,
+              "g": 123,
+              "b": 240,
+              "a": 1
+            },
+            "color": {
+              "r": 24,
+              "g": 24,
+              "b": 27,
+              "a": 1
+            },
+            "buttonBackground": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "buttonColor": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "radius": 22
+          },
+          "displayName": "CTABanner",
+          "custom": {
+            "displayName": "CTABanner"
+          },
+          "parent": "cont30",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "cont32": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "row",
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "fillSpace": "no",
+            "padding": [
+              "40",
+              "48",
+              "40",
+              "48"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            },
+            "color": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "100%",
+            "height": "auto",
+            "animation": "fadeUp",
+            "animationDuration": 620
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer"
+          },
+          "parent": "ROOT",
+          "hidden": false,
+          "nodes": [
+            "cont33"
+          ],
+          "linkedNodes": {}
+        },
+        "cont33": {
+          "type": {
+            "resolvedName": "Container"
+          },
+          "isCanvas": true,
+          "props": {
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "fillSpace": "no",
+            "padding": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "background": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0
+            },
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            },
+            "shadow": 0,
+            "radius": 0,
+            "width": "auto",
+            "height": "auto"
+          },
+          "displayName": "Container",
+          "custom": {
+            "displayName": "Footer text"
+          },
+          "parent": "cont32",
+          "hidden": false,
+          "nodes": [
+            "text34",
+            "text35"
+          ],
+          "linkedNodes": {}
+        },
+        "text34": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "17",
+            "textAlign": "left",
+            "fontWeight": "700",
+            "color": {
+              "r": 2,
+              "g": 6,
+              "b": 23,
+              "a": 1
+            },
+            "margin": [
+              "0",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "NovaFlow"
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Footer brand"
+          },
+          "parent": "cont33",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
+        },
+        "text35": {
+          "type": {
+            "resolvedName": "Text"
+          },
+          "isCanvas": false,
+          "props": {
+            "fontSize": "13",
+            "textAlign": "left",
+            "fontWeight": "500",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 255,
+              "a": 0.68
+            },
+            "margin": [
+              "6",
+              "0",
+              "0",
+              "0"
+            ],
+            "shadow": 0,
+            "text": "Made for small teams that ship."
+          },
+          "displayName": "Text",
+          "custom": {
+            "displayName": "Small print"
+          },
+          "parent": "cont33",
+          "hidden": false,
+          "nodes": [],
+          "linkedNodes": {}
         }
-      ],
-      "accent": {
-        "r": 90,
-        "g": 93,
-        "b": 233,
-        "a": 1
       }
-    },
-    "displayName": "Carousel",
-    "custom": {
-      "displayName": "NovaFlow product tour"
-    },
-    "parent": "cont27",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont29": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "48",
-        "64",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 2,
-        "g": 6,
-        "b": 23,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "anchor": "workflow"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Digest"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "colu30"
-    ],
-    "linkedNodes": {}
-  },
-  "colu30": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "2",
-      "gap": "36",
-      "align": "stretch",
-      "stack": "yes",
-      "ratio": "3:2"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Columns"
-    },
-    "parent": "cont29",
-    "hidden": false,
-    "nodes": [
-      "cont31",
-      "cont33"
-    ],
-    "linkedNodes": {}
-  },
-  "cont31": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 0
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Digest photo"
-    },
-    "parent": "colu30",
-    "hidden": false,
-    "nodes": [
-      "imag32"
-    ],
-    "linkedNodes": {}
-  },
-  "imag32": {
-    "type": {
-      "resolvedName": "Image"
-    },
-    "isCanvas": false,
-    "props": {
-      "src": "https://images.pexels.com/photos/6804068/pexels-photo-6804068.jpeg?auto=compress&cs=tinysrgb&w=1000",
-      "alt": "Product team reviewing project activity together",
-      "radius": 14,
-      "width": "100%",
-      "height": "420px",
-      "maxWidth": "100%",
-      "objectFit": "cover"
-    },
-    "displayName": "Image",
-    "custom": {
-      "displayName": "Image"
-    },
-    "parent": "cont31",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont33": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "center",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "8"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "animationDelay": 90
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Digest copy"
-    },
-    "parent": "colu30",
-    "hidden": false,
-    "nodes": [
-      "head34",
-      "text35",
-      "link36"
-    ],
-    "linkedNodes": {}
-  },
-  "head34": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "The Monday meeting, written instead",
-      "level": "2",
-      "fontSize": "26",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont33",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text35": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "15",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 148,
-        "g": 163,
-        "b": 184,
-        "a": 1
-      },
-      "margin": [
-        "12",
-        "0",
-        "16",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "Every Friday the digest goes out: what shipped, what slipped, and the one decision that is still open. It is assembled from the board, so nobody has to write a status update again."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont33",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "link36": {
-    "type": {
-      "resolvedName": "Link"
-    },
-    "isCanvas": false,
-    "props": {
-      "href": "#workflow",
-      "text": "Explore the workflow",
-      "width": "auto",
-      "height": "auto",
-      "maxWidth": "100%",
-      "color": {
-        "r": 120,
-        "g": 123,
-        "b": 240,
-        "a": 1
-      },
-      "fontSize": "15"
-    },
-    "displayName": "Link",
-    "custom": {
-      "displayName": "Link"
-    },
-    "parent": "cont33",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont37": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "center",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "64",
-        "48",
-        "64",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 30,
-        "g": 41,
-        "b": 59,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "anchor": "pricing"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Pricing"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "head38",
-      "spac39",
-      "pric40"
-    ],
-    "linkedNodes": {}
-  },
-  "head38": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Priced per team, not per seat",
-      "level": "2",
-      "fontSize": "34",
-      "fontWeight": "700",
-      "textAlign": "center",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont37",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "spac39": {
-    "type": {
-      "resolvedName": "Spacer"
-    },
-    "isCanvas": false,
-    "props": {
-      "height": "28"
-    },
-    "displayName": "Spacer",
-    "custom": {
-      "displayName": "Spacer"
-    },
-    "parent": "cont37",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "pric40": {
-    "type": {
-      "resolvedName": "Pricing"
-    },
-    "isCanvas": false,
-    "props": {
-      "tiers": [
-        "Solo",
-        "$0",
-        "forever",
-        "Start free",
-        "One board; Two people; Weekly digest",
-        "Team",
-        "$29",
-        "per month",
-        "Choose Team",
-        "Ten boards; Unlimited people; Digests; Integrations",
-        "Studio",
-        "$79",
-        "per month",
-        "Talk to us",
-        "Everything in Team; Client access; Priority support; SSO"
-      ],
-      "featured": 2,
-      "accent": {
-        "r": 90,
-        "g": 93,
-        "b": 233,
-        "a": 1
-      },
-      "background": {
-        "r": 2,
-        "g": 6,
-        "b": 23,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      }
-    },
-    "displayName": "Pricing",
-    "custom": {
-      "displayName": "Pricing"
-    },
-    "parent": "cont37",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont41": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "64",
-        "48",
-        "48",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 2,
-        "g": 6,
-        "b": 23,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto",
-      "anchor": "questions"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Questions"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "colu42"
-    ],
-    "linkedNodes": {}
-  },
-  "colu42": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "2",
-      "gap": "40",
-      "align": "stretch",
-      "stack": "yes",
-      "ratio": "2:3"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Columns"
-    },
-    "parent": "cont41",
-    "hidden": false,
-    "nodes": [
-      "cont43",
-      "acco46"
-    ],
-    "linkedNodes": {}
-  },
-  "cont43": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "center",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Questions intro"
-    },
-    "parent": "colu42",
-    "hidden": false,
-    "nodes": [
-      "head44",
-      "text45"
-    ],
-    "linkedNodes": {}
-  },
-  "head44": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "Before you ask",
-      "level": "2",
-      "fontSize": "34",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Heading"
-    },
-    "parent": "cont43",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text45": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "15",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 148,
-        "g": 163,
-        "b": 184,
-        "a": 1
-      },
-      "margin": [
-        "12",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "The three questions every team asks on day one, answered without a sales call."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Text"
-    },
-    "parent": "cont43",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "acco46": {
-    "type": {
-      "resolvedName": "Accordion"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "Can I move my data out?",
-        "Yes, as JSON or CSV, whenever you like. It is your work.",
-        "What happens when the free tier runs out?",
-        "Nothing disappears. The board goes read-only until you pick a plan or remove one.",
-        "Do you charge per person?",
-        "No. A plan covers the whole team, however many of you there are."
-      ],
-      "background": {
-        "r": 30,
-        "g": 41,
-        "b": 59,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "radius": 14
-    },
-    "displayName": "Accordion",
-    "custom": {
-      "displayName": "Accordion"
-    },
-    "parent": "colu42",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont47": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "16",
-        "48",
-        "64",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 2,
-        "g": 6,
-        "b": 23,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Proof"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "test48"
-    ],
-    "linkedNodes": {}
-  },
-  "test48": {
-    "type": {
-      "resolvedName": "Testimonial"
-    },
-    "isCanvas": false,
-    "props": {
-      "quote": "We stopped having the Monday meeting. Nobody has asked for it back.",
-      "author": "Maya Chen",
-      "role": "Engineering lead, Fathom",
-      "avatar": "",
-      "align": "left",
-      "background": {
-        "r": 30,
-        "g": 41,
-        "b": 59,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "accent": {
-        "r": 90,
-        "g": 93,
-        "b": 233,
-        "a": 1
-      }
-    },
-    "displayName": "Testimonial",
-    "custom": {
-      "displayName": "Testimonial"
-    },
-    "parent": "cont47",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont49": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "48",
-        "72",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 2,
-        "g": 6,
-        "b": 23,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Close"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "ctab50"
-    ],
-    "linkedNodes": {}
-  },
-  "ctab50": {
-    "type": {
-      "resolvedName": "CTABanner"
-    },
-    "isCanvas": false,
-    "props": {
-      "title": "Try it with one board",
-      "text": "No card, no trial clock. Move a real project onto it and see.",
-      "cta": "Start free",
-      "href": "#pricing",
-      "background": {
-        "r": 90,
-        "g": 93,
-        "b": 233,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "buttonBackground": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "buttonColor": {
-        "r": 90,
-        "g": 93,
-        "b": 233,
-        "a": 1
-      },
-      "radius": 22
-    },
-    "displayName": "CTABanner",
-    "custom": {
-      "displayName": "CTABanner"
-    },
-    "parent": "cont49",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont51": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "56",
-        "48",
-        "44",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 2,
-        "g": 6,
-        "b": 23,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Next step"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "cont52"
-    ],
-    "linkedNodes": {}
-  },
-  "cont52": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "40",
-        "40",
-        "40",
-        "40"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 30,
-        "g": 41,
-        "b": 59,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 22,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Next step panel"
-    },
-    "parent": "cont51",
-    "hidden": false,
-    "nodes": [
-      "badg53",
-      "head54",
-      "text55",
-      "colu56",
-      "cont60"
-    ],
-    "linkedNodes": {}
-  },
-  "badg53": {
-    "type": {
-      "resolvedName": "Badge"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "STAY CURIOUS",
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 134,
-        "g": 136,
-        "b": 242,
-        "a": 1
-      },
-      "radius": 0
-    },
-    "displayName": "Badge",
-    "custom": {
-      "displayName": "Section label"
-    },
-    "parent": "cont52",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "head54": {
-    "type": {
-      "resolvedName": "Heading"
-    },
-    "isCanvas": false,
-    "props": {
-      "text": "The next good thing, occasionally",
-      "level": "2",
-      "fontSize": "32",
-      "fontWeight": "700",
-      "textAlign": "left",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "margin": [
-        "12",
-        "0",
-        "8",
-        "0"
-      ]
-    },
-    "displayName": "Heading",
-    "custom": {
-      "displayName": "Next step heading"
-    },
-    "parent": "cont52",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text55": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "16",
-      "textAlign": "left",
-      "fontWeight": "400",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "28",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "One considered update when there is something genuinely worth sharing."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Next step introduction"
-    },
-    "parent": "cont52",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "colu56": {
-    "type": {
-      "resolvedName": "Columns"
-    },
-    "isCanvas": true,
-    "props": {
-      "count": "2",
-      "gap": "32",
-      "align": "stretch",
-      "stack": "yes",
-      "ratio": "3:2"
-    },
-    "displayName": "Columns",
-    "custom": {
-      "displayName": "Next step details"
-    },
-    "parent": "cont52",
-    "hidden": false,
-    "nodes": [
-      "tabs57",
-      "cont58"
-    ],
-    "linkedNodes": {}
-  },
-  "tabs57": {
-    "type": {
-      "resolvedName": "Tabs"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "What arrives",
-        "New work, useful notes and behind-the-scenes details.",
-        "How often",
-        "Occasionally — never just to fill a schedule."
-      ],
-      "accent": {
-        "r": 134,
-        "g": 136,
-        "b": 242,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      }
-    },
-    "displayName": "Tabs",
-    "custom": {
-      "displayName": "Useful details"
-    },
-    "parent": "colu56",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont58": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "center",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Primary next step"
-    },
-    "parent": "colu56",
-    "hidden": false,
-    "nodes": [
-      "news59"
-    ],
-    "linkedNodes": {}
-  },
-  "news59": {
-    "type": {
-      "resolvedName": "Newsletter"
-    },
-    "isCanvas": false,
-    "props": {
-      "heading": "Receive the next edition",
-      "placeholder": "you@example.com",
-      "buttonText": "Subscribe",
-      "successMessage": "Check your inbox to confirm.",
-      "accent": {
-        "r": 134,
-        "g": 136,
-        "b": 242,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      }
-    },
-    "displayName": "Newsletter",
-    "custom": {
-      "displayName": "Newsletter signup"
-    },
-    "parent": "cont58",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont60": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "28",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Visitor response"
-    },
-    "parent": "cont52",
-    "hidden": false,
-    "nodes": [
-      "divi61",
-      "enga62"
-    ],
-    "linkedNodes": {}
-  },
-  "divi61": {
-    "type": {
-      "resolvedName": "Divider"
-    },
-    "isCanvas": false,
-    "props": {
-      "thickness": "1",
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0.12
-      },
-      "inset": "0",
-      "spacing": "16"
-    },
-    "displayName": "Divider",
-    "custom": {
-      "displayName": "Divider"
-    },
-    "parent": "cont60",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "enga62": {
-    "type": {
-      "resolvedName": "Engagement"
-    },
-    "isCanvas": false,
-    "props": {
-      "mode": "reaction",
-      "heading": "Was this worth your time?",
-      "options": [
-        "👍",
-        "❤️",
-        "👏"
-      ],
-      "accent": {
-        "r": 134,
-        "g": 136,
-        "b": 242,
-        "a": 1
-      }
-    },
-    "displayName": "Engagement",
-    "custom": {
-      "displayName": "Visitor feedback"
-    },
-    "parent": "cont60",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "cont63": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "row",
-      "alignItems": "center",
-      "justifyContent": "space-between",
-      "fillSpace": "no",
-      "padding": [
-        "40",
-        "48",
-        "40",
-        "48"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 30,
-        "g": 41,
-        "b": 59,
-        "a": 1
-      },
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "100%",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Footer"
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [
-      "cont64",
-      "soci67"
-    ],
-    "linkedNodes": {}
-  },
-  "cont64": {
-    "type": {
-      "resolvedName": "Container"
-    },
-    "isCanvas": true,
-    "props": {
-      "flexDirection": "column",
-      "alignItems": "flex-start",
-      "justifyContent": "flex-start",
-      "fillSpace": "no",
-      "padding": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0
-      },
-      "color": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 1
-      },
-      "shadow": 0,
-      "radius": 0,
-      "width": "auto",
-      "height": "auto"
-    },
-    "displayName": "Container",
-    "custom": {
-      "displayName": "Footer text"
-    },
-    "parent": "cont63",
-    "hidden": false,
-    "nodes": [
-      "text65",
-      "text66"
-    ],
-    "linkedNodes": {}
-  },
-  "text65": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "17",
-      "textAlign": "left",
-      "fontWeight": "700",
-      "color": {
-        "r": 255,
-        "g": 255,
-        "b": 255,
-        "a": 1
-      },
-      "margin": [
-        "0",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "NovaFlow"
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Footer brand"
-    },
-    "parent": "cont64",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "text66": {
-    "type": {
-      "resolvedName": "Text"
-    },
-    "isCanvas": false,
-    "props": {
-      "fontSize": "13",
-      "textAlign": "left",
-      "fontWeight": "500",
-      "color": {
-        "r": 148,
-        "g": 163,
-        "b": 184,
-        "a": 1
-      },
-      "margin": [
-        "6",
-        "0",
-        "0",
-        "0"
-      ],
-      "shadow": 0,
-      "text": "Made by a small team. No card needed to start."
-    },
-    "displayName": "Text",
-    "custom": {
-      "displayName": "Small print"
-    },
-    "parent": "cont64",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  },
-  "soci67": {
-    "type": {
-      "resolvedName": "SocialLinks"
-    },
-    "isCanvas": false,
-    "props": {
-      "items": [
-        "Twitter",
-        "https://twitter.com/",
-        "GitHub",
-        "https://github.com/"
-      ],
-      "background": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
-        "a": 0.06
-      },
-      "color": {
-        "r": 148,
-        "g": 163,
-        "b": 184,
-        "a": 1
-      },
-      "size": "20",
-      "gap": "18"
-    },
-    "displayName": "SocialLinks",
-    "custom": {
-      "displayName": "Footer links"
-    },
-    "parent": "cont63",
-    "hidden": false,
-    "nodes": [],
-    "linkedNodes": {}
-  }
+    }
+  ],
+  "siteSettings": {}
 }

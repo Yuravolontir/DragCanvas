@@ -1,5 +1,6 @@
 import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
+import { clipFor } from '../../src/utils/stockVideo.js';
 
 /**
  * Local services — a trade that lives on trust and a quick quote.
@@ -25,8 +26,11 @@ export default function services() {
     { text: 'Quote', href: '#quote' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: PAPER, padding: ['64', '48', '40', '48'], width: '100%', backgroundImage: P.joinery.shop(1600), overlay: rgba(28, 30, 30, 0.66) }, 'Hero');
-  const top = b.columns(hero, { count: '2', gap: '40', align: 'center' });
+  const hero = b.backgroundVideo(root, {
+    src: clipFor('studio').url, poster: P.joinery.shop(1600), overlay: 64, minHeight: '520px',
+  }, 'Hero');
+  const heroInner = b.container(hero, { background: TRANSPARENT, padding: ['64', '48', '40', '48'], width: '100%' }, 'Hero content');
+  const top = b.columns(heroInner, { count: '2', gap: '40', align: 'center' });
   const words = b.container(top, { background: TRANSPARENT, padding: ['0', '0', '0', '0'] }, 'Words');
   b.badge(words, 'Booking three weeks ahead', { background: PANEL, color: AMBER_INK });
   b.heading(words, 'Fitted properly, first time', { level: '1', fontSize: '44', color: PAPER, margin: ['12', '0', '10', '0'] });

@@ -1,5 +1,6 @@
 import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
+import { clipFor } from '../../src/utils/stockVideo.js';
 
 /**
  * Fitness Studio — FORGE (replaces template 15)
@@ -23,14 +24,17 @@ export default function fitness() {
     { text: 'Membership', href: '#membership' },
   ], { variant: 'dark', sticky: true });
 
-  const hero = b.container(root, { background: INK, padding: ['80', '48', '56', '48'], width: '100%', backgroundImage: P.fitness.deadlift(1600), overlay: rgba(16, 18, 17, 0.7) }, 'Hero');
-  b.heading(hero, 'Show up. Lift. Leave.', { level: '1', fontSize: '56', fontWeight: '800', color: BONE });
-  b.text(hero, 'Barbell club and conditioning, five in the morning to ten at night. No mirrors, no contracts.', {
+  const hero = b.backgroundVideo(root, {
+    src: clipFor('fitness').url, poster: P.fitness.deadlift(1600), overlay: 68, minHeight: '540px',
+  }, 'Hero');
+  const heroCopy = b.container(hero, { background: TRANSPARENT, padding: ['80', '48', '56', '48'], width: '100%' }, 'Hero copy');
+  b.heading(heroCopy, 'Show up. Lift. Leave.', { level: '1', fontSize: '56', fontWeight: '800', color: BONE });
+  b.text(heroCopy, 'Barbell club and conditioning, five in the morning to ten at night. No mirrors, no contracts.', {
     fontSize: '18', color: rgba(255, 255, 255, 0.82), margin: ['14', '0', '24', '0'],
   });
-  b.button(hero, 'First class free', { background: LIME, color: INK, buttonStyle: 'full' });
-  b.spacer(hero, '32');
-  b.stats(hero, ['5am', 'first class', '340', 'members', '12', 'coaches'], { accent: LIME, color: rgba(255, 255, 255, 0.82) });
+  b.button(heroCopy, 'First class free', { background: LIME, color: INK, buttonStyle: 'full' });
+  b.spacer(heroCopy, '32');
+  b.stats(heroCopy, ['5am', 'first class', '340', 'members', '12', 'coaches'], { accent: LIME, color: rgba(255, 255, 255, 0.82) });
 
   // ── what a membership actually buys ────────────────────────────
   const buys = b.container(root, { background: INK, padding: ['56', '48', '48', '48'], width: '100%' }, 'Included');

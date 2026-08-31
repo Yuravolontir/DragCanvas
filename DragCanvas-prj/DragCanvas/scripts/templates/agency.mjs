@@ -1,5 +1,6 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
+import { createBuilder, createCompanionPage, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
+import { clipFor } from '../../src/utils/stockVideo.js';
 
 /** Design agency — case studies, the logos that vouch for them, and a brief form. */
 export default function agency() {
@@ -13,18 +14,22 @@ export default function agency() {
   const MUTED_ON_INK = rgba(150, 148, 154);
 
   const root = b.root({ background: PAPER, width: '100%' });
-  b.navbar(root, 'FIELD', [
-    { text: 'Work', href: '#work' },
-    { text: 'Studio', href: '#studio' },
-    { text: 'Brief', href: '#brief' },
-  ], { variant: 'light', textColor: INK });
+  const nav = [
+    { text: 'Home', href: '/' },
+    { text: 'Work', href: '/work/' },
+    { text: 'Studio', href: '/studio/' },
+  ];
+  b.navbar(root, 'FIELD', nav, { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: PAPER, padding: ['80', '48', '40', '48'], width: '100%', backgroundImage: P.agency.facade(1600), overlay: rgba(20, 20, 22, 0.68) }, 'Hero');
-  b.heading(hero, 'We make the difficult part look obvious', { level: '1', fontSize: '54', color: PAPER });
-  b.text(hero, 'Brand and product design for companies that have outgrown their first look.', {
+  const hero = b.backgroundVideo(root, {
+    src: clipFor('studio').url, poster: P.agency.facade(1600), overlay: 62, minHeight: '520px',
+  }, 'Hero');
+  const heroCopy = b.container(hero, { background: TRANSPARENT, padding: ['80', '48', '56', '48'], width: '100%' }, 'Hero copy');
+  b.heading(heroCopy, 'We make the difficult part look obvious', { level: '1', fontSize: '54', color: PAPER });
+  b.text(heroCopy, 'Brand and product design for companies that have outgrown their first look.', {
     fontSize: '19', color: rgba(255, 255, 255, 0.82), margin: ['14', '0', '28', '0'],
   });
-  b.logoStrip(hero, ['Kettle', 'Fathom', 'Monday', 'Northwind', 'Sable'], { height: '28', color: PAPER });
+  b.logoStrip(heroCopy, ['Kettle', 'Fathom', 'Monday', 'Northwind', 'Sable'], { height: '28', color: PAPER });
 
   const work = b.container(root, { background: PAPER, padding: ['40', '48', '48', '48'], width: '100%', anchor: 'work' }, 'Work');
   b.heading(work, 'Recent work', { fontSize: '32', color: INK });
@@ -127,5 +132,43 @@ export default function agency() {
     background: INK, ink: PAPER, muted: MUTED_ON_INK,
   });
 
-  return { name: 'Design Agency — FIELD', category: 'Business', thumb: P.agency.studio(600), map: b.map };
+  const companion = (page) => createCompanionPage({
+    brand: 'FIELD', nav, background: PAPER, panel: PANEL, ink: INK, accent: RED, muted: MUTED,
+    video: clipFor('studio').url, poster: P.agency.facade(1600), footerNote: 'Independent brand and product design studio.',
+    ...page,
+  });
+  return {
+    name: 'Design Agency — FIELD', category: 'Business', thumb: P.agency.studio(600),
+    pages: [
+      { name: 'Home', slug: 'home', map: b.map },
+      { name: 'Work', slug: 'work', map: companion({
+        eyebrow: 'SELECTED WORK', title: 'Built to hold up in the real world',
+        intro: 'Identity and product systems tested on packaging, screens and the awkward places between.',
+        cards: [
+          ['Identity systems', 'grid_view', 'Marks, type and rules that remain coherent as the company grows.'],
+          ['Product direction', 'layers', 'A clear visual argument carried through the important customer journeys.'],
+          ['Launch support', 'rocket_launch', 'The last ten percent: templates, handover and a team that can use the work.'],
+        ],
+        listTitle: 'What every case study includes',
+        listItems: ['The business problem in plain language', 'The decisions that changed the outcome', 'The system in use, not only on a presentation board'],
+        quote: 'FIELD made the product feel inevitable without sanding off what made us unusual.', author: 'Mira Chen, Fathom',
+        faq: ['Can we see work in our sector?', 'Yes. We share relevant private work during the first call.', 'Do you work with internal teams?', 'Always. The system has to belong to the people who will run it.'],
+        ctaTitle: 'Bring us the difficult part', ctaText: 'A short brief is enough to begin.', ctaLabel: 'Meet the studio', ctaHref: '/studio/',
+      }) },
+      { name: 'Studio', slug: 'studio', map: companion({
+        eyebrow: 'THE STUDIO', title: 'Six people, one working table',
+        intro: 'Senior designers stay close to the work from the first question to the final file.',
+        cards: [
+          ['Small on purpose', 'groups', 'The people in the room are the people making the work.'],
+          ['Direct conversation', 'forum', 'No account layer translating your problem into somebody else’s brief.'],
+          ['Useful handover', 'inventory_2', 'Files, rules and training that make the system usable on Monday.'],
+        ],
+        listTitle: 'How an engagement feels',
+        listItems: ['One weekly working session', 'Decisions documented as they are made', 'Two directions, never ten superficial options'],
+        quote: 'The rare studio that made our team sharper while making the brand better.', author: 'Jon Bell, Kettle',
+        faq: ['Where are you based?', 'Tel Aviv, working with teams across Europe.', 'How far ahead do you book?', 'Usually six to eight weeks. Smaller reviews can begin sooner.'],
+        ctaTitle: 'There may be a fit', ctaText: 'Tell us what has changed and what the old identity can no longer do.', ctaLabel: 'Send a brief', ctaHref: '/',
+      }) },
+    ],
+  };
 }

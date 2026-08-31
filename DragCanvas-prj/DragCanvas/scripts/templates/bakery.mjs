@@ -1,5 +1,6 @@
 import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
+import { clipFor } from '../../src/utils/stockVideo.js';
 
 /** Bakery — a neighbourhood shop. Warm, short, and mostly about when to come. */
 export default function bakery() {
@@ -17,10 +18,13 @@ export default function bakery() {
     { text: 'Visit', href: '#visit' },
   ], { variant: 'light', textColor: INK });
 
-  const hero = b.container(root, { background: CREAM, padding: ['64', '48', '40', '48'], width: '100%', backgroundImage: P.bakery.shelves(1600), overlay: rgba(42, 29, 19, 0.55) }, 'Hero');
+  const hero = b.backgroundVideo(root, {
+    src: clipFor('bakery').url, poster: P.bakery.shelves(1600), overlay: 58, minHeight: '520px',
+  }, 'Hero');
+  const heroInner = b.container(hero, { background: TRANSPARENT, padding: ['64', '48', '40', '48'], width: '100%' }, 'Hero content');
   // Words get the room, the photograph gets the rest. Two equal halves was
   // never a decision, it was the only thing Columns could do.
-  const top = b.columns(hero, { count: '2', gap: '40', align: 'center', ratio: '3:2' });
+  const top = b.columns(heroInner, { count: '2', gap: '40', align: 'center', ratio: '3:2' });
   const words = b.container(top, { background: TRANSPARENT, padding: ['0', '0', '0', '0'] }, 'Words');
   b.heading(words, 'Out of the oven at six', { level: '1', fontSize: '48', color: CREAM });
   b.text(words, 'Sourdough, challah and rye, baked overnight and sold until they are gone.', {

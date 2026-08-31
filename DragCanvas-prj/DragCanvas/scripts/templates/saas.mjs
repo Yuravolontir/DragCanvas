@@ -1,5 +1,6 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, SHADOW } from './_builder.mjs';
+import { createBuilder, createCompanionPage, rgba, WHITE, TRANSPARENT, RADIUS, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
+import { clipFor } from '../../src/utils/stockVideo.js';
 
 /**
  * SaaS Landing — NovaFlow (replaces template 12)
@@ -23,11 +24,11 @@ export default function saas() {
 
   const root = b.root({ background: INK, width: '100%' });
 
-  b.navbar(root, 'NovaFlow', [
-    { text: 'Features', href: '#features' },
-    { text: 'Pricing', href: '#pricing' },
-    { text: 'Questions', href: '#questions' },
-  ], { variant: 'dark', sticky: true });
+  const nav = [
+    { text: 'Home', href: '/' },
+    { text: 'Product', href: '/product/' },
+  ];
+  b.navbar(root, 'NovaFlow', nav, { variant: 'dark' });
 
   // ── the promise ────────────────────────────────────────────────
   const hero = b.container(root, {
@@ -148,11 +149,31 @@ export default function saas() {
     background: CARD, ink: WHITE, muted: MUTED,
   });
 
+  const productPage = createCompanionPage({
+    brand: 'NovaFlow', nav, background: INK, panel: CARD, ink: WHITE, accent: INDIGO_ON_INK, muted: MUTED,
+    video: clipFor('studio').url, poster: P.saas.desks(1600),
+    eyebrow: 'THE PRODUCT', title: 'One calm place for work in motion',
+    intro: 'Boards, decisions and weekly updates connected closely enough that nobody has to chase context.',
+    cards: [
+      ['Plan visibly', 'view_kanban', 'A board that shows ownership, decisions and the next useful action.'],
+      ['Write less status', 'auto_awesome', 'A weekly digest assembled from work the team has already done.'],
+      ['Keep the history', 'history', 'Decisions stay beside the work instead of disappearing into chat.'],
+    ],
+    listTitle: 'Included in every workspace',
+    listItems: ['Unlimited collaborators and guests', 'Weekly project digests', 'Decision history and lightweight approvals', 'Exports that remain useful outside NovaFlow'],
+    quote: 'The first tool we adopted that made the weekly meeting shorter instead of moving it online.', author: 'Amira, product lead at Northwind',
+    faq: ['Can we import existing work?', 'Yes. CSV import and a guided migration are included.', 'Does it replace chat?', 'No. It gives decisions and commitments a durable home.'],
+    ctaTitle: 'Try it with one real project', ctaText: 'No card and no artificial trial clock.', ctaLabel: 'Start on the home page', ctaHref: '/',
+    footerNote: 'Made for small teams that ship.',
+  });
   return {
     id: 12,
     name: 'SaaS Landing — NovaFlow',
     category: 'Landing Page',
     thumb: P.saas.pairing(600),
-    map: b.map,
+    pages: [
+      { name: 'Home', slug: 'home', map: b.map },
+      { name: 'Product', slug: 'product', map: productPage },
+    ],
   };
 }

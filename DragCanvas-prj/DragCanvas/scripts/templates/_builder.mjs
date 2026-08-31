@@ -369,7 +369,7 @@ export function createBuilder() {
 
   const navbar = (parent, brand, links, props = {}, label = 'Navbar') =>
     node('NavbarElement', parent, {
-      variant: 'dark', brand, links, sticky: false,
+      variant: 'dark', brand, links, sticky: true,
       textColor: WHITE, height: '56px', width: '100%', ...props,
     }, { label });
 
@@ -605,6 +605,97 @@ export function createBuilder() {
   };
 }
 
+/**
+ * Build a focused secondary page that still feels like part of its site.
+ * Used by catalogue templates that need real navigation rather than one very
+ * long home page. The copy remains template-specific; only the dependable
+ * editorial structure is shared.
+ */
+export function createCompanionPage({
+  brand,
+  nav,
+  title,
+  eyebrow,
+  intro,
+  background,
+  panel,
+  ink,
+  accent,
+  muted,
+  video,
+  poster,
+  cards,
+  listTitle,
+  listItems,
+  quote,
+  author,
+  faq,
+  ctaTitle,
+  ctaText,
+  ctaLabel,
+  ctaHref,
+  footerNote,
+}) {
+  const b = createBuilder();
+  const root = b.root({ background, width: '100%' });
+  b.navbar(root, brand, nav, { variant: 'light', textColor: ink });
+
+  const hero = b.backgroundVideo(root, {
+    src: video,
+    poster,
+    overlay: 58,
+    minHeight: '430px',
+  }, 'Page hero');
+  const heroCopy = b.container(hero, {
+    background: TRANSPARENT,
+    padding: ['72', '48', '56', '48'],
+    width: '100%',
+  }, 'Page hero copy');
+  b.badge(heroCopy, eyebrow, { background: panel, color: accent });
+  b.heading(heroCopy, title, {
+    level: '1', fontSize: '46', color: WHITE, margin: ['14', '0', '12', '0'],
+  });
+  b.text(heroCopy, intro, {
+    fontSize: '18', fontWeight: '400', color: rgba(255, 255, 255, 0.86),
+  });
+
+  const overview = b.container(root, { background, padding: PAD.regular, width: '100%' }, 'Overview');
+  const grid = b.columns(overview, { count: '3', gap: '20', stack: 'yes' }, 'Highlights');
+  cards.forEach(([heading, icon, copy]) => {
+    const card = b.container(grid, {
+      background: panel, padding: PAD.card, radius: RADIUS.card, shadow: SHADOW.lifted,
+    }, heading);
+    b.icon(card, icon, { color: panel, background: accent });
+    b.heading(card, heading, { level: '3', fontSize: '19', color: ink, margin: ['14', '0', '6', '0'] });
+    b.text(card, copy, { fontSize: '15', fontWeight: '400', color: muted });
+  });
+
+  const detail = b.container(root, { background: panel, padding: PAD.regular, width: '100%' }, 'Details');
+  const split = b.columns(detail, { count: '2', gap: '40', ratio: '3:2', stack: 'yes' }, 'Detail split');
+  const copy = b.container(split, { background: TRANSPARENT, width: '100%' }, 'Detail copy');
+  b.heading(copy, listTitle, { fontSize: '30', color: ink });
+  b.list(copy, listItems, { color: muted, fontSize: '16', gap: '12' });
+  b.testimonial(split, {
+    quote, author, role: '', background, color: ink, accent, align: 'left',
+  });
+
+  const questions = b.container(root, { background, padding: PAD.regular, width: '100%' }, 'Questions');
+  b.heading(questions, 'Good questions, answered', { fontSize: '28', color: ink, margin: ['0', '0', '20', '0'] });
+  b.accordion(questions, faq, { background: panel, color: ink, radius: RADIUS.card });
+
+  const close = b.container(root, { background, padding: ['16', '48', '64', '48'], width: '100%' }, 'Close');
+  b.ctaBanner(close, {
+    title: ctaTitle, text: ctaText, cta: ctaLabel, href: ctaHref,
+    background: accent, color: readableInk(accent),
+    buttonBackground: background, buttonColor: ink,
+  });
+  b.footer(root, {
+    brand, note: footerNote, socials: [], background: ink,
+    ink: background, muted: rgba(255, 255, 255, 0.68),
+  });
+  return b.map;
+}
+
 // Common blocks
 export function navLinks(b, parent, items, colorNote) {
   for (const [t, href] of items) {
@@ -657,6 +748,17 @@ export function stagger(map, ids, spec = {}) {
  * detaches from the top of the window while it animates.
  */
 export function applyDefaultMotion(map) {
+  const rootChildren = map.ROOT?.nodes || [];
+  rootChildren.forEach((id, index) => {
+    const node = map[id];
+    if (!node || node.type?.resolvedName === 'NavbarElement') return;
+    if (!['Container', 'Video'].includes(node.type?.resolvedName)) return;
+    animate(map, id, {
+      animation: index === 1 ? 'fade' : 'fadeUp',
+      duration: index === 1 ? 780 : 620,
+    });
+  });
+
   for (const [id, node] of Object.entries(map)) {
     if (id === 'ROOT') continue;
     if (!node.isCanvas) continue;
@@ -666,7 +768,17 @@ export function applyDefaultMotion(map) {
       return child && child.type?.resolvedName === 'Container';
     });
     if (rows.length < 2) continue;
-    stagger(map, rows);
+    stagger(map, rows, { animation: 'fadeUp', duration: 620 });
+  }
+
+  const images = Object.entries(map)
+    .filter(([, node]) => node.type?.resolvedName === 'Image')
+    .map(([id]) => id);
+  stagger(map, images, { animation: 'zoomIn', duration: 720, step: 70 });
+
+  for (const [id, node] of Object.entries(map)) {
+    if (node.type?.resolvedName !== 'Heading' || String(node.props?.level) !== '1') continue;
+    animate(map, id, { animation: 'blurIn', delay: 100, duration: 760 });
   }
 
   for (const node of Object.values(map)) {

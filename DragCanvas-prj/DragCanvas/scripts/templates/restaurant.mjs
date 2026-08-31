@@ -1,4 +1,4 @@
-import { createBuilder, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
+import { createBuilder, createCompanionPage, rgba, WHITE, TRANSPARENT, RADIUS, PAD, SHADOW } from './_builder.mjs';
 import { PHOTOS as P } from './_photos.mjs';
 import { clipFor } from '../../src/utils/stockVideo.js';
 
@@ -19,11 +19,11 @@ export default function restaurant() {
 
   const root = b.root({ background: CREAM, width: '100%' });
 
-  b.navbar(root, 'Casa Oliva', [
-    { text: 'Menu', href: '#menu' },
-    { text: 'Hours', href: '#hours' },
-    { text: 'Find us', href: '#find-us' },
-  ], { variant: 'light', textColor: INK });
+  const nav = [
+    { text: 'Home', href: '/' },
+    { text: 'Menu', href: '/menu/' },
+  ];
+  b.navbar(root, 'Casa Oliva', nav, { variant: 'light', textColor: INK });
 
   // A kitchen at service is the argument for the restaurant. The plated dish
   // stays on the right: the footage is the room, the photograph is the food,
@@ -145,5 +145,28 @@ export default function restaurant() {
     background: INK, ink: CREAM, muted: PANEL,
   });
 
-  return { id: 14, name: 'Restaurant — Casa Oliva', category: 'Business', thumb: P.restaurant.pasta(600), map: b.map };
+  const menuPage = createCompanionPage({
+    brand: 'Casa Oliva', nav, background: CREAM, panel: PANEL, ink: INK, accent: TERRA, muted: MUTED,
+    video: clipFor('food').url, poster: P.restaurant.tasting(1600),
+    eyebrow: 'THIS WEEK', title: 'The menu follows the market',
+    intro: 'Five courses, one sitting and a few decisions made only after the morning delivery.',
+    cards: [
+      ['From the market', 'local_florist', 'Vegetables and herbs bought that morning, while they still decide the menu.'],
+      ['From the fire', 'outdoor_grill', 'One course cooked over olive wood and served as soon as it is ready.'],
+      ['From the cellar', 'wine_bar', 'Small regional bottles chosen to sit quietly beside the food.'],
+    ],
+    listTitle: 'A typical evening',
+    listItems: ['Warm bread, cultured butter and bitter leaves', 'Charred courgette with almond and lemon', 'Market fish, white beans and fennel', 'Stone fruit with olive oil cake'],
+    quote: 'The kind of dinner that feels generous without ever feeling busy.', author: 'Leah Stern, The Table',
+    faq: ['Can you accommodate allergies?', 'Yes, with forty-eight hours’ notice. The room is too small to improvise safely during service.', 'Is there a vegetarian menu?', 'Always. It follows the same five-course shape.'],
+    ctaTitle: 'One table is still a table', ctaText: 'Tell us the date and how many are coming.', ctaLabel: 'Call to reserve', ctaHref: '/',
+    footerNote: 'Dinner Tuesday to Saturday. One sitting at seven.',
+  });
+  return {
+    id: 14, name: 'Restaurant — Casa Oliva', category: 'Business', thumb: P.restaurant.pasta(600),
+    pages: [
+      { name: 'Home', slug: 'home', map: b.map },
+      { name: 'Menu', slug: 'menu', map: menuPage },
+    ],
+  };
 }
