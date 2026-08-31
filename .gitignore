@@ -12,3 +12,6 @@ dragcanvas-project-code.txt
 # Tool caches
 .serena/
 openspec/
+
+# graphify knowledge graph (local only)
+graphify-out/
