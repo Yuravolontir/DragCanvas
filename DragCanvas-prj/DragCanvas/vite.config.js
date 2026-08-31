@@ -19,6 +19,27 @@ export default defineConfig({
     },
   },
   server: {
+    /**
+     * Listen on every interface, and tell the browser where to find the HMR
+     * socket.
+     *
+     * WSL2 in its default NAT mode forwards localhost for plain HTTP but does
+     * not reliably carry the WebSocket upgrade, so the page loads and then
+     * never updates - Vite prints "failed to connect to websocket" and the tab
+     * quietly serves whatever it downloaded first. Combined with the polling
+     * watcher below that is a trap: the server sees every edit and the browser
+     * hears about none of them.
+     *
+     * If this still fails, the durable fix is one level down - put
+     * `networkingMode=mirrored` in %USERPROFILE%\.wslconfig and run
+     * `wsl --shutdown`, which removes the whole class of problem.
+     */
+    host: true,
+    hmr: {
+      host: 'localhost',
+      protocol: 'ws',
+      clientPort: 5173,
+    },
     watch: {
       /**
        * Poll for changes instead of waiting to be told about them.

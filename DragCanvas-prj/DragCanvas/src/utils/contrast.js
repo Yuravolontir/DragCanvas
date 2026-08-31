@@ -79,13 +79,13 @@ export const TEXT_PROPS = {
         { colour: 'accent', size: 42, weight: 800 },
         { colour: 'color', size: 14 },
     ],
-    Testimonial: [{ colour: 'color', on: 'background', size: 18 }],
+    Testimonial: [{ colour: 'color', on: 'background', size: 18, opacity: 0.65 }],
     Timeline: [
         { colour: 'color', size: 15 },
         { colour: 'accent', size: 15 },
         { colour: ON_ACCENT, on: 'accent', size: 14, weight: 700 },
     ],
-    TeamGrid: [{ colour: 'color', size: 15 }],
+    TeamGrid: [{ colour: 'color', size: 15, opacity: 0.65 }],
     Accordion: [{ colour: 'color', on: 'background', size: 15 }],
     Pricing: [
         { colour: 'color', on: 'background', size: 15 },
@@ -114,15 +114,33 @@ export const TEXT_PROPS = {
         { colour: ON_ACCENT, on: 'accent', size: 15, weight: 600 },
     ],
     Booking: [
-        { colour: 'color', size: 15 },
+        { colour: 'color', size: 15, opacity: 0.7 },
         { colour: ON_ACCENT, on: 'accent', size: 15, weight: 600 },
     ],
     Engagement: [
         { colour: 'color', size: 15 },
         { colour: ON_ACCENT, on: 'accent', size: 15, weight: 600 },
     ],
+    // The slide label printed white on the accent whatever the accent was;
+    // Carousel.jsx now asks readableInk, and this is what holds it there.
+    Carousel: [{ colour: ON_ACCENT, on: 'accent', size: 12, weight: 600 }],
     Map: [{ colour: 'color', size: 14 }],
 };
+
+/**
+ * The colour as it actually reaches the screen.
+ *
+ * Seven elements fade their own text in their stylesheet - a Stats label at
+ * 0.7, a Timeline note at 0.7, a Pricing period at 0.6 - and CSS opacity is
+ * invisible to anything reading props. A slate label measuring a comfortable
+ * 7.58:1 on paper arrives at 3.59:1, under the floor, and both auditors called
+ * it fine. `opacity` on a spec is how an element declares that fade.
+ */
+export function renderedInk(colour, spec, ground) {
+    const fade = spec?.opacity;
+    const alpha = (colour.a ?? 1) * (typeof fade === 'number' ? fade : 1);
+    return composite({ ...colour, a: alpha }, ground);
+}
 
 /** Resolve a spec's `size`/`weight`, which may name a prop or be a number. */
 export const specSize = (spec, props) => (typeof spec.size === 'string' ? props[spec.size] : spec.size);

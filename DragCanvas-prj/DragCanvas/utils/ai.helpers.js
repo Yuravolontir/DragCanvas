@@ -13,6 +13,7 @@ import {
     contrastRatio,
     floorFor,
     isColour,
+    renderedInk,
     selfFill,
     specSize,
     specWeight,
@@ -205,7 +206,7 @@ function repairNodeContrast(node, ground, overMedia) {
             const fill = selfFill(spec, props);
             const seat = fill ? composite(fill, ground) : ground;
 
-            const text = composite(current, seat);
+            const text = renderedInk(current, spec, seat);
             const need = floorFor(specSize(spec, props), specWeight(spec, props));
             if (contrastRatio(text, seat) + 0.005 >= need) continue;
 
@@ -216,6 +217,62 @@ function repairNodeContrast(node, ground, overMedia) {
 
     const children = Array.isArray(node.children) ? node.children : [];
     for (const child of children) repairNodeContrast(child, childGround, childOverMedia);
+}
+
+/**
+ * Give a still hero the motion it was asked for, without inventing a section.
+ *
+ * Retrying is the honest answer to a missing video hero - grafting one in is our
+ * judgement replacing the model's - but a retry can come back still. This is the
+ * last resort, and it is deliberately the smallest possible edit: the model
+ * already chose a full-bleed opening with a photograph behind it, so the
+ * photograph becomes the poster and a clip plays behind the same words, in the
+ * same composition, at the same crop. Nothing moves and nothing is added.
+ *
+ * Only ever the first section of the first page, and only when that section
+ * really is a full-bleed hero: a background image with children sitting on it.
+ * A page whose opening is a plain white band is left alone, because turning that
+ * into footage is a design decision nobody asked for.
+ *
+ * @returns {boolean} whether anything was promoted
+ */
+export function promoteHeroToVideo(layout, subject) {
+    const pages = Array.isArray(layout?.pages)
+        ? layout.pages
+        : [{ sections: layout?.sections || [] }];
+    const hero = pages[0]?.sections?.[0];
+    if (!hero || typeof hero !== 'object') return false;
+
+    const props = hero.props || {};
+    const poster = props.backgroundImage;
+    if (!poster || typeof poster !== 'string') return false;
+    if (!Array.isArray(hero.children) || hero.children.length === 0) return false;
+
+    const clip = pickStockClip(subject);
+    hero.children = [
+        {
+            type: 'Video',
+            props: {
+                sourceType: 'background',
+                src: clip.url,
+                poster,
+                // The scrim the prompt asks for by default: enough that white
+                // type reads over footage nobody has seen yet.
+                overlay: 45,
+                position: 'center',
+                minHeight: '480px',
+                loop: true,
+                width: '100%',
+                height: 'auto',
+            },
+            children: hero.children,
+        },
+    ];
+    // The still is the poster now; leaving it as the section background would
+    // paint it twice, once behind footage that covers it.
+    delete props.backgroundImage;
+    hero.props = props;
+    return true;
 }
 
 /** Walk every page's sections, repairing any text that cannot be read. */

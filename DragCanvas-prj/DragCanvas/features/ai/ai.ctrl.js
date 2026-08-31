@@ -1,5 +1,5 @@
 import * as aiService from './ai.service.js';
-import { safeParseAIJson, normalizeLayout, replacePlaceholdersInJson, fillRemainingVideoPlaceholders } from '../../utils/ai.helpers.js';
+import { safeParseAIJson, normalizeLayout, replacePlaceholdersInJson, fillRemainingVideoPlaceholders, promoteHeroToVideo } from '../../utils/ai.helpers.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
 import { cloudinary } from '../../middlewares/files.js';
 import AssetMdl from '../assets/asset.mdl.js';
@@ -22,7 +22,19 @@ const PAGE_REFINE_TOKENS = Number(process.env.AI_PAGE_MAX_TOKENS) || 12000;
  * site that is better off plain and make every opening identical.
  */
 const MOTION_WORDS = /\b(video|animat|motion|moving|footage|cinematic|dynamic|parallax|reel|clip)/i;
-export const wantsMotion = (prompt) => MOTION_WORDS.test(String(prompt || ''));
+/** "no video", "without animation", "static page" - taken at their word. */
+const REFUSES_MOTION = /\b(no|without|avoid|skip)\b[^.]{0,24}\b(video|animation|motion|footage)|\bstatic\b/i;
+
+/**
+ * The prompt already tells the model a background video opening "suits most
+ * sites", and then nothing checked, so it produced one only when it felt like
+ * it. Expecting one by default is what the prompt asks for; a request that
+ * argues against motion is taken at its word.
+ */
+export const wantsMotion = (prompt) => !REFUSES_MOTION.test(String(prompt || ''));
+
+/** Asked for motion in so many words. Worth spending a retry on; the rest is not. */
+export const askedForMotion = (prompt) => MOTION_WORDS.test(String(prompt || ''));
 
 /** Does any page open on footage? */
 export function hasVideoHero(layout) {
@@ -184,6 +196,7 @@ export async function generateWebsite(req, res) {
     // page. It is held here so the last attempt can return it rather than fail.
     let bestSoFar = null;
     const motionWanted = wantsMotion(cleanPrompt);
+    const motionAsked = askedForMotion(cleanPrompt);
 
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
         try {
@@ -200,7 +213,7 @@ export async function generateWebsite(req, res) {
             // Retrying rather than repairing on purpose - grafting a video
             // section into a composition built around an image would be our
             // judgement replacing the model's, and it reads as neither.
-            if (motionWanted && !hasVideoHero(layout) && attempt < MAX_ATTEMPTS) {
+            if (motionAsked && !hasVideoHero(layout) && attempt < MAX_ATTEMPTS) {
                 bestSoFar = layout;
                 lastProblem = 'no video hero although the request asked for motion';
                 console.log(`[AI] attempt ${attempt}/${MAX_ATTEMPTS}: ${lastProblem}`);
@@ -225,6 +238,13 @@ export async function generateWebsite(req, res) {
             // requests a file named after the placeholder and shows nothing.
             fillRemainingVideoPlaceholders(layout, cleanPrompt);
 
+            // Still opening on a photograph: give the hero a clip behind the
+            // words it already has, rather than shipping the one thing the
+            // prompt says most sites want moving and nothing ever enforced.
+            if (motionWanted && !hasVideoHero(layout) && promoteHeroToVideo(layout, cleanPrompt)) {
+                console.log('[AI] promoted the still hero to a background video');
+            }
+
             return res.status(200).json(buildSuccessResponse(layout));
         } catch (error) {
             lastProblem = error.message;
@@ -237,6 +257,7 @@ export async function generateWebsite(req, res) {
     if (bestSoFar) {
         console.log(`[AI] returning a layout without a video hero after ${MAX_ATTEMPTS} attempts`);
         fillRemainingVideoPlaceholders(bestSoFar, cleanPrompt);
+        if (!hasVideoHero(bestSoFar)) promoteHeroToVideo(bestSoFar, cleanPrompt);
         return res.status(200).json(buildSuccessResponse(bestSoFar));
     }
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import API_URL, { apiFetch, getToken } from './api.js';
+import { stageProgress } from './utils/generationProgress.js';
 import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
 import { craftProjectToAiLayout } from './utils/craftToAiLayout.js';
 import { collectImageTasks, isImageRefinement } from './utils/imagePrompts.js';
@@ -203,15 +204,16 @@ function stageLabel(stage) {
       if (images.length === 0) return;
 
       const prompts = [...new Set(images.map(i => i.prompt))];
-      let remaining = prompts.length;
-      setStage({ name: 'images', remaining });
+      const total = prompts.length;
+      let remaining = total;
+      setStage({ name: 'images', remaining, total });
 
       // Keep provider pressure modest while still replacing every placeholder.
       for (let index = 0; index < prompts.length; index += 3) {
         await Promise.all(prompts.slice(index, index + 3).map(async (imagePrompt) => {
           const url = await generateImage(imagePrompt);
           remaining -= 1;
-          setStage({ name: 'images', remaining });
+          setStage({ name: 'images', remaining, total });
           if (!url) return;
           for (const img of images) if (img.prompt === imagePrompt) img.target[img.key] = url;
         }));
@@ -343,6 +345,31 @@ function stageLabel(stage) {
           <div className="ai-generation-modal">
             <div className="ai-generation-spinner" aria-hidden="true" />
             <strong>{stageLabel(stage)}</strong>
+            {(() => {
+              const progress = stageProgress(stage);
+              return (
+                <>
+                  <div
+                    className="ai-generation-progress"
+                    data-mode={progress.mode}
+                    role="progressbar"
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    {...(progress.mode === 'value'
+                      ? { 'aria-valuenow': Math.round(progress.value * 100) }
+                      : {})}
+                  >
+                    <div
+                      className="ai-generation-progress-fill"
+                      style={progress.mode === 'value'
+                        ? { width: `${Math.round(progress.value * 100)}%` }
+                        : undefined}
+                    />
+                  </div>
+                  {progress.step && <span className="ai-generation-step">{progress.step}</span>}
+                </>
+              );
+            })()}
             <span>AI is building your site. This can take a little while.</span>
           </div>
         </div>

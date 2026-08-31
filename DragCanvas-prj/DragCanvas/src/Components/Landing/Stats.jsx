@@ -155,9 +155,19 @@ export const Stats = ({ items, accent, color, align, animation, countUp, animati
           }}>
             {counting ? statDisplayAtProgress(row, progress) : statDisplay(row)}
           </span>
+          {/*
+            * Muted by its colour, not by opacity.
+            *
+            * This label used to be printed at 0.7, which reads as a tasteful
+            * grey and measures as something else: across the fifteen templates
+            * in the gallery the faded label landed between 2.82:1 and 4.27:1,
+            * every one of them under the 4.5:1 a 14px label needs, and no tool
+            * could see it because opacity is not a colour. An author who wants
+            * a quieter label picks a quieter colour, which both the contrast
+            * check and the generator's repair can actually read.
+            */}
           <span style={{
             fontSize: 14,
-            opacity: 0.7,
             color: color ? `rgba(${Object.values(color)})` : undefined,
           }}>
             {row.label}

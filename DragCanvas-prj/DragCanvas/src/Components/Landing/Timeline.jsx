@@ -40,7 +40,10 @@ export const Timeline = ({ steps, accent, color }) => {
           </div>
           <div style={{ paddingBottom: i < records.length - 1 ? 28 : 0, color: color ? `rgba(${Object.values(color)})` : undefined }}>
             <span style={{ display: 'block', fontWeight: 700, fontSize: 17 }}>{row.title}</span>
-            <span style={{ display: 'block', fontSize: 14, opacity: 0.7, lineHeight: 1.6, marginTop: 4 }}>{row.detail}</span>
+            /* Muted by colour, not opacity: a fade is invisible to the contrast
+               check and to the author, and measured across the gallery it put
+               this text under the floor. See Stats.jsx for the full reasoning. */
+            <span style={{ display: 'block', fontSize: 14, lineHeight: 1.6, marginTop: 4 }}>{row.detail}</span>
           </div>
         </div>
       ))}

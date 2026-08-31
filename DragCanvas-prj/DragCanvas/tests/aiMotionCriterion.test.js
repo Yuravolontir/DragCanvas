@@ -1,38 +1,40 @@
 /**
- * When is a still hero a defect?
+ * When is a still hero worth another round trip?
  *
- * The prompt tells the model to open on a background video and it complies when
- * it feels like it. Requiring one on every site would be wrong - the prompt
- * itself says a video opening suits *most* sites - and would spend a retry on
- * every law firm and dashboard that is better off plain. So the criterion
- * follows the request: motion is required when the person asked for it.
+ * A video opening is expected by default now - the prompt says it suits most
+ * sites - and a hero that arrives still is repaired in place rather than
+ * refused. Spending one of the three attempts is reserved for the case where
+ * the person asked for motion in so many words: that is the request where
+ * coming back with a photograph is a plain miss rather than a preference.
+ *
+ * `wantsMotion` (the default expectation) is covered in heroVideo.test.js.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { wantsMotion, hasVideoHero } from '../features/ai/ai.ctrl.js';
+import { askedForMotion, hasVideoHero } from '../features/ai/ai.ctrl.js';
 
 const videoHero = { type: 'Video', props: { sourceType: 'background', src: 'clip.mp4' }, children: [] };
 const imageHero = { type: 'Container', props: { backgroundImage: 'photo.jpg' }, children: [] };
 
-test('a request that asks for motion is recognised', () => {
+test('a request that asks for motion in words is recognised', () => {
     for (const prompt of [
         'a bakery site with a video hero',
         'animated landing page for a gym',
         'make it cinematic',
         'coffee shop, moving background',
     ]) {
-        assert.equal(wantsMotion(prompt), true, prompt);
+        assert.equal(askedForMotion(prompt), true, prompt);
     }
 });
 
-test('an ordinary request is not treated as asking for motion', () => {
+test('an ordinary request does not by itself earn a retry', () => {
     for (const prompt of [
         'a law firm in Haifa',
         'portfolio for a ceramicist',
         'dashboard for a SaaS product',
     ]) {
-        assert.equal(wantsMotion(prompt), false, prompt);
+        assert.equal(askedForMotion(prompt), false, prompt);
     }
 });
 
@@ -51,9 +53,9 @@ test('a layout that opens on an image has no video hero', () => {
     assert.equal(hasVideoHero({ sections: [imageHero] }), false);
 });
 
-test('a still hero is only a defect when motion was asked for', () => {
+test('only an explicit ask spends one of the three attempts', () => {
     const layout = { sections: [imageHero] };
-    // The pair the controller actually branches on.
-    assert.equal(wantsMotion('a law firm in Haifa') && !hasVideoHero(layout), false, 'no retry for an ordinary request');
-    assert.equal(wantsMotion('a law firm, with a video hero') && !hasVideoHero(layout), true, 'retry when it was asked for');
+    // The pair the controller actually branches on before retrying.
+    assert.equal(askedForMotion('a law firm in Haifa') && !hasVideoHero(layout), false, 'an ordinary request is repaired, not retried');
+    assert.equal(askedForMotion('a law firm, with a video hero') && !hasVideoHero(layout), true, 'asked for it by name: ask again');
 });

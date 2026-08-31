@@ -30,6 +30,7 @@ import {
   contrastRatio as contrast,
   isColour,
   isLarge,
+  renderedInk,
 } from '../src/utils/contrast.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -131,7 +132,7 @@ export function auditContrast(name, map) {
       const seed = isColour(fill) && (fill.a ?? 1) > 0 ? fill : null;
       const { ground, thinScrim } = groundUnder(map, seed ? id : node.parent, seed);
 
-      const text = composite(foreground, ground);
+      const text = renderedInk(foreground, spec, ground);
       const ratio = contrast(text, ground);
       const size = typeof spec.size === 'string' ? props[spec.size] : spec.size;
       const weight = typeof spec.weight === 'string' ? props[spec.weight] : spec.weight;

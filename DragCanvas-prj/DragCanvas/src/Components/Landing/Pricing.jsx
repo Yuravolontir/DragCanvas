@@ -85,11 +85,11 @@ export const Pricing = ({ tiers, featured, accent, background, color }) => {
               boxShadow: isFeatured ? '0 18px 40px -20px rgba(0,0,0,0.35)' : 'none',
             }}
           >
-            <span style={{ fontSize: 15, fontWeight: 600, opacity: 0.7 }}>{tier.name}</span>
+            <span style={{ fontSize: 15, fontWeight: 600 }}>{tier.name}</span>
             <span style={{ fontSize: 38, fontWeight: 800, letterSpacing: '-0.02em', marginTop: 6 }}>
               {tier.price}
             </span>
-            <span style={{ fontSize: 13, opacity: 0.6 }}>{tier.period}</span>
+            <span style={{ fontSize: 13 }}>{tier.period}</span>
 
             <ul style={{ listStyle: 'none', padding: 0, margin: '18px 0 0', display: 'flex', flexDirection: 'column', gap: 8, fontSize: 14 }}>
               {tier.features.map((f, j) => (

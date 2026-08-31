@@ -6,6 +6,7 @@ import { Resizer } from './Resizer';
 import { CarouselSettings } from './CarouselSettings';
 import { readSlides, slideInterval, slidesAutoplay, slidesPerView } from '../../utils/carouselSlides';
 import { opensNewTab, safeHref } from '../../utils/elementRows.js';
+import { readableInkCss } from '../../utils/readableInk.js';
 
 /*
  * This used to render react-bootstrap's <Carousel>, which the exported page
@@ -95,7 +96,6 @@ const Pill = styled.span`
   font-size: 12px;
   font-weight: 600;
   border-radius: 999px;
-  color: #fff;
 `;
 
 const Arrow = styled.button`
@@ -192,6 +192,15 @@ export const Carousel = (props) => {
     accent && typeof accent === 'object'
       ? `rgba(${accent.r}, ${accent.g}, ${accent.b}, ${accent.a ?? 1})`
       : String(accent || '#0d6efd');
+
+  /**
+   * The slide label printed white on the accent whatever the accent was, which
+   * is the exact fault readableInk was written for and this element was missed
+   * in that sweep: measured across the palettes the generator draws from, white
+   * on the accent never reaches the 4.5:1 a 12px label needs - 2.21:1 on the
+   * lime, 3.39:1 on the ocean blue. The label follows the fill instead.
+   */
+  const labelInk = accent && typeof accent === 'object' ? readableInkCss(accent) : '#fff';
 
   /** One slide's width, measured rather than assumed. */
   const step = () => {
@@ -307,7 +316,7 @@ export const Carousel = (props) => {
                   )}
                   {(slide.label || slide.heading || slide.text) && (
                     <Caption>
-                      {slide.label && <Pill style={{ background: accentCss }}>{slide.label}</Pill>}
+                      {slide.label && <Pill style={{ background: accentCss, color: labelInk }}>{slide.label}</Pill>}
                       {slide.heading && <h3>{slide.heading}</h3>}
                       {slide.text && <p>{slide.text}</p>}
                     </Caption>
