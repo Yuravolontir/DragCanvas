@@ -161,10 +161,14 @@ export const Viewport = ({ children }) => {
    * into a tablet turns it back on without unmounting anything.
    */
   useEffect(() => {
+    // Only when it actually changes. Writing the same value still pushes a new
+    // state through Craft, which rebuilds the tree and re-runs every ref on a
+    // canvas that did not need touching.
+    if (enabled === !phone) return;
     actions.setOptions((options) => {
       options.enabled = !phone;
     });
-  }, [phone, actions]);
+  }, [phone, enabled, actions]);
 
   /*
    * Craft has no touch drag of its own. Called from here rather than at module
@@ -227,6 +231,15 @@ export const Viewport = ({ children }) => {
       }}
       style={{ background: enabled ? 'var(--surface-dim, #f7f4ec)' : 'transparent' }}
       ref={(ref) => {
+        /*
+         * React calls a ref callback with null as the element goes away, and
+         * these connectors answer that by asking Craft to set an event on a
+         * node that has just been removed - "Invariant failed: Node does not
+         * exist". It was survivable while this canvas only ever unmounted with
+         * the whole editor; switching `enabled` rebuilds the tree underneath it,
+         * which is what started surfacing it.
+         */
+        if (!ref) return;
         connectors.select(connectors.hover(ref, null), null);
       }}
     >

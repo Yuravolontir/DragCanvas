@@ -638,7 +638,8 @@ export function createCompanionPage({
 }) {
   const b = createBuilder();
   const root = b.root({ background, width: '100%' });
-  b.navbar(root, brand, nav, { variant: 'light', textColor: ink });
+  const darkNavigation = readableInk(background).r > 200;
+  b.navbar(root, brand, nav, { variant: darkNavigation ? 'dark' : 'light', textColor: ink });
 
   const hero = b.backgroundVideo(root, {
     src: video,
@@ -651,7 +652,10 @@ export function createCompanionPage({
     padding: ['72', '48', '56', '48'],
     width: '100%',
   }, 'Page hero copy');
-  b.badge(heroCopy, eyebrow, { background: panel, color: accent });
+  b.badge(heroCopy, eyebrow, {
+    background: panel,
+    color: contrastRatio(accent, panel) >= 4.5 ? accent : readableInk(panel),
+  });
   b.heading(heroCopy, title, {
     level: '1', fontSize: '46', color: WHITE, margin: ['14', '0', '12', '0'],
   });
@@ -690,8 +694,8 @@ export function createCompanionPage({
     buttonBackground: background, buttonColor: ink,
   });
   b.footer(root, {
-    brand, note: footerNote, socials: [], background: ink,
-    ink: background, muted: rgba(255, 255, 255, 0.68),
+    brand, note: footerNote, socials: [], background: panel,
+    ink, muted,
   });
   return b.map;
 }

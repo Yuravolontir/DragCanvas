@@ -217,6 +217,11 @@ export const Toolbox = ({ offCanvas = false, drawer = false }) => {
       key={entry.name}
       className="dc-toolbox-item"
       ref={(ref) => {
+        // Guarded for the same reason as the canvas in Viewport: React hands a
+        // ref callback null on the way out, and a Craft connector given null
+        // asks for a node that has already gone. The Resizer has always done
+        // this; these two had not.
+        if (!ref) return;
         create(ref, entry.element());
       }}
     >
