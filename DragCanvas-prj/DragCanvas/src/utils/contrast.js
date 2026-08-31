@@ -45,6 +45,19 @@ export const isLarge = (size, weight) => {
 /** The floor a piece of text has to clear, given how big it is. */
 export const floorFor = (size, weight) => (isLarge(size, weight) ? 3 : 4.5);
 
+/**
+ * What each navbar theme actually paints, from Bootstrap's own palette.
+ *
+ * `custom` is the one NavbarElement sets by hand (#333); the rest are
+ * Bootstrap 5's .bg-dark, .bg-primary and .bg-light.
+ */
+export const NAVBAR_GROUND = {
+    dark: { r: 33, g: 37, b: 41, a: 1 },
+    primary: { r: 13, g: 110, b: 253, a: 1 },
+    light: { r: 248, g: 249, b: 250, a: 1 },
+    custom: { r: 51, g: 51, b: 51, a: 1 },
+};
+
 /** The label those elements print themselves, which follows their fill. */
 export const ON_ACCENT = 'auto';
 
@@ -107,7 +120,12 @@ export const TEXT_PROPS = {
         { colour: 'accent', size: 15 },
         { colour: ON_ACCENT, on: 'accent', size: 15, weight: 600 },
     ],
-    NavbarElement: [{ colour: 'textColor', on: 'background', size: 15 }],
+    // The navbar has no background prop: it paints itself with a Bootstrap
+    // class chosen by `variant`, and defaults to the dark one. Reading a prop
+    // that does not exist made the repair think the bar sat on whatever was
+    // behind it - a white page - and set near-black type on a near-black bar,
+    // 1.15:1, the whole navigation invisible. The ground comes from the variant.
+    NavbarElement: [{ colour: 'textColor', on: (props) => NAVBAR_GROUND[props.variant || 'dark'] || NAVBAR_GROUND.dark, size: 15 }],
     Icon: [{ colour: 'color', on: (props) => (props.padded === 'yes' ? props.background : null), size: 32, weight: 700 }],
     Form: [
         { colour: 'textColor', on: 'background', size: 15 },

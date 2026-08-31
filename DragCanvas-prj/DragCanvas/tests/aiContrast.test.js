@@ -132,3 +132,22 @@ test('repair is idempotent', () => {
     repairContrast(first.layout);
     assert.deepEqual(colourOf(first.heading), once, 'a second pass must change nothing');
 });
+
+// ---------- grounds an element paints without a prop to read ----------
+
+test('the navbar is judged against the theme it paints, not the page behind it', () => {
+    // It has no background prop - Bootstrap's bg-dark comes from `variant` - so
+    // reading one made the repair think the bar sat on the white page and set
+    // near-black type on a near-black bar: 1.15:1, the navigation invisible.
+    const nav = { type: 'NavbarElement', props: { variant: 'dark', textColor: { r: 24, g: 24, b: 27, a: 1 } }, children: [] };
+    repairContrast(layoutOf(section({ background: { r: 255, g: 255, b: 255, a: 1 } }, [nav])));
+
+    assert.ok(contrastRatio(nav.props.textColor, { r: 33, g: 37, b: 41, a: 1 }) >= 4.5, 'must read on bg-dark');
+});
+
+test('a light navbar keeps dark type', () => {
+    const nav = { type: 'NavbarElement', props: { variant: 'light', textColor: { r: 255, g: 255, b: 255, a: 1 } }, children: [] };
+    repairContrast(layoutOf(section({ background: { r: 18, g: 18, b: 28, a: 1 } }, [nav])));
+
+    assert.ok(contrastRatio(nav.props.textColor, { r: 248, g: 249, b: 250, a: 1 }) >= 4.5, 'white on bg-light must be repaired');
+});
