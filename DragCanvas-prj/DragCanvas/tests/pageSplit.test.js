@@ -157,3 +157,37 @@ test('an anchor the model already wrote is left alone', () => {
     anchorNavLinks({ sections: [nav] });
     assert.equal(nav.props.links[0].href, '#pricing');
 });
+
+// ---------- the bar that lives inside the opening section ----------
+
+test('a hero carrying the navbar is still a hero', () => {
+    // The model often puts the bar inside the opening section. Treating that as
+    // navigation skipped the only hero on the page and put the video behind the
+    // row of feature cards that came next.
+    const hero = { type: 'Container', props: {}, children: [navbar(), heading('Your Vision. Our Code.')] };
+    const cards = { type: 'Container', props: {}, children: [heading('Our Core Competencies')] };
+    const layout = { sections: [hero, cards] };
+
+    assert.equal(promoteHeroToVideo(layout, 'web agency'), true);
+    assert.equal(layout.sections[1].children[0].type, 'Heading', 'the cards are left alone');
+
+    const video = hero.children.find(c => c.type === 'Video');
+    assert.ok(video, 'the opening section got the footage');
+    assert.equal(video.children[0].props.text, 'Your Vision. Our Code.');
+});
+
+test('the navigation stays in front of the footage, not behind it', () => {
+    const hero = { type: 'Container', props: {}, children: [navbar(), heading('Words')] };
+    promoteHeroToVideo({ sections: [hero] }, 'anything');
+
+    assert.equal(hero.children[0].type, 'NavbarElement', 'the bar is above the video, still clickable');
+    assert.equal(hero.children[1].type, 'Video');
+});
+
+test('a section that is only the navigation is still skipped', () => {
+    const layout = { sections: [navbar(), { type: 'Container', props: {}, children: [heading('Real hero')] }] };
+    promoteHeroToVideo(layout, 'x');
+
+    assert.equal(layout.sections[0].type, 'NavbarElement', 'untouched');
+    assert.equal(layout.sections[1].children[0].type, 'Video');
+});

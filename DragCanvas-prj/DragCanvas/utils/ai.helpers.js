@@ -237,6 +237,21 @@ function navbarOf(section) {
     return kids.find(kid => kid?.type === 'NavbarElement') || null;
 }
 
+/**
+ * A section that is the navigation and nothing else.
+ *
+ * Different from "contains a navbar": the model often puts the bar inside the
+ * opening section, so the hero and the navigation arrive as one block. Treating
+ * that as navigation skipped the only hero on the page and put the video behind
+ * whatever came next - a row of feature cards - which is not an opening.
+ */
+function isNavigationOnly(section) {
+    if (!navbarOf(section)) return false;
+    if (section.type === 'NavbarElement') return true;
+    const kids = Array.isArray(section.children) ? section.children : [];
+    return kids.every(kid => kid?.type === 'NavbarElement' || kid?.type === 'Spacer' || !kid?.type);
+}
+
 /** The first piece of text in a chunk, for naming the page it becomes. */
 function firstHeading(nodes) {
     for (const node of nodes || []) {
@@ -314,12 +329,18 @@ export function promoteHeroToVideo(layout, subject) {
     const sections = pages[0]?.sections;
     if (!Array.isArray(sections) || !sections.length) return false;
 
-    const heroIndex = sections.findIndex(section => section && typeof section === 'object' && !navbarOf(section));
+    const heroIndex = sections.findIndex(section => section && typeof section === 'object' && !isNavigationOnly(section));
     if (heroIndex === -1) return false;
 
     const hero = sections[heroIndex];
     const props = hero.props || {};
     if (!Array.isArray(hero.children) || hero.children.length === 0) return false;
+
+    // When the bar lives inside the opening section it stays in front of the
+    // footage, above it: navigation behind a video is unreadable and unclickable.
+    const bar = hero.children.filter(child => child?.type === 'NavbarElement');
+    const body = hero.children.filter(child => child?.type !== 'NavbarElement');
+    if (body.length === 0) return false;
 
     // The best still already on this hero becomes the poster, so the first
     // frame a visitor sees is the picture the model chose for the page.
@@ -329,14 +350,14 @@ export function promoteHeroToVideo(layout, subject) {
     // A child painting the Container default - opaque white - sits on top of the
     // footage and hides it. Whatever the model chose as the hero's own ground is
     // the video now, so the band in front of it becomes transparent.
-    for (const child of hero.children) {
+    for (const child of body) {
         if (child?.type !== 'Container') continue;
         child.props = { ...(child.props || {}), background: { r: 0, g: 0, b: 0, a: 0 } };
     }
     // The type now sits on footage nobody has seen behind a dark scrim, which is
     // the one ground no measurement can resolve. The exporter and the contrast
     // check both assume black under the scrim, so the ink follows that.
-    for (const child of hero.children) inkOverFootage(child);
+    for (const child of body) inkOverFootage(child);
 
     hero.children = [
         {
@@ -354,9 +375,10 @@ export function promoteHeroToVideo(layout, subject) {
                 width: '100%',
                 height: 'auto',
             },
-            children: hero.children,
+            children: body,
         },
     ];
+    hero.children = [...bar, ...hero.children];
     // The still is the poster now; leaving it as the section background would
     // paint it twice, once behind footage that covers it.
     delete props.backgroundImage;
