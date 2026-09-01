@@ -6,6 +6,7 @@
 
 import { pickStockClip } from '../src/utils/stockVideo.js';
 import { readableInk } from '../src/utils/readableInk.js';
+import { staggerAnimations } from './ai.animation.js';
 import {
     ON_ACCENT,
     TEXT_PROPS,
@@ -531,10 +532,10 @@ export function normalizeLayout(parsed) {
             const wrapped = wrapToSections(page);
             return { name, slug, sections: (wrapped.sections || []).map(normalizeNode).filter(Boolean) };
         }).filter((page) => page.sections.length);
-        return repairContrast({ pages });
+        return staggerAnimations(repairContrast({ pages }));
     }
     const wrapped = wrapToSections(parsed);
-    return repairContrast({ sections: (wrapped.sections || []).map(normalizeNode).filter(Boolean) });
+    return staggerAnimations(repairContrast({ sections: (wrapped.sections || []).map(normalizeNode).filter(Boolean) }));
 }
 
 /** Swap IMAGE_PLACEHOLDER_n / VIDEO_PLACEHOLDER_n for real media, in place. */

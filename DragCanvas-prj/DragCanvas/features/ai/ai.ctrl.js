@@ -1,4 +1,5 @@
 import * as aiService from './ai.service.js';
+import { countAuthoredAnimation } from '../../utils/ai.animation.js';
 import { safeParseAIJson, normalizeLayout, replacePlaceholdersInJson, fillRemainingVideoPlaceholders, promoteHeroToVideo, splitConcatenatedPages, anchorNavLinks } from '../../utils/ai.helpers.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
 import { cloudinary } from '../../middlewares/files.js';
@@ -167,7 +168,14 @@ async function attemptGeneration(prompt, creativity) {
         parsed = safeParseAIJson(await aiService.repairLayoutJson(raw));
     }
 
-    return normalizeLayout(parsed);
+    // Counted before the layout is normalised, because normalisation is what
+    // fills the gaps in. Nothing retries on this - the repair is deterministic
+    // and an extra provider call costs a visitor twenty seconds - but a page
+    // that arrives with no entrances at all is worth being able to see.
+    const authored = countAuthoredAnimation(parsed);
+    const layout = normalizeLayout(parsed);
+    if (authored === 0) console.log('[AI] the model wrote no entrances; the stagger pass supplied them');
+    return layout;
 }
 
 /**
