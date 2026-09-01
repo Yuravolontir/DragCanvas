@@ -35,7 +35,17 @@ export function buildCraftTree(sections, idPrefix = '') {
   nodes.ROOT = {
     type: { resolvedName: 'Container' },
     isCanvas: true,
-    props: { width: '800px', height: 'auto', flexDirection: 'column' },
+    /*
+     * The page is the width of the window, not a column in the middle of it.
+     *
+     * This said 800px, and the exporter turns a fixed root width into a
+     * max-width with the page centred - which is the right thing to do with a
+     * width somebody chose, and this one nobody chose. Every generated site
+     * published as an 800px strip with the background showing either side of
+     * it, on every screen wider than that. A template's root says 100%, which
+     * is why a template fills the window and a generated page did not.
+     */
+    props: { width: '100%', height: 'auto', flexDirection: 'column' },
     displayName: 'Container',
     custom: {},
     hidden: false,

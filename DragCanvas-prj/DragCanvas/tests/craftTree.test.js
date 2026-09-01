@@ -57,6 +57,21 @@ test('a generated node carries every field an editable node carries', () => {
     'the editor saves this shape, so a page built any other way is a page it cannot open');
 });
 
+test('the page fills the window rather than sitting in a column', () => {
+  /*
+   * The root said 800px. The exporter turns a fixed root width into a
+   * max-width and centres the page - right for a width somebody chose, and
+   * this one nobody chose - so every generated site published as an 800px
+   * strip with background showing either side of it.
+   *
+   * A shipped template is the reference again: it says 100%, which is why a
+   * template fills the window.
+   */
+  const { nodes } = buildCraftTree(sections);
+  assert.equal(nodes.ROOT.props.width, templateNodes().ROOT.props.width);
+  assert.doesNotMatch(String(nodes.ROOT.props.width), /px/, 'a fixed width becomes a max-width on publish');
+});
+
 test('every node names its parent, and the parent claims it back', () => {
   const { nodes } = buildCraftTree(sections);
 
