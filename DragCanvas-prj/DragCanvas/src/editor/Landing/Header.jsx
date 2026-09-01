@@ -10,7 +10,7 @@ import { apiFetch } from '../../api.js';
   import { useLocation } from 'react-router-dom';
   import html2canvas from 'html2canvas';
   import { exportToHtml } from '../../utils/exportToHtml';
-  import { inspectBeforePublish } from '../../utils/publishPreflight.js';
+  import { inspectBeforePublish, blockersIn, warningsIn } from '../../utils/publishPreflight.js';
   import { blankPageFrom, emptyPageFrom, syncSharedChrome } from '../../utils/projectPages.js';
   import PublishInfoModal from '../../Components/PublishInfoModal';
 import AuthPromptModal from '../../Components/AuthPromptModal';
@@ -979,11 +979,36 @@ const handlePublish = async () => {
       }));
       const issues = publishPages.flatMap(page => inspectBeforePublish(page.data, { title: page.name })
         .map(issue => ({ ...issue, message: `${page.name}: ${issue.message}` })));
-      if (issues.length) {
+
+      const blockers = blockersIn(issues);
+      if (blockers.length) {
         setPublishing(false);
         setPublishModal(false);
-        showAlertModal(`Fix these items before publishing:\n\n${issues.map((issue) => `• ${issue.message}`).join('\n')}`, 'error');
+        showAlertModal(`Fix these items before publishing:\n\n${blockers.map((issue) => `• ${issue.message}`).join('\n')}`, 'error');
         return;
+      }
+
+      /*
+       * Things that work exactly as built and were probably not meant.
+       *
+       * Asked rather than refused: the page has been read and the button has
+       * been pressed, and a site is not wrong for keeping a default. What was
+       * wrong was finding out afterwards - a booking page quietly offering
+       * somebody else's working day, and no moment at which anything said so.
+       */
+      const warnings = warningsIn(issues);
+      if (warnings.length) {
+        const goAhead = await askConfirm({
+          title: 'Publish with these as they are?',
+          message: `${warnings.map((issue) => `• ${issue.message}`).join('\n')}\n\nEverything here works - it is the values that may not be yours. You can close this, change them, and publish again.`,
+          confirmText: 'Publish anyway',
+          cancelText: 'Let me change them',
+        });
+        if (!goAhead) {
+          setPublishing(false);
+          setPublishModal(false);
+          return;
+        }
       }
       const canonicalUrl = publishTarget === 'custom'
         ? `https://${customDomain.trim().replace(/^https?:\/\//, '').replace(/\/$/, '')}`
