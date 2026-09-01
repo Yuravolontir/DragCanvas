@@ -25,6 +25,7 @@ function stageLabel(stage) {
 }
   import { useEditor } from '@craftjs/core';
 import AuthPromptModal from './Components/AuthPromptModal';
+import { buildCraftTree } from './utils/craftTree.js';
 import { useUserContext } from './userContext.js';
 
   export default function AIAssistant() {
@@ -110,102 +111,6 @@ import { useUserContext } from './userContext.js';
       return () => window.removeEventListener('dragcanvas:project-loaded', projectLoaded);
     }, []);
 
-    /**
-     * Turn the generated layout into a Craft node map.
-     *
-     * Also hands back which node each source element became. The images are
-     * swapped in after the page is already on the canvas, and by then the
-     * layout JSON is no longer what the editor is showing - the nodes are. Without
-     * this mapping the only way back would be to deserialise a second time, which
-     * would throw away anything the person had touched in the meantime.
-     */
-    const buildCraftTree = (sections, idPrefix = '') => {
-      const nodes = {};
-      const nodeIdOf = new Map();
-
-      nodes.ROOT = {
-        type: { resolvedName: 'Container' },
-        isCanvas: true,
-        props: { width: '800px', height: 'auto', flexDirection: 'column' },
-        displayName: 'Container',
-        custom: {},
-        hidden: false,
-        nodes: []
-      };
-
-      let idCounter = 1;
-
-      const buildNode = (element, parentId) => {
-        if (!element || typeof element !== 'object') return;
-        const nodeId = `${idPrefix}node-${idCounter++}`;
-        const resolvedName = element.type
-          ? element.type.charAt(0).toUpperCase() + element.type.slice(1)
-          : 'Container';
-
-        nodes[nodeId] = {
-          type: { resolvedName },
-          isCanvas: resolvedName === 'Container' || (resolvedName === 'Video' && element.props?.sourceType === 'background'),
-          props: element.props || {},
-          displayName: resolvedName,
-          custom: {},
-          hidden: false,
-          nodes: []
-        };
-
-        nodeIdOf.set(element, nodeId);
-        nodes[parentId].nodes.push(nodeId);
-
-        // Recursively build children
-        if (Array.isArray(element.children) && element.children.length > 0) {
-          for (const child of element.children) {
-            buildNode(child, nodeId);
-          }
-        }
-      };
-
-      for (const section of sections) {
-        if (!section || typeof section !== 'object') continue;
-        const sectionId = `${idPrefix}section-${idCounter++}`;
-
-        /**
-         * A top-level section is usually a Container, but not always.
-         *
-         * The model sometimes puts a NavbarElement straight at the top rather
-         * than wrapping it, and this loop used to build every section as a
-         * Container regardless - so that navbar became an empty Container with a
-         * navbar's props, and the page came out with no navigation at all. Two
-         * generations out of three lost their navbar that way.
-         *
-         * Only a Container can hold children, so isCanvas follows the type
-         * rather than being assumed.
-         */
-        const sectionType = section.type && section.type.toLowerCase() !== 'container'
-          ? section.type.charAt(0).toUpperCase() + section.type.slice(1)
-          : 'Container';
-
-        nodes[sectionId] = {
-          type: { resolvedName: sectionType },
-          isCanvas: sectionType === 'Container' || (sectionType === 'Video' && section.props?.sourceType === 'background'),
-          props: section.props || {},
-          displayName: sectionType,
-          custom: {},
-          hidden: false,
-          nodes: []
-        };
-
-        nodeIdOf.set(section, sectionId);
-        nodes.ROOT.nodes.push(sectionId);
-
-        // Build all children recursively
-        if (Array.isArray(section.children)) {
-          for (const child of section.children) {
-            buildNode(child, sectionId);
-          }
-        }
-      }
-
-      return { nodes, nodeIdOf };
-    };
 
     /**
      * Ask our own server for one generated image.
