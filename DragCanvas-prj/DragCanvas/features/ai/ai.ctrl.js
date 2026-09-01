@@ -271,7 +271,7 @@ export async function generateWebsite(req, res) {
             // the below looks at "the first section of the first page".
             const split = splitConcatenatedPages(layout);
             // One page, so its navigation has to point at itself.
-            anchorNavLinks(split);
+            anchorNavLinks(split, cleanPrompt);
 
             // Still opening on a photograph: give the hero a clip behind the
             // words it already has, rather than shipping the one thing the
@@ -293,7 +293,7 @@ export async function generateWebsite(req, res) {
         console.log(`[AI] returning a layout without a video hero after ${MAX_ATTEMPTS} attempts`);
         fillRemainingVideoPlaceholders(bestSoFar, cleanPrompt);
         const splitBest = splitConcatenatedPages(bestSoFar);
-        anchorNavLinks(splitBest);
+        anchorNavLinks(splitBest, cleanPrompt);
         if (!hasVideoHero(splitBest)) promoteHeroToVideo(splitBest, cleanPrompt);
         return res.status(200).json(buildSuccessResponse(splitBest));
     }

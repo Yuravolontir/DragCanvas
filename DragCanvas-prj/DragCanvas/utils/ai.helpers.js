@@ -472,12 +472,46 @@ const titleise = (slug) => String(slug || '')
  *
  * A site with real pages is left alone; there the paths are real.
  */
-export function anchorNavLinks(layout) {
-    if (!layout || Array.isArray(layout.pages)) return layout;
+/**
+ * Two hrefs meaning the same destination.
+ *
+ * The model writes "/about" as readily as "/about/", and a link is not dead for
+ * having been written the other way. Compared loosely so the model keeps its
+ * own wording wherever it was actually pointing somewhere.
+ */
+const samePath = (href) => {
+    const value = String(href || '').trim().toLowerCase();
+    return value.length > 1 ? value.replace(/\/+$/, '') : value;
+};
 
-    const sections = Array.isArray(layout.sections) ? layout.sections : [];
+/** Where a page lives once it is published: home at the root, the rest by slug. */
+const pageHref = (page, index) => (index === 0 || page?.slug === 'home' ? '/' : `/${page.slug}/`);
+
+/**
+ * The bar every visitor meets first, pointed at things that exist.
+ *
+ * NavbarElement's defaults are a brand reading "Brand" and three links to
+ * #home, #features and #pricing. They are right for somebody dragging a navbar
+ * onto a blank canvas and wrong for every generated page: the model often
+ * writes the element and not its contents, the defaults fill the gap, and the
+ * page ships with a bar whose every link goes nowhere and whose name is the
+ * word "Brand". Nothing could see it either - normalisation reads the layout,
+ * and the layout says nothing at all where a default is about to appear.
+ *
+ * A single-page site navigates to its own sections; a multi-page one navigates
+ * to its pages. That second half did not exist: this returned immediately for
+ * anything with pages, so a multi-page site kept the three dead anchors.
+ */
+function navbarLinksFor(layout) {
+    if (Array.isArray(layout.pages)) {
+        return layout.pages.slice(0, 5).map((page, index) => ({
+            text: String(page?.name || titleise(page?.slug) || 'Page').slice(0, 28),
+            href: pageHref(page, index),
+        }));
+    }
+
     const destinations = [];
-    for (const section of sections) {
+    for (const section of layout.sections || []) {
         const anchor = section?.props?.anchor;
         if (typeof anchor !== 'string' || !anchor.trim()) continue;
         if (anchor === 'footer') continue;   // reachable by scrolling, not worth a tab
@@ -486,26 +520,44 @@ export function anchorNavLinks(layout) {
             href: `#${anchor.trim()}`,
         });
     }
-    if (!destinations.length) return layout;
-
     // More than five and the bar wraps; the first few are the ones that matter.
-    const links = destinations.slice(0, 5);
-    const claimed = new Set(links.map(link => link.href));
+    return destinations.slice(0, 5);
+}
 
+/** Every navbar on the layout, wherever it sits. */
+function eachNavbar(layout, visit) {
     const walk = (nodes) => {
         for (const node of nodes || []) {
             if (!node || typeof node !== 'object') continue;
-            if (node.type === 'NavbarElement') {
-                const existing = Array.isArray(node.props?.links) ? node.props.links : [];
-                // Keep the model's own wording wherever it already points at a
-                // section that exists; replace the rest with ones that do.
-                const kept = existing.filter(link => claimed.has(String(link?.href || '')));
-                node.props = { ...(node.props || {}), links: kept.length >= 2 ? kept : links };
-            }
+            if (node.type === 'NavbarElement') visit(node);
             walk(node.children);
         }
     };
-    walk(sections);
+    for (const page of (Array.isArray(layout.pages) ? layout.pages : [layout])) walk(page?.sections);
+}
+
+export function anchorNavLinks(layout, subject = '') {
+    if (!layout) return layout;
+
+    const links = navbarLinksFor(layout);
+    const claimed = new Set(links.map(link => samePath(link.href)));
+    // The word "Brand" is what a visitor reads when the model wrote no name.
+    // The request is the only thing here that knows what the site is about.
+    const brand = titleise(String(subject).trim().replace(/[^a-zA-Z0-9]+/g, '-')).slice(0, 28);
+
+    eachNavbar(layout, (node) => {
+        const props = { ...(node.props || {}) };
+        if (links.length) {
+            const existing = Array.isArray(props.links) ? props.links : [];
+            // Keep the model's own wording wherever it already points at
+            // somewhere that exists; replace the rest with ones that do.
+            const kept = existing.filter(link => claimed.has(samePath(link?.href)));
+            props.links = kept.length >= 2 ? kept : links;
+        }
+        if (!String(props.brand || '').trim() && brand) props.brand = brand;
+        node.props = props;
+    });
+
     return layout;
 }
 

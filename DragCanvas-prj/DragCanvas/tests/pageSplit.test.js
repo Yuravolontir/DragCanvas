@@ -177,11 +177,44 @@ test("the model's own wording survives when it points somewhere real", () => {
 });
 
 test('a real multipage site keeps its real links', () => {
-    const nav = { type: 'NavbarElement', props: { links: [{ text: 'About', href: '/about/' }] }, children: [] };
-    const layout = { pages: [{ name: 'Home', slug: 'home', sections: [nav] }] };
+    // The fixture used to declare one page and link to another, and passed
+    // because nothing touched a multipage layout at all. Now that something
+    // does, it has to say what it means: these pages exist, so these links stay.
+    const nav = { type: 'NavbarElement', props: { links: [
+        { text: 'Home', href: '/' },
+        { text: 'About', href: '/about/' },
+    ] }, children: [] };
+    const layout = { pages: [
+        { name: 'Home', slug: 'home', sections: [nav] },
+        { name: 'About', slug: 'about', sections: [] },
+    ] };
     anchorNavLinks(layout);
 
-    assert.equal(nav.props.links[0].href, '/about/', 'these pages exist');
+    assert.deepEqual(nav.props.links.map(link => link.href), ['/', '/about/'], 'these pages exist');
+});
+
+test('a trailing slash is not what makes a link real', () => {
+    // The model writes "/about" as readily as "/about/".
+    const nav = { type: 'NavbarElement', props: { links: [
+        { text: 'Home', href: '/' },
+        { text: 'About us', href: '/about' },
+    ] }, children: [] };
+    anchorNavLinks({ pages: [
+        { name: 'Home', slug: 'home', sections: [nav] },
+        { name: 'About', slug: 'about', sections: [] },
+    ] });
+
+    assert.equal(nav.props.links[1].text, 'About us', 'its wording survives');
+});
+
+test('a link to a page that does not exist is replaced', () => {
+    const nav = { type: 'NavbarElement', props: { links: [{ text: 'Shop', href: '/shop/' }] }, children: [] };
+    anchorNavLinks({ pages: [
+        { name: 'Home', slug: 'home', sections: [nav] },
+        { name: 'About', slug: 'about', sections: [] },
+    ] });
+
+    assert.deepEqual(nav.props.links.map(link => link.href), ['/', '/about/']);
 });
 
 test('a page whose sections carry no anchors is left alone', () => {
