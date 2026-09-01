@@ -1,4 +1,5 @@
 import { apiFetch } from './api.js';
+import SitePreview from './Components/SitePreview.jsx';
 import { useState, useEffect } from 'react'
 import NavBar from './NavBar';
 import Container from 'react-bootstrap/Container';
@@ -285,33 +286,25 @@ export default function MyProject() {
                     e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
-                  {/* Thumbnail */}
-                  {project.ThumbnailURL && (
-                    <div style={{
-                      height: isFirst ? '300px' : '200px',
-                      overflow: 'hidden',
-                      background: 'var(--surface-dim)',
-                    }}>
-                      <img
-                        src={project.ThumbnailURL}
-                        alt={project.ProjectName}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          display: 'block',
-                          transition: 'all 0.5s ease',
-                        }}
-                        draggable={false}
-                        onMouseEnter={(e) => {
-                          e.target.style.transform = 'scale(1.05)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.transform = 'scale(1)';
-                        }}
-                      />
-                    </div>
-                  )}
+                  {/*
+                    * The site itself, not a picture of it.
+                    *
+                    * This was a stored ThumbnailURL, and the whole block was
+                    * skipped when there was not one - which is most of the
+                    * time, so a list of somebody's own sites showed no sites.
+                    * The gallery already renders a real page on each card; a
+                    * project deserves the same and now shares the component.
+                    * The slice each card shows lives in responsive.css, so the
+                    * featured card can stop being a different shape at the
+                    * width where it stops being a different size.
+                    */}
+                  <SitePreview
+                    className="dc-project-preview"
+                    endpoint={`/api/projects/${project.Project_ID}`}
+                    designKey="ProjectData"
+                    name={project.ProjectName}
+                    fallbackSrc={project.ThumbnailURL}
+                  />
 
                   {/* Body */}
                   <div style={{ padding: '24px' }}>

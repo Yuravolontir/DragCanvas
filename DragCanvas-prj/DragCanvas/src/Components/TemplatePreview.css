@@ -65,6 +65,19 @@
   animation: tpl-preview-sweep 1.6s ease-in-out infinite;
 }
 
+/*
+ * Given up, as opposed to still waiting.
+ *
+ * The sweep above says "any moment now". A card whose design could not be drawn
+ * and has no stored picture behind it was sweeping for ever, which is the one
+ * thing a loading state must never do.
+ */
+.tpl-preview__blank {
+  position: absolute;
+  inset: 0;
+  background: var(--surface-dim, #f4f1ea);
+}
+
 @keyframes tpl-preview-sweep {
   from { background-position: 150% 0; }
   to { background-position: -50% 0; }

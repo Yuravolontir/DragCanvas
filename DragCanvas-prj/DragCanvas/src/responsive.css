@@ -103,6 +103,23 @@
   grid-column: span 8;
 }
 
+/*
+ * How much of each site its card shows, as a share of the 1280px the page is
+ * drawn at. It lives here for the same reason the spans do: the featured card
+ * is twice as wide, so one shared ratio would make it twice as tall, and below
+ * 1024 it stops being wider and the difference has to stop with it.
+ *
+ * The narrow cards show more of the site and the wide one shows it larger,
+ * which is the trade either shape was going to make anyway.
+ */
+.dc-projects-grid > * .dc-project-preview {
+  --tpl-height: 1.15;
+}
+
+.dc-projects-grid > :first-child .dc-project-preview {
+  --tpl-height: 0.7;
+}
+
 .dc-projects-header {
   display: flex;
   flex-wrap: wrap;
@@ -120,6 +137,10 @@
   .dc-projects-grid > *,
   .dc-projects-grid > :first-child {
     grid-column: span 3;
+  }
+
+  .dc-projects-grid > :first-child .dc-project-preview {
+    --tpl-height: 1.15;
   }
 }
 
