@@ -24,6 +24,8 @@ function stageLabel(stage) {
   return 'Working…';
 }
   import { useEditor } from '@craftjs/core';
+import AuthPromptModal from './Components/AuthPromptModal';
+import { useUserContext } from './userContext.js';
 
   export default function AIAssistant() {
     const [prompt, setPrompt] = useState('');
@@ -49,6 +51,44 @@ function stageLabel(stage) {
     const [history, setHistory] = useState([]);
 
     const { actions, query } = useEditor();
+
+    /*
+     * The generator is the one part of this editor a visitor cannot have.
+     *
+     * Everything else on this page works signed out - drag things around, load
+     * a template, look at the result - and that is deliberate: somebody has to
+     * be able to try the product. Generating is different because it spends
+     * money on a provider per press, so `/api/ai/*` has always required a
+     * token. What it did not have was a way of saying so: an anonymous press
+     * came back "Missing authentication token", which is a sentence written for
+     * a developer reading a log.
+     */
+    const { currentUser } = useUserContext();
+    const locked = !currentUser;
+    const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+
+    /**
+     * Keep the visitor's canvas before asking them to sign up.
+     *
+     * The prompt promises their design will be waiting afterwards, and
+     * LoadProjectOnMount is what keeps that promise. Saving here is what makes
+     * the promise true - the same thing the header does for Save and Publish.
+     */
+    const promptSignup = () => {
+      try {
+        localStorage.setItem('dragcanvas_draft', query.serialize());
+      } catch {
+        // A canvas that will not serialise is still a visitor worth asking.
+      }
+      setShowAuthPrompt(true);
+    };
+
+    /** True when the caller must stop, because this needs an account. */
+    const blockedByAccount = () => {
+      if (!locked) return false;
+      promptSignup();
+      return true;
+    };
 
     /**
      * Pick up a prompt typed on the landing page.
@@ -286,6 +326,7 @@ function stageLabel(stage) {
      * "add a pricing section". The server edits the layout we hold in state.
      */
     const refineWebsite = async () => {
+      if (blockedByAccount()) return;
       if (!refinement.trim()) return;
 
       const currentLayout = craftProjectToAiLayout(
@@ -334,6 +375,7 @@ function stageLabel(stage) {
     };
 
     const generateWebsite = async () => {
+      if (blockedByAccount()) return;
       if (!prompt.trim()) return;
 
       setLoading(true);
@@ -366,6 +408,12 @@ function stageLabel(stage) {
 
     return (
       <>
+      <AuthPromptModal
+        show={showAuthPrompt}
+        onClose={() => setShowAuthPrompt(false)}
+        title="Sign up to use the AI generator"
+        message="The AI generator writes a whole site from one sentence, and it runs on our servers rather than in your browser - so it needs a free account. Everything else in this editor works without one."
+      />
       {loading && (
         <div className="ai-generation-backdrop" role="status" aria-live="polite" aria-label={stageLabel(stage)}>
           <div className="ai-generation-modal">
@@ -410,13 +458,39 @@ function stageLabel(stage) {
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
           <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--haze)' }}>auto_awesome</span>
           <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '13px', fontWeight: 700, color: 'var(--on-surface-variant)' }}>AI Generator</span>
+          {/*
+            * Says what the panel is before it is pressed. The alternative was
+            * leaving it looking ready and answering with a modal, which reads
+            * as a page that changed its mind about what it offers.
+            */}
+          {locked && (
+            <span style={{
+              display: 'inline-flex', alignItems: 'center', gap: '4px',
+              padding: '2px 8px', borderRadius: '9999px',
+              background: 'var(--surface-dim)', color: 'var(--on-surface-variant)',
+              fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '11px', fontWeight: 600,
+            }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '13px' }} aria-hidden="true">lock</span>
+              Account required
+            </span>
+          )}
         </div>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
           <textarea
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Describe your website..."
+            placeholder={locked ? 'Sign in to describe your website...' : 'Describe your website...'}
             rows={1}
+            /*
+             * readOnly rather than disabled: a disabled field takes no clicks
+             * and no focus, so the one moment the visitor asks what this is
+             * would be the one moment nothing answers. It is opened on a press
+             * and on a keystroke - not on focus, which would reopen itself the
+             * instant the modal handed focus back.
+             */
+            readOnly={locked}
+            onMouseDown={locked ? promptSignup : undefined}
+            onKeyDown={locked ? (e) => { if (e.key.length === 1) promptSignup(); } : undefined}
             style={{
               flex: 1,
               padding: '8px 12px',
@@ -427,15 +501,18 @@ function stageLabel(stage) {
               outline: 'none',
               resize: 'none',
               background: 'var(--surface-dim)',
-              color: 'var(--on-surface)',
+              color: locked ? 'var(--hint)' : 'var(--on-surface)',
+              cursor: locked ? 'pointer' : 'text',
             }}
           />
           <button
             onClick={generateWebsite}
+            // Not disabled when locked, only dimmed: a disabled button swallows
+            // the press, and the press is the question being answered.
             disabled={loading}
             style={{
               padding: '8px 18px',
-              backgroundColor: loading ? 'var(--outline-variant)' : 'var(--haze)',
+              backgroundColor: loading ? 'var(--outline-variant)' : locked ? 'var(--outline-variant)' : 'var(--haze)',
               color: 'var(--on-primary)',
               border: 'none',
               borderRadius: '9999px',

@@ -13,10 +13,15 @@ const btnStyle = {
 
 /**
  * Shown to anonymous users when they hit a registered-only action
- * (Save / Publish / Export). The caller saves the canvas draft to
- * localStorage before opening, so no work is lost after signup.
+ * (Save / Publish / Export / the AI generator). The caller saves the canvas
+ * draft to localStorage before opening, so no work is lost after signup - the
+ * second paragraph below promises exactly that, and a caller that opens this
+ * without saving first turns the promise into a lie.
+ *
+ * The heading is a prop because the reason differs: saving is about keeping
+ * work, and the generator is about what it costs to run.
  */
-export default function AuthPromptModal({ show, onClose, message = 'Create a free account to save your work, publish it to a real URL and get a QR code.' }) {
+export default function AuthPromptModal({ show, onClose, title = 'Sign up to save your work', message = 'Create a free account to save your work, publish it to a real URL and get a QR code.' }) {
   const navigate = useNavigate();
 
   if (!show) return null;
@@ -25,7 +30,7 @@ export default function AuthPromptModal({ show, onClose, message = 'Create a fre
     <div style={{ position: 'fixed', inset: 0, background: 'var(--shadow-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 99999 }}>
       <div style={{ background: 'var(--surface)', padding: '32px', borderRadius: '20px', width: '420px', color: 'var(--on-surface)', boxShadow: '0 16px 48px rgba(0,0,0,0.12)' }}>
         <h3 style={{ marginBottom: '12px', fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700 }}>
-          Sign up to save your work
+          {title}
         </h3>
         <p style={{ fontSize: '0.9rem', color: 'var(--on-surface-variant)', marginBottom: '8px' }}>{message}</p>
         <p style={{ fontSize: '0.8rem', color: 'var(--hint)', marginBottom: '20px' }}>
