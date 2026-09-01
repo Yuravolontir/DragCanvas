@@ -1,5 +1,6 @@
 import ProjectMdl from './project.mdl.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
+import { deleteNetlifySite } from '../publish/netlify.service.js';
 
 export async function getProjectsByUser(req, res) {
     try {
@@ -68,13 +69,43 @@ export async function saveSiteSettings(req, res) {
     }
 }
 
+/**
+ * Delete a project, and take down whatever it had published.
+ *
+ * Read first, because the id of the published site lives on the row that is
+ * about to be marked deleted - once that has happened there is no way left to
+ * find the site, and a published page nobody can reach from the account goes on
+ * being served for ever.
+ *
+ * The site is taken down before the row is touched, so a failure there leaves
+ * the id where it can still be found and the delete can be tried again. If it
+ * fails anyway the row still goes: this is the user's own project, they have
+ * asked for it twice, and holding it hostage to a third-party API would be a
+ * worse answer than a page we can tell them about.
+ */
 export async function deleteProject(req, res) {
     try {
+        const project = await ProjectMdl.getProjectByIdFromDB(req.params.projectId, req.user.userId);
+        if (!project) {
+            return res.status(404).json(buildErrorResponse('Project not found'));
+        }
+
+        const takedown = await deleteNetlifySite(project.NetlifySiteID);
+        if (!takedown.ok) {
+            console.log(`[PUBLISH] could not delete Netlify site ${project.NetlifySiteID}: ${takedown.reason}`);
+        }
+
         const rowCount = await ProjectMdl.deleteProjectFromDB(req.params.projectId, req.user.userId);
         if (rowCount === 0) {
             return res.status(404).json(buildErrorResponse('Project not found'));
         }
-        return res.status(200).json(buildSuccessResponse({ message: 'Project deleted successfully' }));
+
+        return res.status(200).json(buildSuccessResponse({
+            message: takedown.ok
+                ? 'Project deleted successfully'
+                : 'Project deleted. The published site could not be taken down and may still be reachable.',
+            siteRemoved: takedown.ok,
+        }));
     } catch (error) {
         return res.status(500).json(buildErrorResponse(error.message));
     }

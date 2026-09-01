@@ -105,6 +105,46 @@ export async function deployToNetlify(html, siteName, existingSiteId, extraFiles
     return { siteId, url: siteUrl || deploy.ssl_url || deploy.url };
 }
 
+/**
+ * Take a published site down, because its project is gone.
+ *
+ * Deleting a project only ever removed the row. The site it had published went
+ * on serving, on a URL nobody could reach from the account any more and nobody
+ * could take down either - the id that identified it was in the row that had
+ * just been deleted. Every deleted-but-published project was a page left up for
+ * good, and a name nobody could reuse.
+ *
+ * Reports rather than throws. The project is going away either way: this is the
+ * user's own delete, and refusing it because a third-party API was briefly
+ * unhappy would trap them with a project they have asked twice to be rid of.
+ * The caller says what happened.
+ *
+ * @returns {Promise<{ok: boolean, reason?: string}>} ok when the site is gone -
+ *   including when it was already gone, which is the same outcome.
+ */
+export async function deleteNetlifySite(siteId) {
+    if (!siteId) return { ok: true };
+
+    const token = process.env.NETLIFY_TOKEN;
+    if (!token) return { ok: false, reason: 'NETLIFY_TOKEN is not configured on the server' };
+
+    let response;
+    try {
+        response = await fetch(`${NETLIFY_API}/sites/${siteId}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` },
+        });
+    } catch (error) {
+        return { ok: false, reason: error.message };
+    }
+
+    // 404 is not a failure. Somebody deleting the site in Netlify's own
+    // dashboard first is the ordinary way this happens, and the end state they
+    // asked for is the end state they have.
+    if (response.ok || response.status === 404) return { ok: true };
+    return { ok: false, reason: `Netlify answered ${response.status}` };
+}
+
 export async function connectCustomDomain(siteId, domain) {
     const token = process.env.NETLIFY_TOKEN;
     const headers = { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
