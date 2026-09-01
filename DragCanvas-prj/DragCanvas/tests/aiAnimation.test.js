@@ -176,6 +176,43 @@ test('counting only counts what the model itself wrote', () => {
   assert.equal(countAuthoredAnimation(bare), 1);
 });
 
+// ---------- the answer the model actually sent ----------
+
+test('a malformed answer is counted, not crashed on', () => {
+  /*
+   * countAuthoredAnimation reads the model's answer before normalisation -
+   * that is the point of it, since normalisation is what fills the gaps in.
+   * But nothing has straightened the shape out yet either, and a model that
+   * writes `children` as an object is a model whose page is still repairable.
+   *
+   * This threw. It threw on every one of the three attempts, so the whole
+   * generation answered 502, which the error middleware redacts into
+   * "Something went wrong on our side" - a sentence that says nothing about a
+   * page that was one repair away from being fine.
+   */
+  const shapes = [
+    { sections: [{ type: 'Container', props: {}, children: { nested: true } }] },
+    { sections: 'not a list' },
+    { sections: [null, undefined, 7] },
+    { pages: [{ name: 'Home' }] },
+    { pages: [{ sections: { nested: true } }] },
+    { pages: 'not a list' },
+    {},
+    null,
+    [],
+  ];
+
+  for (const shape of shapes) {
+    const seen = JSON.stringify(shape);
+    assert.doesNotThrow(() => countAuthoredAnimation(shape), `counting ${seen}`);
+    assert.doesNotThrow(() => staggerAnimations(shape), `staggering ${seen}`);
+  }
+});
+
+test('an odd shape is read as nothing rather than guessed at', () => {
+  assert.equal(countAuthoredAnimation({ sections: [{ type: 'Container', props: {}, children: { a: 1 } }] }), 0);
+});
+
 // ---------- the whole path ----------
 
 test('a model answer with no animation at all comes out of normalisation moving', () => {

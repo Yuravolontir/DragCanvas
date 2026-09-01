@@ -24,6 +24,20 @@
  *     every block arrives differently reads as a demo of the animation menu."
  */
 
+/**
+ * Anything, read as a list of children.
+ *
+ * `countAuthoredAnimation` is asked about the model's answer before that answer
+ * has been normalised, which is the whole point of it - normalisation is what
+ * fills the gaps in, so counting afterwards counts our own work. But nothing
+ * has straightened the shape out yet either, and a model that writes `children`
+ * as an object rather than an array is a model whose page is still perfectly
+ * repairable. Reading it as "no children" and moving on is right; throwing
+ * failed the attempt, and failing all three answered the visitor with a 502
+ * that the error middleware then redacted into "Something went wrong".
+ */
+const asArray = (value) => (Array.isArray(value) ? value : []);
+
 /** Never given an entrance of its own, whatever it contains. */
 const NEVER_ANIMATED = new Set(['NavbarElement', 'Spacer', 'Divider']);
 
@@ -47,7 +61,7 @@ const isBackgroundVideo = (node) => node.type === 'Video' && node.props?.sourceT
 const isWrapper = (node) => node.type === 'Container' || node.type === 'Columns' || isBackgroundVideo(node);
 
 const eligibleChildren = (node) =>
-    (node.children || []).filter((child) => child && !NEVER_ANIMATED.has(child.type));
+    asArray(node?.children).filter((child) => child && !NEVER_ANIMATED.has(child.type));
 
 /**
  * What should actually arrive, in the order a reader meets it.
@@ -104,21 +118,21 @@ function staggerSection(section) {
 }
 
 const pagesOf = (layout) =>
-    (Array.isArray(layout?.pages) ? layout.pages : [{ sections: layout?.sections || [] }]);
+    (Array.isArray(layout?.pages) ? layout.pages : [{ sections: layout?.sections }]);
 
 /** How many nodes the model itself gave an entrance. Zero is the case above. */
 export function countAuthoredAnimation(layout) {
     let count = 0;
     const walk = (node) => {
         if (node?.props?.animation !== undefined) count += 1;
-        (node?.children || []).forEach(walk);
+        asArray(node?.children).forEach(walk);
     };
-    for (const page of pagesOf(layout)) (page.sections || []).forEach(walk);
+    for (const page of pagesOf(layout)) asArray(page?.sections).forEach(walk);
     return count;
 }
 
 /** Stagger what arrives inside every section, on every page. */
 export function staggerAnimations(layout) {
-    for (const page of pagesOf(layout)) (page.sections || []).forEach(staggerSection);
+    for (const page of pagesOf(layout)) asArray(page?.sections).forEach(staggerSection);
     return layout;
 }
