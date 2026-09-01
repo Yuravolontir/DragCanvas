@@ -2270,8 +2270,14 @@ ${animationBlock}
   var projectId = ${JSON.stringify(exportContext.projectId)};
   if (projectId) {
     var analyticsBody = JSON.stringify({ projectId: projectId, referrer: document.referrer, screenWidth: screen.width });
-    if (navigator.sendBeacon) navigator.sendBeacon(analyticsUrl, new Blob([analyticsBody], { type: 'application/json' }));
-    else fetch(analyticsUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: analyticsBody, keepalive: true }).catch(function () {});
+    // Not sendBeacon. A beacon is always sent with credentials, and a
+    // credentialed request may not be answered with "Access-Control-Allow-
+    // Origin: *" - which is the only answer these endpoints can give, because
+    // a published site lives on a domain nobody knew in advance. The browser
+    // refused the preflight and the visit was never counted, on every
+    // published site. A plain cross-origin fetch sends no credentials, so the
+    // wildcard is accepted; keepalive covers somebody leaving straight away.
+    fetch(analyticsUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: analyticsBody, keepalive: true, credentials: 'omit' }).catch(function () {});
   }
 })();
 </script>
