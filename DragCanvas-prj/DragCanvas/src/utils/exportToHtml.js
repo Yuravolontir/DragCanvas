@@ -278,9 +278,21 @@ const converters = {
     };
 
     if (isRoot) {
-      // Designs are authored on a fixed-width canvas (800px default):
-      // keep that as max-width and center the page on wide screens
-      styles.maxWidth = props.width || '800px';
+      /*
+       * A published page is as wide as the window.
+       *
+       * The root's own width is the canvas somebody composed on - 800px for a
+       * blank project, and an authoring aid rather than a decision about the
+       * finished site. This used to carry it through as a max-width, so a site
+       * published as an 800px strip down the middle of the screen with the
+       * background showing either side of it. The templates in the gallery
+       * escaped only by setting their root to 100%, which is the same thing
+       * said by hand.
+       *
+       * Sections bring their own padding, so full width does not mean text
+       * running the length of a monitor.
+       */
+      styles.maxWidth = '100%';
     }
 
     cssRules.push(`.${className} {\n${stylesToCss(styles)}\n}`);

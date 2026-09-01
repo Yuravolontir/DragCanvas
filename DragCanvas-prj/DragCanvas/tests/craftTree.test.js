@@ -57,19 +57,20 @@ test('a generated node carries every field an editable node carries', () => {
     'the editor saves this shape, so a page built any other way is a page it cannot open');
 });
 
-test('the page fills the window rather than sitting in a column', () => {
+test('a generated page is composed on the same canvas as a blank one', () => {
   /*
-   * The root said 800px. The exporter turns a fixed root width into a
-   * max-width and centres the page - right for a width somebody chose, and
-   * this one nobody chose - so every generated site published as an 800px
-   * strip with background showing either side of it.
+   * The root's width is the drawing board, not the finished site. It was
+   * briefly 100%, which fixed a published page by making the editor wrong:
+   * composing on a canvas as wide as the window is not what anybody wants.
    *
-   * A shipped template is the reference again: it says 100%, which is why a
-   * template fills the window.
+   * The blank project's own canvas is the reference, so the two cannot drift.
    */
+  const blank = fs.readFileSync(path.join(root, 'src/editor/DefaultProjectCanvas.jsx'), 'utf8');
+  const canvasWidth = blank.match(/width="(\d+px)"/)?.[1];
+  assert.ok(canvasWidth, 'the blank canvas states its width');
+
   const { nodes } = buildCraftTree(sections);
-  assert.equal(nodes.ROOT.props.width, templateNodes().ROOT.props.width);
-  assert.doesNotMatch(String(nodes.ROOT.props.width), /px/, 'a fixed width becomes a max-width on publish');
+  assert.equal(nodes.ROOT.props.width, canvasWidth);
 });
 
 test('every node names its parent, and the parent claims it back', () => {
