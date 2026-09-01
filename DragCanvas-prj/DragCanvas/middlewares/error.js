@@ -60,6 +60,14 @@ export function hideInternalErrors(req, res, next) {
                 path: req.path || req.originalUrl?.split('?')[0],
                 error: body.error,
             });
+            // A sentence a controller wrote on purpose goes out as written. It
+            // holds no driver text, and it is the difference between a person
+            // who can act on the answer and a person holding a reference
+            // number. The marker itself is not part of the reply.
+            if (body.written) {
+                const { written: _written, ...rest } = body;
+                return sendJson(rest);
+            }
             return sendJson({ ...body, error: `Something went wrong on our side. Reference: ${req.id}` });
         }
         return sendJson(body);

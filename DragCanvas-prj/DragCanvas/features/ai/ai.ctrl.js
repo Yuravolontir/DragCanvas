@@ -148,6 +148,27 @@ function providerRefusal(error) {
     return [401, 402, 403].includes(error.status);
 }
 
+/**
+ * What to tell somebody whose generation did not happen.
+ *
+ * Our own words, never the provider's and never a stack: the reason a 5xx reply
+ * is redacted at all is that a controller usually passes the driver's text
+ * outwards. These say what to do instead, which a reference number cannot.
+ *
+ * The three refusals are separated because the fix differs, and because none of
+ * them is helped by trying again - which is exactly what a generic "please try
+ * again" invites somebody to spend the afternoon doing.
+ */
+export function refusalMessage(error) {
+    if (/Missing OPENROUTER_API_KEY/.test(error.message)) {
+        return 'The AI service is not configured on the server. This one is ours to fix, not yours.';
+    }
+    if (error.status === 402) {
+        return 'The AI service has no credit left on its account. Generating will work again once it is topped up.';
+    }
+    return 'The AI service rejected our key. It has probably been changed or revoked.';
+}
+
 /** Does this layout still contain IMAGE_PLACEHOLDER_n / VIDEO_PLACEHOLDER_n? */
 function hasMediaPlaceholders(layout) {
     return /(IMAGE|VIDEO)_PLACEHOLDER_\d+/.test(JSON.stringify(layout));
@@ -277,7 +298,7 @@ export async function generateWebsite(req, res) {
         return res.status(200).json(buildSuccessResponse(splitBest));
     }
 
-    return res.status(502).json(buildErrorResponse(error.message));
+    return res.status(502).json(buildErrorResponse(refusalMessage(error), { written: true }));
             }
             if (error.retryable && attempt < MAX_ATTEMPTS) {
                 await sleep(retryBackoffMs(attempt));
@@ -285,8 +306,12 @@ export async function generateWebsite(req, res) {
         }
     }
 
+    // `lastProblem` stays in the log. It is the provider's text or one of our
+    // own stack messages, and neither is a sentence to hand somebody.
+    console.log(`[AI] giving up after ${MAX_ATTEMPTS} attempts: ${lastProblem}`);
     return res.status(502).json(buildErrorResponse(
-        `The AI provider failed ${MAX_ATTEMPTS} times in a row (${lastProblem}). Please try again.`
+        `The site could not be generated after ${MAX_ATTEMPTS} tries. Trying again usually works; if it keeps failing, describe the site in a different way.`,
+        { written: true },
     ));
 }
 
