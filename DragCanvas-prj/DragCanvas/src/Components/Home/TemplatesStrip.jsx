@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { apiFetch } from '../../api.js';
 import TemplatePreview from '../TemplatePreview.jsx';
+import { prefetchSite } from '../sitePreviewCache.js';
 import MiniSite from './MiniSite.jsx';
 import { SITES } from './sites.js';
 import { useReveal } from './useReveal.js';
@@ -46,6 +47,26 @@ export default function TemplatesStrip() {
     : { pathname: '/create-new-project', state: { templateId: selected.Template_ID } };
 
   const move = direction => setActive(current => (current + direction + items.length) % items.length);
+
+  /*
+   * Draw the next template while this one is still touring.
+   *
+   * The tour runs for twenty seconds or so and then the card is swapped. Doing
+   * the fetch at that moment would put a loading panel in the middle of the
+   * change; doing it now means the next site is already exported and the swap is
+   * a fade rather than a wait. Fallback examples render from local data and have
+   * nothing to fetch.
+   */
+  useEffect(() => {
+    const next = items[(selectedIndex + 1) % items.length];
+    if (!next || next.fallback) return;
+
+    prefetchSite({
+      endpoint: `/api/templates/${next.Template_ID}`,
+      designKey: 'TemplateData',
+      name: next.TemplateName,
+    });
+  }, [items, selectedIndex]);
 
   const trackLight = event => {
     const surface = surfaceRef.current;
@@ -93,7 +114,17 @@ export default function TemplatesStrip() {
             {selected.fallback ? (
               <div className="templates-showcase__fallback-preview"><MiniSite site={selected.site} /></div>
             ) : (
-              <TemplatePreview className="templates-showcase__preview" template={selected} height={0.72} />
+              // Tours the whole page rather than holding on its first screen:
+              // the point of this section is what the template becomes further
+              // down, which a hero shot never shows. Reaching the footer hands
+              // the showcase on to the next template.
+              <TemplatePreview
+                className="templates-showcase__preview"
+                template={selected}
+                height={0.72}
+                tour
+                onTourEnd={() => move(1)}
+              />
             )}
           </div>
 

@@ -1,0 +1,80 @@
+/*
+ * The message list, on both screens that show it.
+ *
+ * Every colour is a theme variable: this list appears inside a Bootstrap modal
+ * on one screen and inside a page card on the other, and the hard-coded #fff
+ * and #eee it used to carry made it a white box with grey text in dark mode.
+ */
+
+.sub-list { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+.sub-toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.sub-search { display: flex; flex: 1; min-width: 0; align-items: center; gap: 8px; margin: 0; padding: 8px 14px; border: 1px solid var(--outline-light); border-radius: 9999px; background: var(--surface-container-low, var(--surface-dim)); }
+.sub-search:focus-within { border-color: var(--primary); }
+.sub-search .material-symbols-outlined { color: var(--muted); font-size: 18px; }
+.sub-search input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--on-surface); font: inherit; font-size: 12.5px; outline: none; }
+.sub-toolbar > span { color: var(--muted); font-size: 11.5px; white-space: nowrap; }
+
+.sub-cards { display: grid; gap: 10px; }
+
+.sub-card { padding: 16px; border: 1px solid var(--outline-light); border-radius: 14px; background: var(--surface-container-low, var(--surface-dim)); }
+/* An unread message is lifted out of the list rather than only badged. */
+.sub-card--unread { border-color: color-mix(in oklab, var(--primary) 45%, var(--outline-light)); background: var(--surface); }
+
+.sub-card__head { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; }
+.sub-avatar { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 50%; background: var(--primary-light); color: var(--primary); font-size: 13px; font-weight: 800; }
+.sub-card__who { min-width: 0; }
+.sub-card__who strong { display: block; overflow: hidden; color: var(--on-surface); font-size: 13.5px; text-overflow: ellipsis; white-space: nowrap; }
+.sub-card__email { display: block; max-width: 100%; overflow: hidden; color: var(--muted); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; user-select: text; }
+.sub-card__aside { display: flex; align-items: center; gap: 9px; }
+.sub-card__aside time { color: var(--muted); font-size: 11.5px; white-space: nowrap; }
+.sub-new { padding: 2px 9px; border-radius: 9999px; background: var(--primary-light); color: var(--primary); font-size: 10.5px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+
+.sub-card__fields { display: grid; gap: 8px; margin: 14px 0 0; padding-top: 14px; border-top: 1px solid var(--outline-light); }
+.sub-card__fields > div { display: grid; grid-template-columns: minmax(90px, .25fr) 1fr; gap: 12px; }
+.sub-card__fields dt { color: var(--muted); font-size: 11.5px; font-weight: 700; }
+.sub-card__fields dd { margin: 0; color: var(--on-surface-variant); font-size: 13px; line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+.sub-card__actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+.sub-card__actions:empty { display: none; }
+.sub-button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 34px; padding: 7px 14px; border: 1px solid var(--outline-light); border-radius: 9999px; background: transparent; color: var(--on-surface-variant); font: inherit; font-size: 12px; font-weight: 700; text-decoration: none; cursor: pointer; transition: border-color .15s ease, color .15s ease, transform .15s ease; }
+.sub-button:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); transform: translateY(-1px); }
+.sub-button:disabled { opacity: .55; cursor: not-allowed; }
+.sub-button .material-symbols-outlined { font-size: 16px; }
+
+/*
+ * Reply, as a <details> disclosure rather than a single mailto: link.
+ *
+ * Opens and closes on click and on Enter, and is announced as expandable to a
+ * screen reader, with no JavaScript of its own - <summary> gets all of that for
+ * free. It is styled to look exactly like the .sub-button next to it, so
+ * nothing about it reads as a different kind of control until it is opened.
+ */
+.sub-reply { position: relative; }
+.sub-reply > summary { list-style: none; }
+.sub-reply > summary::-webkit-details-marker { display: none; }
+.sub-reply > summary::marker { content: ''; }
+.sub-reply__chevron { margin-left: -2px; font-size: 15px !important; transition: transform .15s ease; }
+.sub-reply[open] .sub-reply__chevron { transform: rotate(180deg); }
+
+.sub-reply__menu { display: grid; gap: 2px; width: max-content; min-width: 160px; margin-top: 6px; padding: 6px; border: 1px solid var(--outline-light); border-radius: 12px; background: var(--surface); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16); }
+.sub-reply__menu a, .sub-reply__menu button { display: block; padding: 7px 10px; border: 0; border-radius: 8px; background: none; color: var(--on-surface-variant); font: inherit; font-size: 12.5px; text-align: left; text-decoration: none; cursor: pointer; }
+.sub-reply__menu a:hover, .sub-reply__menu button:hover { background: var(--surface-container); color: var(--on-surface); }
+
+.sub-empty { display: grid; place-items: center; padding: 38px 18px; color: var(--muted); text-align: center; }
+.sub-empty .material-symbols-outlined { margin-bottom: 7px; color: var(--outline); font-size: 30px; }
+.sub-empty p { margin: 0; font-size: 12.5px; }
+.sub-note { margin: 12px 0 0; color: var(--muted); font-size: 11.5px; text-align: center; }
+
+@media (max-width: 520px) {
+  .sub-card__fields > div { grid-template-columns: 1fr; gap: 2px; }
+  /* The date drops under the name rather than squeezing it to a few letters. */
+  .sub-card__head { grid-template-columns: auto 1fr; }
+  .sub-card__aside { grid-column: 2; }
+  .sub-card__actions { justify-content: stretch; }
+  .sub-card__actions > * { flex: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sub-button { transition: none; }
+}

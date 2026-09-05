@@ -7,7 +7,13 @@ import SitePreview from './SitePreview.jsx';
  * cards use too. This is only the pair of column names a template happens to
  * store its design and its old thumbnail under.
  */
-export default function TemplatePreview({ template, height = 1.25, className = '' }) {
+export default function TemplatePreview({
+  template,
+  height = 1.25,
+  tour = false,
+  onTourEnd,
+  className = '',
+}) {
   return (
     <SitePreview
       endpoint={`/api/templates/${template.Template_ID}`}
@@ -15,6 +21,8 @@ export default function TemplatePreview({ template, height = 1.25, className = '
       name={template.TemplateName}
       fallbackSrc={template.ThumbnailURL}
       height={height}
+      tour={tour}
+      onTourEnd={onTourEnd}
       className={className}
     />
   );

@@ -21,7 +21,12 @@ const btnStyle = {
  * The heading is a prop because the reason differs: saving is about keeping
  * work, and the generator is about what it costs to run.
  */
-export default function AuthPromptModal({ show, onClose, title = 'Sign up to save your work', message = 'Create a free account to save your work, publish it to a real URL and get a QR code.' }) {
+export default function AuthPromptModal({
+  show,
+  onClose,
+  title = 'Sign up to save your work',
+  message = 'Create a free account to save your work, publish it to a real URL and get a QR code.',
+}) {
   const navigate = useNavigate();
 
   if (!show) return null;

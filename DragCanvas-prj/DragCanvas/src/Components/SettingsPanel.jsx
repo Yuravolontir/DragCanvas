@@ -1,27 +1,38 @@
 import React from 'react';
-import { Box, Chip, Grid, Typography, Button as MaterialButton } from '@mui/material';
+import {
+  Box,
+  Button as MaterialButton,
+  Chip,
+  Grid,
+  Typography,
+} from '@mui/material';
 import { useEditor } from '@craftjs/core';
 
-export const SettingsPanel = () => {
+/** Shows controls belonging to whichever Craft.js node is selected. */
+export function SettingsPanel() {
   const { selected, actions } = useEditor((state, query) => {
-    const [currentNodeId] = state.events.selected;
-    let selected;
+    const [selectedNodeId] = state.events.selected;
 
-    if (currentNodeId) {
-      selected = {
-        id: currentNodeId,
-        name: state.nodes[currentNodeId].data.name,
-        settings: state.nodes[currentNodeId].related && state.nodes[currentNodeId].related.settings,
-        isDeletable: query.node(currentNodeId).isDeletable(),
-      };
+    if (!selectedNodeId) {
+      return { selected: null };
     }
 
+    const selectedNode = state.nodes[selectedNodeId];
     return {
-      selected,
+      selected: {
+        id: selectedNodeId,
+        name: selectedNode.data.name,
+        SettingsComponent: selectedNode.related?.settings,
+        isDeletable: query.node(selectedNodeId).isDeletable(),
+      },
     };
   });
 
-  return selected ? (
+  if (!selected) return null;
+
+  const { SettingsComponent } = selected;
+
+  return (
     <Box bgcolor="rgba(0, 0, 0, 0.06)" mt={2} px={2} py={2}>
       <Grid container direction="column" spacing={0}>
         <Grid item>
@@ -36,13 +47,17 @@ export const SettingsPanel = () => {
             </Grid>
           </Box>
         </Grid>
-        {selected.settings && React.createElement(selected.settings)}
-        {selected.isDeletable ? (
-          <MaterialButton variant="contained" color="default" onClick={() => actions.delete(selected.id)}>
+        {SettingsComponent && <SettingsComponent />}
+        {selected.isDeletable && (
+          <MaterialButton
+            variant="contained"
+            color="inherit"
+            onClick={() => actions.delete(selected.id)}
+          >
             Delete
           </MaterialButton>
-        ) : null}
+        )}
       </Grid>
     </Box>
-  ) : null;
-};
+  );
+}

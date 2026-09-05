@@ -1,5 +1,10 @@
 import { DeviceModeContext } from './DeviceModeContext.js';
 
-export const DeviceModeProvider = ({ value, children }) => (
-  <DeviceModeContext.Provider value={value}>{children}</DeviceModeContext.Provider>
-);
+/** Makes the editor's current preview width available to nested components. */
+export function DeviceModeProvider({ value, children }) {
+  return (
+    <DeviceModeContext.Provider value={value}>
+      {children}
+    </DeviceModeContext.Provider>
+  );
+}

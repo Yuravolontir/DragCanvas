@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import { apiFetch } from './api.js';
 import NavBar from './NavBar';
 import TemplatePreview from './Components/TemplatePreview.jsx';
+import { useUserContext } from './userContext.js';
 import './InspireMe.css';
 
 /**
@@ -31,20 +32,14 @@ import './InspireMe.css';
 const SKELETON_COUNT = 6;
 
 export default function InspireMe() {
+  const { currentUser } = useUserContext();
+
+  // null means "still loading"; an empty array means "loaded, but none exist".
   const [templates, setTemplates] = useState(null);
-  const [filterCategory, setFilterCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
   const [alert, setAlert] = useState(null);
   const [templateToDelete, setTemplateToDelete] = useState(null);
-
-  // Read once, while rendering: who is signed in cannot change under this page.
-  const [currentUser] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('currentUser') || 'null');
-    } catch {
-      return null;
-    }
-  });
 
   // Bumped to ask again — after a removal, the gallery has changed underneath.
   const [reloadToken, setReloadToken] = useState(0);
@@ -80,10 +75,14 @@ export default function InspireMe() {
     setTemplateToDelete(null);
   };
 
-  const categories = ['all', ...new Set((templates || []).map((t) => t.Category).filter(Boolean))];
-  const shown = filterCategory === 'all'
-    ? (templates || [])
-    : (templates || []).filter((t) => t.Category === filterCategory);
+  const loadedTemplates = templates || [];
+  const templateCategories = loadedTemplates
+    .map((template) => template.Category)
+    .filter(Boolean);
+  const categories = ['all', ...new Set(templateCategories)];
+  const visibleTemplates = selectedCategory === 'all'
+    ? loadedTemplates
+    : loadedTemplates.filter((template) => template.Category === selectedCategory);
 
   const canDelete = currentUser?.IsAdmin || currentUser?.IsSuperAdmin;
 
@@ -106,8 +105,8 @@ export default function InspireMe() {
                 key={category}
                 type="button"
                 className="tpl-gallery__filter"
-                aria-pressed={filterCategory === category}
-                onClick={() => setFilterCategory(category)}
+                aria-pressed={selectedCategory === category}
+                onClick={() => setSelectedCategory(category)}
               >
                 {category === 'all' ? 'All templates' : category}
               </button>
@@ -121,11 +120,11 @@ export default function InspireMe() {
               <li key={`skeleton-${index}`} className="tpl-gallery__card tpl-gallery__card--loading" aria-hidden="true" />
             ))}
           </ul>
-        ) : shown.length === 0 ? (
+        ) : visibleTemplates.length === 0 ? (
           <div className="tpl-gallery__empty">No templates here yet.</div>
         ) : (
           <ul className="tpl-gallery__list">
-            {shown.map((template) => (
+            {visibleTemplates.map((template) => (
               <li key={template.Template_ID} className="tpl-gallery__card">
                 {/*
                   * The card is one link. Navigating with state rather than a URL

@@ -98,6 +98,21 @@
   --duration-slow: 400ms;
 }
 
+/*
+ * A dialog goes above the application's own navigation.
+ *
+ * Bootstrap puts its modals at z-index 1050/1055; this app's fixed nav bar is
+ * at 100100 (APP_NAV_Z_INDEX). So every Bootstrap dialog was painted *under*
+ * the nav bar: the top of a tall one disappeared behind it, and the nav links
+ * stayed clickable straight through the backdrop. A dialog is modal or it is
+ * not.
+ *
+ * The element is named as well as the class, so this wins on specificity
+ * rather than on which stylesheet Vite happens to emit last.
+ */
+div.modal-backdrop { z-index: 100200; }
+div.modal { z-index: 100210; }
+
 .ai-generation-backdrop {
   position: fixed;
   inset: 0;

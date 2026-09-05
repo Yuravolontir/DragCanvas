@@ -2,11 +2,11 @@ import { useNode, useEditor } from '@craftjs/core';
 import cx from 'classnames';
 import debounce from 'debounce';
 import { Resizable } from 're-resizable';
-import React, { useRef, useEffect, useLayoutEffect, useState, useCallback } from 'react';
-import styled from 'styled-components';
+import { useRef, useEffect, useLayoutEffect, useState, useCallback } from 'react';
+
+import { Indicators } from './Resizer.styles.js';
 import { useDeviceMode } from '../../useDeviceMode.js';
 import { responsiveValue, updateResponsiveDraft } from '../../utils/responsiveProps.js';
-
 import {
   isPercentage,
   pxToPercent,
@@ -14,77 +14,57 @@ import {
   getElementDimensions,
 } from '../../utils/numToMeasurement';
 
+/**
+ * Empty space kept below the last element of the page.
+ *
+ * Auto-growing after a drop is not enough: without empty space before the drop
+ * there is nowhere to aim the next block.
+ */
 const ROOT_DROP_RUNWAY = 180;
 
-const Indicators = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  span {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: #fff;
-    border-radius: 100%;
-    display: block;
-    box-shadow: 0px 0px 12px -1px rgba(0, 0, 0, 0.25);
-    z-index: 99999;
-    pointer-events: none;
-    border: 2px solid #0060ac;
-    &:nth-child(1) {
-      ${(props) =>
-        props.$bound
-          ? props.$bound === 'row'
-            ? `
-                left: 50%;
-                top: -5px;
-                transform:translateX(-50%);
-              `
-            : `
-              top: 50%;
-              left: -5px;
-              transform:translateY(-50%);
-            `
-          : `
-              left: -5px;
-              top:-5px;
-            `}
-    }
-    &:nth-child(2) {
-      right: -5px;
-      top: -5px;
-      display: ${(props) => (props.$bound ? 'none' : 'block')};
-    }
-    &:nth-child(3) {
-      ${(props) =>
-        props.$bound
-          ? props.$bound === 'row'
-            ? `
-                left: 50%;
-                bottom: -5px;
-                transform:translateX(-50%);
-              `
-            : `
-              bottom: 50%;
-              left: -5px;
-              transform:translateY(-50%);
-            `
-          : `
-              left: -5px;
-              bottom:-5px;
-            `}
-    }
-    &:nth-child(4) {
-      bottom: -5px;
-      right: -5px;
-      display: ${(props) => (props.$bound ? 'none' : 'block')};
-    }
-  }
-`;
+/** The smallest the page itself may be dragged to. */
+const ROOT_MIN_HEIGHT = 96;
 
+const HANDLE_NAMES = [
+  'top', 'left', 'bottom', 'right',
+  'topLeft', 'topRight', 'bottomLeft', 'bottomRight',
+];
+
+/** re-resizable wants one flag per handle; they are all on or all off together. */
+function handles(enabled) {
+  return Object.fromEntries(HANDLE_NAMES.map((name) => [name, enabled]));
+}
+
+/**
+ * The size to store for one axis after a drag.
+ *
+ * A value authored in pixels stays pixels and a percentage stays a percentage,
+ * so a drag never quietly changes how an element was written down. The one
+ * exception is a parent with no width of its own: a percentage of `auto` means
+ * nothing, so the value falls back to pixels.
+ *
+ * @param {number} pixels        where the drag has taken this axis, in px
+ * @param {string} storedValue   what the element currently has saved
+ * @param {number} parentSize    the parent's size on this axis, in px
+ * @param {boolean} parentIsAuto the parent has no explicit size on this axis
+ * @param {number} startPixels   the size when the drag began
+ * @param {number} delta         how far the handle has moved
+ */
+function measurementAfterResize({
+  pixels, storedValue, parentSize, parentIsAuto, startPixels, delta,
+}) {
+  if (!isPercentage(storedValue)) return `${pixels}px`;
+  if (parentIsAuto) return `${startPixels + delta}px`;
+  return `${pxToPercent(pixels, parentSize)}%`;
+}
+
+/**
+ * Makes one element of the page draggable by its corners.
+ *
+ * Craft stores the size on the node, and the same element can hold a different
+ * size per device, so every value goes through `responsiveValue` on the way in
+ * and `updateResponsiveDraft` on the way out.
+ */
 export const Resizer = ({ propKey, children, ...props }) => {
   const deviceMode = useDeviceMode();
   const {
@@ -107,23 +87,24 @@ export const Resizer = ({ propKey, children, ...props }) => {
     fillSpace: node.data.props.fillSpace,
   }));
 
-  const effectiveWidth = responsiveValue({ [propKey.width]: nodeWidth, responsive }, deviceMode, propKey.width);
-  const effectiveHeight = responsiveValue({ [propKey.height]: nodeHeight, responsive }, deviceMode, propKey.height);
+  // What this element measures on the device currently being designed for.
+  const effectiveWidth = responsiveValue(
+    { [propKey.width]: nodeWidth, responsive }, deviceMode, propKey.width,
+  );
+  const effectiveHeight = responsiveValue(
+    { [propKey.height]: nodeHeight, responsive }, deviceMode, propKey.height,
+  );
 
-  const { isRootNode, parentDirection, editorEnabled } = useEditor((state, query) => {
-    return {
-      editorEnabled: state.options.enabled,
-      parentDirection:
-        parent &&
-        state.nodes[parent] &&
-        state.nodes[parent].data.props.flexDirection,
-      isRootNode: query.node(id).isRoot(),
-    };
-  });
+  const { isRootNode, parentDirection, editorEnabled } = useEditor((state, query) => ({
+    editorEnabled: state.options.enabled,
+    parentDirection: parent && state.nodes[parent]?.data.props.flexDirection,
+    isRootNode: query.node(id).isRoot(),
+  }));
 
   const resizable = useRef(null);
   const isResizing = useRef(false);
-  const editingDimensions = useRef(null);
+  // The size the element had when the current drag started.
+  const startingBounds = useRef(null);
   const nodeDimensions = useRef({ width: effectiveWidth, height: effectiveHeight });
 
   // The callbacks below read this ref instead of closing over the dimensions,
@@ -135,6 +116,8 @@ export const Resizer = ({ propKey, children, ...props }) => {
     nodeDimensions.current = { width: effectiveWidth, height: effectiveHeight };
   });
 
+  // What re-resizable is told to draw right now. It follows the node except
+  // during a drag, when it follows the pointer.
   const [internalDimensions, setInternalDimensions] = useState({
     width: effectiveWidth,
     height: effectiveHeight,
@@ -142,178 +125,140 @@ export const Resizer = ({ propKey, children, ...props }) => {
 
   const hasFixedHeight = Boolean(effectiveHeight && effectiveHeight !== 'auto');
 
-  const updateInternalDimensionsInPx = useCallback(() => {
-    const { width: nodeWidth, height: nodeHeight } = nodeDimensions.current;
-
-    const width = percentToPx(
-      nodeWidth,
-      resizable.current &&
-        getElementDimensions(resizable.current.resizable.parentElement).width
-    );
-    const height = percentToPx(
-      nodeHeight,
-      resizable.current &&
-        getElementDimensions(resizable.current.resizable.parentElement).height
-    );
+  /** A drag works in pixels, so a percentage size is converted before it starts. */
+  const showSizeInPixels = useCallback(() => {
+    const parentElement = resizable.current?.resizable.parentElement;
+    const parentSize = parentElement ? getElementDimensions(parentElement) : null;
 
     setInternalDimensions({
-      width,
-      height,
+      width: percentToPx(nodeDimensions.current.width, parentSize && parentSize.width),
+      height: percentToPx(nodeDimensions.current.height, parentSize && parentSize.height),
     });
   }, []);
 
-  const updateInternalDimensionsWithOriginal = useCallback(() => {
-    const { width: nodeWidth, height: nodeHeight } = nodeDimensions.current;
-    setInternalDimensions({
-      width: nodeWidth,
-      height: nodeHeight,
-    });
+  /** Back to whatever the node itself says, once nothing is being dragged. */
+  const showSizeFromNode = useCallback(() => {
+    setInternalDimensions({ ...nodeDimensions.current });
   }, []);
 
-  const getUpdatedDimensions = (width, height) => {
-    const dom = resizable.current.resizable;
-    if (!dom) return;
+  useEffect(() => {
+    if (!isResizing.current) showSizeFromNode();
+  }, [effectiveWidth, effectiveHeight, showSizeFromNode]);
 
-    const currentWidth = parseInt(editingDimensions.current.width),
-      currentHeight = parseInt(editingDimensions.current.height);
+  useEffect(() => {
+    // A percentage size means different pixels after the window changes.
+    const onWindowResize = debounce(showSizeFromNode, 1);
+    window.addEventListener('resize', onWindowResize);
+    return () => window.removeEventListener('resize', onWindowResize);
+  }, [showSizeFromNode]);
 
-    return {
-      width: currentWidth + parseInt(width),
-      height: currentHeight + parseInt(height),
+  const startResize = (event) => {
+    showSizeInPixels();
+    event.preventDefault();
+    event.stopPropagation();
+
+    const element = resizable.current?.resizable;
+    if (!element) return;
+
+    const bounds = element.getBoundingClientRect();
+    startingBounds.current = {
+      width: bounds.width,
+      // The runway is an editor affordance, not page content. Starting a manual
+      // resize from its outer edge used to bake that extra gap into the first
+      // saved height and made the page look impossible to close.
+      height: Math.max(
+        ROOT_MIN_HEIGHT,
+        bounds.height - (isRootNode && !hasFixedHeight ? ROOT_DROP_RUNWAY : 0),
+      ),
     };
+    isResizing.current = true;
   };
 
-  useEffect(() => {
-    if (!isResizing.current) updateInternalDimensionsWithOriginal();
-  }, [effectiveWidth, effectiveHeight, updateInternalDimensionsWithOriginal]);
+  const handleResize = (_event, _direction, _element, delta) => {
+    const element = resizable.current?.resizable;
+    if (!element) return;
 
-  useEffect(() => {
-    const listener = debounce(updateInternalDimensionsWithOriginal, 1);
-    window.addEventListener('resize', listener);
+    const parentElement = element.parentElement;
+    const parentSize = getElementDimensions(parentElement);
+    const startWidth = parseInt(startingBounds.current.width, 10);
+    const startHeight = parseInt(startingBounds.current.height, 10);
 
-    return () => {
-      window.removeEventListener('resize', listener);
-    };
-  }, [updateInternalDimensionsWithOriginal]);
+    const width = measurementAfterResize({
+      pixels: startWidth + parseInt(delta.width, 10),
+      storedValue: nodeWidth,
+      parentSize: parentSize.width,
+      parentIsAuto: parentElement.style.width === 'auto',
+      startPixels: startingBounds.current.width,
+      delta: delta.width,
+    });
 
-  // A manually resized App uses its saved height. The root also gets a small,
-  // stable minimum instead of treating its current height as the minimum.
+    const height = measurementAfterResize({
+      pixels: startHeight + parseInt(delta.height, 10),
+      storedValue: nodeHeight,
+      parentSize: parentSize.height,
+      parentIsAuto: parentElement.style.height === 'auto',
+      startPixels: startingBounds.current.height,
+      delta: delta.height,
+    });
+
+    setProp((prop) => {
+      updateResponsiveDraft(prop, deviceMode, propKey.width, width);
+      updateResponsiveDraft(prop, deviceMode, propKey.height, height);
+    }, 500);
+  };
+
+  const stopResize = () => {
+    isResizing.current = false;
+    showSizeFromNode();
+  };
+
+  const style = {
+    boxSizing: 'border-box',
+    minWidth: 0,
+    // A fixed boundary is authoritative. Wide or tall children stay inside it
+    // instead of increasing the resizable element's min-content size or
+    // painting over the next section on the page.
+    overflowX: 'clip',
+    overflowY: hasFixedHeight ? 'clip' : 'visible',
+    ...props.style,
+    // Saved projects and older templates may contain pixel widths larger than
+    // their App container. Keep the stored authoring value (so it is not
+    // silently rewritten), but never let a child paint outside its current
+    // parent. The root App itself remains free to define the canvas measure.
+    ...(isRootNode && editorEnabled && !hasFixedHeight
+      ? { paddingBottom: `calc(var(--dc-container-padding-bottom, 0px) + ${ROOT_DROP_RUNWAY}px)` }
+      : {}),
+  };
+
   return (
     <Resizable
-      enable={[
-        'top',
-        'left',
-        'bottom',
-        'right',
-        'topLeft',
-        'topRight',
-        'bottomLeft',
-        'bottomRight',
-      ].reduce((acc, key) => {
-        acc[key] = active && inNodeContext;
-        return acc;
-      }, {})}
-      className={cx([
-        {
-          'm-auto': isRootNode,
-          flex: true,
-        },
-      ])}
       id={id}
-      ref={(ref) => {
-        if (ref) {
-          resizable.current = ref;
-          connect(resizable.current.resizable);
-        }
+      enable={handles(active && inNodeContext)}
+      className={cx([{ 'm-auto': isRootNode, flex: true }])}
+      ref={(instance) => {
+        if (!instance) return;
+        resizable.current = instance;
+        connect(instance.resizable);
       }}
       size={internalDimensions}
-      onResizeStart={(e) => {
-        updateInternalDimensionsInPx();
-        e.preventDefault();
-        e.stopPropagation();
-        const dom = resizable.current.resizable;
-        if (!dom) return;
-        const bounds = dom.getBoundingClientRect();
-        editingDimensions.current = {
-          width: bounds.width,
-          // The runway is an editor affordance, not page content. Starting a
-          // manual resize from its outer edge used to bake that extra gap into
-          // the first saved height and made the page look impossible to close.
-          height: Math.max(
-            96,
-            bounds.height - (isRootNode && !hasFixedHeight ? ROOT_DROP_RUNWAY : 0)
-          ),
-        };
-        isResizing.current = true;
-      }}
-      onResize={(_, __, ___, d) => {
-        const dom = resizable.current.resizable;
-        let { width, height } = getUpdatedDimensions(d.width, d.height);
-        if (isPercentage(nodeWidth))
-          width =
-            pxToPercent(width, getElementDimensions(dom.parentElement).width) +
-            '%';
-        else width = `${width}px`;
-
-        if (isPercentage(nodeHeight))
-          height =
-            pxToPercent(
-              height,
-              getElementDimensions(dom.parentElement).height
-            ) + '%';
-        else height = `${height}px`;
-
-        if (isPercentage(width) && dom.parentElement.style.width === 'auto') {
-          width = editingDimensions.current.width + d.width + 'px';
-        }
-
-        if (isPercentage(height) && dom.parentElement.style.height === 'auto') {
-          height = editingDimensions.current.height + d.height + 'px';
-        }
-
-        setProp((prop) => {
-          updateResponsiveDraft(prop, deviceMode, propKey.width, width);
-          updateResponsiveDraft(prop, deviceMode, propKey.height, height);
-        }, 500);
-      }}
-      onResizeStop={() => {
-        isResizing.current = false;
-        updateInternalDimensionsWithOriginal();
-      }}
+      onResizeStart={startResize}
+      onResize={handleResize}
+      onResizeStop={stopResize}
       {...props}
-      minHeight={isRootNode && editorEnabled ? '96px' : props.minHeight}
+      // A manually resized page uses its saved height; the page itself gets a
+      // small, stable minimum rather than being pinned to its current height.
+      minHeight={isRootNode && editorEnabled ? `${ROOT_MIN_HEIGHT}px` : props.minHeight}
       maxWidth={isRootNode ? props.maxWidth : (props.maxWidth || '100%')}
-      style={{
-        boxSizing: 'border-box',
-        minWidth: 0,
-        // A fixed boundary is authoritative. Wide or tall children stay
-        // inside it instead of increasing the resizable element's min-content
-        // size or painting over the next section on the page.
-        overflowX: 'clip',
-        overflowY: hasFixedHeight ? 'clip' : 'visible',
-        ...props.style,
-        // Saved projects and older templates may contain pixel widths larger
-        // than their App container. Keep the stored authoring value (so it is
-        // not silently rewritten), but never let a child paint outside its
-        // current parent. The root App itself remains free to define the
-        // canvas measure.
-        ...(isRootNode && editorEnabled && !hasFixedHeight
-          ? {
-              // Keep a real drop runway below the last element. Auto-growing
-              // after a drop is not enough: without empty space before the
-              // drop there is nowhere to place the next node.
-              paddingBottom: `calc(var(--dc-container-padding-bottom, 0px) + ${ROOT_DROP_RUNWAY}px)`,
-            }
-          : {}),
-      }}
+      style={style}
     >
       {children}
+
       {active && (
         <Indicators $bound={fillSpace === 'yes' ? parentDirection : false}>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
+          <span />
+          <span />
+          <span />
+          <span />
         </Indicators>
       )}
     </Resizable>

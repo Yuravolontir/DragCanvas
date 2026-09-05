@@ -1,23 +1,39 @@
-import { apiFetch } from './api.js';
-import SitePreview from './Components/SitePreview.jsx';
-import { useState, useEffect } from 'react'
-import NavBar from './NavBar';
-import Container from 'react-bootstrap/Container';
+import { useCallback, useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+
+import { apiFetch } from './api.js';
+import SitePreview from './Components/SitePreview.jsx';
+import NavBar from './NavBar';
 import PublishInfoModal from './Components/PublishInfoModal';
+import InboxModal from './Components/InboxModal.jsx';
+import { useUserContext } from './userContext.js';
+
+/** What the inbox button on a card promises before it is pressed. */
+const inboxTooltip = (projectInbox) => {
+  const total = projectInbox?.submissions?.length || 0;
+  const unread = Number(projectInbox?.unread || 0);
+  const messages = `${total} message${total === 1 ? '' : 's'} from your site`;
+  return unread ? `${messages}, ${unread} unread` : messages;
+};
 
 export default function MyProject() {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState(null);
+  const { currentUser, sessionReady } = useUserContext();
+
+  // Project list and messages sent through each published site.
   const [projects, setProjects] = useState([]);
-  // Form submissions that arrived from published sites, keyed by project id
   const [inbox, setInbox] = useState({});
   const [openInbox, setOpenInbox] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Which message is being marked read, and whether the whole inbox is.
+  const [busyReadId, setBusyReadId] = useState(null);
+  const [markingAll, setMarkingAll] = useState(false);
+
+  // Dialog state.
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [alertType, setAlertType] = useState('success');
@@ -25,89 +41,129 @@ export default function MyProject() {
   const [projectToDelete, setProjectToDelete] = useState(null);
   const [shareUrl, setShareUrl] = useState(null);
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-      setCurrentUser(JSON.parse(storedUser));
-    } else {
-      navigate('/login', { replace: true });
-    }
-  }, [navigate]);
-
-  useEffect(() => {
-    if (currentUser?.User_ID) {
-      fetchProjects();
-    }
-    // Keyed on the user: fetchProjects is redefined every render.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser]);
-
-  const fetchProjects = async () => {
-    try {
-      if (!currentUser?.User_ID) {
-        console.error('No user logged in');
-        return;
-      }
-
-      // The server reads the owner from the token, so no userId in the URL
-      const data = await apiFetch('/api/projects/user');
-      setProjects(data);
-      loadInboxCounts(data);
-    } catch (err) {
-      console.error('Error fetching projects:', err);
-      showAlertModal('Failed to load projects: ' + err.message, 'error');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const showAlertModal = useCallback((message, type = 'success') => {
+    setAlertMessage(message);
+    setAlertType(type);
+    setShowAlert(true);
+  }, []);
 
   /**
    * How many messages each published project has received. Only published ones
    * are asked about - an unpublished site has no visitors.
    */
-  const loadInboxCounts = async (list) => {
-    const published = list.filter((p) => p.IsPublished);
+  const loadInboxCounts = useCallback(async (projectList) => {
+    const publishedProjects = projectList.filter((project) => project.IsPublished);
     const results = await Promise.all(
-      published.map((p) =>
-        apiFetch(`/api/forms/project/${p.Project_ID}`)
-          .then((r) => [p.Project_ID, r])
+      publishedProjects.map((project) =>
+        apiFetch(`/api/forms/project/${project.Project_ID}`)
+          .then((response) => [project.Project_ID, response])
           .catch(() => null)
-      )
+      ),
     );
-    const next = {};
-    results.filter(Boolean).forEach(([id, r]) => { next[id] = r; });
-    setInbox(next);
+
+    const inboxByProjectId = {};
+    results.filter(Boolean).forEach(([projectId, response]) => {
+      inboxByProjectId[projectId] = response;
+    });
+    setInbox(inboxByProjectId);
+  }, []);
+
+  const fetchProjects = useCallback(async () => {
+    if (!currentUser?.User_ID) return;
+
+    try {
+      // The server reads the owner from the token, so no userId belongs in the URL.
+      const projectList = await apiFetch('/api/projects/user');
+      setProjects(projectList);
+      await loadInboxCounts(projectList);
+    } catch (loadError) {
+      console.error('Error fetching projects:', loadError);
+      showAlertModal(`Failed to load projects: ${loadError.message}`, 'error');
+    } finally {
+      setLoading(false);
+    }
+  }, [currentUser?.User_ID, loadInboxCounts, showAlertModal]);
+
+  useEffect(() => {
+    if (!sessionReady) return;
+
+    if (!currentUser) {
+      navigate('/login', { replace: true });
+      return;
+    }
+
+    fetchProjects();
+  }, [currentUser, fetchProjects, navigate, sessionReady]);
+
+  /** Mark the messages read here as well as on the server, without a reload. */
+  const rememberRead = (projectId, readIds) => {
+    setInbox((previousInbox) => {
+      const projectInbox = previousInbox[projectId];
+      if (!projectInbox) return previousInbox;
+
+      const submissions = projectInbox.submissions.map((submission) => (
+        readIds.includes(submission.Submission_ID)
+          ? { ...submission, IsRead: true }
+          : submission
+      ));
+
+      return {
+        ...previousInbox,
+        [projectId]: {
+          ...projectInbox,
+          unread: submissions.filter((submission) => submission.IsRead === false).length,
+          submissions,
+        },
+      };
+    });
   };
 
   const markRead = async (projectId, submissionId) => {
+    setBusyReadId(submissionId);
     try {
       await apiFetch(`/api/forms/project/${projectId}/${submissionId}/read`, { method: 'PUT' });
-      setInbox((prev) => ({
-        ...prev,
-        [projectId]: {
-          ...prev[projectId],
-          unread: Math.max(0, (prev[projectId]?.unread || 1) - 1),
-          submissions: prev[projectId].submissions.map((x) =>
-            x.Submission_ID === submissionId ? { ...x, IsRead: true } : x
-          ),
-        },
-      }));
-    } catch (err) {
-      showAlertModal(err.message, 'error');
+      rememberRead(projectId, [submissionId]);
+    } catch (markReadError) {
+      showAlertModal(markReadError.message, 'error');
+    } finally {
+      setBusyReadId(null);
     }
   };
 
-  const showAlertModal = (message, type = 'success') => {
-    setAlertMessage(message);
-    setAlertType(type);
-    setShowAlert(true);
+  /**
+   * Clear the whole inbox at once.
+   *
+   * Somebody who has read the list does not want to press a button per message,
+   * and the badge on the card keeps counting until every one of them is marked.
+   */
+  const markAllRead = async (projectId) => {
+    const unreadIds = (inbox[projectId]?.submissions || [])
+      .filter((submission) => submission.IsRead === false)
+      .map((submission) => submission.Submission_ID);
+    if (!unreadIds.length) return;
+
+    setMarkingAll(true);
+    try {
+      await Promise.all(unreadIds.map((submissionId) => apiFetch(
+        `/api/forms/project/${projectId}/${submissionId}/read`,
+        { method: 'PUT' },
+      )));
+      rememberRead(projectId, unreadIds);
+    } catch (markReadError) {
+      showAlertModal(markReadError.message, 'error');
+    } finally {
+      setMarkingAll(false);
+    }
   };
 
   const loadProject = (projectId) => {
     navigate('/create-new-project', {
-      state: { projectId: projectId }
+      state: { projectId },
     });
   };
+
+  // Whose inbox is open, so the dialog can say which site these came from.
+  const openInboxProject = projects.find((project) => project.Project_ID === openInbox);
 
   const handleDeleteClick = (projectId) => {
     setProjectToDelete(projectId);
@@ -119,11 +175,11 @@ export default function MyProject() {
 
     try {
       await apiFetch(`/api/projects/${projectToDelete}`, { method: 'DELETE' });
-      fetchProjects();
+      await fetchProjects();
       showAlertModal('Project deleted successfully', 'success');
-    } catch (err) {
-      console.error('Delete error:', err);
-      showAlertModal('Error deleting project: ' + err.message, 'error');
+    } catch (deleteError) {
+      console.error('Delete error:', deleteError);
+      showAlertModal(`Error deleting project: ${deleteError.message}`, 'error');
     }
   };
 
@@ -427,11 +483,19 @@ export default function MyProject() {
                       {inbox[project.Project_ID]?.submissions?.length > 0 && (
                         <button
                           onClick={() => setOpenInbox(project.Project_ID)}
-                          title="Messages from your site"
+                          /*
+                            The number used to be the unread count when there
+                            was one and the total when there was not, so "4"
+                            meant two different things and the button could not
+                            be trusted. It is always the total now; unread is
+                            said in words, where it cannot be misread.
+                          */
+                          title={inboxTooltip(inbox[project.Project_ID])}
+                          aria-label={inboxTooltip(inbox[project.Project_ID])}
                           style={{
                             padding: '10px 12px',
                             background: inbox[project.Project_ID].unread > 0 ? 'var(--haze)' : 'transparent',
-                            color: inbox[project.Project_ID].unread > 0 ? '#fff' : 'var(--haze)',
+                            color: inbox[project.Project_ID].unread > 0 ? 'var(--on-primary)' : 'var(--haze)',
                             border: '1px solid var(--haze)',
                             borderRadius: '12px',
                             cursor: 'pointer',
@@ -443,10 +507,10 @@ export default function MyProject() {
                             fontWeight: 600,
                           }}
                         >
-                          <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>mail</span>
-                          {inbox[project.Project_ID].unread > 0
-                            ? inbox[project.Project_ID].unread
-                            : inbox[project.Project_ID].submissions.length}
+                          <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
+                            {inbox[project.Project_ID].unread > 0 ? 'mark_email_unread' : 'mail'}
+                          </span>
+                          {inbox[project.Project_ID].submissions.length}
                         </button>
                       )}
                       {project.PublishedUrl && (
@@ -549,45 +613,15 @@ export default function MyProject() {
       />
 
       {/* What visitors wrote through the form on a published site */}
-      <Modal show={!!openInbox} onHide={() => setOpenInbox(null)} centered size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title style={{ fontSize: '1.05rem', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            Messages from your site
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body style={{ maxHeight: '60vh', overflowY: 'auto' }}>
-          {(inbox[openInbox]?.submissions || []).length === 0 ? (
-            <p style={{ color: 'var(--muted)', margin: 0 }}>No messages yet.</p>
-          ) : (
-            (inbox[openInbox]?.submissions || []).map((item) => (
-              <div
-                key={item.Submission_ID}
-                onClick={() => !item.IsRead && markRead(openInbox, item.Submission_ID)}
-                style={{
-                  border: '1px solid #eee',
-                  borderLeft: item.IsRead ? '1px solid #eee' : '3px solid var(--haze)',
-                  borderRadius: 10,
-                  padding: '12px 14px',
-                  marginBottom: 10,
-                  cursor: item.IsRead ? 'default' : 'pointer',
-                  background: item.IsRead ? '#fff' : '#faf8ff',
-                }}
-              >
-                <div style={{ fontSize: 11, color: '#a09aa8', marginBottom: 6 }}>
-                  {new Date(item.CreatedDate).toLocaleString()}
-                  {!item.IsRead && <span style={{ color: 'var(--haze)', marginLeft: 8 }}>• new</span>}
-                </div>
-                {Object.entries(item.Data || {}).map(([key, value]) => (
-                  <div key={key} style={{ display: 'flex', gap: 10, fontSize: 14, marginBottom: 3 }}>
-                    <span style={{ color: 'var(--muted)', minWidth: 90 }}>{key}</span>
-                    <span style={{ whiteSpace: 'pre-wrap' }}>{value}</span>
-                  </div>
-                ))}
-              </div>
-            ))
-          )}
-        </Modal.Body>
-      </Modal>
+      <InboxModal
+        projectName={openInboxProject?.ProjectName}
+        projectInbox={inbox[openInbox]}
+        busyReadId={busyReadId}
+        markingAll={markingAll}
+        onMarkRead={(submissionId) => markRead(openInbox, submissionId)}
+        onMarkAllRead={() => markAllRead(openInbox)}
+        onClose={() => setOpenInbox(null)}
+      />
     </div>
   );
 }

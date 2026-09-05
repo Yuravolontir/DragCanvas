@@ -1,11 +1,28 @@
 import React from 'react';
-import { Box, FormControlLabel, Switch, Grid, Button as MaterialButton } from '@mui/material';
+import {
+  Box,
+  Button as MaterialButton,
+  FormControlLabel,
+  Grid,
+  Switch,
+} from '@mui/material';
 import { useEditor } from '@craftjs/core';
 
-export const Topbar = () => {
+/** Small Craft.js developer toolbar used to inspect serialized canvas data. */
+export function Topbar() {
   const { actions, query, enabled } = useEditor((state) => ({
     enabled: state.options.enabled,
   }));
+
+  const changeEditingState = (_event, nextEnabled) => {
+    actions.setOptions((options) => {
+      options.enabled = nextEnabled;
+    });
+  };
+
+  const logSerializedCanvas = () => {
+    console.log(query.serialize());
+  };
 
   return (
     <Box px={1} py={1} mt={3} mb={1} bgcolor="#cbe8e7">
@@ -15,7 +32,7 @@ export const Topbar = () => {
             control={
               <Switch
                 checked={enabled}
-                onChange={(_, value) => actions.setOptions((options) => (options.enabled = value))}
+                onChange={changeEditingState}
               />
             }
             label="Enable"
@@ -26,9 +43,7 @@ export const Topbar = () => {
             size="small"
             variant="outlined"
             color="secondary"
-            onClick={() => {
-              console.log(query.serialize());
-            }}
+            onClick={logSerializedCanvas}
           >
             Serialize JSON to console
           </MaterialButton>
@@ -36,4 +51,4 @@ export const Topbar = () => {
       </Grid>
     </Box>
   );
-};
+}

@@ -31,10 +31,10 @@ test('the rule lives on the server, on every route that spends money', () => {
 
 test('the panel stops before it asks, on both ways in', () => {
   const panel = read('src/AIAssistant.jsx');
-  for (const entry of ['generateWebsite', 'refineWebsite']) {
-    const body = panel.slice(panel.indexOf(`const ${entry} = async () => {`));
+  for (const entry of ['handleGenerate', 'handleRefine']) {
+    const body = panel.slice(panel.search(new RegExp(`const ${entry} = async \\(`)));
     const firstStatement = body.split('\n')[1];
-    assert.match(firstStatement, /blockedByAccount\(\)/,
+    assert.match(firstStatement, /needsAnAccount\(\)/,
       `${entry} must ask before it does anything, not after`);
   }
 });
@@ -45,16 +45,21 @@ test('a locked press is answered rather than swallowed', () => {
   const panel = read('src/AIAssistant.jsx');
   assert.ok(!/disabled={loading \|\| locked}/.test(panel));
   assert.ok(!/disabled={locked/.test(panel));
-  assert.match(panel, /onMouseDown={locked \? promptSignup : undefined}/,
+  assert.match(panel, /onMouseDown={locked \? askToSignUp : undefined}/,
     'and the prompt box answers a press too');
 });
 
 test('the visitor keeps their canvas when they are asked to sign up', () => {
   // The modal promises the design will be waiting afterwards. This is what
   // makes that true; without it the promise is a lie.
+  // The panel asks; the generator hook is what actually keeps the canvas.
   const panel = read('src/AIAssistant.jsx');
-  const prompt = panel.slice(panel.indexOf('const promptSignup = () => {'));
-  assert.match(prompt.slice(0, 400), /localStorage\.setItem\('dragcanvas_draft'/);
+  const asking = panel.slice(panel.indexOf('const askToSignUp = () => {'));
+  assert.match(asking.slice(0, 400), /saveDraftLocally\(\)/);
+
+  const generator = read('src/useAiSiteGenerator.js');
+  const saving = generator.slice(generator.indexOf('const saveDraftLocally = () => {'));
+  assert.match(saving.slice(0, 400), /localStorage\.setItem\('dragcanvas_draft'/);
 
   const modal = read('src/Components/AuthPromptModal.jsx');
   assert.match(modal, /restored after you sign in/, 'the promise still being made');

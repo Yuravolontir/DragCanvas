@@ -16,14 +16,22 @@ const btnStyle = {
  * Reusable "your site is live" modal: clickable URL + Copy, QR image + Download.
  * QR is generated on the fly by the Python service from the URL.
  */
-export default function PublishInfoModal({ show, onClose, url, title = '🎉 Your Site is Live!' }) {
+export default function PublishInfoModal({
+  show,
+  onClose,
+  url,
+  title = '🎉 Your Site is Live!',
+}) {
   const [copied, setCopied] = useState(false);
 
   if (!show || !url) return null;
 
-  const qrSrc = `${PY_API}/api/qr?url=${encodeURIComponent(url)}`;
+  // The URL itself becomes a query parameter, so reserved characters must be
+  // encoded before they are placed inside the QR service URL.
+  const encodedSiteUrl = encodeURIComponent(url);
+  const qrImageUrl = `${PY_API}/api/qr?url=${encodedSiteUrl}`;
 
-  const copyUrl = async () => {
+  const copySiteUrl = async () => {
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
@@ -33,20 +41,23 @@ export default function PublishInfoModal({ show, onClose, url, title = '🎉 You
     }
   };
 
-  const downloadQr = async () => {
+  const downloadQrCode = async () => {
     try {
-      const resp = await fetch(qrSrc);
-      const blob = await resp.blob();
-      const objUrl = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = objUrl;
-      a.download = 'site-qr.png';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(objUrl);
+      const response = await fetch(qrImageUrl);
+      const imageBlob = await response.blob();
+      const temporaryImageUrl = URL.createObjectURL(imageBlob);
+      const downloadLink = document.createElement('a');
+
+      downloadLink.href = temporaryImageUrl;
+      downloadLink.download = 'site-qr.png';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+      URL.revokeObjectURL(temporaryImageUrl);
     } catch {
-      window.open(qrSrc, '_blank');
+      // If automatic download is unavailable, the image still opens so the
+      // user can save it with the browser's normal image controls.
+      window.open(qrImageUrl, '_blank');
     }
   };
 
@@ -63,7 +74,7 @@ export default function PublishInfoModal({ show, onClose, url, title = '🎉 You
           {url}
         </a>
         <img
-          src={qrSrc}
+          src={qrImageUrl}
           alt="QR code"
           style={{ display: 'block', margin: '0 auto 12px', width: '180px', height: '180px' }}
         />
@@ -71,10 +82,10 @@ export default function PublishInfoModal({ show, onClose, url, title = '🎉 You
           Scan the QR code to open your site on a phone
         </p>
         <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
-          <button onClick={copyUrl} style={{ ...btnStyle, background: 'var(--primary-light)', color: 'var(--primary)', border: '1px solid var(--primary)' }}>
+          <button onClick={copySiteUrl} style={{ ...btnStyle, background: 'var(--primary-light)', color: 'var(--primary)', border: '1px solid var(--primary)' }}>
             {copied ? 'Copied!' : 'Copy link'}
           </button>
-          <button onClick={downloadQr} style={{ ...btnStyle, background: 'var(--primary-light)', color: 'var(--primary)', border: '1px solid var(--primary)' }}>
+          <button onClick={downloadQrCode} style={{ ...btnStyle, background: 'var(--primary-light)', color: 'var(--primary)', border: '1px solid var(--primary)' }}>
             Download QR
           </button>
         </div>

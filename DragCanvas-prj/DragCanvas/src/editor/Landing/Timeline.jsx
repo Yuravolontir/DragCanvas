@@ -4,7 +4,8 @@ import { useNode } from '@craftjs/core';
 import { ToolbarSection } from './Toolbar/ToolbarSection';
 import { ToolbarItem } from './Toolbar/ToolbarItem';
 import { ToolbarHelp } from './Toolbar/ToolbarHelp';
-import { RowCard, RowField, RowList, useRowProp } from './Toolbar/ToolbarRows';
+import { RowCard, RowField, RowList } from './Toolbar/ToolbarRows';
+import { useRowProp } from './Toolbar/useRowProp.js';
 import { readTimelineRows, emptyTimelineRow } from '../../utils/elementRows.js';
 
 /**

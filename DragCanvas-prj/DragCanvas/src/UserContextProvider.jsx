@@ -1,106 +1,113 @@
-import { apiFetch, setToken, clearToken, getToken } from './api.js';
-import React, { useState, useEffect } from "react";
-import { v4 as uuidv4 } from 'uuid';
+import React, { useCallback, useEffect, useState } from 'react';
+
+import { apiFetch, clearToken, getToken, setToken } from './api.js';
 import { UserContext } from './userContext.js';
 
-export default function UserContextProvider(props) {
+const STORED_USER_KEY = 'currentUser';
 
+/** Save the non-sensitive user profile used to paint the UI after a refresh. */
+function storeUser(user) {
+  localStorage.setItem(STORED_USER_KEY, JSON.stringify(user));
+}
+
+/** Read the cached profile without allowing malformed JSON to crash the app. */
+function readStoredUser() {
+  try {
+    const value = localStorage.getItem(STORED_USER_KEY);
+    return value && value !== 'undefined' ? JSON.parse(value) : null;
+  } catch {
+    localStorage.removeItem(STORED_USER_KEY);
+    return null;
+  }
+}
+
+/**
+ * Makes login state available to every component below App.
+ *
+ * The provider is the single owner of the current user, roles, authentication
+ * loading state, and authentication errors. Pages consume those values through
+ * useUserContext() instead of reading localStorage independently.
+ */
+export default function UserContextProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [isAdmin, setIsAdmin] = useState(null);
   const [isSuperAdmin, setIsSuperAdmin] = useState(null);
-  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [sessionReady, setSessionReady] = useState(false);
+  const [notificationsVersion, setNotificationsVersion] = useState(0);
 
-  // Add notification state and refetch function
-  const [notificationsVersion, setNotificationsVersion] =
-    useState(0);
+  const updateUserState = useCallback((user) => {
+    setCurrentUser(user);
+    setIsAdmin(Boolean(user?.IsAdmin));
+    setIsSuperAdmin(Boolean(user?.IsSuperAdmin));
+  }, []);
 
-  const refreshNotifications = () => {
-    setNotificationsVersion(prev => prev + 1);
-  };
+  const refreshNotifications = useCallback(() => {
+    setNotificationsVersion((previousVersion) => previousVersion + 1);
+  }, []);
 
-  const addproject = (name, project) => {
-    let newProject = {
-      id: uuidv4(),
-      created: new Date(),
-      name: name,
-      project: project
-    }
-    setProjects([...projects, newProject]);
-  }
-  const deleteproject = (id) => {
-    setProjects(projects.filter(p => p.id !== id));
-  }
   /**
-   * Restore the session on mount.
+   * Restore the session after a browser refresh.
    *
-   * The stored copy is used first so the page paints immediately instead of
-   * flashing a logged-out header, and then the server is asked who this user
-   * currently is. Roles used to be kept in localStorage and never refreshed,
-   * which meant a demoted admin kept seeing the admin panel until they cleared
-   * their browser - the server now answers 403, so the UI has to agree.
+   * The cached profile paints the header immediately. The server response then
+   * replaces it with the authoritative user and role information.
    */
   useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem('currentUser');
-      if (storedUser && storedUser !== 'undefined') {
-        setCurrentUser(JSON.parse(storedUser));
-      }
-    } catch {
-      localStorage.removeItem('currentUser');
+    const cachedUser = readStoredUser();
+    if (cachedUser) {
+      updateUserState(cachedUser);
     }
 
-    // Left over from when roles lived here; removed so nothing reads them again
+    // These keys belonged to an older implementation. Roles must come from
+    // the server so demotions and account changes take effect immediately.
     localStorage.removeItem('isAdmin');
     localStorage.removeItem('isSuperAdmin');
 
-    // Only ask when there is a session to ask about - an anonymous visitor
-    // browsing templates must not be bounced to the login page.
-    if (!getToken()) return;
+    // Anonymous visitors may browse the public pages without being redirected.
+    if (!getToken()) {
+      setSessionReady(true);
+      return;
+    }
 
     apiFetch('/api/users/me')
-      .then((user) => {
-        setCurrentUser(user);
-        setIsAdmin(user.IsAdmin);
-        setIsSuperAdmin(user.IsSuperAdmin);
-        localStorage.setItem('currentUser', JSON.stringify(user));
+      .then((freshUser) => {
+        updateUserState(freshUser);
+        storeUser(freshUser);
       })
       .catch(() => {
-        // A 401 (deactivated, deleted, expired) is already handled inside
-        // apiFetch, which clears the token and redirects to login.
-        localStorage.removeItem('currentUser');
-      });
-  }, []);
+        // apiFetch handles an expired token and redirects to login. This only
+        // removes the stale visual profile left in localStorage.
+        localStorage.removeItem(STORED_USER_KEY);
+      })
+      .finally(() => setSessionReady(true));
+  }, [updateUserState]);
 
   const login = async (email, password) => {
+    if (!email || !password) {
+      const message = 'Email and password are required';
+      setError(message);
+      return { success: false, error: message };
+    }
+
     setLoading(true);
     setError(null);
-    if (!email || !password) {
-      setError('Email and password are required');
-      setLoading(false);
-      return { success: false, error: 'Email and password are required' };
-    }
+
     try {
-      const data2 = await apiFetch('/api/auth/login', {
+      const session = await apiFetch('/api/auth/login', {
         method: 'POST',
-        body: { email, password }
+        body: { email, password },
       });
 
-      // The token proves our identity on every later request
-      setToken(data2.token);
-
-      setCurrentUser(data2);
-      setIsAdmin(data2.IsAdmin);
-      setIsSuperAdmin(data2.IsSuperAdmin);
-      // Roles are deliberately not stored - they are read from the server, so
-      // a change of role takes effect without the user clearing their browser
-      localStorage.setItem('currentUser',JSON.stringify(data2));
+      // The token proves this user's identity on every later API request.
+      setToken(session.token);
+      updateUserState(session);
+      storeUser(session);
 
       return { success: true };
-    } catch (err) {
-      setError(err.message);
-      return { success: false, error: err.message };
+    } catch (loginError) {
+      setError(loginError.message);
+      return { success: false, error: loginError.message };
     } finally {
       setLoading(false);
     }
@@ -109,28 +116,28 @@ export default function UserContextProvider(props) {
   const register = async (username, email, password, birthDate = null) => {
     setLoading(true);
     setError(null);
+
     try {
-      const data = await apiFetch('/api/auth/register', {
+      const registration = await apiFetch('/api/auth/register', {
         method: 'POST',
-        body: { username, email, password, birthDate }
+        body: { username, email, password, birthDate },
       });
 
-      // Registration does not issue a token, so log the new user in right away
+      // Registration creates the account but does not issue a token, so the
+      // new user is logged in immediately with a second request.
       const session = await apiFetch('/api/auth/login', {
         method: 'POST',
-        body: { email, password }
+        body: { email, password },
       });
-      setToken(session.token);
 
-      setCurrentUser(data.user);
-      setIsAdmin(data.user.IsAdmin);
-      setIsSuperAdmin(data.user.IsSuperAdmin);
-      localStorage.setItem('currentUser',
-        JSON.stringify(data.user));
+      setToken(session.token);
+      updateUserState(registration.user);
+      storeUser(registration.user);
+
       return { success: true };
-    } catch (err) {
-      setError(err.message);
-      return { success: false, error: err.message };
+    } catch (registrationError) {
+      setError(registrationError.message);
+      return { success: false, error: registrationError.message };
     } finally {
       setLoading(false);
     }
@@ -138,29 +145,27 @@ export default function UserContextProvider(props) {
 
   const logout = () => {
     clearToken();
-    setCurrentUser(null);
-    setIsAdmin(null);
-    setIsSuperAdmin(null);
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem(STORED_USER_KEY);
+    updateUserState(null);
+  };
+
+  const contextValue = {
+    currentUser,
+    isAdmin,
+    isSuperAdmin,
+    login,
+    register,
+    logout,
+    loading,
+    error,
+    sessionReady,
+    notificationsVersion,
+    refreshNotifications,
   };
 
   return (
-    <UserContext.Provider value={{
-      currentUser,
-      login,
-      register,
-      logout,
-      loading,
-      error,
-      projects,
-      addproject,
-      deleteproject,
-      isAdmin,
-      isSuperAdmin,
-      notificationsVersion,
-      refreshNotifications
-    }}>
-      {props.children}
+    <UserContext.Provider value={contextValue}>
+      {children}
     </UserContext.Provider>
   );
 }

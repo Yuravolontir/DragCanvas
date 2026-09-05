@@ -64,3 +64,23 @@ export function stageProgress(stage, elapsedMs = 0) {
 
     return { percent: estimate(elapsedMs, LAYOUT_SHARE) };
 }
+
+/**
+ * What to call the current stage on screen.
+ *
+ * Named for what is happening rather than for how long it will take, because
+ * nobody can promise the second one and a wrong promise is worse than none.
+ */
+export function stageLabel(stage) {
+    if (stage?.name === 'layout') return 'Writing the layout…';
+    if (stage?.name === 'refining') return 'Rewriting the page…';
+    if (stage?.name === 'placing') return 'Placing the page…';
+
+    if (stage?.name === 'images') {
+        if (stage.remaining === 0) return 'Finishing…';
+        const plural = stage.remaining === 1 ? '' : 's';
+        return `Drawing ${stage.remaining} image${plural}…`;
+    }
+
+    return 'Working…';
+}

@@ -4,15 +4,8 @@ import { useEditor, useNode } from '@craftjs/core';
 import { ToolbarSection } from './Toolbar/ToolbarSection';
 import { ToolbarItem } from './Toolbar/ToolbarItem';
 import { ToolbarHelp } from './Toolbar/ToolbarHelp';
-import {
-  RowCard,
-  RowField,
-  RowInlineField,
-  RowList,
-  RowMiniButton,
-  RowToggle,
-  useRowProp,
-} from './Toolbar/ToolbarRows';
+import { RowCard, RowField, RowInlineField, RowList, RowMiniButton, RowToggle } from './Toolbar/ToolbarRows';
+import { useRowProp } from './Toolbar/useRowProp.js';
 import { readPricingRows, emptyPricingRow, safeHref, opensNewTab } from '../../utils/elementRows.js';
 
 /**

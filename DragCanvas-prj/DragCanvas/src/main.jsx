@@ -1,5 +1,5 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 
 // Vendor stylesheet first, ours second.
 //
@@ -9,13 +9,17 @@ import { createRoot } from 'react-dom/client'
 // palette the page stayed white under a dark design. Our design system should
 // be the thing that has the last word about our own page.
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css'
+import './index.css';
 
-import App from './App.jsx'
+import App from './App.jsx';
 
+// index.html contains <div id="root"></div>. React takes control of that one
+// element and renders the entire application inside it.
+const rootElement = document.getElementById('root');
+const reactRoot = createRoot(rootElement);
 
-createRoot(document.getElementById('root')).render(
+reactRoot.render(
   <StrictMode>
     <App />
   </StrictMode>,
-)
+);

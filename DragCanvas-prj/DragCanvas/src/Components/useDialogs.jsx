@@ -8,54 +8,58 @@ import { Dialog } from './Dialog.jsx';
  * keeps the queue out of this file: a flow that needs to say two things says
  * the second after awaiting the first.
  */
-export const useDialogs = () => {
-  const [state, setState] = useState(null);
-  const resolveRef = useRef(null);
-  const requestRef = useRef(0);
+export function useDialogs() {
+  const [dialogState, setDialogState] = useState(null);
 
-  const settle = useCallback((result) => {
-    const resolve = resolveRef.current;
-    resolveRef.current = null;
-    setState(null);
+  // Refs remember values without causing a render. One stores the Promise's
+  // resolve function; the other gives each opened dialog a fresh React key.
+  const resolveDialogRef = useRef(null);
+  const nextDialogIdRef = useRef(0);
+
+  const closeDialog = useCallback((result) => {
+    const resolve = resolveDialogRef.current;
+    resolveDialogRef.current = null;
+    setDialogState(null);
     resolve?.(result);
   }, []);
 
-  const open = useCallback((next) => {
+  const openDialog = useCallback((options) => {
     // A second call while one is open resolves the first rather than losing it.
-    resolveRef.current?.(next.input ? null : false);
+    resolveDialogRef.current?.(options.input ? null : false);
+
     return new Promise((resolve) => {
-      resolveRef.current = resolve;
+      resolveDialogRef.current = resolve;
       // The id keys the dialog below, so each request gets its own component
       // and a prompt never opens holding the previous answer.
-      requestRef.current += 1;
-      setState({ ...next, id: requestRef.current });
+      nextDialogIdRef.current += 1;
+      setDialogState({ ...options, id: nextDialogIdRef.current });
     });
   }, []);
 
   const alert = useCallback(
     (options) =>
-      open({
+      openDialog({
         tone: 'info',
         confirmText: 'OK',
         ...(typeof options === 'string' ? { message: options } : options),
       }),
-    [open]
+    [openDialog]
   );
 
   const confirm = useCallback(
     (options) =>
-      open({
+      openDialog({
         tone: 'question',
         confirmText: 'Confirm',
         cancelText: 'Cancel',
         ...(typeof options === 'string' ? { message: options } : options),
       }),
-    [open]
+    [openDialog]
   );
 
   const prompt = useCallback(
     (options) =>
-      open({
+      openDialog({
         tone: 'question',
         confirmText: 'Save',
         cancelText: 'Cancel',
@@ -65,18 +69,18 @@ export const useDialogs = () => {
           ...(typeof options === 'string' ? {} : options.input || {}),
         },
       }),
-    [open]
+    [openDialog]
   );
 
   const dialogs = (
     <Dialog
-      key={state?.id || 'idle'}
-      open={!!state}
-      {...(state || {})}
-      onConfirm={(result) => settle(result)}
-      onCancel={() => settle(state?.input ? null : false)}
+      key={dialogState?.id || 'idle'}
+      open={Boolean(dialogState)}
+      {...(dialogState || {})}
+      onConfirm={(result) => closeDialog(result)}
+      onCancel={() => closeDialog(dialogState?.input ? null : false)}
     />
   );
 
   return { dialogs, alert, confirm, prompt };
-};
+}

@@ -21,14 +21,20 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 
 const preview = read('src/Components/SitePreview.jsx');
+// The drawing itself moved next door, so the showcase can warm a template up
+// before it is shown. The promise is unchanged and so is this test.
+const cache = read('src/Components/sitePreviewCache.js');
 
 test('a preview never claims to be a project', () => {
-  const calls = [...preview.matchAll(/exportToHtml\(([^)]*)\)/g)].map((m) => m[1]);
+  const calls = [...cache.matchAll(/exportToHtml\(([^)]*)\)/g)].map((m) => m[1]);
   assert.equal(calls.length, 1, 'one place draws the page');
   assert.equal(calls[0].split(',').length, 2,
     'a third argument is options, and options is where projectId is passed - '
     + 'with one, the card\'s forms and bookings would post as the real project');
-  assert.ok(!/projectId/.test(preview), 'nothing here knows a project id');
+  assert.ok(!/projectId/.test(cache), 'nothing that draws a card knows a project id');
+  assert.ok(!/projectId/.test(preview), 'nor does the card itself');
+  assert.ok(!/exportToHtml/.test(preview),
+    'and the card draws nothing of its own - one place, so there is one thing to check');
 });
 
 test('the frame is a stranger to this origin', () => {

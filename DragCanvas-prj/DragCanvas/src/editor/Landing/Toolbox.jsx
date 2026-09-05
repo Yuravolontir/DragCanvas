@@ -1,163 +1,123 @@
 import { useEditor } from '@craftjs/core';
 import { Tooltip } from '@mui/material';
-import React, { useMemo, useState } from 'react';
-import styled from 'styled-components';
+import { useMemo, useState } from 'react';
 
 import { ELEMENTS, ELEMENT_GROUPS, labelOf, matchesQuery } from './elements.catalogue';
+import {
+  Empty,
+  GroupHeader,
+  Item,
+  PanelHint,
+  PanelTitle,
+  SearchBox,
+  ToolboxDiv,
+} from './Toolbox.styles.js';
 import { useMediaQuery } from '../../useMediaQuery.js';
 
-const ToolboxDiv = styled.div`
-  transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-  ${(props) => (!props.$enabled ? `width: 0;` : '')}
-  ${(props) => (!props.$enabled ? `opacity: 0;` : '')}
-  background: var(--surface-container-low, var(--surface-dim));
-  border-right: 1px solid var(--outline-light, var(--outline-light));
-  box-shadow: 2px 0 14px color-mix(in oklab, var(--paper) 6%, transparent);
-`;
+/** Widths of the panel, shared with responsive.css where the formula is explained. */
+const COLUMN_WIDTH = '104px';
+const DRAWER_WIDTH = 'var(--dc-drawer-width, 280px)';
 
-/*
- * A real <button>, not a <div>. That is what makes the panel reachable: tab
- * order, Enter/Space and an accessible name all come with the element, so no
- * role or tabIndex is needed. The browser's default button styling has to be
- * reset first, or it fights the panel's own.
+/**
+ * Where a keyboard insert lands.
+ *
+ * A mouse drop tells the editor where it went; a keypress has to be told. The
+ * selected node wins if it can hold children, then its parent, then the page.
+ *
+ * @returns {{parentId: string, index: number|undefined}} undefined index = "at the end"
  */
-const Item = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 78px;
-  min-height: 58px;
-  border: 1px solid transparent;
-  border-radius: 12px;
-  padding: 8px 6px;
-  background: none;
-  font: inherit;
-  color: inherit;
-  text-align: center;
-  transition: all 0.15s ease;
-  .material-symbols-outlined {
-    font-size: 24px;
-    color: var(--muted, var(--muted));
-    transition: color 0.15s ease;
-  }
-  .icon-label {
-    font-size: 10px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 600;
-    color: var(--muted, var(--muted));
-    margin-top: 4px;
-    letter-spacing: 0.02em;
-  }
-  &:hover {
-    background: var(--primary-light, var(--primary-light));
-    border-color: var(--primary-container, #dde1ff);
-    transform: translateY(-1px);
-    .material-symbols-outlined {
-      color: var(--primary, var(--primary));
-    }
-    .icon-label {
-      color: var(--primary, var(--primary));
-    }
-  }
-  /* focus-visible, not focus: a mouse drag must not leave a ring behind */
-  &:focus-visible {
-    outline: 2px solid var(--primary, #4e5ba6);
-    outline-offset: 2px;
-    background: var(--primary-light, var(--primary-light));
-  }
-  ${(props) =>
-    props.$move &&
-    `
-    cursor: move;
-  `}
-`;
+function insertionTarget(query, selectedId) {
+  const endOfPage = { parentId: 'ROOT', index: undefined };
+  if (!selectedId) return endOfPage;
 
-const PanelTitle = styled.div`
-  width: 100%;
-  padding: 16px 12px 10px;
-  font: 700 11px/1.2 'Plus Jakarta Sans', sans-serif;
-  color: var(--on-surface-variant);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-`;
+  try {
+    const node = query.node(selectedId);
+    if (node.isCanvas()) return { parentId: selectedId, index: undefined };
 
-/*
- * Shown only on a coarse pointer. The panel says nothing about dragging, so
- * there is no false instruction to correct - what is missing is the true one.
- * Craft drags with HTML5 drag-and-drop, which a finger cannot start, so on a
- * touch device the only way in is the press these buttons already accept, and
- * nothing on screen says so.
+    const parentId = node.get().data.parent;
+    if (parentId && query.node(parentId).isCanvas()) {
+      const siblings = query.node(parentId).get().data.nodes || [];
+      const positionOfSelection = siblings.indexOf(selectedId);
+      return {
+        parentId,
+        // Right after whatever is selected, so inserts read top to bottom.
+        index: positionOfSelection >= 0 ? positionOfSelection + 1 : undefined,
+      };
+    }
+  } catch {
+    // the selection went stale between render and keypress
+  }
+
+  return endOfPage;
+}
+
+/**
+ * One element of the catalogue: click to insert it, or drag it onto the canvas.
+ *
+ * @param {object} entry            a row of elements.catalogue
+ * @param {Function} createConnector Craft's `connectors.create`
+ * @param {Function} onInsert       called when the button is pressed
  */
-const PanelHint = styled.p`
-  width: 100%;
-  margin: -4px 0 6px;
-  padding: 0 12px;
-  font: 500 10px/1.35 'Plus Jakarta Sans', sans-serif;
-  color: var(--muted);
-`;
+function ToolboxItem({ entry, createConnector, onInsert }) {
+  return (
+    <div
+      className="dc-toolbox-item"
+      ref={(element) => {
+        // Guarded for the same reason as the canvas in Viewport: React hands a
+        // ref callback null on the way out, and a Craft connector given null
+        // asks for a node that has already gone.
+        if (!element) return;
+        createConnector(element, entry.element());
+      }}
+    >
+      {/*
+        describeChild matters: without it MUI puts the tooltip in aria-label,
+        which replaces the button's name, so a screen reader announces "A
+        location, with a pin" instead of "Map". With it the tooltip becomes
+        aria-describedby and the visible label stays the name.
+      */}
+      <Tooltip title={entry.tip} placement="right" describeChild>
+        <Item type="button" className="m-2 pb-2" onClick={() => onInsert(entry)}>
+          {/* the ligature text is the icon; announcing it would read "map Map" */}
+          <span className="material-symbols-outlined" aria-hidden="true">{entry.icon}</span>
+          <span className="icon-label">{labelOf(entry)}</span>
+        </Item>
+      </Tooltip>
+    </div>
+  );
+}
 
-/* Same type as PanelTitle, plus a disclosure arrow and a hit area. */
-const GroupHeader = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 4px;
-  width: 100%;
-  padding: 12px 10px 6px;
-  border: 0;
-  background: none;
-  font: 700 11px/1.2 'Plus Jakarta Sans', sans-serif;
-  color: var(--on-surface-variant);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  cursor: pointer;
-  &:hover {
-    color: var(--primary, var(--primary));
-  }
-  &:focus-visible {
-    outline: 2px solid var(--primary, #4e5ba6);
-    outline-offset: -2px;
-    border-radius: 6px;
-  }
-  .chevron {
-    font-size: 16px;
-    transition: transform 0.15s ease;
-  }
-  .chevron.collapsed {
-    transform: rotate(-90deg);
-  }
-`;
+/** One named group of elements, with a header that folds it away. */
+function ElementGroup({ group, items, collapsed, onToggle, renderItem }) {
+  return (
+    <>
+      <GroupHeader
+        className="dc-toolbox-span"
+        type="button"
+        aria-expanded={!collapsed}
+        onClick={onToggle}
+      >
+        {group}
+        <span
+          aria-hidden="true"
+          className={`material-symbols-outlined chevron${collapsed ? ' collapsed' : ''}`}
+        >
+          expand_more
+        </span>
+      </GroupHeader>
 
-const SearchBox = styled.input`
-  width: calc(100% - 16px);
-  margin: 10px 8px 4px;
-  padding: 6px 8px;
-  border: 1px solid var(--outline-light, #d6d9e4);
-  border-radius: 8px;
-  background: var(--surface, var(--surface-dim));
-  color: var(--on-surface, inherit);
-  font: 500 11px/1.2 'Plus Jakarta Sans', sans-serif;
-  &::placeholder {
-    color: var(--muted, #8f99b2);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--primary, #4e5ba6);
-    outline-offset: 1px;
-  }
-`;
+      {/* Collapsed groups are not rendered, so they leave the tab order */}
+      {!collapsed && items.map(renderItem)}
+    </>
+  );
+}
 
-const Empty = styled.div`
-  padding: 12px 10px;
-  font: 500 10px/1.4 'Plus Jakarta Sans', sans-serif;
-  color: var(--muted, #8f99b2);
-  text-align: center;
-`;
-
-/*
+/**
+ * The panel of elements a page can be built from.
+ *
  * `offCanvas` is true below 1024 while this panel is a closed drawer. It becomes
  * `inert`, which takes the whole subtree out of the tab order and the
- * accessibility tree — an off-screen panel whose buttons you can still Tab into
+ * accessibility tree - an off-screen panel whose buttons you can still Tab into
  * is worse than one that is simply not there.
  */
 export const Toolbox = ({ offCanvas = false, drawer = false }) => {
@@ -173,144 +133,96 @@ export const Toolbox = ({ offCanvas = false, drawer = false }) => {
     selectedId: state.events.selected ? Array.from(state.events.selected)[0] : null,
   }));
 
-  const coarse = useMediaQuery('(pointer: coarse)');
+  const coarsePointer = useMediaQuery('(pointer: coarse)');
   const [search, setSearch] = useState('');
-  const [collapsed, setCollapsed] = useState({});
+  const [collapsedGroups, setCollapsedGroups] = useState({});
 
   const searching = search.trim().length > 0;
-  const matches = useMemo(() => ELEMENTS.filter((e) => matchesQuery(e, search)), [search]);
-
-  /*
-   * Where a keyboard insert lands. A mouse drop tells the editor where it went;
-   * a keypress has to be told. The selected node wins if it can hold children,
-   * then its parent, then the page.
-   */
-  const insertionTarget = () => {
-    if (!selectedId) return { parentId: 'ROOT', index: undefined };
-    try {
-      const node = query.node(selectedId);
-      if (node.isCanvas()) return { parentId: selectedId, index: undefined };
-      const parentId = node.get().data.parent;
-      if (parentId && query.node(parentId).isCanvas()) {
-        const siblings = query.node(parentId).get().data.nodes || [];
-        const at = siblings.indexOf(selectedId);
-        return { parentId, index: at >= 0 ? at + 1 : undefined };
-      }
-    } catch {
-      // the selection went stale between render and keypress
-    }
-    return { parentId: 'ROOT', index: undefined };
-  };
+  const matches = useMemo(
+    () => ELEMENTS.filter((entry) => matchesQuery(entry, search)),
+    [search],
+  );
 
   const insert = (entry) => {
-    const { parentId, index } = insertionTarget();
+    const { parentId, index } = insertionTarget(query, selectedId);
     const tree = query.parseReactElement(entry.element()).toNodeTree();
     actions.addNodeTree(tree, parentId, index);
-    // Puts the settings panel on the new element and shows where it landed,
-    // the same as a mouse drop. selectNode is in ignoreHistoryForActions, so
-    // this costs no undo step of its own.
+
+    // Puts the settings panel on the new element and shows where it landed, the
+    // same as a mouse drop. selectNode is in ignoreHistoryForActions, so this
+    // costs no undo step of its own.
     actions.selectNode(tree.rootNodeId);
   };
 
-  const renderItem = (entry) => (
-    <div
-      key={entry.name}
-      className="dc-toolbox-item"
-      ref={(ref) => {
-        // Guarded for the same reason as the canvas in Viewport: React hands a
-        // ref callback null on the way out, and a Craft connector given null
-        // asks for a node that has already gone. The Resizer has always done
-        // this; these two had not.
-        if (!ref) return;
-        create(ref, entry.element());
-      }}
-    >
-      {/*
-        describeChild matters: without it MUI puts the tooltip in aria-label,
-        which replaces the button's name, so a screen reader announces "A
-        location, with a pin" instead of "Map". With it the tooltip becomes
-        aria-describedby and the visible label stays the name.
-      */}
-      <Tooltip title={entry.tip} placement="right" describeChild>
-        <Item
-          type="button"
-          $move
-          className="m-2 pb-2"
-          onClick={() => insert(entry)}
-        >
-          {/* the ligature text is the icon; announcing it would read "map Map" */}
-          <span className="material-symbols-outlined" aria-hidden="true">
-            {entry.icon}
-          </span>
-          <span className="icon-label">{labelOf(entry)}</span>
-        </Item>
-      </Tooltip>
-    </div>
+  const toggleGroup = (group) => setCollapsedGroups(
+    (previous) => ({ ...previous, [group]: !previous[group] }),
   );
+
+  const renderItem = (entry) => (
+    <ToolboxItem
+      key={entry.name}
+      entry={entry}
+      createConnector={create}
+      onInsert={insert}
+    />
+  );
+
+  // A query that matches two groups should not be split across two headers, so
+  // results are one flat list.
+  const searchResults = matches.length > 0
+    ? matches.map(renderItem)
+    : <Empty className="dc-toolbox-span">Nothing matches “{search.trim()}”</Empty>;
+
+  const groupedElements = ELEMENT_GROUPS.map((group) => {
+    const items = ELEMENTS.filter((entry) => entry.group === group);
+    if (items.length === 0) return null;
+
+    return (
+      <ElementGroup
+        key={group}
+        group={group}
+        items={items}
+        collapsed={Boolean(collapsedGroups[group])}
+        onToggle={() => toggleGroup(group)}
+        renderItem={renderItem}
+      />
+    );
+  });
+
+  const panelWidth = drawer ? DRAWER_WIDTH : COLUMN_WIDTH;
 
   return (
     <ToolboxDiv
-      $enabled={enabled && enabled}
+      $enabled={enabled}
       className="toolbox transition h-full flex flex-col"
       // A column down the left, not a full-width sheet. The width is shared
       // with the Sidebar column opposite and defined in responsive.css, which
       // is also where the reason for the formula is written down.
-      style={{ width: enabled ? (drawer ? 'var(--dc-drawer-width, 280px)' : '104px') : 0 }}
+      style={{ width: enabled ? panelWidth : 0 }}
       inert={offCanvas || undefined}
       aria-hidden={offCanvas || undefined}
     >
       <PanelTitle>Elements</PanelTitle>
-      {coarse && <PanelHint>Tap one to add it to the page.</PanelHint>}
+
+      {/*
+        Shown only on a coarse pointer. The panel says nothing about dragging,
+        so there is no false instruction to correct - what is missing is the
+        true one. Craft drags with HTML5 drag-and-drop, which a finger cannot
+        start, so on a touch device the only way in is a press.
+      */}
+      {coarsePointer && <PanelHint>Tap one to add it to the page.</PanelHint>}
+
       <SearchBox
         type="search"
         value={search}
         placeholder="Search"
         aria-label="Search elements"
-        onChange={(e) => setSearch(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === 'Escape') setSearch('');
-        }}
+        onChange={(event) => setSearch(event.target.value)}
+        onKeyDown={(event) => { if (event.key === 'Escape') setSearch(''); }}
       />
+
       <div className="dc-toolbox-items flex flex-1 flex-col items-center gap-1 overflow-y-auto pb-4">
-        {searching ? (
-          // A query that matches two groups should not be split across two
-          // headers, so results are one flat list.
-          matches.length ? (
-            matches.map(renderItem)
-          ) : (
-            <Empty className="dc-toolbox-span">Nothing matches “{search.trim()}”</Empty>
-          )
-        ) : (
-          ELEMENT_GROUPS.map((group) => {
-            const items = ELEMENTS.filter((e) => e.group === group);
-            if (!items.length) return null;
-            const isCollapsed = !!collapsed[group];
-            return (
-              <React.Fragment key={group}>
-                <GroupHeader
-                  className="dc-toolbox-span"
-                  type="button"
-                  aria-expanded={!isCollapsed}
-                  onClick={() =>
-                    setCollapsed((prev) => ({ ...prev, [group]: !prev[group] }))
-                  }
-                >
-                  {group}
-                  <span
-                    aria-hidden="true"
-                    className={`material-symbols-outlined chevron${
-                      isCollapsed ? ' collapsed' : ''
-                    }`}
-                  >
-                    expand_more
-                  </span>
-                </GroupHeader>
-                {/* Collapsed groups are not rendered, so they leave the tab order */}
-                {!isCollapsed && items.map(renderItem)}
-              </React.Fragment>
-            );
-          })
-        )}
+        {searching ? searchResults : groupedElements}
       </div>
     </ToolboxDiv>
   );

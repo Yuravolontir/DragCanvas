@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useEditor, useNode } from '@craftjs/core';
 import { ToolbarSection } from './Toolbar/ToolbarSection';
 import { ToolbarHelp } from './Toolbar/ToolbarHelp';
-import { RowCard, RowField, RowList, RowPanel, RowToggle, useRowProp } from './Toolbar/ToolbarRows';
+import { RowCard, RowField, RowList, RowPanel, RowToggle } from './Toolbar/ToolbarRows';
+import { useRowProp } from './Toolbar/useRowProp.js';
 import { ToolbarItem } from './Toolbar/ToolbarItem';
 import {
   readStatRows,

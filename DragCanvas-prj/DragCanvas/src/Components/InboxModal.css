@@ -1,0 +1,44 @@
+/*
+ * The dialog around the message list.
+ *
+ * Bootstrap paints .modal-content white and nothing in this app themes it, so
+ * in the default dark theme this window used to be a white sheet dropped into a
+ * dark application - and the cards inside it were hard-coded #fff to match.
+ * Skinning the surface here fixes both, and keeps everything Bootstrap's Modal
+ * is worth using for: Escape, the focus trap, the scroll lock and the ARIA.
+ */
+
+.inbox-modal {
+  border: 1px solid var(--outline-light);
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--on-surface);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.inbox-modal .modal-header,
+.inbox-modal .modal-footer {
+  border-color: var(--outline-light);
+}
+
+.inbox-modal .modal-header { align-items: flex-start; gap: 12px; }
+.inbox-modal .modal-body { padding: 18px 16px; }
+
+.inbox-modal__title { display: flex; flex: 1; min-width: 0; align-items: center; gap: 12px; }
+.inbox-modal__icon { display: grid; width: 38px; height: 38px; flex: 0 0 auto; place-items: center; border-radius: 11px; background: var(--primary-light); color: var(--primary); }
+.inbox-modal__icon .material-symbols-outlined { font-size: 20px; }
+.inbox-modal__heading { min-width: 0; }
+.inbox-modal__heading strong { display: block; overflow: hidden; font-size: 1rem; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.inbox-modal__heading span { display: block; margin-top: 2px; color: var(--muted); font-size: .78rem; }
+
+/* Bootstrap's own .btn-close is a dark SVG that disappears on a dark surface. */
+.inbox-modal__close { display: grid; width: 34px; height: 34px; flex: 0 0 auto; place-items: center; padding: 0; border: 0; border-radius: 9px; background: transparent; color: var(--muted); cursor: pointer; }
+.inbox-modal__close:hover { background: var(--surface-container); color: var(--on-surface); }
+.inbox-modal__close:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+
+.inbox-modal__footer-button { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 8px 16px; border: 1px solid var(--outline-light); border-radius: 9999px; background: transparent; color: var(--on-surface-variant); font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; }
+.inbox-modal__footer-button:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
+.inbox-modal__footer-button:disabled { opacity: .55; cursor: not-allowed; }
+.inbox-modal__footer-button .material-symbols-outlined { font-size: 16px; }
+.inbox-modal__footer-button--primary { border-color: var(--primary); background: var(--primary); color: var(--on-primary); }
+.inbox-modal__footer-button--primary:hover:not(:disabled) { background: var(--primary-hover); color: var(--on-primary); }

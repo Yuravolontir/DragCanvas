@@ -36,6 +36,37 @@
   background: #fff;
 }
 
+/*
+ * The slow tour down a template.
+ *
+ * The frame cannot be scrolled from out here - it is sandboxed to an opaque
+ * origin on purpose - so the whole element is moved instead: laid out at the
+ * page's full height and slid upwards under a box that clips it. The distance
+ * and the duration are measured in SitePreview and arrive as custom properties,
+ * so the journey ends exactly at the footer rather than in white space below it.
+ *
+ * One way and once only, holding at the footer (`forwards`) rather than snapping
+ * back to the top. What happens when it arrives is not this stylesheet's
+ * business: SitePreview reports it, and the showcase answers by changing the
+ * template. `ease-out` because the arrival is the moment that matters - it slows
+ * into the footer instead of stopping dead on it.
+ */
+.tpl-preview--tour .tpl-preview__frame {
+  height: var(--tpl-tour-height);
+  animation: tpl-preview-tour var(--tpl-tour-duration, 24s) ease-out 1 forwards;
+}
+
+@keyframes tpl-preview-tour {
+  from {
+    transform: scale(calc(100cqw / var(--tpl-page-width, 1280px))) translateY(0);
+  }
+  to {
+    transform:
+      scale(calc(100cqw / var(--tpl-page-width, 1280px)))
+      translateY(calc(-1 * var(--tpl-tour-distance, 0px)));
+  }
+}
+
 .tpl-preview__fallback {
   position: absolute;
   inset: 0;
@@ -85,5 +116,12 @@
 
 @media (prefers-reduced-motion: reduce) {
   .tpl-preview__pending { animation: none; }
+
+  /*
+   * Someone who asked for less motion did not ask for a website to be driven
+   * past them. The frame keeps its full height, so the card still shows the top
+   * of the page - it simply never leaves it.
+   */
+  .tpl-preview--tour .tpl-preview__frame { animation: none; }
 }
 

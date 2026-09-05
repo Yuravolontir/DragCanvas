@@ -72,9 +72,10 @@ test('the same warning twice is still one sentence', () => {
 });
 
 test('publishing asks about warnings and refuses only blockers', () => {
-  const header = fs.readFileSync(
-    new URL('../src/editor/Landing/Header.jsx', import.meta.url), 'utf8');
-  const publish = header.slice(header.indexOf('const blockers = blockersIn(issues)'));
+  // The flow lives beside the exporter, not in the header that triggers it.
+  const source = fs.readFileSync(
+    new URL('../src/editor/projectPublishing.js', import.meta.url), 'utf8');
+  const publish = source.slice(source.indexOf('const blockers = blockersIn(issues)'));
 
   const refusal = publish.indexOf('Fix these items before publishing');
   const question = publish.indexOf('Publish anyway');

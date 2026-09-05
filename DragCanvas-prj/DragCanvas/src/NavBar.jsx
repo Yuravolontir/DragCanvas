@@ -1,12 +1,29 @@
-import { apiFetch } from './api.js';
 import React, { useState, useEffect, useRef } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
+import { apiFetch } from './api.js';
 import { useUserContext } from './userContext.js';
 import { APP_NAV_ITEMS, APP_NAV_Z_INDEX, userDisplayName } from './utils/appNavigation.js';
 import AppTabBar from './AppTabBar.jsx';
+
+function greetingForCurrentTime() {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Good morning';
+  if (hour < 18) return 'Good afternoon';
+  return 'Good evening';
+}
+
+function readViewedNotificationIds(userId) {
+  try {
+    const storedIds = localStorage.getItem(`viewedNotifications_${userId}`);
+    return JSON.parse(storedIds || '[]');
+  } catch {
+    return [];
+  }
+}
 
 export default function NavBar() {
   const navbarRef = useRef(null);
@@ -15,15 +32,19 @@ export default function NavBar() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [scrolled, setScrolled] = useState(false);
   const displayName = userDisplayName(currentUser);
+  const greeting = greetingForCurrentTime();
 
+  // A solid background appears after the page moves under the fixed navbar.
   useEffect(() => {
-    const handleScroll = () => {
+    const updateScrolledState = () => {
       setScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', updateScrolledState, { passive: true });
+    return () => window.removeEventListener('scroll', updateScrolledState);
   }, []);
 
+  // Other fixed editor controls need the navbar's real rendered height. A
+  // ResizeObserver also catches wrapping, font loading, and safe-area changes.
   useEffect(() => {
     const navbar = navbarRef.current;
     if (!navbar) return undefined;
@@ -37,26 +58,23 @@ export default function NavBar() {
   }, []);
 
   useEffect(() => {
-    const fetchNotifications = async () => {
+    const loadUnreadNotificationCount = async () => {
       if (!currentUser?.User_ID) return;
+
       try {
-        const data = await apiFetch('/api/notifications/user');
-        const viewedIds = JSON.parse(localStorage.getItem(`viewedNotifications_${currentUser.User_ID}`) || '[]');
-        const unreadNotifications = data.filter(n => !viewedIds.includes(n.Notification_ID));
+        const notifications = await apiFetch('/api/notifications/user');
+        const viewedIds = readViewedNotificationIds(currentUser.User_ID);
+        const unreadNotifications = notifications.filter(
+          (notification) => !viewedIds.includes(notification.Notification_ID),
+        );
         setUnreadCount(unreadNotifications.length);
-      } catch (err) {
-        console.error('Failed to fetch notifications:', err);
+      } catch (loadError) {
+        console.error('Failed to fetch notifications:', loadError);
       }
     };
-    fetchNotifications();
-  }, [currentUser?.User_ID, notificationsVersion]);
 
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return 'Good morning';
-    if (hour < 18) return 'Good afternoon';
-    return 'Good evening';
-  };
+    loadUnreadNotificationCount();
+  }, [currentUser?.User_ID, notificationsVersion]);
 
   return (
     <>
@@ -122,12 +140,12 @@ export default function NavBar() {
                   letterSpacing: '0.01em',
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.color = 'var(--primary)';
-                  e.target.style.background = 'var(--primary-light)';
+                  e.currentTarget.style.color = 'var(--primary)';
+                  e.currentTarget.style.background = 'var(--primary-light)';
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.color = 'var(--on-surface-variant)';
-                  e.target.style.background = 'transparent';
+                  e.currentTarget.style.color = 'var(--on-surface-variant)';
+                  e.currentTarget.style.background = 'transparent';
                 }}
               >
                 {item.label}
@@ -147,7 +165,7 @@ export default function NavBar() {
                   borderRadius: '9999px',
                   border: '1px solid var(--outline-light)',
                 }}>
-                  <span style={{ color: 'var(--muted)' }}>{getGreeting()}</span>,{' '}
+                  <span style={{ color: 'var(--muted)' }}>{greeting}</span>,{' '}
                   <span style={{ color: 'var(--primary)', fontWeight: 600 }}>{displayName}</span>
                 </span>
 
@@ -241,10 +259,10 @@ export default function NavBar() {
                     transition: 'all 0.2s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.background = 'var(--primary-hover)';
+                    e.currentTarget.style.background = 'var(--primary-hover)';
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.background = 'var(--primary)';
+                    e.currentTarget.style.background = 'var(--primary)';
                   }}
                 >
                   Get Started

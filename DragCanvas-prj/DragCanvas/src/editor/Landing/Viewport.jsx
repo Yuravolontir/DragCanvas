@@ -1,17 +1,15 @@
 import { useEditor } from '@craftjs/core';
-import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import { useEffect, useRef, useState } from 'react';
 
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
 import { Toolbox } from './Toolbox';
+import EditorCanvas from './EditorCanvas.jsx';
+import { PanelBar, PreviewBanner, Scrim, ViewportDiv } from './Viewport.styles.js';
 
-import  AIAssistant  from
-  '../../AIAssistant';
-import { pageSlugFromHref } from '../../utils/projectPages.js';
-import { deviceModeForWidth } from '../../utils/deviceModes.js';
 import { DeviceModeProvider } from '../../DeviceModeProvider.jsx';
 import { useMediaQuery } from '../../useMediaQuery.js';
+import { deviceModeForWidth } from '../../utils/deviceModes.js';
 import { installTouchDrag } from '../../utils/touchDragBridge.js';
 import { editingOverride } from '../editingOverride.js';
 
@@ -47,120 +45,80 @@ const DRAWERS = '(max-width: 1023px)';
  */
 const PHONE = '(max-width: 767px), (max-height: 599px) and (orientation: landscape)';
 
-const PreviewBanner = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 14px 16px calc(14px + var(--safe-bottom, 0px));
-  border-bottom: 1px solid var(--outline-light, #dce2ec);
-  background: var(--surface, #fff);
-  color: var(--on-surface-variant, #3f4a5f);
-  font: 500 13px/1.45 'Plus Jakarta Sans', sans-serif;
-  strong {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--on-surface, #1b2333);
-    font-size: 15px;
-  }
-  .material-symbols-outlined {
-    font-size: 20px;
-  }
-  a {
-    color: var(--primary, #4e5ba6);
-    font-weight: 700;
-  }
-  .preview-banner__links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 18px;
-    margin-top: 8px;
-  }
-`;
+/** The two drawers a tablet-sized editor can open, one at a time. */
+const PANELS = [
+  { name: 'toolbox', icon: 'widgets', label: 'Elements' },
+  { name: 'sidebar', icon: 'tune', label: 'Properties' },
+];
 
-  const ViewportDiv = styled.div`
-    /*
-     * The insets are the sensor housing and the home indicator, which the page
-     * now extends under because index.html asks for viewport-fit=cover. They
-     * are 0 on everything without a housing, so this is a no-op on a desktop.
-     * Defined in responsive.css so a check can override them.
-     */
-    .viewport {
-      position: fixed;
-      top: var(--app-nav-height, 56px);
-      left: var(--safe-left, 0px);
-      right: var(--safe-right, 0px);
-      bottom: var(--safe-bottom, 0px);
-    }
+/** Why a phone gets a read-only page instead of the editor. */
+function PhoneNotice() {
+  return (
+    <PreviewBanner role="status">
+      <strong>
+        <span className="material-symbols-outlined" aria-hidden="true">tablet_mac</span>
+        Editing needs a tablet or a computer
+      </strong>
 
-    /*
-     * The canvas gets a stacking context of its own.
-     *
-     * What is rendered inside it is the user's website, and it is allowed to
-     * carry any z-index it likes - a sticky navbar ships with 1000. Without a
-     * context here that number competed directly with the editor's own chrome,
-     * which sits at 30 (drawers) and 40 (the phone panel bar), so adding a
-     * navbar to the page hid the Elements panel and the panel bar behind it.
-     * The isolation property confines those numbers to the page they belong
-     * to and costs no layout, so sticky keeps working exactly as it did.
-     */
-    .craftjs-renderer {
-      isolation: isolate;
-    }
+      {/*
+        Not "this is your published site". The canvas keeps the width the page
+        was authored at, while the exporter gives a published page a fitted,
+        centred layout - so wide sections scroll here that would not scroll
+        there. Saying otherwise would make this screen lie about the one thing
+        it is for.
+      */}
+      The elements and settings panels each need the full width of a phone, which
+      leaves nothing of the page to edit against. From a tablet upwards they open
+      as drawers over a canvas you can still see. Below is your page, read-only —
+      the editor canvas rather than the published layout, so wide sections scroll
+      sideways here.
 
-    .device-canvas {
-      container-type: inline-size;
-      container-name: editor-canvas;
-    }
+      <span className="preview-banner__links">
+        <a href="/my-projects">My projects</a>
+        <a href="/inspire-me">Browse templates</a>
+      </span>
+    </PreviewBanner>
+  );
+}
 
-    @container editor-canvas (max-width: 767px) {
-      .dc-columns:not(.dc-columns--hold) {
-        grid-template-columns: 1fr !important;
-      }
-    }
-  `;
+/** The bar that opens either drawer on a tablet-sized editor. */
+function PanelSwitcher({ activePanel, onToggle }) {
+  return (
+    <PanelBar className="dc-mobile-editor-bar" aria-label="Editor panels">
+      {PANELS.map((panel) => (
+        <button
+          key={panel.name}
+          type="button"
+          aria-pressed={activePanel === panel.name}
+          onClick={() => onToggle(panel.name)}
+        >
+          <span className="material-symbols-outlined" aria-hidden="true">{panel.icon}</span>
+          {panel.label}
+        </button>
+      ))}
+    </PanelBar>
+  );
+}
 
-/* Tapping the canvas beside an open drawer should close it, as every drawer does. */
-const Scrim = styled.div`
-  position: absolute;
-  inset: 0;
-  z-index: 25;
-  background: color-mix(in oklab, var(--paper, #000) 35%, transparent);
-`;
-
-const MobilePanelBar = styled.nav``;
-
+/**
+ * The editor shell: elements on the left, the page in the middle, settings on
+ * the right - and the two narrower layouts those three collapse into.
+ */
 export const Viewport = ({ children }) => {
   const [deviceMode, setDeviceMode] = useState(() => deviceModeForWidth(window.innerWidth));
   const [openPanel, setOpenPanel] = useState(null);
   const pageRef = useRef(null);
+
   const drawers = useMediaQuery(DRAWERS);
   // The query re-runs on rotation and on resize, and nothing is unmounted on
   // the way - a project open in Craft's store survives a phone being turned or
   // a laptop window being dragged narrow and back.
   const phone = useMediaQuery(PHONE);
-  const {
-    actions,
-    enabled,
-    connectors,
-  } = useEditor((state) => ({
+
+  const { actions, enabled } = useEditor((state) => ({
     enabled: state.options.enabled,
   }));
 
-  /*
-   * A phone is read-only, and that has to be true rather than described.
-   *
-   * The branch below says "the real project, read-only, at the phone's real
-   * width" and withholds the Header so nothing can be saved - but Craft was
-   * still enabled, because <Editor enabled> is set once and never revisited.
-   * Editing being on is what put the canvas at its authored 800px inside a
-   * 390px window, so the site arrived centred and cut off at both edges: half a
-   * screen, which is what this looked like from the outside.
-   *
-   * Turning the option off fixes the width and the claim at once - no drag
-   * handles, no selection outlines, no contenteditable - and turning the phone
-   * into a tablet turns it back on without unmounting anything.
-   */
   /*
    * A phone cannot edit, so the flag comes down - but it is not this
    * component's flag. The Preview button owns it too, and the rule for sharing
@@ -171,6 +129,7 @@ export const Viewport = ({ children }) => {
   useEffect(() => {
     const next = editingOverride({ phone, enabled, forcedOff: forcedOff.current });
     if (!next) return;
+
     forcedOff.current = next.forcedOff;
     actions.setOptions((options) => {
       options.enabled = next.enabled;
@@ -193,22 +152,25 @@ export const Viewport = ({ children }) => {
    * nothing happened. Mouse and finger alike - at 1440 a drag added a node, at
    * 900 with a panel open it did not. Tap-to-insert is why nobody noticed.
    *
-   * Closing rather than making the scrim transparent: with the panel still
-   * open it covers the part of the canvas nearest the block being dragged,
-   * which is exactly where someone is most likely to aim.
+   * Closing rather than making the scrim transparent: with the panel still open
+   * it covers the part of the canvas nearest the block being dragged, which is
+   * exactly where someone is most likely to aim.
    */
   useEffect(() => {
-    const onDragStart = () => setOpenPanel(null);
-    window.addEventListener('dragstart', onDragStart, true);
-    return () => window.removeEventListener('dragstart', onDragStart, true);
+    const closeDrawer = () => setOpenPanel(null);
+    window.addEventListener('dragstart', closeDrawer, true);
+    return () => window.removeEventListener('dragstart', closeDrawer, true);
   }, []);
 
+  /** Keep the responsive preview label honest about how wide the page area is. */
   useEffect(() => {
     const page = pageRef.current;
     if (!page) return undefined;
-    const update = () => setDeviceMode(deviceModeForWidth(page.getBoundingClientRect().width));
-    update();
-    const observer = new ResizeObserver(update);
+
+    const measure = () => setDeviceMode(deviceModeForWidth(page.getBoundingClientRect().width));
+    measure();
+
+    const observer = new ResizeObserver(measure);
     observer.observe(page);
     return () => observer.disconnect();
   }, []);
@@ -220,90 +182,7 @@ export const Viewport = ({ children }) => {
    */
   const activePanel = drawers ? openPanel : null;
 
-  const canvas = (assistant) => (
-    <div
-      // `paper` is not decoration: what is rendered below is the user's own
-      // website, drawn by the components that will draw it once published.
-      // Letting the editor's dark palette reach it would mean designing
-      // against one set of colours and shipping another.
-      className={`craftjs-renderer paper flex-1 h-full w-full transition pb-8 overflow-auto ${enabled ? '' : ''}`}
-      onClickCapture={(event) => {
-        const link = event.target.closest?.('a[href]');
-        if (!link) return;
-        const slug = pageSlugFromHref(link.getAttribute('href'));
-        if (!slug) return;
-        event.preventDefault();
-        event.stopPropagation();
-        window.dispatchEvent(new CustomEvent('dragcanvas:page-navigate', { detail: { slug } }));
-      }}
-      style={{ background: enabled ? 'var(--surface-dim, #f7f4ec)' : 'transparent' }}
-      ref={(ref) => {
-        /*
-         * React calls a ref callback with null as the element goes away, and
-         * these connectors answer that by asking Craft to set an event on a
-         * node that has just been removed - "Invariant failed: Node does not
-         * exist". It was survivable while this canvas only ever unmounted with
-         * the whole editor; switching `enabled` rebuilds the tree underneath it,
-         * which is what started surfacing it.
-         */
-        if (!ref) return;
-        connectors.select(connectors.hover(ref, null), null);
-      }}
-    >
-      <div
-        className="relative flex-col flex items-center pt-8"
-        /*
-         * Which way this box is sized depends on what it holds.
-         *
-         * Editing, the canvas is a fixed 800px. `min-content` is what lets it
-         * stay 800px in a narrower window and be scrolled to, rather than being
-         * squeezed and misreporting the width the page is authored at.
-         *
-         * Previewing, the canvas is `width: 100%` - and 100% of a box sized by
-         * `min-content` is the content's minimum, not the screen. The page came
-         * out as narrow as its widest word would allow and then `items-center`
-         * put that column in the middle: on a phone, a site rendered across
-         * about half the screen. Preview asks for the full width instead,
-         * which is what a fluid canvas was supposed to mean.
-         */
-        style={enabled ? { minWidth: 'min-content' } : { width: '100%' }}
-      >
-        <div
-          className="device-canvas"
-          data-device={deviceMode}
-          aria-label={`${deviceMode} responsive preview`}
-          style={{
-            // Editing uses the same stable measure as the AI generator and the
-            // starter canvas. Preview is deliberately fluid, like the site.
-            width: enabled ? '800px' : '100%',
-            maxWidth: enabled ? 'none' : '100%',
-            minHeight: '100%',
-          }}
-        >
-          {/*
-            * Preview is the page, and nothing but the page.
-            *
-            * The elements and properties panels collapse themselves when the
-            * editor is switched off; this one sits inside the canvas and did
-            * not, so pressing Preview left a generator panel printed above the
-            * user's own hero.
-            *
-            * Hidden rather than unmounted, which is also what those two panels
-            * do. A half-typed prompt lives in this component's state, and so
-            * does a generation already in flight — dropping either one because
-            * somebody wanted to look at their page would be a worse bug than
-            * the one being fixed.
-            */}
-          {assistant ? (
-            <div hidden={!enabled} aria-hidden={!enabled}>
-              <AIAssistant />
-            </div>
-          ) : null}
-          {children}
-        </div>
-      </div>
-    </div>
-  );
+  const togglePanel = (panel) => setOpenPanel((open) => (open === panel ? null : panel));
 
   /*
    * A phone: the real project, read-only, at the phone's real width.
@@ -320,31 +199,8 @@ export const Viewport = ({ children }) => {
         <ViewportDiv>
           <div className="viewport">
             <div ref={pageRef} className="flex h-full flex-col w-full">
-              <PreviewBanner role="status">
-                <strong>
-                  <span className="material-symbols-outlined" aria-hidden="true">
-                    tablet_mac
-                  </span>
-                  Editing needs a tablet or a computer
-                </strong>
-                {/*
-                  Not "this is your published site". The canvas keeps the width
-                  the page was authored at, while the exporter gives a published
-                  page a fitted, centred layout — so wide sections scroll here
-                  that would not scroll there. Saying otherwise would make this
-                  screen lie about the one thing it is for.
-                */}
-                The elements and settings panels each need the full width of a
-                phone, which leaves nothing of the page to edit against. From a
-                tablet upwards they open as drawers over a canvas you can still
-                see. Below is your page, read-only — the editor canvas rather
-                than the published layout, so wide sections scroll sideways here.
-                <span className="preview-banner__links">
-                  <a href="/my-projects">My projects</a>
-                  <a href="/inspire-me">Browse templates</a>
-                </span>
-              </PreviewBanner>
-              {canvas(false)}
+              <PhoneNotice />
+              <EditorCanvas deviceMode={deviceMode}>{children}</EditorCanvas>
             </div>
           </div>
         </ViewportDiv>
@@ -354,47 +210,35 @@ export const Viewport = ({ children }) => {
 
   return (
     <DeviceModeProvider value={deviceMode}>
-    <ViewportDiv>
-      <div className="viewport" data-panel={activePanel || undefined}>
-        <div className="dc-editor-row flex h-full overflow-hidden flex-row w-full">
-          <Toolbox drawer={drawers} offCanvas={drawers && activePanel !== 'toolbox'} />
-          <div ref={pageRef} className="page-container flex flex-1 h-full min-w-0 flex-col">
-            <Header
-              openPanel={activePanel}
-              onTogglePanel={drawers ? (panel) => setOpenPanel((open) => (open === panel ? null : panel)) : null}
-            />
-            {canvas(true)}
+      <ViewportDiv>
+        <div className="viewport" data-panel={activePanel || undefined}>
+          <div className="dc-editor-row flex h-full overflow-hidden flex-row w-full">
+            <Toolbox drawer={drawers} offCanvas={drawers && activePanel !== 'toolbox'} />
+
+            <div ref={pageRef} className="page-container flex flex-1 h-full min-w-0 flex-col">
+              <Header
+                openPanel={activePanel}
+                onTogglePanel={drawers ? togglePanel : null}
+              />
+              <EditorCanvas deviceMode={deviceMode} withAiAssistant>{children}</EditorCanvas>
+            </div>
+
+            <Sidebar offCanvas={drawers && activePanel !== 'sidebar'} />
+
+            {activePanel && (
+              <Scrim
+                className="dc-drawer-scrim"
+                onClick={() => setOpenPanel(null)}
+                aria-hidden="true"
+              />
+            )}
+
+            {drawers && enabled && (
+              <PanelSwitcher activePanel={activePanel} onToggle={togglePanel} />
+            )}
           </div>
-
-          <Sidebar offCanvas={drawers && activePanel !== 'sidebar'} />
-
-          {activePanel && (
-            <Scrim className="dc-drawer-scrim" onClick={() => setOpenPanel(null)} aria-hidden="true" />
-          )}
-
-          {drawers && enabled && (
-            <MobilePanelBar className="dc-mobile-editor-bar" aria-label="Editor panels">
-              <button
-                type="button"
-                aria-pressed={activePanel === 'toolbox'}
-                onClick={() => setOpenPanel((open) => (open === 'toolbox' ? null : 'toolbox'))}
-              >
-                <span className="material-symbols-outlined" aria-hidden="true">widgets</span>
-                Elements
-              </button>
-              <button
-                type="button"
-                aria-pressed={activePanel === 'sidebar'}
-                onClick={() => setOpenPanel((open) => (open === 'sidebar' ? null : 'sidebar'))}
-              >
-                <span className="material-symbols-outlined" aria-hidden="true">tune</span>
-                Properties
-              </button>
-            </MobilePanelBar>
-          )}
         </div>
-      </div>
-    </ViewportDiv>
+      </ViewportDiv>
     </DeviceModeProvider>
   );
 };

@@ -1,391 +1,224 @@
-import React, { useEffect, useState } from 'react';
-import API_URL, { apiFetch, getToken } from './api.js';
-import { stageProgress } from './utils/generationProgress.js';
+import { useEffect, useState } from 'react';
+
+import AuthPromptModal from './Components/AuthPromptModal';
+import GenerationOverlay from './Components/GenerationOverlay.jsx';
 import { consumePendingPrompt } from './Components/Home/promptHandoff.js';
-import { craftProjectToAiLayout } from './utils/craftToAiLayout.js';
-import { collectImageTasks, isImageRefinement } from './utils/imagePrompts.js';
+import { useAiSiteGenerator } from './useAiSiteGenerator.js';
+import { useUserContext } from './userContext.js';
+import { stageLabel } from './utils/generationProgress.js';
+import {
+  ApplyButton,
+  CheckboxLabel,
+  ErrorText,
+  GenerateButton,
+  HistoryItem,
+  HistoryList,
+  LockedBadge,
+  OptionsLabel,
+  OptionsRow,
+  Panel,
+  PanelHeader,
+  PanelIcon,
+  PanelTitle,
+  PromptInput,
+  RefineHeader,
+  RefineInput,
+  RefineNote,
+  RefineSection,
+  RefineTitle,
+  Row,
+  StyleButton,
+} from './AIAssistant.styles.js';
+
+/** How far the model may stray from the safe, conventional answer. */
+const CREATIVITY_OPTIONS = [
+  { key: 'low', label: 'Safe' },
+  { key: 'balanced', label: 'Balanced' },
+  { key: 'bold', label: 'Bold' },
+];
+
+const SIGN_UP_MESSAGE = 'The AI generator writes a whole site from one sentence, and it runs on our'
+  + ' servers rather than in your browser - so it needs a free account. Everything else in this'
+  + ' editor works without one.';
 
 /**
- * What to call the current stage on the button.
+ * The "keep talking to the page" box, shown once a site exists on the canvas.
  *
- * Named for what is happening rather than for how long it will take, because
- * nobody can promise the second one and a wrong promise is worse than none.
+ * It owns the sentence being typed; the parent only says what to do with a
+ * finished one.
+ *
+ * @param {boolean} loading                                  a request is in flight
+ * @param {string[]} history                                 what has been asked so far
+ * @param {(instruction: string) => Promise<boolean>} onApply true when the canvas changed
  */
-function stageLabel(stage) {
-  if (!stage) return 'Working…';
-  if (stage.name === 'layout') return 'Writing the layout…';
-  if (stage.name === 'refining') return 'Rewriting the page…';
-  if (stage.name === 'placing') return 'Placing the page…';
-  if (stage.name === 'images') {
-    return stage.remaining > 0
-      ? `Drawing ${stage.remaining} image${stage.remaining === 1 ? '' : 's'}…`
-      : 'Finishing…';
-  }
-  return 'Working…';
+function RefinePanel({ loading, history, onApply }) {
+  const [instruction, setInstruction] = useState('');
+  const nothingTyped = !instruction.trim();
+
+  const apply = async () => {
+    const applied = await onApply(instruction);
+    if (applied) setInstruction('');
+  };
+
+  // The first entry is the original prompt, which is already shown in the box
+  // above; the rest are the changes asked for since.
+  const previousChanges = history.slice(1);
+
+  return (
+    <RefineSection>
+      <RefineHeader>
+        <span className="material-symbols-outlined">tune</span>
+        <RefineTitle>Refine this site</RefineTitle>
+      </RefineHeader>
+
+      <Row>
+        <RefineInput
+          value={instruction}
+          onChange={(event) => setInstruction(event.target.value)}
+          onKeyDown={(event) => { if (event.key === 'Enter' && !loading) apply(); }}
+          placeholder="Make it darker · Add a pricing section · Remove the map"
+        />
+        <ApplyButton onClick={apply} disabled={loading || nothingTyped}>
+          {loading ? 'Wait...' : 'Apply'}
+        </ApplyButton>
+      </Row>
+
+      {previousChanges.length > 0 && (
+        <HistoryList>
+          {previousChanges.map((change, index) => (
+            <HistoryItem key={index}>· {change}</HistoryItem>
+          ))}
+        </HistoryList>
+      )}
+
+      <RefineNote>
+        Refines the current saved or generated site, including changes you made by hand
+        in the editor.
+      </RefineNote>
+    </RefineSection>
+  );
 }
-  import { useEditor } from '@craftjs/core';
-import AuthPromptModal from './Components/AuthPromptModal';
-import { buildCraftTree } from './utils/craftTree.js';
-import { useUserContext } from './userContext.js';
 
-  export default function AIAssistant() {
-    const [prompt, setPrompt] = useState('');
-    const [loading, setLoading] = useState(false);
-    /**
-     * Which part of the wait we are in.
-     *
-     * A spinner turning for fifty seconds says the same thing as a frozen one.
-     * These three are already distinct events in the code - the completion
-     * returns, the pictures are requested, the tree is deserialised - so the
-     * wait can say which it is in, and how many pictures are left.
-     */
-    const [stage, setStage] = useState(null);
-    // The layout phase reports nothing until it answers, so the bar's estimate
-    // needs its own heartbeat or it would sit still for half a minute.
-    const [elapsed, setElapsed] = useState(0);
-    const [error, setError] = useState(null);
-    // low / balanced / bold -> temperature on the server
-    const [creativity, setCreativity] = useState('balanced');
-    const [multiPage, setMultiPage] = useState(false);
-    const [canRefine, setCanRefine] = useState(Boolean(window.__dragcanvasPageState));
-    const [refinement, setRefinement] = useState('');
-    const [history, setHistory] = useState([]);
+/**
+ * The panel above the canvas that turns a sentence into a website.
+ *
+ * All the requests live in `useAiSiteGenerator`; this component draws the box,
+ * collects what the user typed, and guards the one feature a signed-out visitor
+ * cannot have.
+ */
+export default function AIAssistant() {
+  const { currentUser } = useUserContext();
+  const {
+    loading,
+    stage,
+    elapsed,
+    error,
+    history,
+    canRefine,
+    generateSite,
+    refineSite,
+    saveDraftLocally,
+  } = useAiSiteGenerator();
 
-    const { actions, query } = useEditor();
+  const [prompt, setPrompt] = useState('');
+  const [creativity, setCreativity] = useState('balanced');
+  const [multiPage, setMultiPage] = useState(false);
+  const [showAuthPrompt, setShowAuthPrompt] = useState(false);
 
-    /*
-     * The generator is the one part of this editor a visitor cannot have.
-     *
-     * Everything else on this page works signed out - drag things around, load
-     * a template, look at the result - and that is deliberate: somebody has to
-     * be able to try the product. Generating is different because it spends
-     * money on a provider per press, so `/api/ai/*` has always required a
-     * token. What it did not have was a way of saying so: an anonymous press
-     * came back "Missing authentication token", which is a sentence written for
-     * a developer reading a log.
-     */
-    const { currentUser } = useUserContext();
-    const locked = !currentUser;
-    const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+  /*
+   * The generator is the one part of this editor a visitor cannot have.
+   *
+   * Everything else on this page works signed out - drag things around, load a
+   * template, look at the result - and that is deliberate: somebody has to be
+   * able to try the product. Generating is different because it spends money on
+   * a provider per press, so `/api/ai/*` has always required a token. What it
+   * did not have was a way of saying so: an anonymous press came back "Missing
+   * authentication token", which is a sentence written for a developer reading
+   * a log.
+   */
+  const locked = !currentUser;
 
-    /**
-     * Keep the visitor's canvas before asking them to sign up.
-     *
-     * The prompt promises their design will be waiting afterwards, and
-     * LoadProjectOnMount is what keeps that promise. Saving here is what makes
-     * the promise true - the same thing the header does for Save and Publish.
-     */
-    const promptSignup = () => {
-      try {
-        localStorage.setItem('dragcanvas_draft', query.serialize());
-      } catch {
-        // A canvas that will not serialise is still a visitor worth asking.
-      }
-      setShowAuthPrompt(true);
-    };
+  /**
+   * Pick up a prompt typed on the landing page.
+   *
+   * Someone who described their site in the hero was sent here through
+   * registration; arriving at an empty box would make that invitation a bait.
+   * Read in an effect rather than in a useState initialiser because the read
+   * consumes the value, and StrictMode invokes initialisers twice - the second
+   * call would find it already gone.
+   */
+  useEffect(() => {
+    const pendingPrompt = consumePendingPrompt();
+    // Reading the handoff is the "subscribe to an external system once" case
+    // the rule below allows for: it happens on mount only, and sessionStorage
+    // cannot be read while rendering.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (pendingPrompt) setPrompt(pendingPrompt);
+  }, []);
 
-    /** True when the caller must stop, because this needs an account. */
-    const blockedByAccount = () => {
-      if (!locked) return false;
-      promptSignup();
-      return true;
-    };
+  const askToSignUp = () => {
+    // The prompt promises their design will still be here afterwards.
+    saveDraftLocally();
+    setShowAuthPrompt(true);
+  };
 
-    /**
-     * Pick up a prompt typed on the landing page.
-     *
-     * Someone who described their site in the hero was sent here through
-     * registration; arriving at an empty box would make that invitation a bait.
-     * Read in an effect rather than in a useState initialiser because the
-     * read consumes the value, and StrictMode invokes initialisers twice - the
-     * second call would find it already gone.
-     */
-    useEffect(() => {
-      const pending = consumePendingPrompt();
-      if (pending) setPrompt(pending);
-    }, []);
+  /** True when the caller must stop, because this needs an account. */
+  const needsAnAccount = () => {
+    if (!locked) return false;
+    askToSignUp();
+    return true;
+  };
 
-    useEffect(() => {
-      const projectLoaded = () => setCanRefine(true);
-      window.addEventListener('dragcanvas:project-loaded', projectLoaded);
-      return () => window.removeEventListener('dragcanvas:project-loaded', projectLoaded);
-    }, []);
+  const handleGenerate = async () => {
+    if (needsAnAccount()) return;
+    if (!prompt.trim()) return;
 
+    const generated = await generateSite({ prompt, creativity, multiPage });
+    if (generated) setPrompt('');
+  };
 
-    /**
-     * Ask our own server for one generated image.
-     *
-     * This used to call Stability straight from the browser with the key in an
-     * import.meta.env variable, which Vite compiles into the bundle every
-     * visitor downloads - the key was readable by anyone who opened the site.
-     * The server holds it now, stores the result in Cloudinary and returns a
-     * permanent HTTPS URL. A null means "leave the placeholder", so one failed
-     * image never costs the whole page.
-     */
-    useEffect(() => {
-      if (!loading) { setElapsed(0); return undefined; }
-      const startedAt = Date.now();
-      setElapsed(0);
-      const id = setInterval(() => setElapsed(Date.now() - startedAt), 250);
-      return () => clearInterval(id);
-    }, [loading]);
+  const handleRefine = async (instruction) => {
+    if (needsAnAccount()) return false;
+    if (!instruction.trim()) return false;
+    return refineSite(instruction);
+  };
 
-    const generateImage = async (imagePrompt) => {
-      try {
-        const res = await fetch(`${API_URL}/api/ai/image`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${getToken()}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ prompt: imagePrompt }),
-        });
-
-        if (!res.ok) return null;
-        const payload = await res.json();
-        return payload?.data?.url || null;
-      } catch (e) {
-        console.error('Image generation error:', e);
-        return null;
-      }
-    };
-
-    /**
-     * Replace every Picsum placeholder before Craft serialises the pages. This
-     * includes ordinary images, section backgrounds, legacy carousels and the
-     * current slides-array carousel format.
-     */
-    const fillInImages = async (layout, options = {}) => {
-      const images = collectImageTasks(layout, options);
-      if (images.length === 0) return;
-
-      // How many pictures one generation is allowed to buy.
-      //
-      // There was no limit here, and collectImageTasks walks every page: a
-      // four-page site with five pictures a page bought twenty in one click.
-      // At 6.5 credits each that is 130 credits for one press of Generate, and
-      // a morning of trying things out cost 300.
-      //
-      // Six covers what a visitor actually sees before deciding to stay - the
-      // hero and the first row - and the rest keep the seeded placeholder,
-      // which is a real photograph rather than a broken image.
-      const IMAGE_BUDGET = 6;
-      const wanted = [...new Set(images.map(i => i.prompt))];
-      const prompts = wanted.slice(0, IMAGE_BUDGET);
-      if (wanted.length > prompts.length) {
-        console.log(`[AI] ${wanted.length} pictures asked for, generating the first ${prompts.length}`);
-      }
-      const total = prompts.length;
-      let remaining = total;
-      setStage({ name: 'images', remaining, total });
-
-      // Keep provider pressure modest while still replacing every placeholder.
-      for (let index = 0; index < prompts.length; index += 3) {
-        await Promise.all(prompts.slice(index, index + 3).map(async (imagePrompt) => {
-          const url = await generateImage(imagePrompt);
-          remaining -= 1;
-          setStage({ name: 'images', remaining, total });
-          if (!url) return;
-          for (const img of images) if (img.prompt === imagePrompt) img.target[img.key] = url;
-        }));
-      }
-    };
-
-    /**
-     * Put a layout on the canvas and remember it for the next refinement.
-     *
-     * Images are persisted before Craft serialises the pages, so saving,
-     * switching pages and publishing can never capture temporary blob URLs.
-     */
-    const applyLayout = async (nextLayout, { replaceImages = false, imageInstruction = '', siteBrief = '' } = {}) => {
-      const sourcePages = Array.isArray(nextLayout.pages) && nextLayout.pages.length
-        ? nextLayout.pages
-        : [{ name: 'Home', slug: 'home', sections: nextLayout.sections || [] }];
-      await fillInImages({ pages: sourcePages }, {
-        replaceExisting: replaceImages,
-        instruction: imageInstruction,
-        siteBrief,
-      });
-      const builtPages = sourcePages.map((page, index) => {
-        const slug = index === 0 ? 'home' : page.slug;
-        const built = buildCraftTree(page.sections, `${slug}-`);
-        return { ...page, slug, data: built.nodes, nodeIdOf: built.nodeIdOf };
-      });
-      const first = builtPages[0];
-
-      setStage({ name: 'placing' });
-      actions.deserialize(first.data);
-      const pageState = {
-          pages: builtPages.map(({ name, slug, data }) => ({ name, slug, data })),
-          currentSlug: first.slug,
-          siteSettings: {},
-      };
-      window.__dragcanvasPageState = pageState;
-      window.dispatchEvent(new CustomEvent('dragcanvas:pages-loaded', { detail: pageState }));
-      setCanRefine(true);
-
-    };
-
-    /**
-     * Keep talking to the page that was just generated: "same but darker",
-     * "add a pricing section". The server edits the layout we hold in state.
-     */
-    const refineWebsite = async () => {
-      if (blockedByAccount()) return;
-      if (!refinement.trim()) return;
-
-      const currentLayout = craftProjectToAiLayout(
-        window.__dragcanvasPageState,
-        JSON.parse(query.serialize()),
-      );
-      if (!currentLayout.sections?.length && !currentLayout.pages?.some(page => page.sections.length)) {
-        setError('Add or load some content before asking AI to refine it.');
-        return;
-      }
-
-      setLoading(true);
-      setError(null);
-      setStage({ name: 'refining' });
-
-      try {
-        const imageOnly = isImageRefinement(refinement);
-        if (imageOnly) {
-          await applyLayout(currentLayout, {
-            replaceImages: true,
-            imageInstruction: refinement,
-            siteBrief: history.join('. '),
-          });
-          setHistory(prev => [...prev, refinement]);
-          setRefinement('');
-          return;
-        }
-        const refined = await apiFetch('/api/ai/refine', {
-          method: 'POST',
-          body: { layout: currentLayout, instruction: refinement }
-        });
-
-        if (!refined?.sections?.length && !refined?.pages?.length) {
-          throw new Error('AI did not return a valid layout');
-        }
-
-        await applyLayout(refined, { imageInstruction: refinement, siteBrief: history.join('. ') });
-        setHistory(prev => [...prev, refinement]);
-        setRefinement('');
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-        setStage(null);
-      }
-    };
-
-    const generateWebsite = async () => {
-      if (blockedByAccount()) return;
-      if (!prompt.trim()) return;
-
-      setLoading(true);
-      setError(null);
-      setStage({ name: 'layout' });
-
-      try {
-        // Generation runs on our server: the provider key stays there, and the
-        // response goes through parse -> repair -> normalise before we get it
-        const parsed = await apiFetch('/api/ai/generate', {
-          method: 'POST',
-          body: { prompt, creativity, multiPage }
-        });
-
-        if (!Array.isArray(parsed?.sections) && !Array.isArray(parsed?.pages)) {
-          throw new Error('AI did not return valid pages or sections');
-        }
-
-        await applyLayout(parsed, { imageInstruction: prompt, siteBrief: prompt });
-        setHistory([`Generated: ${prompt}`]);
-        setPrompt('');
-      } catch (err) {
-        console.error('AI Generate Error:', err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-        setStage(null);
-      }
-    };
-
-    return (
-      <>
+  return (
+    <>
       <AuthPromptModal
         show={showAuthPrompt}
         onClose={() => setShowAuthPrompt(false)}
         title="Sign up to use the AI generator"
-        message="The AI generator writes a whole site from one sentence, and it runs on our servers rather than in your browser - so it needs a free account. Everything else in this editor works without one."
+        message={SIGN_UP_MESSAGE}
       />
-      {loading && (
-        <div className="ai-generation-backdrop" role="status" aria-live="polite" aria-label={stageLabel(stage)}>
-          <div className="ai-generation-modal">
-            <div className="ai-generation-spinner" aria-hidden="true" />
-            <strong>{stageLabel(stage)}</strong>
-            {(() => {
-              const progress = stageProgress(stage, elapsed);
-              return (
-                <>
-                  <div
-                    className="ai-generation-progress"
-                    role="progressbar"
-                    aria-valuemin={0}
-                    aria-valuemax={100}
-                    aria-valuenow={progress.percent}
-                  >
-                    <div
-                      className="ai-generation-progress-fill"
-                      style={{ width: `${progress.percent}%` }}
-                    />
-                  </div>
-                  <span className="ai-generation-step">
-                    {progress.percent}%{progress.step ? ` · ${progress.step}` : ''}
-                  </span>
-                </>
-              );
-            })()}
-            <span>AI is building your site. This can take a little while.</span>
-          </div>
-        </div>
-      )}
-      <div style={{
-        padding: '12px 16px',
-        margin: '0 auto 10px',
-        background: 'var(--surface)',
-        borderRadius: '12px',
-        border: '1px solid var(--outline-light)',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
-        maxWidth: '800px',
-        width: '100%',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--haze)' }}>auto_awesome</span>
-          <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '13px', fontWeight: 700, color: 'var(--on-surface-variant)' }}>AI Generator</span>
+
+      {loading && <GenerationOverlay stage={stage} elapsed={elapsed} />}
+
+      <Panel>
+        <PanelHeader>
+          <PanelIcon className="material-symbols-outlined">auto_awesome</PanelIcon>
+          <PanelTitle>AI Generator</PanelTitle>
+
           {/*
             * Says what the panel is before it is pressed. The alternative was
             * leaving it looking ready and answering with a modal, which reads
             * as a page that changed its mind about what it offers.
             */}
           {locked && (
-            <span style={{
-              display: 'inline-flex', alignItems: 'center', gap: '4px',
-              padding: '2px 8px', borderRadius: '9999px',
-              background: 'var(--surface-dim)', color: 'var(--on-surface-variant)',
-              fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '11px', fontWeight: 600,
-            }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '13px' }} aria-hidden="true">lock</span>
+            <LockedBadge>
+              <span className="material-symbols-outlined" aria-hidden="true">lock</span>
               Account required
-            </span>
+            </LockedBadge>
           )}
-        </div>
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
-          <textarea
+        </PanelHeader>
+
+        <Row>
+          <PromptInput
             value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
+            onChange={(event) => setPrompt(event.target.value)}
             placeholder={locked ? 'Sign in to describe your website...' : 'Describe your website...'}
             rows={1}
+            $locked={locked}
             /*
              * readOnly rather than disabled: a disabled field takes no clicks
              * and no focus, so the one moment the visitor asks what this is
@@ -394,149 +227,51 @@ import { useUserContext } from './userContext.js';
              * instant the modal handed focus back.
              */
             readOnly={locked}
-            onMouseDown={locked ? promptSignup : undefined}
-            onKeyDown={locked ? (e) => { if (e.key.length === 1) promptSignup(); } : undefined}
-            style={{
-              flex: 1,
-              padding: '8px 12px',
-              border: '1px solid var(--outline-light)',
-              borderRadius: '10px',
-              fontSize: '13px',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              outline: 'none',
-              resize: 'none',
-              background: 'var(--surface-dim)',
-              color: locked ? 'var(--hint)' : 'var(--on-surface)',
-              cursor: locked ? 'pointer' : 'text',
-            }}
+            onMouseDown={locked ? askToSignUp : undefined}
+            onKeyDown={locked ? (event) => { if (event.key.length === 1) askToSignUp(); } : undefined}
           />
-          <button
-            onClick={generateWebsite}
-            // Not disabled when locked, only dimmed: a disabled button swallows
-            // the press, and the press is the question being answered.
-            disabled={loading}
-            style={{
-              padding: '8px 18px',
-              backgroundColor: loading ? 'var(--outline-variant)' : locked ? 'var(--outline-variant)' : 'var(--haze)',
-              color: 'var(--on-primary)',
-              border: 'none',
-              borderRadius: '9999px',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontSize: '12px',
-              fontWeight: 700,
-              whiteSpace: 'nowrap',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-            }}
-          >
-            <span className="material-symbols-outlined" style={{ fontSize: '15px', color: 'var(--on-primary)' }}>auto_awesome</span>
-            {loading ? stageLabel(stage) : 'Generate'}
-          </button>
-        </div>
 
-        {/* How far the model may stray from the safe, conventional answer */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '8px' }}>
-          <span style={{ fontSize: 11, color: 'var(--muted)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Style:</span>
-          {[
-            { key: 'low', label: 'Safe' },
-            { key: 'balanced', label: 'Balanced' },
-            { key: 'bold', label: 'Bold' },
-          ].map(option => (
-            <button
+          {/*
+            * Not disabled when locked, only dimmed: a disabled button swallows
+            * the press, and the press is the question being answered.
+            */}
+          <GenerateButton onClick={handleGenerate} disabled={loading} $locked={locked}>
+            <span className="material-symbols-outlined">auto_awesome</span>
+            {loading ? stageLabel(stage) : 'Generate'}
+          </GenerateButton>
+        </Row>
+
+        <OptionsRow>
+          <OptionsLabel>Style:</OptionsLabel>
+
+          {CREATIVITY_OPTIONS.map((option) => (
+            <StyleButton
               key={option.key}
-              onClick={() => setCreativity(option.key)}
+              $selected={creativity === option.key}
               disabled={loading}
-              style={{
-                padding: '3px 10px',
-                fontSize: 11,
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontWeight: creativity === option.key ? 700 : 500,
-                color: creativity === option.key ? '#fff' : 'var(--muted)',
-                background: creativity === option.key ? 'var(--haze)' : 'transparent',
-                border: `1px solid ${creativity === option.key ? 'var(--haze)' : 'var(--outline-light)'}`,
-                borderRadius: '9999px',
-                cursor: loading ? 'not-allowed' : 'pointer',
-              }}
+              onClick={() => setCreativity(option.key)}
             >
               {option.label}
-            </button>
+            </StyleButton>
           ))}
-          <label style={{ marginLeft: 8, display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: 'var(--muted)', cursor: loading ? 'not-allowed' : 'pointer' }}>
-            <input type="checkbox" checked={multiPage} disabled={loading} onChange={(event) => setMultiPage(event.target.checked)} />
+
+          <CheckboxLabel $disabled={loading}>
+            <input
+              type="checkbox"
+              checked={multiPage}
+              disabled={loading}
+              onChange={(event) => setMultiPage(event.target.checked)}
+            />
             Multi-page site
-          </label>
-        </div>
+          </CheckboxLabel>
+        </OptionsRow>
 
-        {/* Once a page exists, the user can keep asking for changes to it */}
         {canRefine && (
-          <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--surface-container)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '16px', color: 'var(--haze)' }}>tune</span>
-              <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '12px', fontWeight: 700, color: 'var(--on-surface-variant)' }}>
-                Refine this site
-              </span>
-            </div>
-
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
-              <input
-                value={refinement}
-                onChange={(e) => setRefinement(e.target.value)}
-                onKeyDown={(e) => { if (e.key === 'Enter' && !loading) refineWebsite(); }}
-                placeholder="Make it darker · Add a pricing section · Remove the map"
-                style={{
-                  flex: 1,
-                  padding: '8px 12px',
-                  border: '1px solid var(--outline-light)',
-                  borderRadius: '10px',
-                  fontSize: '13px',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  outline: 'none',
-                  background: 'var(--surface-dim)',
-                  color: 'var(--on-surface)',
-                }}
-              />
-              <button
-                onClick={refineWebsite}
-                disabled={loading || !refinement.trim()}
-                style={{
-                  padding: '8px 16px',
-                  backgroundColor: (loading || !refinement.trim()) ? 'var(--outline-variant)' : 'var(--on-surface-variant)',
-                  color: 'var(--on-primary)',
-                  border: 'none',
-                  borderRadius: '9999px',
-                  cursor: (loading || !refinement.trim()) ? 'not-allowed' : 'pointer',
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {loading ? 'Wait...' : 'Apply'}
-              </button>
-            </div>
-
-            {history.length > 1 && (
-              <div style={{ marginTop: 8, fontSize: 11, color: 'var(--muted)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                {history.slice(1).map((item, i) => (
-                  <div key={i} style={{ padding: '2px 0' }}>· {item}</div>
-                ))}
-              </div>
-            )}
-
-            <p style={{ marginTop: 8, marginBottom: 0, fontSize: 11, color: '#a09aa8', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              Refines the current saved or generated site, including changes you made by hand in the editor.
-            </p>
-          </div>
+          <RefinePanel loading={loading} history={history} onApply={handleRefine} />
         )}
 
-        {error && (
-          <p style={{ color: 'red', marginTop: 5, fontSize: 12 }}>
-            {error}
-          </p>
-        )}
-      </div>
-      </>
-    );
-  }
+        {error && <ErrorText>{error}</ErrorText>}
+      </Panel>
+    </>
+  );
+}

@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { apiFetch } from '../api.js';
-import { exportToHtml } from '../utils/exportToHtml.js';
-import { parseDesign } from '../utils/projectPages.js';
+import { drawSite, drawnSite } from './sitePreviewCache.js';
 import './TemplatePreview.css';
 
 /**
@@ -56,13 +54,63 @@ const CAN_SCALE = typeof CSS !== 'undefined' && typeof CSS.supports === 'functio
  */
 const SANDBOX = 'allow-scripts';
 
-/** The node map to draw, from whichever shape this design was saved in. */
-function firstPageOf(data) {
-  if (data?.__dragcanvasPages && Array.isArray(data.pages) && data.pages.length) {
-    const home = data.pages.find((page) => page.slug === (data.currentSlug || 'home'));
-    return (home || data.pages[0]).data;
-  }
-  return data;
+/**
+ * How fast a touring preview travels down the page, in page pixels a second.
+ *
+ * Measured in the page's own 1280px-wide coordinates rather than in the pixels
+ * the card ends up occupying, so every template moves at the same apparent
+ * speed however large the card is.
+ */
+const TOUR_SPEED = 105;
+
+/**
+ * A tour shorter than this reads as a twitch; longer than this, as a stall.
+ *
+ * These move with the speed above rather than staying put: most templates are
+ * short enough that the minimum is what actually decides the duration, so
+ * halving the speed without halving the clamp would leave them travelling at
+ * very nearly the old pace.
+ */
+const TOUR_MIN_SECONDS = 20;
+const TOUR_MAX_SECONDS = 80;
+
+/**
+ * A beat at the footer before the card moves on.
+ *
+ * Arriving at the bottom and leaving in the same instant means the end of the
+ * page is the one part nobody ever reads.
+ */
+const TOUR_REST_MS = 1200;
+
+/**
+ * Asks the page inside the frame how tall it is.
+ *
+ * The frame is sandboxed without `allow-same-origin`, so it has an opaque
+ * origin and nothing out here can read its document - which is the whole point,
+ * and also why the height cannot simply be measured from the parent. The page
+ * therefore reports it itself. postMessage crosses an opaque origin happily;
+ * the listener checks the message came from this card's own frame.
+ *
+ * Reported again on load and on any resize, because the height at first paint
+ * is not final: web fonts and images land later and usually make the page
+ * taller.
+ */
+const MEASURE_SCRIPT = `<script>
+(function () {
+  var report = function () {
+    parent.postMessage({ dragcanvasPreviewHeight: document.documentElement.scrollHeight }, '*');
+  };
+  report();
+  addEventListener('load', report);
+  if (window.ResizeObserver) new ResizeObserver(report).observe(document.documentElement);
+})();
+</script>`;
+
+/** The exported page, with the measuring script added for a touring preview. */
+function withMeasureScript(html) {
+  const bodyEnd = html.lastIndexOf('</body>');
+  if (bodyEnd === -1) return html + MEASURE_SCRIPT;
+  return html.slice(0, bodyEnd) + MEASURE_SCRIPT + html.slice(bodyEnd);
 }
 
 /**
@@ -74,12 +122,34 @@ function firstPageOf(data) {
  * @param {number} [props.height]   slice to show, as a share of PAGE_WIDTH.
  *   Left out so a stylesheet can own it, which is how the projects grid gives
  *   its featured card a different shape at one width and not at another.
+ * @param {boolean} [props.tour]   pan slowly down the page, so the card shows
+ *   the whole site rather than its first screen. Deliberately off by default: a
+ *   gallery of fifteen cards all panning at once is a fairground.
+ * @param {Function} [props.onTourEnd]  called a beat after the tour reaches the
+ *   footer. Whoever owns the card decides what happens next - the showcase uses
+ *   it to move on to the next template.
  */
-export default function SitePreview({ endpoint, designKey, name, fallbackSrc = '', height, className = '' }) {
+export default function SitePreview({
+  endpoint,
+  designKey,
+  name,
+  fallbackSrc = '',
+  height,
+  tour = false,
+  onTourEnd,
+  className = '',
+}) {
   const boxRef = useRef(null);
+  const frameRef = useRef(null);
+  const restTimer = useRef(null);
+  // How far the frame may travel, and how long that should take. Null until the
+  // page inside has said how tall it is; the card simply sits still until then.
+  const [travel, setTravel] = useState(null);
   // Without an observer to tell us when the card arrives, it counts as arrived.
   const [seen, setSeen] = useState(() => typeof window !== 'undefined' && !('IntersectionObserver' in window));
-  const [html, setHtml] = useState(null);
+  // Straight from the cache when this design has been drawn before, so a card
+  // returned to shows its site at once rather than blinking through a panel.
+  const [html, setHtml] = useState(() => drawnSite(endpoint));
   const [failed, setFailed] = useState(false);
 
   // Nothing is fetched or rendered for a card nobody has scrolled to. A gallery
@@ -101,14 +171,9 @@ export default function SitePreview({ endpoint, designKey, name, fallbackSrc = '
     if (!CAN_SCALE || !seen || html || failed) return undefined;
     let cancelled = false;
 
-    apiFetch(endpoint)
-      .then((row) => {
-        if (cancelled) return;
-        const design = firstPageOf(parseDesign(row?.[designKey]));
-        // An empty project would export to a blank white page, which reads as a
-        // broken card rather than an empty one. The panel says "nothing yet".
-        if (!design || !Object.keys(design).length) throw new Error('empty design');
-        setHtml(exportToHtml(design, name));
+    drawSite({ endpoint, designKey, name })
+      .then((exported) => {
+        if (!cancelled) setHtml(exported);
       })
       .catch(() => {
         // A preview that will not render falls back to the stored picture, and
@@ -119,15 +184,108 @@ export default function SitePreview({ endpoint, designKey, name, fallbackSrc = '
     return () => { cancelled = true; };
   }, [seen, html, failed, endpoint, designKey, name]);
 
+  /*
+   * Work out the journey once the page has reported its height.
+   *
+   * Everything is converted into the page's own 1280px-wide coordinates,
+   * because that is the space the frame is laid out in before it is scaled: the
+   * card is `scale` times smaller than the page, so a card `n` pixels tall is
+   * showing `n / scale` pixels of website.
+   *
+   * Re-measured whenever the card is resized. The scale itself stays pure CSS -
+   * this only needs the numbers to decide how far to travel and for how long.
+   */
+  useEffect(() => {
+    if (!tour) return undefined;
+
+    let pageHeight = 0;
+
+    const recalculate = () => {
+      const box = boxRef.current;
+      if (!box || !pageHeight) return;
+
+      const { width, height: boxHeight } = box.getBoundingClientRect();
+      if (!width || !boxHeight) return;
+
+      const scale = width / PAGE_WIDTH;
+      const visible = boxHeight / scale;
+      const distance = pageHeight - visible;
+
+      // A page barely taller than the card has nothing worth touring.
+      if (distance < 80) {
+        setTravel(null);
+        return;
+      }
+
+      const seconds = Math.min(
+        TOUR_MAX_SECONDS,
+        Math.max(TOUR_MIN_SECONDS, distance / TOUR_SPEED),
+      );
+      setTravel({ pageHeight, distance, seconds });
+    };
+
+    const onMessage = (event) => {
+      // Only this card's own frame is believed - every other preview on the
+      // page is posting the same kind of message about a different site.
+      if (event.source !== frameRef.current?.contentWindow) return;
+
+      const reported = event.data?.dragcanvasPreviewHeight;
+      if (typeof reported !== 'number' || reported <= 0) return;
+
+      pageHeight = reported;
+      recalculate();
+    };
+
+    window.addEventListener('message', onMessage);
+    const observer = new ResizeObserver(recalculate);
+    if (boxRef.current) observer.observe(boxRef.current);
+
+    return () => {
+      window.removeEventListener('message', onMessage);
+      observer.disconnect();
+    };
+  }, [tour, html]);
+
   const style = { '--tpl-page-width': `${PAGE_WIDTH}px` };
   if (typeof height === 'number') style['--tpl-height'] = height;
+  if (travel) {
+    style['--tpl-tour-height'] = `${travel.pageHeight}px`;
+    style['--tpl-tour-distance'] = `${travel.distance}px`;
+    style['--tpl-tour-duration'] = `${travel.seconds}s`;
+  }
+
+  const classes = ['tpl-preview', travel ? 'tpl-preview--tour' : '', className]
+    .filter(Boolean)
+    .join(' ');
+
+  /*
+   * The end of the journey, announced once.
+   *
+   * animationend also fires for the loading sweep and for anything a future
+   * stylesheet adds, so the name is checked rather than assumed. The rest at the
+   * footer is a timeout rather than an animation delay because a delay would
+   * hold the *start* of the next run, and there is no next run - the card is
+   * about to be replaced.
+   *
+   * The timer is dropped if the card goes away first. Somebody who picks a
+   * template by hand during that pause replaces this card, and a timer left
+   * running would move them straight off the one they just chose.
+   */
+  const handleAnimationEnd = (event) => {
+    if (event.animationName !== 'tpl-preview-tour' || !onTourEnd) return;
+    restTimer.current = setTimeout(onTourEnd, TOUR_REST_MS);
+  };
+
+  useEffect(() => () => clearTimeout(restTimer.current), []);
 
   return (
-    <div className={`tpl-preview ${className}`.trim()} ref={boxRef} style={style}>
+    <div className={classes} ref={boxRef} style={style}>
       {html && CAN_SCALE ? (
         <iframe
+          ref={frameRef}
           className="tpl-preview__frame"
-          srcDoc={html}
+          onAnimationEnd={handleAnimationEnd}
+          srcDoc={tour ? withMeasureScript(html) : html}
           sandbox={SANDBOX}
           loading="lazy"
           scrolling="no"
