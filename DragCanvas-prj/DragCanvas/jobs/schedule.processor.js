@@ -140,9 +140,27 @@ export function calculateNextRunDate(frequency, scheduleTime, scheduleDay) {
         nextRun.setDate(nextRun.getDate() + ((dayOfWeek + 7 - nextRun.getDay()) % 7));
         if (nextRun <= now) nextRun.setDate(nextRun.getDate() + 7);
     } else if (frequency === 'monthly') {
-        const dayOfMonth = parseInt(scheduleDay) || 1;
-        nextRun.setDate(dayOfMonth);
-        if (nextRun <= now) nextRun.setMonth(nextRun.getMonth() + 1);
+        /*
+         * Clamped to the length of the month being aimed at.
+         *
+         * setDate(31) in a thirty-day month does not fail - it rolls forward
+         * into the next one, and setMonth(+1) then compounds the error. A
+         * schedule for the 31st, run on the 31st of January, landed on the 3rd
+         * of March: February was skipped entirely and the date was one nobody
+         * had chosen. Asking for the 31st in a short month now means its last
+         * day, which is what "every month on the 31st" can only sensibly be.
+         */
+        const wanted = Math.min(Math.max(parseInt(scheduleDay, 10) || 1, 1), 31);
+        const aim = (year, month) => {
+            const lastDay = new Date(year, month + 1, 0).getDate();
+            const date = new Date(nextRun);
+            date.setFullYear(year, month, Math.min(wanted, lastDay));
+            return date;
+        };
+
+        let candidate = aim(nextRun.getFullYear(), nextRun.getMonth());
+        if (candidate <= now) candidate = aim(nextRun.getFullYear(), nextRun.getMonth() + 1);
+        return candidate;
     }
 
     return nextRun;

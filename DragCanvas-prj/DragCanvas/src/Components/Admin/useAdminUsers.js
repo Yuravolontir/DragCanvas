@@ -2,9 +2,25 @@ import { useState } from 'react';
 
 import { apiFetch } from '../../api.js';
 
+/**
+ * A random temporary password that satisfies the server's rules: at least
+ * eight characters with a letter and a digit. Drawn from crypto, not Math.random,
+ * because this is a credential however briefly it lives.
+ */
+function suggestPassword() {
+  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
+  const bytes = crypto.getRandomValues(new Uint8Array(12));
+  const body = Array.from(bytes, (b) => alphabet[b % alphabet.length]).join('');
+  // Guarantee the two character classes rather than hoping the draw contained them.
+  return `Dc${body}7`;
+}
+
 /** A user is shown once every active filter agrees they should be. */
 function matchesFilters(user, { searchEmail, filterStatus, filterRole }) {
-  if (searchEmail.trim() && !user.UserEmail.toLowerCase().includes(searchEmail.toLowerCase())) {
+  // Compared against the trimmed value, not the raw one: the guard above used
+  // trim() and the comparison did not, so a search for " ivan " matched nobody.
+  const needle = searchEmail.trim().toLowerCase();
+  if (needle && !String(user.UserEmail || '').toLowerCase().includes(needle)) {
     return false;
   }
 
@@ -93,9 +109,17 @@ export function useAdminUsers({ showAlertModal }) {
     }
   };
 
+  /**
+   * A fresh password per reset, not the same one for everybody.
+   *
+   * This filled the field with the constant "Temp123!". An admin who clicked
+   * through the dialog gave every account the same password, and anyone who
+   * had ever been reset could guess the next person's. The admin can still
+   * type their own - this only changes what the field starts with.
+   */
   const handleResetPasswordClick = (user) => {
     setResetTarget(user);
-    setTempPassword('Temp123!');
+    setTempPassword(suggestPassword());
   };
 
   const confirmResetPassword = async () => {

@@ -38,7 +38,15 @@ export default class SubscriberMdl {
   }
 
   static active(projectId) {
-    return db.executeQuery(`SELECT "Email", "UnsubscribeTokenHash" FROM "TBProjectSubscribers"
+    return db.executeQuery(`SELECT "Subscriber_ID", "Email", "UnsubscribeTokenHash" FROM "TBProjectSubscribers"
       WHERE "Project_ID" = $1 AND "Status" = 'active' ORDER BY "Subscriber_ID"`, [projectId]);
+  }
+
+  /** Give one subscriber a fresh unsubscribe token, storing only its hash. */
+  static rotateUnsubscribe(subscriberId, unsubscribeHash) {
+    return db.executeCommand(
+      'UPDATE "TBProjectSubscribers" SET "UnsubscribeTokenHash" = $1 WHERE "Subscriber_ID" = $2',
+      [unsubscribeHash, subscriberId],
+    );
   }
 }

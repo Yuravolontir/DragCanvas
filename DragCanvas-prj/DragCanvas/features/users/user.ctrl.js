@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import UserMdl from './user.mdl.js';
 import { invalidateUser } from '../../utils/roleCache.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
+import { passwordProblem } from '../../utils/password.js';
 
 export async function getAllUsers(req, res) {
     try {
@@ -46,6 +47,35 @@ export async function getUserStats(req, res) {
     }
 }
 
+/**
+ * A superadmin may only be acted on by another superadmin.
+ *
+ * deleteUser already refused to touch one, but reset-password, update-status
+ * and update-role did not - and all three sit behind requireAdmin, which an
+ * ordinary admin satisfies. So any admin could set the superadmin's password
+ * and sign in as them, or simply deactivate or demote them. The self-harm
+ * guards ("you cannot delete your own account") were all in place; the one
+ * protecting somebody else's superadmin was missing.
+ *
+ * Stricter than delete on purpose in one direction and looser in the other:
+ * deletion is irreversible, so it is refused outright, while these three are
+ * recoverable and a superadmin must stay able to administer a peer.
+ *
+ * @returns {object|null} the target row, or null once a response has been sent
+ */
+async function loadProtectedTarget(req, res, targetId) {
+    const target = await UserMdl.getUserByIdFromDB(targetId);
+    if (!target) {
+        res.status(404).json(buildErrorResponse('Target user not found'));
+        return null;
+    }
+    if (target.IsSuperAdmin && !req.user?.isSuperAdmin) {
+        res.status(403).json(buildErrorResponse('Only a superadmin can act on a superadmin account'));
+        return null;
+    }
+    return target;
+}
+
 export async function updateStatus(req, res) {
     try {
         // Who performs the action comes from the token (req.user), not the body
@@ -65,10 +95,7 @@ export async function updateStatus(req, res) {
             return res.status(400).json(buildErrorResponse('newStatus must be true or false'));
         }
 
-        const target = await UserMdl.getUserByIdFromDB(targetID);
-        if (!target) {
-            return res.status(404).json(buildErrorResponse('Target user not found'));
-        }
+        if (!await loadProtectedTarget(req, res, targetID)) return undefined;
 
         // Roles and status are now read from the database on every request, so
         // deactivating yourself takes effect immediately instead of in seven
@@ -102,6 +129,8 @@ export async function updateRole(req, res) {
         if (Number(targetID) === Number(req.user.userId) && makeAdmin === false) {
             return res.status(400).json(buildErrorResponse('You cannot remove your own admin rights'));
         }
+
+        if (!await loadProtectedTarget(req, res, targetID)) return undefined;
 
         const rowCount = await UserMdl.updateRoleInDB(targetID, makeAdmin);
         if (rowCount === 0) {
@@ -175,6 +204,15 @@ export async function resetPassword(req, res) {
         if (!targetID || !newPassword) {
             return res.status(400).json(buildErrorResponse('targetID and newPassword are required'));
         }
+
+        // The same floor the signup form has to clear. An admin reset used to
+        // be the one way to put a two-character password on an account.
+        const weak = passwordProblem(newPassword);
+        if (weak) {
+            return res.status(400).json(buildErrorResponse(weak));
+        }
+
+        if (!await loadProtectedTarget(req, res, targetID)) return undefined;
 
         const passwordHash = await bcrypt.hash(newPassword, 10);
         const rowCount = await UserMdl.updatePasswordInDB(targetID, passwordHash);

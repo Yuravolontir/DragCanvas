@@ -36,9 +36,26 @@ export async function confirm(req, res) {
   return htmlPage(res, 'Subscription confirmed', 'You are now subscribed.');
 }
 
+/**
+ * Unsubscribe, by a token whose hash is what the database keeps.
+ *
+ * It used to compare the raw query value against "UnsubscribeTokenHash", and
+ * the newsletter mailed that stored hash as the token - self-consistent, so it
+ * worked, but it made the hashing decorative: whoever could read the table held
+ * working unsubscribe links for every address in it. `confirm` above had it
+ * right all along, and the two were simply inconsistent.
+ *
+ * Both forms are accepted on purpose. Links in newsletters already delivered
+ * carry the old value, and a recipient who cannot unsubscribe is a worse
+ * outcome than the weakness being closed here. New sends rotate to a token
+ * whose hash alone is stored, so the legacy branch stops matching anything as
+ * soon as a subscriber is mailed again.
+ */
 export async function unsubscribe(req, res) {
   const value = String(req.query.token || '');
-  if (!/^[a-f0-9]{64}$/.test(value) || !await SubscriberMdl.unsubscribe(value)) return htmlPage(res, 'Already unsubscribed', 'This address is no longer subscribed.');
+  const done = /^[a-f0-9]{64}$/.test(value)
+    && (await SubscriberMdl.unsubscribe(hash(value)) || await SubscriberMdl.unsubscribe(value));
+  if (!done) return htmlPage(res, 'Already unsubscribed', 'This address is no longer subscribed.');
   return htmlPage(res, 'Unsubscribed', 'You will no longer receive these messages.');
 }
 
@@ -58,7 +75,11 @@ export async function send(req, res) {
   const base = publicApi(req);
   setImmediate(async () => {
     for (const recipient of recipients) {
-      const unsubscribeUrl = `${base}/api/subscribers/unsubscribe?token=${recipient.UnsubscribeTokenHash}`;
+      // A fresh token per send: the database keeps only its hash, so the row
+      // no longer doubles as a working link.
+      const unsubscribeToken = token();
+      await SubscriberMdl.rotateUnsubscribe(recipient.Subscriber_ID, hash(unsubscribeToken));
+      const unsubscribeUrl = `${base}/api/subscribers/unsubscribe?token=${unsubscribeToken}`;
       await mailService.send({ to: recipient.Email, subject, html: wrapInLayout(subject, `<p>${message.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])).replace(/\n/g, '<br>')}</p><p><a href="${unsubscribeUrl}">Unsubscribe</a></p>`) });
     }
   });

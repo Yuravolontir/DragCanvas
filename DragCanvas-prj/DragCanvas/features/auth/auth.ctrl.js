@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import AuthMdl from './auth.mdl.js';
 import { createToken } from '../../middlewares/auth.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
+import { passwordProblem } from '../../utils/password.js';
 
 const SALT_ROUNDS = 10;
 
@@ -11,6 +12,11 @@ export async function register(req, res) {
 
         if (!username || !email || !password) {
             return res.status(400).json(buildErrorResponse('Username, email and password are required'));
+        }
+
+        const weak = passwordProblem(password);
+        if (weak) {
+            return res.status(400).json(buildErrorResponse(weak));
         }
 
         // Never store the raw password - only its bcrypt hash
