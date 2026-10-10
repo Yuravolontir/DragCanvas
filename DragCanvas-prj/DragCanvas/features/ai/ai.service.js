@@ -236,9 +236,21 @@ export async function fetchPexelsVideos(query, count = 5) {
 const STABILITY_API = process.env.STABILITY_MODEL_URL
     || 'https://api.stability.ai/v2beta/stable-image/generate/core';
 
-// A generated 16:9 PNG is well under this; anything larger means something is
+// A generated 16:9 image is well under this; anything larger means something is
 // wrong upstream and is not worth buffering into memory.
 const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
+
+/**
+ * How long one picture may take before it is given up on.
+ *
+ * The model call had a timeout and this did not: Node's fetch waits forever,
+ * so a Stability request that stalled mid-connection left the generation
+ * sitting at "4 of 6 images" with nothing ever going to finish it. On timeout
+ * the controller falls back to a stock photograph, the same path an outright
+ * provider error takes, so the page still arrives - just with one picture from
+ * Pexels instead of a generated one.
+ */
+const IMAGE_TIMEOUT_MS = Number(process.env.IMAGE_TIMEOUT_MS) || 45000;
 
 /**
  * Generate one image for a placeholder the model left in the layout.
@@ -260,17 +272,38 @@ export async function generateImage(prompt) {
 
     const form = new FormData();
     form.append('prompt', prompt);
-    form.append('output_format', 'png');
+    // WebP, not PNG. These are photographs, where PNG is the wrong format by an
+    // order of magnitude: a 16:9 PNG from Core runs to a couple of megabytes,
+    // which is downloaded from Stability, inflated by a third into base64 and
+    // uploaded again to Cloudinary - all inside the time somebody is watching a
+    // progress bar. Nothing is lost by it either: every published page asks
+    // Cloudinary for f_auto anyway, so the visitor never received the PNG.
+    form.append('output_format', 'webp');
     form.append('aspect_ratio', '16:9');
 
-    const response = await fetch(STABILITY_API, {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Accept': 'image/*',
-        },
-        body: form,
-    });
+    const timeout = new AbortController();
+    const timer = setTimeout(() => timeout.abort(), IMAGE_TIMEOUT_MS);
+    let response;
+    try {
+        response = await fetch(STABILITY_API, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Accept': 'image/*',
+            },
+            body: form,
+            signal: timeout.signal,
+        });
+    } catch (err) {
+        if (err.name === 'AbortError') {
+            const error = new Error(`Stability did not answer within ${IMAGE_TIMEOUT_MS}ms`);
+            error.status = 504;
+            throw error;
+        }
+        throw err;
+    } finally {
+        clearTimeout(timer);
+    }
 
     if (!response.ok) {
         // The body is JSON when the request was refused, not an image
@@ -287,5 +320,5 @@ export async function generateImage(prompt) {
         throw error;
     }
 
-    return { buffer, contentType: response.headers.get('content-type') || 'image/png' };
+    return { buffer, contentType: response.headers.get('content-type') || 'image/webp' };
 }

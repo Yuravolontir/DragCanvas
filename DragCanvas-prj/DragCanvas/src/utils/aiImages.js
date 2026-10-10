@@ -12,8 +12,17 @@ import { collectImageTasks } from './imagePrompts.js';
  */
 const IMAGE_BUDGET = 6;
 
-/** Pictures ordered at the same time, to keep provider pressure modest. */
-const IMAGES_PER_BATCH = 3;
+/**
+ * Pictures ordered at the same time - the whole budget.
+ *
+ * This was three, which split six pictures into two rounds, and a round lasts
+ * as long as its slowest picture: about fifteen seconds each, one after the
+ * other, while somebody watched "3 of 6 images". Stability allows 150 requests
+ * in ten seconds, so six at once is nowhere near a limit, and each picture is
+ * a few hundred kilobytes of WebP on the server, so memory is not one either.
+ * Kept as its own name so the two numbers can part again if the budget grows.
+ */
+const IMAGES_PER_BATCH = IMAGE_BUDGET;
 
 /**
  * Ask our own server for one generated image.

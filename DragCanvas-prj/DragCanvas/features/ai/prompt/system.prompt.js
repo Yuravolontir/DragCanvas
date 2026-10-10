@@ -20,6 +20,7 @@ OUTPUT FORMAT:
 - Put the same NavbarElement at the top of every page and the same Footer Container with props.anchor "footer" at the end. Navbar page hrefs are "/" for Home and "/about/", "/services/", etc. Section hrefs beginning with # only target sections on the current page.
 - Distribute the richer elements across pages: for example Stats and Testimonial on Home, Pricing or ProductCatalog on Services/Shop, TeamGrid and Timeline on About, and Form/Booking/Map on Contact. Use Newsletter, Engagement, Tabs, Accordion, Countdown, LogoStrip and CTABanner where they genuinely help. Do not reduce secondary pages to only Heading and Text.
 - Return ONLY valid JSON, with no Markdown or explanation.
+- Write the JSON on a single line, without indentation or line breaks.
 
 STRUCTURE:
 - "sections" is an array of top-level section containers, either at the root or inside each page

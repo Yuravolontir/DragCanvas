@@ -4,6 +4,7 @@
  * before parsing instead of trusting the response blindly.
  */
 
+import { jsonrepair } from 'jsonrepair';
 import { pickStockClip } from '../src/utils/stockVideo.js';
 import { readableInk } from '../src/utils/readableInk.js';
 import { staggerAnimations } from './ai.animation.js';
@@ -86,18 +87,32 @@ export function escapeBareControlCharsInStrings(text) {
 }
 
 export function safeParseAIJson(rawText) {
-    let s = String(rawText)
+    const cleaned = String(rawText)
         .replace(/```json/gi, '')
         .replace(/```/g, '')
-        .trim();
+        .trim()
+        .replace(/[“”]/g, '"').replace(/[‘’]/g, "'");                        // smart quotes
 
-    s = s.replace(/[“”]/g, '"').replace(/[‘’]/g, "'"); // smart quotes
-    s = extractBalancedJsonObject(s);
-    s = s.replace(/,\s*}/g, '}').replace(/,\s*]/g, ']');                   // trailing commas
-    s = s.replace(/\[(https?:\/\/[^\]\s]+)\]\(\1\)/g, '$1');               // markdown links
-    s = escapeBareControlCharsInStrings(s);                                // literal newlines/tabs in string values
-
-    return JSON.parse(s);
+    try {
+        let s = extractBalancedJsonObject(cleaned);
+        s = s.replace(/,\s*}/g, '}').replace(/,\s*]/g, ']');               // trailing commas
+        s = s.replace(/\[(https?:\/\/[^\]\s]+)\]\(\1\)/g, '$1');           // markdown links
+        s = escapeBareControlCharsInStrings(s);                            // literal newlines/tabs in string values
+        return JSON.parse(s);
+    } catch (error) {
+        // The model writes its JSON on one line to save half a minute of
+        // output, and one answer in five or so carries a slip of a single
+        // character: a stray quote, the wrong closing bracket, one bracket too
+        // few. jsonrepair mends most of those in milliseconds, against the
+        // thirty seconds a new attempt costs. When it cannot, the original
+        // error is the one worth reporting.
+        // Only an object counts as mended: given plain prose, jsonrepair
+        // returns it as one JSON string, which is not a layout of anything.
+        let repaired;
+        try { repaired = JSON.parse(jsonrepair(cleaned)); } catch { throw error; }
+        if (repaired && typeof repaired === 'object') return repaired;
+        throw error;
+    }
 }
 
 /** Guarantee the shape { sections: [...] } whatever the model returned. */

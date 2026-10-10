@@ -37,6 +37,19 @@ export const wantsMotion = (prompt) => !REFUSES_MOTION.test(String(prompt || '')
 /** Asked for motion in so many words. Worth spending a retry on; the rest is not. */
 export const askedForMotion = (prompt) => MOTION_WORDS.test(String(prompt || ''));
 
+/**
+ * Is this attempt's still hero worth asking again for?
+ *
+ * Once, and only on the first attempt. The check used to be "any attempt but
+ * the last", so a request for motion that kept coming back still could spend
+ * all three - three full layouts, a minute each, for a hero the last step
+ * repairs anyway by putting a clip behind the words the page already has.
+ * One retry is the bargain this criterion was written to make.
+ */
+export function retryForMotion(prompt, layout, attempt) {
+    return attempt === 1 && askedForMotion(prompt) && !hasVideoHero(layout);
+}
+
 /** Does any page open on footage? */
 export function hasVideoHero(layout) {
     const found = (nodes) => (nodes || []).some(node => (
@@ -184,9 +197,12 @@ async function attemptGeneration(prompt, creativity) {
     let parsed;
     try {
         parsed = safeParseAIJson(raw);
-    } catch {
-        // Broken but present JSON is worth one repair round-trip
-        parsed = safeParseAIJson(await aiService.repairLayoutJson(raw));
+    } catch (error) {
+        // Past the local repair already. Asking the model to fix its own JSON
+        // means it writes the whole page out again, which takes as long as a
+        // fresh attempt and is no more likely to come back whole - so this
+        // simply is the next attempt.
+        throw Object.assign(new Error(`unparseable layout JSON: ${error.message}`), { retryable: true });
     }
 
     // Counted before the layout is normalised, because normalisation is what
@@ -225,7 +241,17 @@ export async function generateWebsite(req, res) {
     // page. It is held here so the last attempt can return it rather than fail.
     let bestSoFar = null;
     const motionWanted = wantsMotion(cleanPrompt);
-    const motionAsked = askedForMotion(cleanPrompt);
+
+    // Never withhold a usable page because it opens on a still: the criterion
+    // exists to raise the average, not to punish a visitor who is waiting.
+    const sendBestSoFar = () => {
+        console.log('[AI] returning the layout held back for its still hero');
+        fillRemainingVideoPlaceholders(bestSoFar, cleanPrompt);
+        const splitBest = splitConcatenatedPages(bestSoFar);
+        anchorNavLinks(splitBest, cleanPrompt);
+        if (!hasVideoHero(splitBest)) promoteHeroToVideo(splitBest, cleanPrompt);
+        return res.status(200).json(buildSuccessResponse(splitBest));
+    };
 
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
         try {
@@ -242,7 +268,7 @@ export async function generateWebsite(req, res) {
             // Retrying rather than repairing on purpose - grafting a video
             // section into a composition built around an image would be our
             // judgement replacing the model's, and it reads as neither.
-            if (motionAsked && !hasVideoHero(layout) && attempt < MAX_ATTEMPTS) {
+            if (retryForMotion(cleanPrompt, layout, attempt)) {
                 bestSoFar = layout;
                 lastProblem = 'no video hero although the request asked for motion';
                 console.log(`[AI] attempt ${attempt}/${MAX_ATTEMPTS}: ${lastProblem}`);
@@ -287,24 +313,19 @@ export async function generateWebsite(req, res) {
 
             // A configuration or billing problem will not fix itself by asking again
             if (providerRefusal(error)) {
-                // Never withhold a usable page because it opens on a still: the criterion
-    // exists to raise the average, not to punish a visitor who is waiting.
-    if (bestSoFar) {
-        console.log(`[AI] returning a layout without a video hero after ${MAX_ATTEMPTS} attempts`);
-        fillRemainingVideoPlaceholders(bestSoFar, cleanPrompt);
-        const splitBest = splitConcatenatedPages(bestSoFar);
-        anchorNavLinks(splitBest, cleanPrompt);
-        if (!hasVideoHero(splitBest)) promoteHeroToVideo(splitBest, cleanPrompt);
-        return res.status(200).json(buildSuccessResponse(splitBest));
-    }
-
-    return res.status(502).json(buildErrorResponse(refusalMessage(error), { written: true }));
+                if (bestSoFar) return sendBestSoFar();
+                return res.status(502).json(buildErrorResponse(refusalMessage(error), { written: true }));
             }
             if (error.retryable && attempt < MAX_ATTEMPTS) {
                 await sleep(retryBackoffMs(attempt));
             }
         }
     }
+
+    // This used to sit inside the provider-refusal branch only, so a page held
+    // back for its still hero was thrown away whenever the attempts after it
+    // failed for any other reason - and the visitor got an error instead of it.
+    if (bestSoFar) return sendBestSoFar();
 
     // `lastProblem` stays in the log. It is the provider's text or one of our
     // own stack messages, and neither is a sentence to hand somebody.
