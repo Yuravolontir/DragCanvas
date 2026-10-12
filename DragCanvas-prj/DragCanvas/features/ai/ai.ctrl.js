@@ -1,6 +1,6 @@
 import * as aiService from './ai.service.js';
 import { countAuthoredAnimation } from '../../utils/ai.animation.js';
-import { safeParseAIJson, normalizeLayout, replacePlaceholdersInJson, fillRemainingVideoPlaceholders, promoteHeroToVideo, splitConcatenatedPages, anchorNavLinks } from '../../utils/ai.helpers.js';
+import { safeParseAIJson, normalizeLayout, replacePlaceholdersInJson, fillRemainingVideoPlaceholders, promoteHeroToVideo, splitConcatenatedPages, flattenToOnePage, anchorNavLinks } from '../../utils/ai.helpers.js';
 import { buildSuccessResponse, buildErrorResponse } from '../../utils/response.builder.js';
 import { cloudinary } from '../../middlewares/files.js';
 import AssetMdl from '../assets/asset.mdl.js';
@@ -235,7 +235,11 @@ export async function generateWebsite(req, res) {
     const cleanPrompt = String(prompt).trim();
     const generationPrompt = multiPage
         ? `${cleanPrompt}\n\nCreate a complete multi-page site with 3-5 purposeful pages. Use real page links in every navbar.`
-        : cleanPrompt;
+        : `${cleanPrompt}\n\nCreate a single-page site: return { "sections": [...] } with one navbar whose links jump to sections on this page (#anchor).`;
+    // Multi-page only when the visitor ticked it. Splitting a page with several
+    // navbars is right for a multi-page request; for any other it is the model
+    // wandering into pages nobody asked for, so those are folded back into one.
+    const shapePages = layout => (multiPage ? splitConcatenatedPages(layout) : flattenToOnePage(layout));
     let lastProblem = 'unknown';
     // A page that is good except for the motion the visitor asked for is still a
     // page. It is held here so the last attempt can return it rather than fail.
@@ -247,7 +251,7 @@ export async function generateWebsite(req, res) {
     const sendBestSoFar = () => {
         console.log('[AI] returning the layout held back for its still hero');
         fillRemainingVideoPlaceholders(bestSoFar, cleanPrompt);
-        const splitBest = splitConcatenatedPages(bestSoFar);
+        const splitBest = shapePages(bestSoFar);
         anchorNavLinks(splitBest, cleanPrompt);
         if (!hasVideoHero(splitBest)) promoteHeroToVideo(splitBest, cleanPrompt);
         return res.status(200).json(buildSuccessResponse(splitBest));
@@ -295,7 +299,7 @@ export async function generateWebsite(req, res) {
 
             // A whole site written as one page, navbars and all, before any of
             // the below looks at "the first section of the first page".
-            const split = splitConcatenatedPages(layout);
+            const split = shapePages(layout);
             // One page, so its navigation has to point at itself.
             anchorNavLinks(split, cleanPrompt);
 

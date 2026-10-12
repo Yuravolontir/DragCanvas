@@ -358,6 +358,34 @@ export function splitConcatenatedPages(layout) {
 }
 
 /**
+ * Fold whatever came back into a single page, for a request that asked for one.
+ *
+ * Nothing stopped the model answering a plain request with { pages: [...] } -
+ * the prompt describes both shapes - and a site the visitor never asked to be
+ * multi-page arrived with About and Contact tabs. Every page's content is kept,
+ * in order, as sections of the one page; only the repeats go: the navbar after
+ * the first and every footer but the last, which a single page cannot carry.
+ */
+export function flattenToOnePage(layout) {
+    const sections = Array.isArray(layout?.pages)
+        ? layout.pages.flatMap(page => (Array.isArray(page?.sections) ? page.sections : []))
+        : (Array.isArray(layout?.sections) ? layout.sections : []);
+
+    const isFooter = section => section?.props?.anchor === 'footer';
+    const lastFooter = sections.map(isFooter).lastIndexOf(true);
+    let navbarSeen = false;
+    const kept = sections.filter((section, index) => {
+        if (isFooter(section)) return index === lastFooter;
+        if (isNavigationOnly(section)) {
+            if (navbarSeen) return false;
+            navbarSeen = true;
+        }
+        return true;
+    });
+    return { sections: kept };
+}
+
+/**
  * Open the page on moving footage.
  *
  * The prompt has asked for a background video hero for a long time and the model

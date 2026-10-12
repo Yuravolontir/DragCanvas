@@ -146,3 +146,39 @@ test('a page held back for its still hero is delivered when the retries fail', a
     assert.equal(res.statusCode, 200, 'the visitor gets the page, not an error');
     assert.ok(res.body.data.sections.length >= 6);
 });
+
+const nav = { props: {}, children: [{ type: 'NavbarElement', props: { links: [] }, children: [] }] };
+const footer = { props: { anchor: 'footer' }, children: [{ type: 'Text', props: { text: '©' }, children: [] }] };
+const part = (name) => ({ props: { anchor: name }, children: [{ type: 'Heading', props: { text: name }, children: [] }] });
+const threePages = JSON.stringify({
+    pages: ['home', 'about', 'contact'].map((slug) => ({ name: slug, slug, sections: [nav, part(`${slug}-a`), part(`${slug}-b`), footer] })),
+});
+
+test('pages nobody asked for are folded into one page, content kept', async () => {
+    const { flattenToOnePage } = await import('../utils/ai.helpers.js');
+    const out = flattenToOnePage(JSON.parse(threePages));
+    assert.equal(out.pages, undefined);
+    const anchors = out.sections.map((s) => s.props.anchor);
+    assert.deepEqual(anchors.filter((a) => a && a !== 'footer'), ['home-a', 'home-b', 'about-a', 'about-b', 'contact-a', 'contact-b']);
+    assert.equal(out.sections.filter((s) => s.children[0].type === 'NavbarElement').length, 1, 'one navbar');
+    assert.equal(anchors.filter((a) => a === 'footer').length, 1, 'one footer, at the end');
+    assert.equal(anchors.at(-1), 'footer');
+});
+
+test('without the multi-page box the controller returns a single page', async (t) => {
+    const { res } = await generateWith(t, [threePages], 'a bakery in Haifa');
+    assert.equal(res.statusCode, 200);
+    assert.equal(res.body.data.pages, undefined, 'no pages the visitor did not ask for');
+    assert.ok(res.body.data.sections.length >= 6);
+});
+
+test('with the multi-page box the pages stay pages', async (t) => {
+    process.env.OPENROUTER_API_KEY ||= 'test-key';
+    const db = (await import('../utils/db.sql.services.js')).default;
+    t.mock.method(db, 'executeQuery', async () => []);
+    t.mock.method(globalThis, 'fetch', async () => new Response(JSON.stringify({ choices: [{ message: { content: threePages }, finish_reason: 'stop' }] }), { status: 200 }));
+    const { generateWebsite } = await import('../features/ai/ai.ctrl.js');
+    const res = { status(c) { this.statusCode = c; return this; }, json(b) { this.body = b; return this; } };
+    await generateWebsite({ body: { prompt: 'a bakery in Haifa', multiPage: true }, user: { userId: 1 } }, res);
+    assert.equal(res.body.data.pages.length, 3);
+});
