@@ -10,7 +10,7 @@ import { useDialogs } from '../../Components/useDialogs.jsx';
 import { useProjectPages } from './useProjectPages.js';
 import { useUserContext } from '../../userContext.js';
 import { saveEditorProject } from '../projectSaving.js';
-import { downloadCanvasHtml } from '../downloadCanvasHtml.js';
+import { downloadHtml } from '../../utils/exportToHtml.js';
 import { openProjectPreview } from '../projectPreview.js';
 import { publishEditorProject } from '../projectPublishing.js';
 import { useProjectIntegrations } from './useProjectIntegrations.js';
@@ -214,7 +214,10 @@ export const Header = ({ openPanel = null, onTogglePanel = null }) => {
     }
   };
 
-  const downloadHTML = () => downloadCanvasHtml(projectName);
+  // This used to copy the canvas out of the DOM by a selector that stopped
+  // matching when the canvas markup changed, so the button did nothing at all.
+  // The node map does not depend on markup.
+  const downloadHTML = () => downloadHtml(query.serialize(), `${projectName || 'website'}.html`, { projectId });
 
   const handlePublish = async () => {
     if (!projectId) {

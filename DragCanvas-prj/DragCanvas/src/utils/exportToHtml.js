@@ -200,9 +200,15 @@ ${animationBlock}
 </html>`;
 };
 
-/** Save the exported page straight to the visitor's downloads. */
-export const downloadHtml = (serializedData, filename = 'website.html') => {
-  const html = exportToHtml(serializedData, filename.replace('.html', ''));
+/**
+ * Save the exported page straight to the visitor's downloads.
+ *
+ * The same exporter publishing uses, so the file is the site as it goes live -
+ * styles, breakpoints, entrances - and a saved project's forms still deliver to
+ * it, because its id is baked in exactly as on a published page.
+ */
+export const downloadHtml = (serializedData, filename = 'website.html', options = {}) => {
+  const html = exportToHtml(serializedData, filename.replace(/\.html$/, ''), options);
 
   const blob = new Blob([html], { type: 'text/html' });
   const url = URL.createObjectURL(blob);
@@ -214,5 +220,7 @@ export const downloadHtml = (serializedData, filename = 'website.html') => {
   link.click();
   document.body.removeChild(link);
 
-  URL.revokeObjectURL(url);
+  // Revoked on the next turn, not at once: a click only starts the download,
+  // and a browser that has not read the blob yet would be left with nothing.
+  setTimeout(() => URL.revokeObjectURL(url), 0);
 };
